@@ -1,3 +1,6 @@
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
 
 const activeChatRooms = [
@@ -53,7 +56,7 @@ const activeChatRooms = [
   },
 ]
 
-const flaggedMessages = [
+const initialFlaggedMessages = [
   {
     id: 1,
     chatRoomId: 5,
@@ -82,6 +85,33 @@ const chatStats = [
 ]
 
 export default function AdminChatsPage() {
+  const [flaggedMessages, setFlaggedMessages] = useState(initialFlaggedMessages)
+  const [processingId, setProcessingId] = useState<number | null>(null)
+
+  const handleAction = async (id: number) => {
+    setProcessingId(id)
+
+    // Simulate async operation (e.g., ban user, delete message)
+    await new Promise(resolve => setTimeout(resolve, 100))
+
+    // Remove from flagged list
+    setFlaggedMessages(prev => prev.filter(msg => msg.id !== id))
+
+    setProcessingId(null)
+  }
+
+  const handleDismiss = async (id: number) => {
+    setProcessingId(id)
+
+    // Simulate async operation (mark as reviewed)
+    await new Promise(resolve => setTimeout(resolve, 100))
+
+    // Remove from flagged list
+    setFlaggedMessages(prev => prev.filter(msg => msg.id !== id))
+
+    setProcessingId(null)
+  }
+
   return (
     <div className="min-h-screen bg-calm-white">
       {/* Admin Header */}
@@ -196,8 +226,20 @@ export default function AdminChatsPage() {
                     </div>
 
                     <div className="flex gap-3">
-                      <button className="btn-primary">조치</button>
-                      <button className="btn-ghost ml-auto">무시</button>
+                      <button
+                        className="btn-primary"
+                        onClick={() => handleAction(msg.id)}
+                        disabled={processingId === msg.id}
+                      >
+                        조치
+                      </button>
+                      <button
+                        className="btn-ghost ml-auto"
+                        onClick={() => handleDismiss(msg.id)}
+                        disabled={processingId === msg.id}
+                      >
+                        무시
+                      </button>
                     </div>
                   </div>
                 </div>
