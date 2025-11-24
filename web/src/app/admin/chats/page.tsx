@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
 import Link from 'next/link'
+import { useFlaggedMessages } from '@/hooks/useFlaggedMessages'
+import { FlaggedMessageCard } from './components/FlaggedMessageCard'
 
 const activeChatRooms = [
   {
@@ -85,32 +86,9 @@ const chatStats = [
 ]
 
 export default function AdminChatsPage() {
-  const [flaggedMessages, setFlaggedMessages] = useState(initialFlaggedMessages)
-  const [processingId, setProcessingId] = useState<number | null>(null)
-
-  const handleAction = async (id: number) => {
-    setProcessingId(id)
-
-    // Simulate async operation (e.g., ban user, delete message)
-    await new Promise(resolve => setTimeout(resolve, 100))
-
-    // Remove from flagged list
-    setFlaggedMessages(prev => prev.filter(msg => msg.id !== id))
-
-    setProcessingId(null)
-  }
-
-  const handleDismiss = async (id: number) => {
-    setProcessingId(id)
-
-    // Simulate async operation (mark as reviewed)
-    await new Promise(resolve => setTimeout(resolve, 100))
-
-    // Remove from flagged list
-    setFlaggedMessages(prev => prev.filter(msg => msg.id !== id))
-
-    setProcessingId(null)
-  }
+  const { flaggedMessages, processingId, handleAction, handleDismiss } = useFlaggedMessages(
+    initialFlaggedMessages
+  )
 
   return (
     <div className="min-h-screen bg-calm-white">
@@ -195,54 +173,13 @@ export default function AdminChatsPage() {
 
             <div className="space-y-4">
               {flaggedMessages.map((msg) => (
-                <div key={msg.id} className="card border-l-4 border-l-error">
-                  <div className="p-6">
-                    <div className="mb-4 flex items-start justify-between">
-                      <div>
-                        <div className="mb-2 flex items-center gap-3">
-                          <span className="font-semibold text-calm-obsidian">{msg.sender}</span>
-                          <span className="text-body-xs text-calm-ash">
-                            Chat Room #{msg.chatRoomId}
-                          </span>
-                          <span
-                            className={`rounded-full px-3 py-1 text-body-xs font-medium ${
-                              msg.status === 'pending'
-                                ? 'bg-warning-bg text-warning'
-                                : 'bg-info-bg text-info'
-                            }`}
-                          >
-                            {msg.status === 'pending' ? '검토 대기' : '검토 완료'}
-                          </span>
-                        </div>
-                        <p className="mb-2 text-body-sm text-calm-ash">
-                          신고 사유: {msg.flagReason}
-                        </p>
-                        <p className="text-body-xs text-calm-ash">신고 시각: {msg.flaggedAt}</p>
-                      </div>
-                    </div>
-
-                    <div className="mb-4 rounded-lg border border-calm-stone bg-calm-cloud/50 p-4">
-                      <p className="text-body-sm text-calm-obsidian">&quot;{msg.content}&quot;</p>
-                    </div>
-
-                    <div className="flex gap-3">
-                      <button
-                        className="btn-primary"
-                        onClick={() => handleAction(msg.id)}
-                        disabled={processingId === msg.id}
-                      >
-                        조치
-                      </button>
-                      <button
-                        className="btn-ghost ml-auto"
-                        onClick={() => handleDismiss(msg.id)}
-                        disabled={processingId === msg.id}
-                      >
-                        무시
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <FlaggedMessageCard
+                  key={msg.id}
+                  message={msg}
+                  onAction={handleAction}
+                  onDismiss={handleDismiss}
+                  isProcessing={processingId === msg.id}
+                />
               ))}
             </div>
           </section>
