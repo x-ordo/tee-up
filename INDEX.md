@@ -38,6 +38,8 @@
 
 | Document | Purpose | Owner |
 |----------|---------|-------|
+| [PROJECT_METHODOLOGY.md](guides/PROJECT_METHODOLOGY.md) ✨ | 프로젝트 개발 방법론 (필독!) | Tech Lead |
+| [PROJECT_QUICK_REFERENCE.md](guides/PROJECT_QUICK_REFERENCE.md) ✨ | 프로젝트 진행 빠른 참조 | Tech Lead |
 | [UX_STRATEGY.md](guides/UX_STRATEGY.md) | UX philosophy, user personas, component specs | UX Designer |
 | [CLAUDE_GUIDE.md](guides/CLAUDE_GUIDE.md) | Claude Code integration guide | Tech Lead |
 | [CLAUDE_DEVELOPMENT_ANALYSIS.md](guides/CLAUDE_DEVELOPMENT_ANALYSIS.md) ✨ | Claude 개발 활용 분석 및 개선 방안 | Tech Lead |
