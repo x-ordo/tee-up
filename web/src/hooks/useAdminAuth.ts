@@ -1,57 +1,83 @@
 import { useState, useEffect } from 'react'
-
-const ADMIN_PASSWORD = 'admin123'
-const AUTH_STORAGE_KEY = 'admin_authenticated'
+import { createClient } from '@/lib/supabase/client'
+import type { User } from '@supabase/supabase-js'
 
 interface UseAdminAuthReturn {
   isAuthenticated: boolean
   isLoading: boolean
   error: string
-  login: (password: string) => Promise<void>
-  logout: () => void
+  user: User | null
+  login: (email: string, password: string) => Promise<void>
+  logout: () => Promise<void>
 }
 
 export function useAdminAuth(): UseAdminAuthReturn {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState('')
+  const [user, setUser] = useState<User | null>(null)
 
   useEffect(() => {
-    // Check session storage for existing authentication
-    const authStatus = sessionStorage.getItem(AUTH_STORAGE_KEY)
-    if (authStatus === 'true') {
-      setIsAuthenticated(true)
-    }
+    const supabase = createClient()
+
+    // Check current session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsAuthenticated(!!session)
+      setUser(session?.user ?? null)
+      setIsLoading(false)
+    })
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session)
+      setUser(session?.user ?? null)
+      setIsLoading(false)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
-  const login = async (password: string): Promise<void> => {
+  const login = async (email: string, password: string): Promise<void> => {
     setIsLoading(true)
     setError('')
 
-    // Simulate async validation
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        if (password === ADMIN_PASSWORD) {
-          sessionStorage.setItem(AUTH_STORAGE_KEY, 'true')
-          setIsAuthenticated(true)
-        } else {
-          setError('Incorrect password')
-        }
-        setIsLoading(false)
-        resolve()
-      }, 100)
-    })
+    try {
+      const supabase = createClient()
+
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (signInError) {
+        throw signInError
+      }
+
+      setIsAuthenticated(true)
+      setUser(data.user)
+    } catch (err) {
+      console.error('Login error:', err)
+      setError(err instanceof Error ? err.message : '로그인에 실패했습니다.')
+      throw err
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const logout = (): void => {
-    sessionStorage.removeItem(AUTH_STORAGE_KEY)
+  const logout = async (): Promise<void> => {
+    const supabase = createClient()
+    await supabase.auth.signOut()
     setIsAuthenticated(false)
+    setUser(null)
   }
 
   return {
     isAuthenticated,
     isLoading,
     error,
+    user,
     login,
     logout,
   }

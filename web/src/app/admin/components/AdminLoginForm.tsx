@@ -3,23 +3,23 @@
 import { useState, FormEvent } from 'react'
 
 interface AdminLoginFormProps {
-  onSubmit: (password: string) => Promise<void>
+  onSubmit: (email: string, password: string) => Promise<void>
   error: string
   isLoading: boolean
 }
 
 export function AdminLoginForm({ onSubmit, error, isLoading }: AdminLoginFormProps) {
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errorCleared, setErrorCleared] = useState(false)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setErrorCleared(false)
-    await onSubmit(password)
+    await onSubmit(email, password)
   }
 
-  const handlePasswordChange = (value: string) => {
-    setPassword(value)
+  const handleChange = () => {
     if (error && !errorCleared) {
       setErrorCleared(true)
     }
@@ -34,8 +34,29 @@ export function AdminLoginForm({ onSubmit, error, isLoading }: AdminLoginFormPro
           Admin Login
         </h1>
 
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Email Input */}
+          <div>
+            <label htmlFor="email" className="mb-2 block text-body-sm font-medium text-calm-charcoal">
+              Email
+            </label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value)
+                handleChange()
+              }}
+              className="input w-full"
+              placeholder="admin@teeup.com"
+              disabled={isLoading}
+              required
+            />
+          </div>
+
+          {/* Password Input */}
+          <div>
             <label htmlFor="password" className="mb-2 block text-body-sm font-medium text-calm-charcoal">
               Password
             </label>
@@ -43,15 +64,23 @@ export function AdminLoginForm({ onSubmit, error, isLoading }: AdminLoginFormPro
               id="password"
               type="password"
               value={password}
-              onChange={(e) => handlePasswordChange(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value)
+                handleChange()
+              }}
               className="input w-full"
               placeholder="Enter admin password"
               disabled={isLoading}
+              required
             />
-            {displayError && (
-              <p className="mt-2 text-body-sm text-error">{error}</p>
-            )}
           </div>
+
+          {/* Error Message */}
+          {displayError && (
+            <div className="rounded-lg border border-error bg-error/10 p-3">
+              <p className="text-body-sm text-error">{error}</p>
+            </div>
+          )}
 
           <button
             type="submit"
