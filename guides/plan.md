@@ -96,8 +96,10 @@ Launch a visual-first platform that showcases verified golf pros and enables bas
 - [x] Chat management interface
 - [x] Analytics widgets with time filtering
 
-#### Pro Verification System
-- [ ] Pending pro applications list
+#### Pro Verification System 🚧
+- [x] Pending pro applications list API (TDD)
+- [x] Approve pro API (TDD)
+- [x] Reject pro API with reason (TDD)
 - [ ] Pro profile review interface
   - View all submitted information
   - Verify credentials (LPGA/PGA certificates)
@@ -541,11 +543,11 @@ Focus on revenue optimization, advanced features, and market expansion.
 
 ## Next Actions
 
-### Priority 1: Pro Verification System (TDD)
-- [ ] RED: Write failing test for pending pro applications list API
-- [ ] GREEN: Implement pending pro applications list API
-- [ ] RED: Write failing test for approve/reject pro functionality
-- [ ] GREEN: Implement approve/reject pro functionality
+### Priority 1: Pro Verification System (TDD) ✅
+- [x] RED: Write failing test for pending pro applications list API
+- [x] GREEN: Implement pending pro applications list API
+- [x] RED: Write failing test for approve/reject pro functionality
+- [x] GREEN: Implement approve/reject pro functionality
 
 ### Priority 2: Chat Management
 - [ ] Active chat rooms table
