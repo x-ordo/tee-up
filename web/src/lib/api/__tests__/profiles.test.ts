@@ -5,6 +5,9 @@ import {
   createProfile,
   updateProfile,
   incrementProfileViews,
+  getPendingPros,
+  approvePro,
+  rejectPro,
 } from '../profiles'
 
 // Mock Supabase client
@@ -242,6 +245,132 @@ describe('Profile API', () => {
       })
 
       await expect(incrementProfileViews('profile-1')).rejects.toThrow('Function not found')
+    })
+  })
+
+  describe('Pro Verification - getPendingPros', () => {
+    it('should fetch all pending pro applications', async () => {
+      const mockPendingPros = [
+        {
+          id: 'pro-1',
+          slug: 'pending-pro-1',
+          title: 'Golf Pro Applicant',
+          is_approved: false,
+          created_at: '2025-11-20T10:00:00Z',
+          profiles: {
+            full_name: '김민지',
+            avatar_url: 'https://example.com/avatar.jpg',
+            phone: '+821012345678',
+          },
+        },
+      ]
+
+      mockSupabaseClient.eq.mockResolvedValue({
+        data: mockPendingPros,
+        error: null,
+      })
+
+      const result = await getPendingPros()
+
+      expect(mockSupabaseClient.from).toHaveBeenCalledWith('pro_profiles')
+      expect(mockSupabaseClient.select).toHaveBeenCalledWith('*, profiles(full_name, avatar_url, phone)')
+      expect(mockSupabaseClient.eq).toHaveBeenCalledWith('is_approved', false)
+      expect(result).toEqual(mockPendingPros)
+    })
+
+    it('should throw error on database error', async () => {
+      mockSupabaseClient.eq.mockResolvedValue({
+        data: null,
+        error: { message: 'Database connection error' },
+      })
+
+      await expect(getPendingPros()).rejects.toThrow('Database connection error')
+    })
+  })
+
+  describe('Pro Verification - approvePro', () => {
+    it('should approve a pro and set approval timestamp', async () => {
+      const mockApprovedPro = {
+        id: 'pro-1',
+        slug: 'approved-pro',
+        title: 'Golf Pro',
+        is_approved: true,
+        approved_at: '2025-11-25T12:00:00Z',
+      }
+
+      mockSupabaseClient.single.mockResolvedValue({
+        data: mockApprovedPro,
+        error: null,
+      })
+
+      const { approvePro } = await import('../profiles')
+      const result = await approvePro('pro-1')
+
+      expect(mockSupabaseClient.from).toHaveBeenCalledWith('pro_profiles')
+      expect(mockSupabaseClient.update).toHaveBeenCalledWith({
+        is_approved: true,
+        approved_at: expect.any(String),
+      })
+      expect(mockSupabaseClient.eq).toHaveBeenCalledWith('id', 'pro-1')
+      expect(mockSupabaseClient.select).toHaveBeenCalled()
+      expect(mockSupabaseClient.single).toHaveBeenCalled()
+      expect(result).toEqual(mockApprovedPro)
+    })
+
+    it('should throw error when pro not found', async () => {
+      mockSupabaseClient.single.mockResolvedValue({
+        data: null,
+        error: { code: 'PGRST116' },
+      })
+
+      const { approvePro } = await import('../profiles')
+      await expect(approvePro('non-existent-id')).rejects.toThrow()
+    })
+  })
+
+  describe('Pro Verification - rejectPro', () => {
+    it('should reject a pro with rejection reason', async () => {
+      const mockRejectedPro = {
+        id: 'pro-1',
+        slug: 'rejected-pro',
+        title: 'Golf Pro',
+        is_approved: false,
+        rejection_reason: '자격증 확인 불가',
+        rejected_at: '2025-11-25T12:00:00Z',
+      }
+
+      mockSupabaseClient.single.mockResolvedValue({
+        data: mockRejectedPro,
+        error: null,
+      })
+
+      const { rejectPro } = await import('../profiles')
+      const result = await rejectPro('pro-1', '자격증 확인 불가')
+
+      expect(mockSupabaseClient.from).toHaveBeenCalledWith('pro_profiles')
+      expect(mockSupabaseClient.update).toHaveBeenCalledWith({
+        rejection_reason: '자격증 확인 불가',
+        rejected_at: expect.any(String),
+      })
+      expect(mockSupabaseClient.eq).toHaveBeenCalledWith('id', 'pro-1')
+      expect(mockSupabaseClient.select).toHaveBeenCalled()
+      expect(mockSupabaseClient.single).toHaveBeenCalled()
+      expect(result).toEqual(mockRejectedPro)
+    })
+
+    it('should throw error when reason is missing', async () => {
+      const { rejectPro } = await import('../profiles')
+      await expect(rejectPro('pro-1', '')).rejects.toThrow('Rejection reason is required')
+    })
+
+    it('should throw error when pro not found', async () => {
+      mockSupabaseClient.single.mockResolvedValue({
+        data: null,
+        error: { code: 'PGRST116' },
+      })
+
+      const { rejectPro } = await import('../profiles')
+      await expect(rejectPro('non-existent-id', '사유')).rejects.toThrow()
     })
   })
 })

@@ -18,6 +18,9 @@ export type ProProfile = {
   subscription_expires_at: string | null
   is_approved: boolean
   is_featured: boolean
+  approved_at?: string | null
+  rejection_reason?: string | null
+  rejected_at?: string | null
   created_at: string
   updated_at: string
   profiles?: {
@@ -130,4 +133,76 @@ export async function incrementProfileViews(profileId: string): Promise<void> {
   if (error) {
     throw new Error(error.message)
   }
+}
+
+/**
+ * Pro Verification Functions
+ */
+
+/**
+ * Fetch all pending pro applications (is_approved = false)
+ */
+export async function getPendingPros(): Promise<ProProfile[]> {
+  const supabase = createClient()
+
+  const { data, error } = await supabase
+    .from('pro_profiles')
+    .select('*, profiles(full_name, avatar_url, phone)')
+    .eq('is_approved', false)
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return data || []
+}
+
+/**
+ * Approve a pro application
+ */
+export async function approvePro(id: string): Promise<ProProfile> {
+  const supabase = createClient()
+
+  const { data, error } = await supabase
+    .from('pro_profiles')
+    .update({
+      is_approved: true,
+      approved_at: new Date().toISOString(),
+    })
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return data
+}
+
+/**
+ * Reject a pro application with reason
+ */
+export async function rejectPro(id: string, reason: string): Promise<ProProfile> {
+  if (!reason) {
+    throw new Error('Rejection reason is required')
+  }
+
+  const supabase = createClient()
+
+  const { data, error } = await supabase
+    .from('pro_profiles')
+    .update({
+      rejection_reason: reason,
+      rejected_at: new Date().toISOString(),
+    })
+    .eq('id', id)
+    .select()
+    .single()
+
+  if (error) {
+    throw new Error(error.message)
+  }
+
+  return data
 }
