@@ -447,7 +447,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                   <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-[#d4af37]/10 to-transparent blur-2xl" />
 
                   <div className="relative">
-                    <div className="mb-6 text-3xl text-[#d4af37]">"</div>
+                    <div className="mb-6 text-3xl text-[#d4af37]">&ldquo;</div>
                     <p className="mb-8 text-xl leading-relaxed text-white/90">
                       {item.quote.replace(/(^"|"$)/g, '')}
                     </p>

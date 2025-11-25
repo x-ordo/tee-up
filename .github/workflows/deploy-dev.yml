@@ -1,0 +1,70 @@
+# ═══════════════════════════════════════════════════════════════
+# TEE:UP 개발 환경 배포
+# 트리거: develop 브랜치 푸시 시 자동 배포
+# ═══════════════════════════════════════════════════════════════
+
+name: Deploy to Development
+
+on:
+  push:
+    branches: [develop]
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  deploy-frontend:
+    name: Deploy Frontend to Vercel (Preview)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./web
+
+  deploy-backend:
+    name: Deploy Backend to Railway (Dev)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Railway
+        uses: bervProject/railway-deploy@main
+        with:
+          railway_token: ${{ secrets.RAILWAY_TOKEN }}
+          service: teeup-api-dev
+
+  notify:
+    name: Notify Deployment
+    runs-on: ubuntu-latest
+    needs: [deploy-frontend, deploy-backend]
+    if: always()
+    steps:
+      - name: Determine Status
+        id: status
+        run: |
+          if [[ "${{ needs.deploy-frontend.result }}" == "success" && "${{ needs.deploy-backend.result }}" == "success" ]]; then
+            echo "result=success" >> $GITHUB_OUTPUT
+            echo "emoji=🚀" >> $GITHUB_OUTPUT
+            echo "text=Development 배포 완료!" >> $GITHUB_OUTPUT
+          else
+            echo "result=failure" >> $GITHUB_OUTPUT
+            echo "emoji=🚨" >> $GITHUB_OUTPUT
+            echo "text=Development 배포 실패! Frontend: ${{ needs.deploy-frontend.result }}, Backend: ${{ needs.deploy-backend.result }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Send Slack Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ steps.status.outputs.result }}
+          text: '${{ steps.status.outputs.emoji }} ${{ steps.status.outputs.text }}'
+          fields: repo,message,commit,author,workflow
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

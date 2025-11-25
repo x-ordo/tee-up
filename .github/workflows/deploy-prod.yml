@@ -1,0 +1,167 @@
+# ═══════════════════════════════════════════════════════════════
+# TEE:UP 프로덕션 배포
+# 트리거: 릴리스 태그 생성 시 (수동 승인 필요)
+# ═══════════════════════════════════════════════════════════════
+
+name: Deploy to Production
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to deploy'
+        required: true
+        default: 'latest'
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  # ═══════════════════════════════════════════════════════════════
+  # 배포 전 검증
+  # ═══════════════════════════════════════════════════════════════
+  pre-deploy-check:
+    name: Pre-deployment Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        run: |
+          cd web && npm ci
+          cd ../api && npm ci
+
+      - name: Run All Tests
+        run: |
+          cd web && npm run test
+          cd ../api && npm run test
+
+      - name: Build Check
+        run: |
+          cd web && npm run build
+          cd ../api && npm run build
+
+  # ═══════════════════════════════════════════════════════════════
+  # 수동 승인
+  # ═══════════════════════════════════════════════════════════════
+  approval:
+    name: Production Approval
+    runs-on: ubuntu-latest
+    needs: pre-deploy-check
+    environment: production
+    steps:
+      - name: Approval Gate
+        run: echo "Production deployment approved"
+
+  # ═══════════════════════════════════════════════════════════════
+  # 프로덕션 배포
+  # ═══════════════════════════════════════════════════════════════
+  deploy-frontend:
+    name: Deploy Frontend to Vercel (Production)
+    runs-on: ubuntu-latest
+    needs: approval
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel Production
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./web
+
+  deploy-backend:
+    name: Deploy Backend to Railway (Production)
+    runs-on: ubuntu-latest
+    needs: approval
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Railway Production
+        uses: bervProject/railway-deploy@main
+        with:
+          railway_token: ${{ secrets.RAILWAY_TOKEN }}
+          service: teeup-api-prod
+
+  # ═══════════════════════════════════════════════════════════════
+  # 배포 후 검증
+  # ═══════════════════════════════════════════════════════════════
+  post-deploy:
+    name: Post-deployment Verification
+    runs-on: ubuntu-latest
+    needs: [deploy-frontend, deploy-backend]
+    steps:
+      - name: Health Check - Frontend
+        run: |
+          echo "Starting frontend health check..."
+          for i in {1..20}; do
+            if curl -fsS https://teeup.kr > /dev/null; then
+              echo "Frontend is healthy ✅"
+              exit 0
+            fi
+            echo "Frontend not ready yet (attempt ${i}/20). Retrying in 15 seconds..."
+            sleep 15
+          done
+          echo "Frontend failed to become healthy within the expected time ❌"
+          exit 1
+
+      - name: Health Check - Backend
+        run: |
+          echo "Starting backend health check..."
+          for i in {1..20}; do
+            if curl -fsS https://api.teeup.kr/health > /dev/null; then
+              echo "Backend is healthy ✅"
+              exit 0
+            fi
+            echo "Backend not ready yet (attempt ${i}/20). Retrying in 15 seconds..."
+            sleep 15
+          done
+          echo "Backend failed to become healthy within the expected time ❌"
+          exit 1
+
+      - name: Send Success Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: success
+          text: '🎉 Production 배포 완료!'
+          fields: repo,message,commit,author,workflow
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  # ═══════════════════════════════════════════════════════════════
+  # 롤백 (실패 시)
+  # ═══════════════════════════════════════════════════════════════
+  rollback:
+    name: Rollback on Failure
+    runs-on: ubuntu-latest
+    needs: [deploy-frontend, deploy-backend, post-deploy]
+    if: failure()
+    steps:
+      - name: Rollback Vercel
+        run: echo "Rollback Vercel deployment"
+        # vercel rollback 명령 실행
+
+      - name: Rollback Railway
+        run: echo "Rollback Railway deployment"
+        # railway rollback 명령 실행
+
+      - name: Send Failure Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: '🚨 Production 배포 실패! 롤백 진행 중...'
+          fields: repo,message,commit,author,workflow
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

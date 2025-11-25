@@ -240,7 +240,7 @@ describe('useAdminAuth', () => {
         data: { session: null },
         error: null,
       })
-      mockSupabaseClient.auth.onAuthStateChange.mockImplementation((callback) => {
+      mockSupabaseClient.auth.onAuthStateChange.mockImplementation((callback: (event: string, session: unknown) => void) => {
         authCallback = callback
         return {
           data: { subscription: { unsubscribe: jest.fn() } },
