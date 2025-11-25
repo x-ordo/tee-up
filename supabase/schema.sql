@@ -227,3 +227,128 @@ BEGIN
     WHERE user_id = profile_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Function to increment matched lessons
+CREATE OR REPLACE FUNCTION public.increment_matched_lessons(profile_id UUID)
+RETURNS void AS $$
+BEGIN
+    UPDATE public.pro_profiles
+    SET matched_lessons = matched_lessons + 1
+    WHERE user_id = profile_id;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- ============================================
+-- Phase 2: Subscriptions & Payments
+-- ============================================
+
+CREATE TYPE subscription_status AS ENUM ('active', 'cancelled', 'expired');
+
+-- Subscriptions table
+CREATE TABLE public.subscriptions (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL UNIQUE,
+    tier subscription_tier NOT NULL DEFAULT 'basic',
+    status subscription_status NOT NULL DEFAULT 'active',
+
+    -- Billing
+    payment_key TEXT,
+    billing_key TEXT,
+
+    -- Period
+    current_period_start TIMESTAMP WITH TIME ZONE NOT NULL,
+    current_period_end TIMESTAMP WITH TIME ZONE NOT NULL,
+    cancel_at_period_end BOOLEAN DEFAULT false,
+
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+
+-- Payment history table
+CREATE TABLE public.payment_history (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES public.profiles(id) ON DELETE CASCADE NOT NULL,
+    subscription_id UUID REFERENCES public.subscriptions(id) ON DELETE SET NULL,
+
+    -- Payment details
+    payment_key TEXT NOT NULL,
+    order_id TEXT NOT NULL,
+    amount INTEGER NOT NULL,
+    currency VARCHAR(3) DEFAULT 'KRW',
+    status VARCHAR(50) NOT NULL,
+    method VARCHAR(50),
+
+    -- Toss response
+    receipt_url TEXT,
+    failure_code TEXT,
+    failure_message TEXT,
+
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+
+-- Indexes for subscriptions
+CREATE INDEX idx_subscriptions_user_id ON public.subscriptions(user_id);
+CREATE INDEX idx_subscriptions_status ON public.subscriptions(status);
+CREATE INDEX idx_subscriptions_period_end ON public.subscriptions(current_period_end);
+CREATE INDEX idx_payment_history_user_id ON public.payment_history(user_id);
+
+-- Enable RLS for subscriptions
+ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.payment_history ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies for subscriptions
+CREATE POLICY "Users can view own subscription"
+    ON public.subscriptions FOR SELECT
+    USING (user_id = auth.uid());
+
+CREATE POLICY "Users can insert own subscription"
+    ON public.subscriptions FOR INSERT
+    WITH CHECK (user_id = auth.uid());
+
+CREATE POLICY "Users can update own subscription"
+    ON public.subscriptions FOR UPDATE
+    USING (user_id = auth.uid());
+
+-- RLS Policies for payment_history
+CREATE POLICY "Users can view own payment history"
+    ON public.payment_history FOR SELECT
+    USING (user_id = auth.uid());
+
+CREATE POLICY "Users can insert own payment history"
+    ON public.payment_history FOR INSERT
+    WITH CHECK (user_id = auth.uid());
+
+-- Trigger for subscriptions updated_at
+CREATE TRIGGER handle_updated_at_subscriptions
+    BEFORE UPDATE ON public.subscriptions
+    FOR EACH ROW EXECUTE FUNCTION public.handle_updated_at();
+
+-- Function to reset monthly chat count (run monthly via cron)
+CREATE OR REPLACE FUNCTION public.reset_monthly_chat_counts()
+RETURNS void AS $$
+BEGIN
+    UPDATE public.pro_profiles
+    SET monthly_chat_count = 0;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Function to check and expire subscriptions (run daily via cron)
+CREATE OR REPLACE FUNCTION public.check_expired_subscriptions()
+RETURNS void AS $$
+BEGIN
+    -- Mark expired subscriptions
+    UPDATE public.subscriptions
+    SET status = 'expired'
+    WHERE status = 'active'
+    AND current_period_end < NOW()
+    AND cancel_at_period_end = true;
+
+    -- Update pro_profiles for expired subscriptions
+    UPDATE public.pro_profiles pp
+    SET subscription_tier = 'basic',
+        subscription_expires_at = NULL
+    FROM public.subscriptions s
+    WHERE pp.user_id = s.user_id
+    AND s.status = 'expired';
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
