@@ -1,41 +1,39 @@
 # TEE:UP Project Plan
-## Product Development Roadmap
 
-> **Last Updated:** 2025-11-24
-> **Version:** 1.0.0
-> **Status:** Active Development (Phase 1)
+> **Last Updated:** 2025-11-25
+> **Version:** 2.0.0
+> **Status:** Active Development
 
 ---
 
-## 📊 Project Overview
+## Project Overview
 
 ### Vision
 Create a premium golf lesson matching platform that connects VIP golfers with verified professional golfers through visual-first, data-driven experiences.
 
 ### Success Criteria
-- **Month 3:** 50+ verified pros, 200+ golfer sign-ups
-- **Month 6:** 40% lead conversion rate, ₩5M+ MRR
-- **Year 1:** 200+ pros, 2,000+ golfers, profitable operations
+- 50+ verified pros, 200+ golfer sign-ups
+- 40% lead conversion rate, ₩5M+ MRR
+- 200+ pros, 2,000+ golfers, profitable operations
 
 ---
 
-## 🗓 Timeline Overview
+## Phase Overview
 
-| Phase | Duration | Status | Key Deliverables |
-|-------|----------|--------|------------------|
-| **Phase 1: MVP** | 4 weeks | 🚧 In Progress | Pro profiles, Directory, Admin panel |
-| **Phase 2: Beta** | 8 weeks | 📋 Planned | Real-time chat, Auth, Subscriptions |
-| **Phase 3: Scale** | Ongoing | 📋 Planned | Analytics, AI matching, Mobile apps |
+| Phase | Status | Key Deliverables |
+|-------|--------|------------------|
+| **Phase 1: MVP** | 🚧 In Progress | Pro profiles, Directory, Admin panel |
+| **Phase 2: Beta** | 📋 Planned | Real-time chat, Auth, Subscriptions |
+| **Phase 3: Scale** | 📋 Planned | Analytics, AI matching, Mobile apps |
 
 ---
 
-## 🎯 Phase 1: MVP (Weeks 1-4)
+## Phase 1: MVP
 
-### Goal: "Showcase Platform"
+### Goal
 Launch a visual-first platform that showcases verified golf pros and enables basic inquiry flow.
 
-### Week 1: Foundation ✅
-**Status:** COMPLETED
+### 1.1 Foundation ✅
 
 #### Frontend Foundation
 - [x] Next.js 14 project setup with App Router
@@ -62,8 +60,7 @@ Launch a visual-first platform that showcases verified golf pros and enables bas
 
 ---
 
-### Week 2: Pro Profiles & Directory ✅
-**Status:** COMPLETED
+### 1.2 Pro Profiles & Directory ✅
 
 #### Pro Profile Pages
 - [x] Hero section with featured pro (large card)
@@ -90,10 +87,9 @@ Launch a visual-first platform that showcases verified golf pros and enables bas
 
 ---
 
-### Week 3: Admin Panel ✅
-**Status:** COMPLETED
+### 1.3 Admin Panel 🚧
 
-#### Admin Dashboard
+#### Admin Dashboard ✅
 - [x] Admin authentication (Supabase Auth)
 - [x] Dashboard overview (metrics summary)
 - [x] Pro management table
@@ -126,8 +122,7 @@ Launch a visual-first platform that showcases verified golf pros and enables bas
 
 ---
 
-### Week 4: Integration & Polish
-**Status:** PLANNED
+### 1.4 Integration & Polish
 
 #### KakaoTalk Integration
 - [ ] KakaoTalk link button on pro profiles
@@ -157,21 +152,20 @@ Launch a visual-first platform that showcases verified golf pros and enables bas
 
 ---
 
-## 🚀 Phase 2: Beta (Weeks 5-12)
+## Phase 2: Beta
 
-### Goal: "Lock-in with Real-time Features"
+### Goal
 Add authentication, real-time chat, and subscription billing to enable full platform functionality.
 
-### Week 5-6: Authentication & Database Integration (Current) 🚧
-**Status:** IN PROGRESS
+### 2.1 Authentication & Database Integration 🚧
 
-#### Supabase Setup
+#### Supabase Setup ✅
 - [x] Supabase project creation
 - [x] Database schema design (profiles, pro_profiles, chat_rooms, messages)
 - [x] Supabase Auth configuration
 - [x] Row-level security (RLS) policies
 
-#### Admin Authentication
+#### Admin Authentication ✅
 - [x] Supabase Auth integration
 - [x] Email/password login for admin
 - [x] Session management with cookies
@@ -194,8 +188,7 @@ Add authentication, real-time chat, and subscription billing to enable full plat
 
 ---
 
-### Week 7-8: Real-time Chat (Supabase Realtime)
-**Status:** PLANNED
+### 2.2 Real-time Chat (Supabase Realtime)
 
 #### Chat Infrastructure
 - [ ] Supabase Realtime setup
@@ -227,8 +220,7 @@ Add authentication, real-time chat, and subscription billing to enable full plat
 
 ---
 
-### Week 9-10: Pro Dashboard & Analytics
-**Status:** PLANNED
+### 2.3 Pro Dashboard & Analytics
 
 #### Dashboard Metrics
 - [ ] Profile view count (daily, weekly, monthly)
@@ -252,8 +244,7 @@ Add authentication, real-time chat, and subscription billing to enable full plat
 
 ---
 
-### Week 11-12: Subscription Billing (Toss Payments)
-**Status:** PLANNED
+### 2.4 Subscription Billing (Toss Payments)
 
 #### Toss Payments Integration
 - [ ] Toss Payments SDK setup
@@ -279,13 +270,12 @@ Add authentication, real-time chat, and subscription billing to enable full plat
 
 ---
 
-## 📈 Phase 3: Scale (Months 4-12)
+## Phase 3: Scale
 
-### Goal: "Optimize & Expand"
+### Goal
 Focus on revenue optimization, advanced features, and market expansion.
 
-### Months 4-6: Revenue Optimization
-**Status:** PLANNED
+### 3.1 Revenue Optimization
 
 #### Pricing Experiments
 - [ ] A/B test subscription pricing
@@ -309,8 +299,7 @@ Focus on revenue optimization, advanced features, and market expansion.
 
 ---
 
-### Months 7-9: AI-Powered Matching
-**Status:** PLANNED
+### 3.2 AI-Powered Matching
 
 #### Smart Recommendations
 - [ ] Golfer preference learning (skill level, goals)
@@ -333,8 +322,7 @@ Focus on revenue optimization, advanced features, and market expansion.
 
 ---
 
-### Months 10-12: Mobile & Expansion
-**Status:** PLANNED
+### 3.3 Mobile & Expansion
 
 #### Mobile Apps
 - [ ] React Native project setup
@@ -359,7 +347,7 @@ Focus on revenue optimization, advanced features, and market expansion.
 
 ---
 
-## 🎭 Epics & User Stories
+## Epics & User Stories
 
 ### Epic 1: Pro Showcase (Phase 1) ✅
 **As a golfer, I want to discover elite golf pros so I can find the best coach for my needs.**
@@ -427,7 +415,7 @@ Focus on revenue optimization, advanced features, and market expansion.
 
 ---
 
-## 🔧 Technical Debt & Improvements
+## Technical Debt & Improvements
 
 ### High Priority
 - [ ] **TypeScript Strict Mode:** Enable across all files (currently partial)
@@ -452,18 +440,18 @@ Focus on revenue optimization, advanced features, and market expansion.
 
 ---
 
-## 📊 Success Metrics & KPIs
+## Success Metrics & KPIs
 
 ### Business Metrics
 
-| Metric | Target (Month 3) | Target (Month 6) | How to Measure |
-|--------|------------------|------------------|----------------|
-| **Pro Sign-Ups** | 50+ | 150+ | Supabase user count (role=pro) |
-| **Golfer Sign-Ups** | 200+ | 800+ | Supabase user count (role=golfer) |
-| **Lead Conversion** | 30% | 40% | (Matched lessons / Total inquiries) × 100 |
-| **Subscription Rate** | 20% | 25% | (Paid pros / Total pros) × 100 |
-| **MRR** | ₩2M+ | ₩5M+ | Sum of all pro subscriptions |
-| **Churn Rate** | <10% | <5% | (Cancelled subs / Total subs) × 100 |
+| Metric | Target | How to Measure |
+|--------|--------|----------------|
+| **Pro Sign-Ups** | 150+ | Supabase user count (role=pro) |
+| **Golfer Sign-Ups** | 800+ | Supabase user count (role=golfer) |
+| **Lead Conversion** | 40% | (Matched lessons / Total inquiries) × 100 |
+| **Subscription Rate** | 25% | (Paid pros / Total pros) × 100 |
+| **MRR** | ₩5M+ | Sum of all pro subscriptions |
+| **Churn Rate** | <5% | (Cancelled subs / Total subs) × 100 |
 
 ### Product Metrics
 
@@ -487,7 +475,7 @@ Focus on revenue optimization, advanced features, and market expansion.
 
 ---
 
-## 🚧 Risks & Mitigation
+## Risks & Mitigation
 
 ### Risk 1: Low Pro Sign-Ups
 **Impact:** High
@@ -527,15 +515,15 @@ Focus on revenue optimization, advanced features, and market expansion.
 
 ---
 
-## 🛠 Development Resources
+## Development Resources
 
 ### Team Structure
-- **Product Manager:** 1 (0.5 FTE, Phase 1-2)
-- **Tech Lead/Fullstack Dev:** 1 (1.0 FTE)
-- **Frontend Dev:** 1 (1.0 FTE, Phase 2+)
-- **Backend Dev:** 1 (0.5 FTE, Phase 2+)
-- **Designer:** 1 (0.5 FTE, Phase 1-2)
-- **QA Engineer:** 1 (0.25 FTE, Phase 2+)
+- **Product Manager:** 1
+- **Tech Lead/Fullstack Dev:** 1
+- **Frontend Dev:** 1
+- **Backend Dev:** 1
+- **Designer:** 1
+- **QA Engineer:** 1
 
 ### Infrastructure Costs (Monthly)
 
@@ -549,60 +537,28 @@ Focus on revenue optimization, advanced features, and market expansion.
 | **Email (SendGrid)** | Free | $15 | $50 |
 | **Total** | ~$0 | ~$86 | ~$300 |
 
-### Development Timeline (Person-Hours)
-
-| Phase | Duration | Effort (Hours) | Team Size |
-|-------|----------|----------------|-----------|
-| **Phase 1** | 4 weeks | 320h | 2 devs × 40h/week |
-| **Phase 2** | 8 weeks | 640h | 2 devs × 40h/week |
-| **Phase 3** | 24 weeks | 1,920h | 3 devs × 40h/week |
-
 ---
 
-## 📞 Stakeholder Communication
+## Next Actions
 
-### Weekly Sprint Review (Internal)
-- **When:** Every Friday, 3pm KST
-- **Attendees:** PM, Tech Lead, Designers, Devs
-- **Format:** Demo completed features, discuss blockers
-- **Output:** Sprint notes in Notion
+### Priority 1: Pro Verification System (TDD)
+- [ ] RED: Write failing test for pending pro applications list API
+- [ ] GREEN: Implement pending pro applications list API
+- [ ] RED: Write failing test for approve/reject pro functionality
+- [ ] GREEN: Implement approve/reject pro functionality
 
-### Monthly Business Review (Leadership)
-- **When:** First Monday of each month
-- **Attendees:** CEO, PM, Tech Lead
-- **Format:** Metrics review, roadmap adjustments
-- **Output:** Updated OKRs, budget approvals
+### Priority 2: Chat Management
+- [ ] Active chat rooms table
+- [ ] Chat history viewer
+- [ ] Admin moderation tools
 
-### Quarterly Strategy Session
-- **When:** End of each quarter
-- **Attendees:** All team + advisors
-- **Format:** Retrospective, planning next quarter
-- **Output:** Roadmap v2.0, hiring plan
-
----
-
-## 🎯 Next Actions (This Week)
-
-### Priority 1: Admin Panel Development
-- [ ] Create `/admin` route in Next.js
-- [ ] Build admin dashboard layout
-- [ ] Implement pro verification table
-- [ ] Add approve/reject functionality
-- [ ] Create chat management interface
-
-### Priority 2: Documentation
-- [ ] Update CONTEXT.md with admin features
-- [ ] Write API spec for admin endpoints
-- [ ] Create admin user guide
-
-### Priority 3: Testing
-- [ ] Manual QA of homepage
+### Priority 3: Testing & QA
+- [ ] Cross-browser testing
 - [ ] Mobile responsive testing
 - [ ] Performance benchmarks
 
 ---
 
-**This plan is a living document. Update weekly as priorities shift and new information emerges.**
+**This plan is a living document. Update as priorities shift and new information emerges.**
 
-**Last Review:** 2025-11-24
-**Next Review:** 2025-12-01
+**Last Review:** 2025-11-25
