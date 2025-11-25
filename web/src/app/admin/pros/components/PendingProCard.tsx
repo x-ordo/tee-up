@@ -1,89 +1,78 @@
-interface PendingPro {
-  id: number
-  name: string
-  title: string
-  location: string
-  email: string
-  phone: string
-  specialties: string[]
-  tourExperience: string
-  certifications: string[]
-  appliedAt: string
-  profileImage: string
-}
+import type { ProProfile } from '@/lib/api/profiles'
 
 interface PendingProCardProps {
-  pro: PendingPro
-  onApprove: (id: number) => void
-  onReject: (id: number) => void
+  pro: ProProfile
+  onApprove: (id: string) => void
+  onReject: (id: string, reason: string) => void
   isProcessing: boolean
 }
 
 export function PendingProCard({ pro, onApprove, onReject, isProcessing }: PendingProCardProps) {
+  const handleRejectClick = () => {
+    const reason = window.prompt('거절 사유를 입력하세요:')
+    if (reason) {
+      onReject(pro.id, reason)
+    }
+  }
+
   return (
     <div className="card">
       <div className="grid gap-6 lg:grid-cols-[300px,1fr]">
         {/* Left: Pro Image & Basic Info */}
         <div>
           <img
-            src={pro.profileImage}
-            alt={pro.name}
+            src={pro.profile_image_url || 'https://via.placeholder.com/400'}
+            alt={pro.profiles?.full_name || 'Pro'}
             className="mb-4 h-64 w-full rounded-xl object-cover"
           />
           <div className="space-y-2">
-            <h3 className="text-xl font-semibold text-calm-obsidian">{pro.name}</h3>
+            <h3 className="text-xl font-semibold text-calm-obsidian">
+              {pro.profiles?.full_name || 'Unknown'}
+            </h3>
             <p className="text-body-sm text-calm-ash">{pro.title}</p>
-            <p className="text-body-sm text-calm-charcoal">📍 {pro.location}</p>
-            <p className="text-body-xs text-calm-ash">신청: {pro.appliedAt}</p>
+            <p className="text-body-xs text-calm-ash">
+              신청: {new Date(pro.created_at).toLocaleDateString('ko-KR')}
+            </p>
           </div>
         </div>
 
         {/* Right: Detailed Info */}
         <div className="space-y-6 p-6">
           {/* Contact */}
-          <div>
-            <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
-              연락처
-            </h4>
-            <p className="text-body-sm text-calm-charcoal">📧 {pro.email}</p>
-            <p className="text-body-sm text-calm-charcoal">📱 {pro.phone}</p>
-          </div>
+          {pro.profiles?.phone && (
+            <div>
+              <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+                연락처
+              </h4>
+              <p className="text-body-sm text-calm-charcoal">📱 {pro.profiles.phone}</p>
+            </div>
+          )}
 
           {/* Specialties */}
-          <div>
-            <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
-              전문 분야
-            </h4>
-            <div className="flex flex-wrap gap-2">
-              {pro.specialties.map((specialty) => (
-                <span key={specialty} className="tag">
-                  {specialty}
-                </span>
-              ))}
+          {pro.specialties && pro.specialties.length > 0 && (
+            <div>
+              <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+                전문 분야
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {pro.specialties.map((specialty) => (
+                  <span key={specialty} className="tag">
+                    {specialty}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Experience */}
-          <div>
-            <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
-              투어 경력
-            </h4>
-            <p className="text-body-sm text-calm-charcoal">{pro.tourExperience}</p>
-          </div>
-
-          {/* Certifications */}
-          <div>
-            <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
-              자격증
-            </h4>
-            <ul className="space-y-1">
-              {pro.certifications.map((cert, index) => (
-                <li key={index} className="text-body-sm text-calm-charcoal">
-                  ✓ {cert}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Bio */}
+          {pro.bio && (
+            <div>
+              <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+                소개
+              </h4>
+              <p className="text-body-sm text-calm-charcoal">{pro.bio}</p>
+            </div>
+          )}
 
           {/* Action Buttons */}
           <div className="flex gap-3 border-t border-calm-stone pt-6">
@@ -96,7 +85,7 @@ export function PendingProCard({ pro, onApprove, onReject, isProcessing }: Pendi
             </button>
             <button
               className="btn-ghost flex-1"
-              onClick={() => onReject(pro.id)}
+              onClick={handleRejectClick}
               disabled={isProcessing}
             >
               거부
