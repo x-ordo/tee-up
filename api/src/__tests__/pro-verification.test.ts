@@ -68,6 +68,32 @@ const createTestApp = (): Application => {
         res.json(approvedPro);
     });
 
+    // POST /api/admin/pros/:id/reject - Reject a pro application
+    app.post('/api/admin/pros/:id/reject', (req, res) => {
+        const { id } = req.params;
+        const { reason } = req.body;
+
+        if (!reason) {
+            res.status(400).json({ message: 'Rejection reason is required' });
+            return;
+        }
+
+        const proIndex = mockPendingPros.findIndex(pro => pro.id === id);
+
+        if (proIndex === -1) {
+            res.status(404).json({ message: 'Pro not found' });
+            return;
+        }
+
+        const rejectedPro = {
+            ...mockPendingPros[proIndex],
+            rejectionReason: reason,
+            rejectedAt: new Date().toISOString()
+        };
+
+        res.json(rejectedPro);
+    });
+
     return app;
 };
 
@@ -148,6 +174,59 @@ describe('Pro Verification API', () => {
 
         it('should set correct Content-Type header', async () => {
             const response = await request(app).post('/api/admin/pros/1/approve');
+            expect(response.headers['content-type']).toMatch(/application\/json/);
+        });
+    });
+
+    describe('POST /api/admin/pros/:id/reject', () => {
+        it('should return 200 status code for valid pro id', async () => {
+            const response = await request(app)
+                .post('/api/admin/pros/1/reject')
+                .send({ reason: '자격증 확인 불가' });
+            expect(response.status).toBe(200);
+        });
+
+        it('should return the rejected pro with rejection reason', async () => {
+            const response = await request(app)
+                .post('/api/admin/pros/1/reject')
+                .send({ reason: '자격증 확인 불가' });
+            expect(response.body).toHaveProperty('rejectionReason', '자격증 확인 불가');
+        });
+
+        it('should return the rejected pro with rejectedAt timestamp', async () => {
+            const response = await request(app)
+                .post('/api/admin/pros/1/reject')
+                .send({ reason: '자격증 확인 불가' });
+            expect(response.body).toHaveProperty('rejectedAt');
+            expect(typeof response.body.rejectedAt).toBe('string');
+        });
+
+        it('should return 404 for non-existent pro id', async () => {
+            const response = await request(app)
+                .post('/api/admin/pros/999/reject')
+                .send({ reason: '거절 사유' });
+            expect(response.status).toBe(404);
+        });
+
+        it('should return 400 if rejection reason is not provided', async () => {
+            const response = await request(app)
+                .post('/api/admin/pros/1/reject')
+                .send({});
+            expect(response.status).toBe(400);
+        });
+
+        it('should return error message when reason is missing', async () => {
+            const response = await request(app)
+                .post('/api/admin/pros/1/reject')
+                .send({});
+            expect(response.body).toHaveProperty('message');
+            expect(response.body.message).toBe('Rejection reason is required');
+        });
+
+        it('should set correct Content-Type header', async () => {
+            const response = await request(app)
+                .post('/api/admin/pros/1/reject')
+                .send({ reason: '자격증 확인 불가' });
             expect(response.headers['content-type']).toMatch(/application\/json/);
         });
     });
