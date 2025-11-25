@@ -1,0 +1,57 @@
+# ═══════════════════════════════════════════════════════════════
+# TEE:UP 개발 환경 배포
+# 트리거: develop 브랜치 푸시 시 자동 배포
+# ═══════════════════════════════════════════════════════════════
+
+name: Deploy to Development
+
+on:
+  push:
+    branches: [develop]
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  deploy-frontend:
+    name: Deploy Frontend to Vercel (Preview)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./web
+
+  deploy-backend:
+    name: Deploy Backend to Railway (Dev)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Railway
+        uses: bervProject/railway-deploy@main
+        with:
+          railway_token: ${{ secrets.RAILWAY_TOKEN }}
+          service: teeup-api-dev
+
+  notify:
+    name: Notify Deployment
+    runs-on: ubuntu-latest
+    needs: [deploy-frontend, deploy-backend]
+    steps:
+      - name: Send Slack Notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: '🚀 Development 배포 완료!'
+          fields: repo,message,commit,author,workflow
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
