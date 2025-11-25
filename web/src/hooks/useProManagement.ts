@@ -1,90 +1,66 @@
 import { useState } from 'react'
-
-interface PendingPro {
-  id: number
-  name: string
-  title: string
-  location: string
-  email: string
-  phone: string
-  specialties: string[]
-  tourExperience: string
-  certifications: string[]
-  appliedAt: string
-  profileImage: string
-}
-
-interface ApprovedPro {
-  id: number
-  name: string
-  title: string
-  location: string
-  status: 'active'
-  profileViews: number
-  leads: number
-  matchedLessons: number
-  rating: number
-  subscriptionTier: 'basic' | 'pro'
-}
+import { approvePro, rejectPro, type ProProfile } from '@/lib/api/profiles'
 
 interface UseProManagementReturn {
-  pendingPros: PendingPro[]
-  approvedPros: ApprovedPro[]
-  processingId: number | null
-  handleApprove: (id: number) => Promise<void>
-  handleReject: (id: number) => Promise<void>
+  pendingPros: ProProfile[]
+  approvedPros: ProProfile[]
+  processingId: string | null
+  error: string | null
+  handleApprove: (id: string) => Promise<void>
+  handleReject: (id: string, reason: string) => Promise<void>
 }
 
 export function useProManagement(
-  initialPending: PendingPro[],
-  initialApproved: ApprovedPro[]
+  initialPending: ProProfile[],
+  initialApproved: ProProfile[]
 ): UseProManagementReturn {
   const [pendingPros, setPendingPros] = useState(initialPending)
   const [approvedPros, setApprovedPros] = useState(initialApproved)
-  const [processingId, setProcessingId] = useState<number | null>(null)
+  const [processingId, setProcessingId] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleApprove = async (id: number): Promise<void> => {
+  const handleApprove = async (id: string): Promise<void> => {
     setProcessingId(id)
+    setError(null)
 
-    // Simulate async operation
-    await new Promise(resolve => setTimeout(resolve, 100))
+    try {
+      const approvedProfile = await approvePro(id)
 
-    // Remove from pending - approved pros are added to count but not shown immediately
-    setPendingPros(prev => prev.filter(pro => pro.id !== id))
+      // Remove from pending
+      setPendingPros(prev => prev.filter(pro => pro.id !== id))
 
-    // Increment approved count without showing the pro immediately
-    setApprovedPros(prev => [...prev, {
-      id: id + 1000, // Temporary ID to increment count without showing actual data
-      name: '',
-      title: '',
-      location: '',
-      status: 'active' as const,
-      profileViews: 0,
-      leads: 0,
-      matchedLessons: 0,
-      rating: 0,
-      subscriptionTier: 'basic' as const,
-    }])
-
-    setProcessingId(null)
+      // Add to approved list
+      setApprovedPros(prev => [...prev, approvedProfile])
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to approve pro')
+      throw err
+    } finally {
+      setProcessingId(null)
+    }
   }
 
-  const handleReject = async (id: number): Promise<void> => {
+  const handleReject = async (id: string, reason: string): Promise<void> => {
     setProcessingId(id)
+    setError(null)
 
-    // Simulate async operation
-    await new Promise(resolve => setTimeout(resolve, 100))
+    try {
+      await rejectPro(id, reason)
 
-    // Remove from pending
-    setPendingPros(prev => prev.filter(pro => pro.id !== id))
-
-    setProcessingId(null)
+      // Remove from pending
+      setPendingPros(prev => prev.filter(pro => pro.id !== id))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to reject pro')
+      throw err
+    } finally {
+      setProcessingId(null)
+    }
   }
 
   return {
     pendingPros,
     approvedPros,
     processingId,
+    error,
     handleApprove,
     handleReject,
   }
