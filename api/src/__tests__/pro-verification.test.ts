@@ -49,6 +49,25 @@ const createTestApp = (): Application => {
         res.json(pendingPros);
     });
 
+    // POST /api/admin/pros/:id/approve - Approve a pro application
+    app.post('/api/admin/pros/:id/approve', (req, res) => {
+        const { id } = req.params;
+        const proIndex = mockPendingPros.findIndex(pro => pro.id === id);
+
+        if (proIndex === -1) {
+            res.status(404).json({ message: 'Pro not found' });
+            return;
+        }
+
+        const approvedPro = {
+            ...mockPendingPros[proIndex],
+            isApproved: true,
+            approvedAt: new Date().toISOString()
+        };
+
+        res.json(approvedPro);
+    });
+
     return app;
 };
 
@@ -95,6 +114,40 @@ describe('Pro Verification API', () => {
 
         it('should set correct Content-Type header', async () => {
             const response = await request(app).get('/api/admin/pros/pending');
+            expect(response.headers['content-type']).toMatch(/application\/json/);
+        });
+    });
+
+    describe('POST /api/admin/pros/:id/approve', () => {
+        it('should return 200 status code for valid pro id', async () => {
+            const response = await request(app).post('/api/admin/pros/1/approve');
+            expect(response.status).toBe(200);
+        });
+
+        it('should return the approved pro with isApproved set to true', async () => {
+            const response = await request(app).post('/api/admin/pros/1/approve');
+            expect(response.body).toHaveProperty('isApproved', true);
+        });
+
+        it('should return the approved pro with approvedAt timestamp', async () => {
+            const response = await request(app).post('/api/admin/pros/1/approve');
+            expect(response.body).toHaveProperty('approvedAt');
+            expect(typeof response.body.approvedAt).toBe('string');
+        });
+
+        it('should return 404 for non-existent pro id', async () => {
+            const response = await request(app).post('/api/admin/pros/999/approve');
+            expect(response.status).toBe(404);
+        });
+
+        it('should return error message for non-existent pro', async () => {
+            const response = await request(app).post('/api/admin/pros/999/approve');
+            expect(response.body).toHaveProperty('message');
+            expect(response.body.message).toBe('Pro not found');
+        });
+
+        it('should set correct Content-Type header', async () => {
+            const response = await request(app).post('/api/admin/pros/1/approve');
             expect(response.headers['content-type']).toMatch(/application\/json/);
         });
     });
