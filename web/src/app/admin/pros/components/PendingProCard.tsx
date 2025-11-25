@@ -16,7 +16,7 @@ export function PendingProCard({ pro, onApprove, onReject, isProcessing }: Pendi
   }
 
   return (
-    <div className="card">
+    <div className="card" data-testid="pending-pro-card">
       <div className="grid gap-6 lg:grid-cols-[300px,1fr]">
         {/* Left: Pro Image & Basic Info */}
         <div>
