@@ -1,9 +1,11 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { LoadingSpinner } from '@/app/components/LoadingSpinner';
 
-export default function PaymentFailPage() {
+function PaymentFailContent() {
   const searchParams = useSearchParams();
   const errorCode = searchParams.get('code');
   const errorMessage = searchParams.get('message');
@@ -59,5 +61,13 @@ export default function PaymentFailPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function PaymentFailPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner message="로딩 중..." />}>
+      <PaymentFailContent />
+    </Suspense>
   );
 }
