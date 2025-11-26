@@ -1,242 +1,67 @@
-# ========================================
-# TEE:UP Project .gitignore
-# ========================================
+# TEE:UP .gitignore
 
-# ========================================
-# Environment Variables & Secrets
-# ========================================
-# CRITICAL: Never commit these files!
+# === Environment & Secrets ===
 .env
 .env.local
 .env.*.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# Backup env files
 *.env.backup
-*.env.bak
 
-# ========================================
-# Dependencies
-# ========================================
+# === Dependencies ===
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-# ========================================
-# Build Output
-# ========================================
-# Next.js
+# === Build Output ===
 .next/
 out/
 build/
 dist/
-
-# TypeScript
 *.tsbuildinfo
-next-env.d.ts
 
-# ========================================
-# IDE & Editor Files
-# ========================================
-# VS Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-*.code-workspace
-
-# JetBrains IDEs (WebStorm, IntelliJ, etc.)
-.idea/
-*.iml
-*.iws
-*.ipr
-
-# Sublime Text
-*.sublime-project
-*.sublime-workspace
-
-# Vim
-*.swp
-*.swo
-*~
-
-# Emacs
-*~
-\#*\#
-.\#*
-
-# ========================================
-# Operating System Files
-# ========================================
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-._*
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-.com.apple.timemachine.donotpresent
-
-# Windows
-Thumbs.db
-Thumbs.db:encryptable
-ehthumbs.db
-ehthumbs_vista.db
-*.stackdump
-[Dd]esktop.ini
-$RECYCLE.BIN/
-*.cab
-*.msi
-*.msix
-*.msm
-*.msp
-*.lnk
-
-# Linux
-*~
-.directory
-.Trash-*
-
-# ========================================
-# Testing & Coverage
-# ========================================
+# === Testing & Coverage ===
 coverage/
-*.lcov
 .nyc_output/
-.cache/
-.parcel-cache/
-
-# Jest
-jest-results.json
-
-# Playwright
 test-results/
 playwright-report/
 playwright/.cache/
 
-# ========================================
-# Logs
-# ========================================
+# === Logs ===
 logs/
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
-# ========================================
-# Temporary Files
-# ========================================
+# === IDE ===
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === Temp Files ===
 *.tmp
 *.temp
 *.bak
 *.swp
-*.swo
-.tmp/
-temp/
+*~
 
-# ========================================
-# Security & Credentials
-# ========================================
-# CRITICAL: Private keys and certificates
+# === Security ===
 *.pem
 *.key
 *.p12
-*.pfx
-*.cer
-*.crt
-*.der
 id_rsa*
-*.pub
-
-# Service account keys
 *-service-account.json
-service-account-*.json
 
-# Database dumps (but keep schema files)
+# === Database ===
 *.sql
 !supabase/schema.sql
 *.sqlite
 *.db
 
-# ========================================
-# Cloud & Deployment
-# ========================================
-# Vercel
+# === Cloud ===
 .vercel/
-.vercel.json
-
-# Railway
-.railway/
-
-# Supabase
 .supabase/
 
-# Docker
-.dockerignore
-
-# ========================================
-# Package Manager
-# ========================================
-# Yarn
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-.pnp.*
-
-# pnpm
-.pnpm-store/
-
-# ========================================
-# Misc
-# ========================================
-# Debug
-debug/
-.debug/
-
-# Sentry
-.sentryclirc
-
-# Storybook
-storybook-static/
-
-# ========================================
-# Project-Specific
-# ========================================
-# Prototype files (keep in git for reference)
-# main.html
-# prototype.html
-
-# User uploads (if any)
+# === Project Specific ===
 uploads/
 public/uploads/
-
-# Generated documentation
 docs/generated/
-
-# ========================================
-# IMPORTANT: Files to KEEP in Git
-# ========================================
-# These files should be committed:
-# - .env.example (template)
-# - .gitignore (this file)
-# - package.json
-# - package-lock.json
-# - tsconfig.json
-# - next.config.js
-# - README.md
-# - All source code files
