@@ -1,7 +1,7 @@
 'use client';
 
 import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
+import { ko } from 'date-fns/locale/ko';
 import Image from 'next/image';
 import type { IMessage, IUser } from '@/types';
 

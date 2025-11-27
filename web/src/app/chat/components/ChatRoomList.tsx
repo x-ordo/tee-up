@@ -1,7 +1,7 @@
 'use client';
 
 import { formatDistanceToNow } from 'date-fns';
-import { ko } from 'date-fns/locale';
+import { ko } from 'date-fns/locale/ko';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { IChatRoom } from '@/types';

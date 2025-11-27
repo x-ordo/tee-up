@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- 글로벌 에러 바운더리 (`error.tsx`, `global-error.tsx`)
+- 404 Not Found 페이지 (`not-found.tsx`)
+- 로딩 스켈레톤 컴포넌트 (`Skeleton.tsx`)
+- 페이지별 로딩 상태 (`loading.tsx`)
+- 유틸리티 함수 (`cn`, `formatKRW`, `formatCompact` 등)
+- 수동 설정 작업 가이드 문서 (`MANUAL_SETUP_TASKS.md`)
+
+### Fixed
+- date-fns v4 locale import 경로 수정
+- tsconfig.json에서 playwright 설정 파일 제외 (빌드 오류 해결)
+
+### Dependencies
+- clsx, tailwind-merge 패키지 추가
+
 ### Planned
 - Supabase 실시간 연동
 - KakaoTalk 링크 통합
