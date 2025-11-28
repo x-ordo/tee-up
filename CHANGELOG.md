@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - profiles.test.ts 함수명 불일치 수정
 - CI workflow: CodeQL v2 → v3 업그레이드
 - CI workflow: 빌드 시 Supabase 환경변수 누락 수정
+- CI workflow: CodeQL security-events 권한 추가
+- Test Pipeline: E2E 테스트 조건부 실행 (ENABLE_E2E_TESTS 변수로 제어)
 
 ### Dependencies
 - clsx, tailwind-merge 패키지 추가
