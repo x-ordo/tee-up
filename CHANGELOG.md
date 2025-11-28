@@ -14,6 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 페이지별 로딩 상태 (`loading.tsx`)
 - 유틸리티 함수 (`cn`, `formatKRW`, `formatCompact` 등)
 
+### Changed
+- 컴포넌트 디자인 시스템 통일 (다크 골드 → 라이트 블루 테마)
+  - `BookingModal`: 모달 디자인 시스템 클래스 적용
+  - `ScheduleWidget`: 버튼/선택 스타일 표준화
+  - `Skeleton`: 라이트 테마 기반 스켈레톤
+  - `KakaoTalkButton`: 사이즈/간격 표준화
+  - `loading.tsx`: 전체 페이지 라이트 테마 적용
+
 ### Fixed
 - date-fns v4 locale import 경로 수정
 - tsconfig.json에서 playwright 설정 파일 제외 (빌드 오류 해결)

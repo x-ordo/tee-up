@@ -10,7 +10,7 @@ export function Skeleton({ className }: SkeletonProps) {
   return (
     <div
       className={cn(
-        'animate-pulse rounded-md bg-white/10',
+        'skeleton',
         className
       )}
     />
@@ -20,32 +20,34 @@ export function Skeleton({ className }: SkeletonProps) {
 // 프로 카드 스켈레톤
 export function ProCardSkeleton() {
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-6">
-      {/* Avatar */}
-      <div className="mb-4 flex items-center gap-4">
-        <Skeleton className="h-16 w-16 rounded-full" />
-        <div className="flex-1">
-          <Skeleton className="mb-2 h-5 w-24" />
-          <Skeleton className="h-4 w-32" />
+    <div className="card overflow-hidden">
+      {/* Image placeholder */}
+      <Skeleton className="h-64 w-full rounded-none" />
+
+      {/* Content */}
+      <div className="card-content">
+        {/* Role & City */}
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-4 w-20" />
+          <Skeleton className="h-6 w-16 rounded-full" />
+        </div>
+
+        {/* Name */}
+        <Skeleton className="h-8 w-40" />
+
+        {/* Tags */}
+        <div className="flex gap-2">
+          <Skeleton className="h-6 w-16 rounded-full" />
+          <Skeleton className="h-6 w-20 rounded-full" />
+          <Skeleton className="h-6 w-14 rounded-full" />
+        </div>
+
+        {/* Rate & CTA */}
+        <div className="flex items-center justify-between border-t border-calm-stone pt-4">
+          <Skeleton className="h-5 w-24" />
+          <Skeleton className="h-10 w-24 rounded-xl" />
         </div>
       </div>
-
-      {/* Tags */}
-      <div className="mb-4 flex gap-2">
-        <Skeleton className="h-6 w-16 rounded-full" />
-        <Skeleton className="h-6 w-20 rounded-full" />
-        <Skeleton className="h-6 w-14 rounded-full" />
-      </div>
-
-      {/* Stats */}
-      <div className="mb-4 grid grid-cols-3 gap-4">
-        <Skeleton className="h-12 rounded-lg" />
-        <Skeleton className="h-12 rounded-lg" />
-        <Skeleton className="h-12 rounded-lg" />
-      </div>
-
-      {/* Button */}
-      <Skeleton className="h-12 w-full rounded-full" />
     </div>
   );
 }
@@ -53,7 +55,7 @@ export function ProCardSkeleton() {
 // 프로 프로필 상세 스켈레톤
 export function ProProfileSkeleton() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27]">
+    <div className="min-h-screen bg-calm-white">
       {/* Hero */}
       <div className="relative h-96 w-full">
         <Skeleton className="h-full w-full rounded-none" />
@@ -63,7 +65,7 @@ export function ProProfileSkeleton() {
       <div className="mx-auto max-w-4xl px-6 py-12">
         {/* Avatar & Name */}
         <div className="-mt-20 mb-8 flex items-end gap-6">
-          <Skeleton className="h-32 w-32 rounded-full border-4 border-[#0a0e27]" />
+          <Skeleton className="h-32 w-32 rounded-full border-4 border-calm-white" />
           <div>
             <Skeleton className="mb-2 h-8 w-48" />
             <Skeleton className="h-5 w-32" />
@@ -78,12 +80,15 @@ export function ProProfileSkeleton() {
         {/* Stats Grid */}
         <div className="mb-8 grid grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <Skeleton key={i} className="h-24 rounded-xl" />
+            <div key={i} className="metric-card">
+              <Skeleton className="mb-2 h-8 w-16" />
+              <Skeleton className="h-4 w-20" />
+            </div>
           ))}
         </div>
 
         {/* CTA */}
-        <Skeleton className="h-14 w-full rounded-full" />
+        <Skeleton className="h-14 w-full rounded-xl" />
       </div>
     </div>
   );
@@ -92,9 +97,9 @@ export function ProProfileSkeleton() {
 // 테이블 행 스켈레톤
 export function TableRowSkeleton({ columns = 5 }: { columns?: number }) {
   return (
-    <tr className="border-b border-white/10">
+    <tr className="table-row">
       {Array.from({ length: columns }).map((_, i) => (
-        <td key={i} className="px-4 py-4">
+        <td key={i} className="table-cell">
           <Skeleton className="h-5 w-full" />
         </td>
       ))}
@@ -119,7 +124,7 @@ export function ChatMessageSkeleton({ isOwn = false }: { isOwn?: boolean }) {
 // 채팅 목록 스켈레톤
 export function ChatListSkeleton() {
   return (
-    <div className="divide-y divide-white/10">
+    <div className="divide-y divide-calm-stone">
       {[1, 2, 3, 4, 5].map((i) => (
         <div key={i} className="flex items-center gap-4 p-4">
           <Skeleton className="h-12 w-12 rounded-full" />
@@ -136,7 +141,7 @@ export function ChatListSkeleton() {
 // 대시보드 카드 스켈레톤
 export function DashboardCardSkeleton() {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/5 p-6">
+    <div className="metric-card">
       <Skeleton className="mb-4 h-4 w-20" />
       <Skeleton className="mb-2 h-8 w-24" />
       <Skeleton className="h-3 w-16" />
