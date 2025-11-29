@@ -15,12 +15,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 유틸리티 함수 (`cn`, `formatKRW`, `formatCompact` 등)
 
 ### Changed
-- 컴포넌트 디자인 시스템 통일 (다크 골드 → 라이트 블루 테마)
-  - `BookingModal`: 모달 디자인 시스템 클래스 적용
-  - `ScheduleWidget`: 버튼/선택 스타일 표준화
-  - `Skeleton`: 라이트 테마 기반 스켈레톤
-  - `KakaoTalkButton`: 사이즈/간격 표준화
-  - `loading.tsx`: 전체 페이지 라이트 테마 적용
+- **전체 디자인 시스템 통일** (다크 골드 → Calm Control 라이트 블루 테마)
+  - 홈페이지 (`page.tsx`): 네비게이션, 히어로, 카드, 푸터 전면 개편
+  - 에러 페이지: `error.tsx`, `not-found.tsx`, `global-error.tsx`
+  - 인증 컴포넌트: `AuthLayout`, `AuthInput`, `AuthButton`
+  - 인증 페이지: `login`, `signup`, `reset-password`
+  - Admin 페이지: 에러 메시지 스타일 표준화
+  - 컴포넌트: `BookingModal`, `ScheduleWidget`, `Skeleton`, `KakaoTalkButton`
+  - 로딩 상태: `loading.tsx` (root, profile, admin)
 
 ### Fixed
 - date-fns v4 locale import 경로 수정
