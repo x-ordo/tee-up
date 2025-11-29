@@ -14,32 +14,20 @@ export function AuthButton({
   disabled,
   ...props
 }: AuthButtonProps) {
-  const baseStyles = `
-    w-full rounded-lg px-6 py-3 text-base font-semibold
-    transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-50
-  `;
-
-  const variantStyles = {
-    primary: `
-      bg-gradient-to-r from-[#d4af37] to-[#f4e5c2] text-[#0a0e27]
-      hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:scale-[1.02]
-      disabled:hover:scale-100 disabled:hover:shadow-none
-    `,
-    secondary: `
-      border border-white/20 bg-transparent text-white
-      hover:border-[#d4af37] hover:bg-[#d4af37]/10
-    `,
+  const variantClasses = {
+    primary: 'btn-primary w-full',
+    secondary: 'btn-secondary w-full',
   };
 
   return (
     <button
-      className={`${baseStyles} ${variantStyles[variant]} ${className}`}
+      className={`${variantClasses[variant]} ${className}`}
       disabled={disabled || isLoading}
       {...props}
     >
       {isLoading ? (
         <span className="flex items-center justify-center gap-2">
-          <svg className="h-5 w-5 animate-spin\" viewBox="0 0 24 24">
+          <svg className="h-5 w-5 animate-spin" viewBox="0 0 24 24">
             <circle
               className="opacity-25"
               cx="12"
