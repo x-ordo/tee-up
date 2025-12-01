@@ -22,6 +22,7 @@ language: Korean (한국어)
 
 | 버전 | 날짜 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
+| 2.1.0 | 2025-12-01 | @claude | UI/UX 검증 전략 및 빅테크 UX 이식 기획 추가 |
 | 2.0.0 | 2025-11-25 | @tech-lead | Master Prompt 표준 적용, TDD 구조 강화 |
 | 1.0.0 | 2025-11-24 | @tech-lead | 최초 작성 |
 
@@ -30,6 +31,8 @@ language: Korean (한국어)
 - [CONTEXT.md](CONTEXT.md) — 시스템 컨텍스트
 - [TDD_GUIDE.md](docs/guides/TDD_GUIDE.md) — TDD 가이드
 - [PRD.md](docs/specs/PRD.md) — 제품 요구사항
+- [UI_UX_VALIDATION_STRATEGY.md](guides/UI_UX_VALIDATION_STRATEGY.md) — UI/UX 검증 전략
+- [BIGTECH_UX_STRATEGY.md](docs/specs/BIGTECH_UX_STRATEGY.md) — 빅테크 UX 이식 기획
 
 ---
 
@@ -59,9 +62,10 @@ language: Korean (한국어)
 | Phase | 완료 | 진행중 | 대기 | 진행률 |
 |-------|------|--------|------|--------|
 | Phase 1: MVP | 17 | 0 | 3 | 85% |
+| Phase 1.5: UX 고도화 | 2 | 0 | 16 | 11% |
 | Phase 2: Beta | 0 | 2 | 18 | 10% |
 | Phase 3: Scale | 0 | 0 | 15 | 0% |
-| **Total** | **17** | **2** | **36** | **31%** |
+| **Total** | **19** | **2** | **52** | **26%** |
 
 ---
 
@@ -447,6 +451,129 @@ describe('User Authentication', () => {
 
 ---
 
+## 🎨 Phase 1.5: UX 고도화 (4주) - "Engagement"
+
+> **목표:** 빅테크 UX 전략 이식을 통한 체류시간 증대 및 리드 전환율 향상
+
+### 📋 완료된 작업 (2025-12-01)
+
+#### DOC-001: UI/UX 검증 전략 수립 ✅ COMPLETED
+
+| 항목 | 상태 | 문서 |
+|------|------|------|
+| 디자인 시스템 분석 | ✅ DONE | guides/UI_UX_VALIDATION_STRATEGY.md |
+| 디자인 불일치 현황 파악 | ✅ DONE | 4개 컴포넌트 식별 |
+| 4단계 검증 체계 수립 | ✅ DONE | Audit → Linting → Visual Regression → Storybook |
+| 구현 로드맵 정의 | ✅ DONE | Phase 1-4 로드맵 |
+
+#### DOC-002: 빅테크 UX 전략 이식 기획 ✅ COMPLETED
+
+| 항목 | 상태 | 문서 |
+|------|------|------|
+| Google UX 전략 재해석 | ✅ DONE | Discovery → 관련 프로 추천 |
+| Toss UX 전략 재해석 | ✅ DONE | 게이미피케이션 → 퀴즈/계산기 |
+| Kakao UX 전략 재해석 | ✅ DONE | 소셜 컨텍스트 → 공유 최적화 |
+| UI/UX 상세 설계 | ✅ DONE | Above the Fold, Navigation Loop |
+| 기능 명세 정의 | ✅ DONE | 5개 신규 기능 |
+| KPI 정의 | ✅ DONE | 체류시간, PV, 전환율 |
+
+---
+
+### 📅 향후 구현 계획
+
+#### Week 1: 기반 구축 (UX-001)
+
+| 항목 | 상태 | 테스트 | 구현 |
+|------|------|--------|------|
+| 스크롤 프로그레스 바 | ⬜ PENDING | ⬜ | ⬜ |
+| useScrollProgress 훅 | ⬜ PENDING | ⬜ | ⬜ |
+| 플로팅 공유 버튼 | ⬜ PENDING | ⬜ | ⬜ |
+| 카카오톡 공유 템플릿 | ⬜ PENDING | ⬜ | ⬜ |
+| GA4 이벤트 추적 | ⬜ PENDING | ⬜ | ⬜ |
+
+**테스트 케이스:**
+```typescript
+// tests/unit/hooks/useScrollProgress.test.ts
+describe('useScrollProgress', () => {
+  it('should return 0 at top of page', () => {
+    const { result } = renderHook(() => useScrollProgress());
+    expect(result.current).toBe(0);
+  });
+
+  it('should return 100 at bottom of page', () => {
+    // 스크롤을 페이지 끝으로 이동
+    window.scrollTo(0, document.body.scrollHeight);
+    const { result } = renderHook(() => useScrollProgress());
+    expect(result.current).toBe(100);
+  });
+});
+```
+
+#### Week 2-3: 인터랙티브 도구 (UX-002)
+
+| 항목 | 상태 | 테스트 | 구현 |
+|------|------|--------|------|
+| 골프 실력 진단 퀴즈 페이지 | ⬜ PENDING | ⬜ | ⬜ |
+| 퀴즈 결과 → 프로 매칭 로직 | ⬜ PENDING | ⬜ | ⬜ |
+| 레슨 비용 계산기 페이지 | ⬜ PENDING | ⬜ | ⬜ |
+| 계산기 → 프로 추천 연동 | ⬜ PENDING | ⬜ | ⬜ |
+| Confetti 효과 (예약 완료) | ⬜ PENDING | ⬜ | ⬜ |
+
+**테스트 케이스:**
+```typescript
+// tests/unit/pages/Quiz.test.tsx
+describe('GolfLevelQuiz', () => {
+  it('should progress through all questions', () => {
+    render(<GolfLevelQuiz />);
+    // 5개 질문 순차 진행 테스트
+    for (let i = 0; i < 5; i++) {
+      expect(screen.getByText(`Q${i + 1}`)).toBeInTheDocument();
+      fireEvent.click(screen.getAllByRole('button')[0]);
+    }
+    expect(screen.getByText('진단 완료!')).toBeInTheDocument();
+  });
+
+  it('should recommend pros based on quiz answers', async () => {
+    render(<GolfLevelQuiz />);
+    // 퀴즈 완료 후 추천 프로 표시 확인
+    await completeQuiz();
+    expect(screen.getAllByTestId('recommended-pro')).toHaveLength(3);
+  });
+});
+```
+
+#### Week 3: Navigation Loop (UX-003)
+
+| 항목 | 상태 | 테스트 | 구현 |
+|------|------|--------|------|
+| 관련 프로 추천 섹션 | ⬜ PENDING | ⬜ | ⬜ |
+| "다음 프로 보기" 넛지 | ⬜ PENDING | ⬜ | ⬜ |
+| 프로 디렉토리 Load More | ⬜ PENDING | ⬜ | ⬜ |
+| "나중에 보기" localStorage | ⬜ PENDING | ⬜ | ⬜ |
+
+#### Week 4: 최적화 & A/B 테스트 (UX-004)
+
+| 항목 | 상태 | 테스트 | 구현 |
+|------|------|--------|------|
+| A/B 테스트 설정 | ⬜ PENDING | ⬜ | ⬜ |
+| 성능 최적화 (LCP < 2.5s) | ⬜ PENDING | ⬜ | ⬜ |
+| 모바일 UX 검증 | ⬜ PENDING | ⬜ | ⬜ |
+| KPI 대시보드 구축 | ⬜ PENDING | ⬜ | ⬜ |
+
+---
+
+### 📊 UX KPI 목표
+
+| 지표 | 현재 추정 | 목표 | 측정 방법 |
+|------|----------|------|----------|
+| 평균 세션 시간 | 2분 | 5분+ | GA4 |
+| 세션당 PV | 2.5 | 5+ | GA4 |
+| 이탈률 | 60% | 40% 이하 | GA4 |
+| 프로필→문의 전환 | 15% | 30%+ | 커스텀 이벤트 |
+| 월간 공유 수 | - | 500+ | 공유 버튼 클릭 |
+
+---
+
 ## 🔧 기술 부채 (Technical Debt)
 
 ### 높은 우선순위
@@ -543,8 +670,8 @@ describe('User Authentication', () => {
 
 **이 문서는 매일 업데이트됩니다. 최신 상태를 확인하세요.**
 
-**Last Updated:** 2025-11-25 (채팅 관리 인터페이스 Supabase 연동 완료)
-**Next Review:** 2025-12-01
+**Last Updated:** 2025-12-01 (UI/UX 검증 전략 및 빅테크 UX 이식 기획 추가)
+**Next Review:** 2025-12-08
 
 ═══════════════════════════════════════════════════════════════
 ✅ VALIDATION CHECKLIST
