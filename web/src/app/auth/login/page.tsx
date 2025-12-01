@@ -61,7 +61,7 @@ export default function LoginPage() {
     >
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-400">
+          <div role="alert" aria-live="polite" className="alert-error">
             {error}
           </div>
         )}
@@ -98,17 +98,17 @@ export default function LoginPage() {
           }
         />
 
-        <div className="flex items-center justify-between text-sm">
-          <label className="flex cursor-pointer items-center gap-2 text-white/60">
+        <div className="flex items-center justify-between text-body-sm">
+          <label className="flex cursor-pointer items-center gap-2 text-calm-charcoal">
             <input
               type="checkbox"
-              className="h-4 w-4 rounded border-white/20 bg-white/5 text-[#d4af37] focus:ring-[#d4af37]/20"
+              className="h-4 w-4 rounded border-calm-stone bg-white text-accent focus:outline-none focus:ring-2 focus:ring-accent-light"
             />
             로그인 상태 유지
           </label>
           <Link
             href="/auth/reset-password"
-            className="text-[#d4af37] transition-colors hover:text-[#f4e5c2]"
+            className="rounded px-1 text-accent transition-colors hover:text-accent-dark focus:outline-none focus:ring-2 focus:ring-accent-light"
           >
             비밀번호 찾기
           </Link>
@@ -120,18 +120,18 @@ export default function LoginPage() {
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-white/10" />
+            <div className="w-full border-t border-calm-stone" />
           </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="bg-[#0a0e27] px-4 text-white/40">또는</span>
+          <div className="relative flex justify-center text-body-sm">
+            <span className="bg-calm-cloud px-4 text-calm-ash">또는</span>
           </div>
         </div>
 
-        <div className="text-center text-sm text-white/60">
+        <div className="text-center text-body-sm text-calm-charcoal">
           계정이 없으신가요?{' '}
           <Link
             href="/auth/signup"
-            className="font-medium text-[#d4af37] transition-colors hover:text-[#f4e5c2]"
+            className="rounded px-1 font-medium text-accent transition-colors hover:text-accent-dark focus:outline-none focus:ring-2 focus:ring-accent-light"
           >
             회원가입
           </Link>

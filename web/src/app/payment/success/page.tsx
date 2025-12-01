@@ -65,11 +65,11 @@ function PaymentSuccessContent() {
 
   if (isProcessing) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27]">
+      <div className="flex min-h-screen items-center justify-center bg-calm-white">
         <div className="text-center">
-          <div className="mx-auto mb-6 h-16 w-16 animate-spin rounded-full border-4 border-[#d4af37] border-t-transparent" />
-          <h1 className="mb-2 text-2xl font-bold text-white">결제 처리 중...</h1>
-          <p className="text-white/60">잠시만 기다려주세요.</p>
+          <div className="mx-auto mb-6 h-16 w-16 animate-spin rounded-full border-4 border-accent border-t-transparent" />
+          <h1 className="mb-2 text-2xl font-bold text-calm-obsidian">결제 처리 중...</h1>
+          <p className="text-calm-ash">잠시만 기다려주세요.</p>
         </div>
       </div>
     );
@@ -77,11 +77,11 @@ function PaymentSuccessContent() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27]">
+      <div className="flex min-h-screen items-center justify-center bg-calm-white">
         <div className="max-w-md text-center">
-          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-500/20">
+          <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-error/10">
             <svg
-              className="h-10 w-10 text-red-400"
+              className="h-10 w-10 text-error"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -94,11 +94,11 @@ function PaymentSuccessContent() {
               />
             </svg>
           </div>
-          <h1 className="mb-2 text-2xl font-bold text-white">결제 오류</h1>
-          <p className="mb-6 text-white/60">{error}</p>
+          <h1 className="mb-2 text-2xl font-bold text-calm-obsidian">결제 오류</h1>
+          <p className="mb-6 text-calm-charcoal">{error}</p>
           <Link
             href="/pricing"
-            className="inline-flex items-center gap-2 rounded-full bg-[#d4af37] px-6 py-3 font-medium text-[#0a0e27]"
+            className="btn-primary inline-flex items-center gap-2"
           >
             다시 시도
           </Link>
@@ -108,11 +108,11 @@ function PaymentSuccessContent() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27]">
+    <div className="flex min-h-screen items-center justify-center bg-calm-white">
       <div className="max-w-md text-center">
-        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-500/20">
+        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success/10">
           <svg
-            className="h-10 w-10 text-green-400"
+            className="h-10 w-10 text-success"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -125,22 +125,22 @@ function PaymentSuccessContent() {
             />
           </svg>
         </div>
-        <h1 className="mb-2 text-2xl font-bold text-white">구독 완료!</h1>
-        <p className="mb-8 text-white/60">
+        <h1 className="mb-2 text-2xl font-bold text-calm-obsidian">구독 완료!</h1>
+        <p className="mb-8 text-calm-charcoal">
           Pro 플랜이 활성화되었습니다.
           <br />
           이제 무제한 리드와 모든 프리미엄 기능을 이용할 수 있습니다.
         </p>
-        <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
           <Link
             href="/dashboard"
-            className="rounded-full bg-gradient-to-r from-[#d4af37] to-[#f4e5c2] px-6 py-3 font-medium text-[#0a0e27] transition-all hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]"
+            className="btn-primary"
           >
             대시보드로 이동
           </Link>
           <Link
             href="/chat"
-            className="rounded-full border border-white/20 px-6 py-3 font-medium text-white transition-colors hover:border-[#d4af37]"
+            className="btn-secondary"
           >
             메시지 확인
           </Link>

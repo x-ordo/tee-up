@@ -5,9 +5,9 @@ import {
   createProfile,
   updateProfile,
   incrementProfileViews,
-  getPendingPros,
-  approvePro,
-  rejectPro,
+  getPendingProProfiles,
+  approveProProfile,
+  rejectProProfile,
 } from '../profiles'
 
 // Mock Supabase client
@@ -251,7 +251,7 @@ describe('Profile API', () => {
     })
   })
 
-  describe('Pro Verification - getPendingPros', () => {
+  describe('Pro Verification - getPendingProProfiles', () => {
     it('should fetch all pending pro applications', async () => {
       const mockPendingPros = [
         {
@@ -268,12 +268,14 @@ describe('Profile API', () => {
         },
       ]
 
-      mockSupabaseClient.eq.mockResolvedValue({
+      // Add order mock
+      mockSupabaseClient.order = jest.fn().mockResolvedValue({
         data: mockPendingPros,
         error: null,
       })
+      mockSupabaseClient.eq.mockReturnValue(mockSupabaseClient)
 
-      const result = await getPendingPros()
+      const result = await getPendingProProfiles()
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('pro_profiles')
       expect(mockSupabaseClient.select).toHaveBeenCalledWith('*, profiles(full_name, avatar_url, phone)')
@@ -282,16 +284,17 @@ describe('Profile API', () => {
     })
 
     it('should throw error on database error', async () => {
-      mockSupabaseClient.eq.mockResolvedValue({
+      mockSupabaseClient.order = jest.fn().mockResolvedValue({
         data: null,
         error: { message: 'Database connection error' },
       })
+      mockSupabaseClient.eq.mockReturnValue(mockSupabaseClient)
 
-      await expect(getPendingPros()).rejects.toThrow('Database connection error')
+      await expect(getPendingProProfiles()).rejects.toThrow('Database connection error')
     })
   })
 
-  describe('Pro Verification - approvePro', () => {
+  describe('Pro Verification - approveProProfile', () => {
     it('should approve a pro and set approval timestamp', async () => {
       const mockApprovedPro = {
         id: 'pro-1',
@@ -306,8 +309,7 @@ describe('Profile API', () => {
         error: null,
       })
 
-      const { approvePro } = await import('../profiles')
-      const result = await approvePro('pro-1')
+      const result = await approveProProfile('pro-1')
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('pro_profiles')
       expect(mockSupabaseClient.update).toHaveBeenCalledWith({
@@ -323,57 +325,37 @@ describe('Profile API', () => {
     it('should throw error when pro not found', async () => {
       mockSupabaseClient.single.mockResolvedValue({
         data: null,
-        error: { code: 'PGRST116' },
+        error: { code: 'PGRST116', message: 'Not found' },
       })
 
-      const { approvePro } = await import('../profiles')
-      await expect(approvePro('non-existent-id')).rejects.toThrow()
+      await expect(approveProProfile('non-existent-id')).rejects.toThrow()
     })
   })
 
-  describe('Pro Verification - rejectPro', () => {
-    it('should reject a pro with rejection reason', async () => {
-      const mockRejectedPro = {
-        id: 'pro-1',
-        slug: 'rejected-pro',
-        title: 'Golf Pro',
-        is_approved: false,
-        rejection_reason: '자격증 확인 불가',
-        rejected_at: '2025-11-25T12:00:00Z',
-      }
-
-      mockSupabaseClient.single.mockResolvedValue({
-        data: mockRejectedPro,
+  describe('Pro Verification - rejectProProfile', () => {
+    it('should delete a pro profile', async () => {
+      // rejectProProfile deletes the profile (no return value)
+      mockSupabaseClient.delete = jest.fn().mockReturnValue(mockSupabaseClient)
+      mockSupabaseClient.eq.mockResolvedValue({
+        data: null,
         error: null,
       })
 
-      const { rejectPro } = await import('../profiles')
-      const result = await rejectPro('pro-1', '자격증 확인 불가')
+      await rejectProProfile('pro-1')
 
       expect(mockSupabaseClient.from).toHaveBeenCalledWith('pro_profiles')
-      expect(mockSupabaseClient.update).toHaveBeenCalledWith({
-        rejection_reason: '자격증 확인 불가',
-        rejected_at: expect.any(String),
-      })
+      expect(mockSupabaseClient.delete).toHaveBeenCalled()
       expect(mockSupabaseClient.eq).toHaveBeenCalledWith('id', 'pro-1')
-      expect(mockSupabaseClient.select).toHaveBeenCalled()
-      expect(mockSupabaseClient.single).toHaveBeenCalled()
-      expect(result).toEqual(mockRejectedPro)
-    })
-
-    it('should throw error when reason is missing', async () => {
-      const { rejectPro } = await import('../profiles')
-      await expect(rejectPro('pro-1', '')).rejects.toThrow('Rejection reason is required')
     })
 
     it('should throw error when pro not found', async () => {
-      mockSupabaseClient.single.mockResolvedValue({
+      mockSupabaseClient.delete = jest.fn().mockReturnValue(mockSupabaseClient)
+      mockSupabaseClient.eq.mockResolvedValue({
         data: null,
-        error: { code: 'PGRST116' },
+        error: { code: 'PGRST116', message: 'Not found' },
       })
 
-      const { rejectPro } = await import('../profiles')
-      await expect(rejectPro('non-existent-id', '사유')).rejects.toThrow()
+      await expect(rejectProProfile('non-existent-id')).rejects.toThrow()
     })
   })
 })

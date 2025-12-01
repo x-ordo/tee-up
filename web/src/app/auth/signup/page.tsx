@@ -107,25 +107,25 @@ export default function SignUpPage() {
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
-          <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-400">
+          <div className="rounded-xl border border-error bg-error-bg p-4 text-body-sm text-error">
             {error}
           </div>
         )}
 
         {/* 사용자 유형 선택 */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-white/80">
+          <label className="block text-body-sm font-medium text-calm-charcoal">
             가입 유형
           </label>
           <div className="grid grid-cols-2 gap-3">
             <label
               className={`
-                flex cursor-pointer items-center justify-center rounded-lg border p-4
+                flex cursor-pointer items-center justify-center rounded-xl border-2 p-4
                 transition-all duration-200
                 ${
                   formData.role === 'golfer'
-                    ? 'border-[#d4af37] bg-[#d4af37]/10 text-[#d4af37]'
-                    : 'border-white/10 text-white/60 hover:border-white/30'
+                    ? 'border-accent bg-accent-light text-accent-dark'
+                    : 'border-calm-stone text-calm-charcoal hover:border-accent'
                 }
               `}
             >
@@ -141,12 +141,12 @@ export default function SignUpPage() {
             </label>
             <label
               className={`
-                flex cursor-pointer items-center justify-center rounded-lg border p-4
+                flex cursor-pointer items-center justify-center rounded-xl border-2 p-4
                 transition-all duration-200
                 ${
                   formData.role === 'pro'
-                    ? 'border-[#d4af37] bg-[#d4af37]/10 text-[#d4af37]'
-                    : 'border-white/10 text-white/60 hover:border-white/30'
+                    ? 'border-accent bg-accent-light text-accent-dark'
+                    : 'border-calm-stone text-calm-charcoal hover:border-accent'
                 }
               `}
             >
@@ -220,42 +220,42 @@ export default function SignUpPage() {
 
         {/* 약관 동의 */}
         <div className="space-y-3">
-          <label className="flex cursor-pointer items-start gap-3 text-sm text-white/60">
+          <label className="flex cursor-pointer items-start gap-3 text-body-sm text-calm-charcoal">
             <input
               type="checkbox"
               name="agreeTerms"
               checked={formData.agreeTerms}
               onChange={handleChange}
-              className="mt-0.5 h-4 w-4 rounded border-white/20 bg-white/5 text-[#d4af37] focus:ring-[#d4af37]/20"
+              className="mt-0.5 h-4 w-4 rounded border-calm-stone bg-white text-accent focus:ring-accent/20"
             />
             <span>
-              <Link href="/terms" className="text-[#d4af37] hover:underline">
+              <Link href="/terms" className="text-accent hover:underline">
                 이용약관
               </Link>
               에 동의합니다. (필수)
             </span>
           </label>
           {formErrors.agreeTerms && (
-            <p className="ml-7 text-sm text-red-400">{formErrors.agreeTerms}</p>
+            <p className="ml-7 text-body-sm text-error">{formErrors.agreeTerms}</p>
           )}
 
-          <label className="flex cursor-pointer items-start gap-3 text-sm text-white/60">
+          <label className="flex cursor-pointer items-start gap-3 text-body-sm text-calm-charcoal">
             <input
               type="checkbox"
               name="agreePrivacy"
               checked={formData.agreePrivacy}
               onChange={handleChange}
-              className="mt-0.5 h-4 w-4 rounded border-white/20 bg-white/5 text-[#d4af37] focus:ring-[#d4af37]/20"
+              className="mt-0.5 h-4 w-4 rounded border-calm-stone bg-white text-accent focus:ring-accent/20"
             />
             <span>
-              <Link href="/privacy" className="text-[#d4af37] hover:underline">
+              <Link href="/privacy" className="text-accent hover:underline">
                 개인정보처리방침
               </Link>
               에 동의합니다. (필수)
             </span>
           </label>
           {formErrors.agreePrivacy && (
-            <p className="ml-7 text-sm text-red-400">{formErrors.agreePrivacy}</p>
+            <p className="ml-7 text-body-sm text-error">{formErrors.agreePrivacy}</p>
           )}
         </div>
 
@@ -263,11 +263,11 @@ export default function SignUpPage() {
           회원가입
         </AuthButton>
 
-        <div className="text-center text-sm text-white/60">
+        <div className="text-center text-body-sm text-calm-charcoal">
           이미 계정이 있으신가요?{' '}
           <Link
             href="/auth/login"
-            className="font-medium text-[#d4af37] transition-colors hover:text-[#f4e5c2]"
+            className="font-medium text-accent transition-colors hover:text-accent-dark"
           >
             로그인
           </Link>

@@ -46,17 +46,17 @@ export function LeadChart({
   if (data.length === 0) {
     return (
       <div
-        className="flex items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent"
+        className="card flex items-center justify-center"
         style={{ height }}
       >
-        <p className="text-white/40">데이터가 없습니다</p>
+        <p className="text-calm-ash">데이터가 없습니다</p>
       </div>
     );
   }
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-6">
-      <h3 className="mb-4 text-lg font-semibold text-white">{title}</h3>
+    <div className="card p-6">
+      <h3 className="mb-4 text-lg font-semibold text-calm-obsidian">{title}</h3>
 
       <div className="relative" style={{ height }}>
         <svg
@@ -72,7 +72,7 @@ export function LeadChart({
               y1={40 + (height - 80) * ratio}
               x2="100"
               y2={40 + (height - 80) * ratio}
-              stroke="rgba(255,255,255,0.1)"
+              stroke="rgba(0,0,0,0.05)"
               strokeWidth="0.5"
             />
           ))}
@@ -88,7 +88,7 @@ export function LeadChart({
           <polyline
             points={chartData.points}
             fill="none"
-            stroke="#d4af37"
+            stroke="#3B82F6"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -97,21 +97,21 @@ export function LeadChart({
           {/* Gradient Definition */}
           <defs>
             <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#d4af37" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="#d4af37" stopOpacity="0" />
+              <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
             </linearGradient>
           </defs>
         </svg>
 
         {/* Y-axis Labels */}
-        <div className="absolute left-0 top-0 flex h-full flex-col justify-between py-10 text-xs text-white/40">
+        <div className="absolute left-0 top-0 flex h-full flex-col justify-between py-10 text-xs text-calm-ash">
           <span>{chartData.max}</span>
           <span>{Math.round(chartData.max / 2)}</span>
           <span>0</span>
         </div>
 
         {/* X-axis Labels */}
-        <div className="absolute bottom-0 left-8 right-0 flex justify-between text-xs text-white/40">
+        <div className="absolute bottom-0 left-8 right-0 flex justify-between text-xs text-calm-ash">
           {chartData.labels.map((label, i) => (
             <span key={i}>{label}</span>
           ))}
@@ -133,17 +133,17 @@ interface ConversionFunnelProps {
 
 export function ConversionFunnel({ data }: ConversionFunnelProps) {
   const stages = [
-    { label: '프로필 조회', value: data.views, color: '#60A5FA' },
-    { label: '채팅 문의', value: data.leads, color: '#FBBF24' },
-    { label: '응답', value: data.responded, color: '#F472B6' },
-    { label: '매칭 완료', value: data.matched, color: '#34D399' },
+    { label: '프로필 조회', value: data.views },
+    { label: '채팅 문의', value: data.leads },
+    { label: '응답', value: data.responded },
+    { label: '매칭 완료', value: data.matched },
   ];
 
   const maxValue = Math.max(...stages.map((s) => s.value), 1);
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-6">
-      <h3 className="mb-6 text-lg font-semibold text-white">전환 퍼널</h3>
+    <div className="card p-6">
+      <h3 className="mb-6 text-lg font-semibold text-calm-obsidian">전환 퍼널</h3>
 
       <div className="space-y-4">
         {stages.map((stage, index) => {
@@ -156,25 +156,22 @@ export function ConversionFunnel({ data }: ConversionFunnelProps) {
           return (
             <div key={stage.label}>
               <div className="mb-1 flex items-center justify-between text-sm">
-                <span className="text-white/60">{stage.label}</span>
+                <span className="text-calm-charcoal">{stage.label}</span>
                 <div className="flex items-center gap-2">
-                  <span className="font-medium text-white">
+                  <span className="font-medium text-calm-obsidian">
                     {stage.value.toLocaleString()}
                   </span>
                   {conversionRate !== null && (
-                    <span className="text-xs text-white/40">
+                    <span className="text-xs text-calm-ash">
                       ({conversionRate}%)
                     </span>
                   )}
                 </div>
               </div>
-              <div className="h-3 overflow-hidden rounded-full bg-white/10">
+              <div className="h-3 overflow-hidden rounded-full bg-calm-stone">
                 <div
-                  className="h-full rounded-full transition-all duration-500"
-                  style={{
-                    width: `${percentage}%`,
-                    backgroundColor: stage.color,
-                  }}
+                  className="h-full rounded-full bg-accent transition-all duration-500"
+                  style={{ width: `${percentage}%` }}
                 />
               </div>
             </div>
@@ -183,15 +180,15 @@ export function ConversionFunnel({ data }: ConversionFunnelProps) {
       </div>
 
       {/* 전체 전환율 */}
-      <div className="mt-6 rounded-lg bg-white/5 p-4 text-center">
-        <p className="text-sm text-white/60">전체 전환율</p>
-        <p className="text-3xl font-bold text-[#d4af37]">
+      <div className="mt-6 rounded-lg bg-accent-light p-4 text-center">
+        <p className="text-sm text-calm-charcoal">전체 전환율</p>
+        <p className="text-3xl font-bold text-accent">
           {data.views > 0
             ? ((data.matched / data.views) * 100).toFixed(1)
             : 0}
           %
         </p>
-        <p className="text-xs text-white/40">프로필 조회 → 매칭 완료</p>
+        <p className="text-xs text-calm-ash">프로필 조회 → 매칭 완료</p>
       </div>
     </div>
   );

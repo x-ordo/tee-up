@@ -46,7 +46,7 @@ export default function ProsDirectory({ pros }: { pros: ProItem[] }) {
   return (
     <section id="pros" className="space-y-6">
       {/* Search & Filter Bar */}
-      <div className="rounded-2xl border-2 border-calm-stone bg-white p-6 shadow-md">
+      <div className="card p-6">
         <div className="grid gap-4 sm:grid-cols-[1fr,200px,200px]">
           <input
             value={q}
@@ -142,8 +142,8 @@ export default function ProsDirectory({ pros }: { pros: ProItem[] }) {
 
       {/* Empty State */}
       {filtered.length === 0 && (
-        <div className="rounded-2xl border-2 border-calm-stone bg-calm-cloud p-12 text-center">
-          <p className="text-body-lg text-calm-ash">검색 결과가 없습니다.</p>
+        <div className="card bg-calm-cloud p-12 text-center">
+          <p className="text-body-lg text-calm-charcoal">검색 결과가 없습니다.</p>
           <p className="mt-2 text-body-sm text-calm-ash">
             다른 검색어나 필터를 시도해 보세요.
           </p>

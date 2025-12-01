@@ -11,6 +11,10 @@ on:
   pull_request:
     branches: [main, develop]
 
+permissions:
+  contents: read
+  security-events: write
+
 env:
   NODE_VERSION: '20'
 
@@ -181,6 +185,8 @@ jobs:
         run: npm run build
         env:
           NEXT_PUBLIC_API_URL: https://api.teeup.kr
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder-anon-key-for-ci-build
 
       - name: Build Backend
         working-directory: ./api
@@ -225,12 +231,12 @@ jobs:
         continue-on-error: true
 
       - name: Run CodeQL Analysis
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
-          languages: javascript, typescript
+          languages: javascript-typescript
 
       - name: Autobuild
-        uses: github/codeql-action/autobuild@v2
+        uses: github/codeql-action/autobuild@v3
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3

@@ -63,23 +63,23 @@ export function KakaoTalkButton({
 
   const kakaoUrl = getKakaoChatUrl(kakaoTalkId);
 
-  // 사이즈별 스타일
+  // 사이즈별 스타일 (디자인 시스템 spacing 적용)
   const sizeStyles = {
-    sm: 'px-4 py-2 text-sm',
-    md: 'px-6 py-3 text-base',
-    lg: 'px-8 py-4 text-lg',
+    sm: 'px-4 py-2 text-body-sm',
+    md: 'px-6 py-3 text-body-md',
+    lg: 'px-8 py-4 text-body-lg',
   };
 
-  // 변형별 스타일
+  // 변형별 스타일 (카카오톡 브랜드 색상 유지, 디자인 시스템과 조화)
   const variantStyles = {
     primary: `
-      border-2 border-[#d4af37] bg-[#1a1f3a]/90 text-[#d4af37]
-      hover:bg-[#d4af37] hover:text-[#1a1f3a]
-      hover:shadow-[0_0_40px_rgba(212,175,55,0.6)]
+      border-2 border-accent bg-white text-accent
+      hover:bg-accent hover:text-white
+      hover:shadow-glow-accent
     `,
     secondary: `
-      border border-white/30 bg-transparent text-white
-      hover:border-[#d4af37] hover:bg-[#d4af37]/10 hover:text-[#d4af37]
+      border-2 border-calm-stone bg-white text-calm-charcoal
+      hover:border-accent hover:text-accent
     `,
     minimal: `
       border-none bg-[#FEE500] text-[#191919]
@@ -95,8 +95,8 @@ export function KakaoTalkButton({
       rel="noopener noreferrer"
       className={`
         group relative inline-flex items-center justify-center gap-2 overflow-hidden
-        rounded-full font-bold shadow-xl backdrop-blur-md
-        transition-all duration-300 hover:scale-105
+        rounded-full font-semibold shadow-md
+        transition-all duration-base hover:scale-105
         ${sizeStyles[size]}
         ${variantStyles[variant]}
         ${className}

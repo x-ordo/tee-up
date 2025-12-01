@@ -75,7 +75,7 @@ export default function AdminProsPage() {
       <main className="mx-auto max-w-7xl px-6 py-8">
         {/* Error Message */}
         {error && (
-          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
+          <div className="mb-6 rounded-xl border border-error bg-error-bg p-4 text-error">
             {error}
           </div>
         )}

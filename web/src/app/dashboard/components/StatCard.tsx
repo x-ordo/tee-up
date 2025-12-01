@@ -6,7 +6,6 @@ interface StatCardProps {
   change?: number;
   changeLabel?: string;
   icon?: React.ReactNode;
-  accentColor?: string;
 }
 
 export function StatCard({
@@ -15,36 +14,26 @@ export function StatCard({
   change,
   changeLabel = '지난 달 대비',
   icon,
-  accentColor = '#d4af37',
 }: StatCardProps) {
   const isPositive = change && change > 0;
   const isNegative = change && change < 0;
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-6 backdrop-blur-xl">
-      {/* Background Glow */}
-      <div
-        className="absolute -right-8 -top-8 h-24 w-24 rounded-full blur-3xl"
-        style={{ backgroundColor: `${accentColor}20` }}
-      />
-
+    <div className="card relative overflow-hidden p-6">
       <div className="relative">
         {/* Header */}
         <div className="mb-4 flex items-center justify-between">
-          <span className="text-sm font-medium text-white/60">{title}</span>
+          <span className="text-sm font-medium text-calm-charcoal">{title}</span>
           {icon && (
-            <div
-              className="flex h-10 w-10 items-center justify-center rounded-lg"
-              style={{ backgroundColor: `${accentColor}20` }}
-            >
-              <span style={{ color: accentColor }}>{icon}</span>
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent-light">
+              <span className="text-accent">{icon}</span>
             </div>
           )}
         </div>
 
         {/* Value */}
         <div className="mb-2">
-          <span className="text-4xl font-bold text-white">{value}</span>
+          <span className="text-4xl font-bold text-calm-obsidian">{value}</span>
         </div>
 
         {/* Change Indicator */}
@@ -53,10 +42,10 @@ export function StatCard({
             <span
               className={`flex items-center text-sm font-medium ${
                 isPositive
-                  ? 'text-green-400'
+                  ? 'text-success'
                   : isNegative
-                  ? 'text-red-400'
-                  : 'text-white/40'
+                  ? 'text-error'
+                  : 'text-calm-ash'
               }`}
             >
               {isPositive && (
@@ -71,7 +60,7 @@ export function StatCard({
               )}
               {Math.abs(change)}%
             </span>
-            <span className="text-xs text-white/40">{changeLabel}</span>
+            <span className="text-xs text-calm-ash">{changeLabel}</span>
           </div>
         )}
       </div>
@@ -94,23 +83,19 @@ export function LeadQuotaCard({ remaining, limit, onUpgrade }: LeadQuotaCardProp
   return (
     <div
       className={`
-        relative overflow-hidden rounded-2xl border p-6
-        ${
-          isLow
-            ? 'border-red-500/30 bg-gradient-to-br from-red-500/10 to-transparent'
-            : 'border-white/10 bg-gradient-to-br from-white/5 to-transparent'
-        }
+        card relative overflow-hidden p-6
+        ${isLow ? 'border-error bg-error/5' : ''}
       `}
     >
       <div className="relative">
         <div className="mb-4 flex items-center justify-between">
-          <span className="text-sm font-medium text-white/60">이번 달 리드 현황</span>
+          <span className="text-sm font-medium text-calm-charcoal">이번 달 리드 현황</span>
           {isUnlimited ? (
-            <span className="rounded-full bg-[#d4af37]/20 px-3 py-1 text-xs font-medium text-[#d4af37]">
+            <span className="tag-success">
               PRO 무제한
             </span>
           ) : (
-            <span className="text-sm text-white/40">
+            <span className="text-sm text-calm-ash">
               {remaining} / {limit}
             </span>
           )}
@@ -119,10 +104,10 @@ export function LeadQuotaCard({ remaining, limit, onUpgrade }: LeadQuotaCardProp
         {/* Progress Bar */}
         {!isUnlimited && (
           <div className="mb-4">
-            <div className="h-2 overflow-hidden rounded-full bg-white/10">
+            <div className="h-2 overflow-hidden rounded-full bg-calm-stone">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
-                  isLow ? 'bg-red-500' : 'bg-[#d4af37]'
+                  isLow ? 'bg-error' : 'bg-accent'
                 }`}
                 style={{ width: `${percentage}%` }}
               />
@@ -132,23 +117,23 @@ export function LeadQuotaCard({ remaining, limit, onUpgrade }: LeadQuotaCardProp
 
         {/* Message */}
         {isUnlimited ? (
-          <p className="text-sm text-white/60">
+          <p className="text-sm text-calm-charcoal">
             무제한 리드를 즐기세요! 걱정 없이 모든 문의를 받을 수 있습니다.
           </p>
         ) : isLow ? (
           <div className="space-y-3">
-            <p className="text-sm text-red-400">
+            <p className="text-sm text-error">
               리드 한도가 거의 소진되었습니다. PRO로 업그레이드하여 무제한으로 이용하세요!
             </p>
             <button
               onClick={onUpgrade}
-              className="w-full rounded-lg bg-gradient-to-r from-[#d4af37] to-[#f4e5c2] py-2 text-sm font-semibold text-[#0a0e27] transition-all hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+              className="btn-primary w-full"
             >
               PRO로 업그레이드
             </button>
           </div>
         ) : (
-          <p className="text-sm text-white/60">
+          <p className="text-sm text-calm-charcoal">
             이번 달 {remaining}개의 무료 리드가 남아있습니다.
           </p>
         )}

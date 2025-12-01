@@ -14,12 +14,12 @@ interface LeadListProps {
 export function LeadList({ leads, onViewChat }: LeadListProps) {
   if (leads.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-12 text-center">
+      <div className="card flex flex-col items-center justify-center p-12 text-center">
         <div className="mb-4 text-6xl">📭</div>
-        <h3 className="mb-2 text-lg font-semibold text-white">
+        <h3 className="mb-2 text-lg font-semibold text-calm-obsidian">
           아직 리드가 없습니다
         </h3>
-        <p className="text-sm text-white/60">
+        <p className="text-sm text-calm-charcoal">
           프로필을 더 매력적으로 꾸며보세요!
           <br />
           골퍼들이 문의를 보내면 여기에 표시됩니다.
@@ -29,17 +29,17 @@ export function LeadList({ leads, onViewChat }: LeadListProps) {
   }
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent">
-      <div className="border-b border-white/10 p-4">
-        <h3 className="text-lg font-semibold text-white">최근 리드</h3>
-        <p className="text-sm text-white/60">{leads.length}개의 문의</p>
+    <div className="card overflow-hidden">
+      <div className="border-b border-calm-stone p-4">
+        <h3 className="text-lg font-semibold text-calm-obsidian">최근 리드</h3>
+        <p className="text-sm text-calm-charcoal">{leads.length}개의 문의</p>
       </div>
 
-      <div className="divide-y divide-white/10">
+      <div className="divide-y divide-calm-stone">
         {leads.map((lead) => (
           <div
             key={lead.id}
-            className="flex items-center justify-between p-4 transition-colors hover:bg-white/5"
+            className="flex items-center justify-between p-4 transition-colors hover:bg-calm-cloud"
           >
             <div className="flex items-center gap-4">
               {/* Avatar */}
@@ -52,7 +52,7 @@ export function LeadList({ leads, onViewChat }: LeadListProps) {
                     className="rounded-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-[#d4af37] to-[#f4e5c2] text-lg font-bold text-[#0a0e27]">
+                  <div className="flex h-full w-full items-center justify-center rounded-full bg-accent-light text-lg font-bold text-accent">
                     {lead.golfer?.full_name?.charAt(0) || '?'}
                   </div>
                 )}
@@ -60,10 +60,10 @@ export function LeadList({ leads, onViewChat }: LeadListProps) {
 
               {/* Info */}
               <div>
-                <h4 className="font-medium text-white">
+                <h4 className="font-medium text-calm-obsidian">
                   {lead.golfer?.full_name || '알 수 없음'}
                 </h4>
-                <p className="text-sm text-white/60">
+                <p className="text-sm text-calm-charcoal">
                   {formatDistanceToNow(new Date(lead.created_at), {
                     addSuffix: true,
                     locale: ko,
@@ -77,12 +77,12 @@ export function LeadList({ leads, onViewChat }: LeadListProps) {
               <span
                 className={`rounded-full px-3 py-1 text-xs font-medium ${
                   lead.status === 'new'
-                    ? 'bg-blue-500/20 text-blue-400'
+                    ? 'tag-info'
                     : lead.status === 'matched'
-                    ? 'bg-green-500/20 text-green-400'
+                    ? 'tag-success'
                     : lead.status === 'contacted'
-                    ? 'bg-yellow-500/20 text-yellow-400'
-                    : 'bg-gray-500/20 text-gray-400'
+                    ? 'tag-warning'
+                    : 'bg-calm-stone text-calm-ash'
                 }`}
               >
                 {lead.status === 'new'
@@ -97,7 +97,7 @@ export function LeadList({ leads, onViewChat }: LeadListProps) {
               {/* Action Button */}
               <button
                 onClick={() => onViewChat(lead.chat_room_id)}
-                className="rounded-lg border border-[#d4af37]/30 px-4 py-2 text-sm font-medium text-[#d4af37] transition-colors hover:bg-[#d4af37]/10"
+                className="btn-secondary text-sm"
               >
                 채팅 보기
               </button>
@@ -107,10 +107,10 @@ export function LeadList({ leads, onViewChat }: LeadListProps) {
       </div>
 
       {/* View All Link */}
-      <div className="border-t border-white/10 p-4 text-center">
+      <div className="border-t border-calm-stone p-4 text-center">
         <Link
           href="/chat"
-          className="text-sm font-medium text-[#d4af37] transition-colors hover:text-[#f4e5c2]"
+          className="text-sm font-medium text-accent transition-colors hover:text-accent-dark"
         >
           모든 채팅 보기 →
         </Link>

@@ -51,25 +51,25 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27]">
+    <div className="min-h-screen bg-calm-white">
       {/* Navigation */}
-      <nav className="fixed top-0 z-50 w-full border-b border-white/10 bg-[#0a0e27]/80 backdrop-blur-xl">
+      <nav className="fixed top-0 z-50 w-full border-b border-calm-stone bg-calm-white/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <Link href="/" className="font-display text-2xl font-bold text-white">
-            TEE<span className="text-[#d4af37]">:</span>UP
+          <Link href="/" className="font-display text-2xl font-bold text-calm-obsidian">
+            TEE<span className="text-accent">:</span>UP
           </Link>
         </div>
       </nav>
 
       {/* Main Content */}
-      <main className="px-6 pb-20 pt-32">
+      <main className="px-6 pb-16 pt-28">
         <div className="mx-auto max-w-5xl">
           {/* Header */}
           <div className="mb-12 text-center">
-            <h1 className="mb-4 font-display text-4xl font-bold text-white md:text-5xl">
-              심플한 <span className="text-[#d4af37]">요금제</span>
+            <h1 className="mb-4 font-display text-4xl font-bold text-calm-obsidian md:text-5xl">
+              심플한 <span className="text-accent">요금제</span>
             </h1>
-            <p className="mx-auto max-w-2xl text-lg text-white/60">
+            <p className="mx-auto max-w-2xl text-lg text-calm-charcoal">
               더 많은 고객을 만나고 비즈니스를 성장시키세요.
               <br />
               성과에 맞는 요금만 지불하면 됩니다.
@@ -80,7 +80,7 @@ export default function PricingPage() {
           <div className="mb-12 flex items-center justify-center gap-4">
             <span
               className={`text-sm font-medium ${
-                billingInterval === 'month' ? 'text-white' : 'text-white/40'
+                billingInterval === 'month' ? 'text-calm-obsidian' : 'text-calm-ash'
               }`}
             >
               월간 결제
@@ -91,25 +91,28 @@ export default function PricingPage() {
                   prev === 'month' ? 'year' : 'month'
                 )
               }
+              role="switch"
+              aria-checked={billingInterval === 'year'}
+              aria-label={`결제 주기 전환 (현재: ${billingInterval === 'year' ? '연간' : '월간'})`}
               className={`
-                relative h-8 w-14 rounded-full transition-colors
-                ${billingInterval === 'year' ? 'bg-[#d4af37]' : 'bg-white/20'}
+                relative h-8 w-14 rounded-full transition-colors focus:outline-none focus:ring-4 focus:ring-accent-light
+                ${billingInterval === 'year' ? 'bg-accent' : 'bg-calm-stone'}
               `}
             >
               <span
                 className={`
-                  absolute top-1 h-6 w-6 rounded-full bg-white transition-transform
+                  absolute top-1 h-6 w-6 rounded-full bg-white shadow-md transition-transform
                   ${billingInterval === 'year' ? 'translate-x-7' : 'translate-x-1'}
                 `}
               />
             </button>
             <span
               className={`flex items-center gap-2 text-sm font-medium ${
-                billingInterval === 'year' ? 'text-white' : 'text-white/40'
+                billingInterval === 'year' ? 'text-calm-obsidian' : 'text-calm-ash'
               }`}
             >
               연간 결제
-              <span className="rounded-full bg-green-500/20 px-2 py-0.5 text-xs text-green-400">
+              <span className="tag-success">
                 17% 할인
               </span>
             </span>
@@ -121,34 +124,34 @@ export default function PricingPage() {
               <div
                 key={plan.id}
                 className={`
-                  relative overflow-hidden rounded-2xl border p-8
+                  card relative overflow-hidden p-8
                   ${
                     plan.is_popular
-                      ? 'border-[#d4af37] bg-gradient-to-br from-[#d4af37]/20 to-transparent'
-                      : 'border-white/10 bg-gradient-to-br from-white/5 to-transparent'
+                      ? 'border-2 border-accent'
+                      : ''
                   }
                 `}
               >
                 {/* Popular Badge */}
                 {plan.is_popular && (
-                  <div className="absolute -right-12 top-6 rotate-45 bg-[#d4af37] px-12 py-1 text-xs font-bold text-[#0a0e27]">
+                  <div className="absolute -right-12 top-6 rotate-45 bg-accent px-12 py-1 text-xs font-bold text-white">
                     인기
                   </div>
                 )}
 
                 {/* Plan Info */}
                 <div className="mb-6">
-                  <h3 className="mb-2 text-xl font-bold text-white">
+                  <h3 className="mb-2 text-xl font-bold text-calm-obsidian">
                     {plan.name}
                   </h3>
                   <div className="flex items-baseline gap-1">
-                    <span className="text-4xl font-bold text-white">
+                    <span className="font-mono text-4xl font-bold text-calm-obsidian">
                       {plan.price === 0
                         ? '무료'
                         : `₩${plan.price.toLocaleString()}`}
                     </span>
                     {plan.price > 0 && (
-                      <span className="text-white/40">
+                      <span className="text-calm-ash">
                         /{plan.interval === 'month' ? '월' : '년'}
                       </span>
                     )}
@@ -160,7 +163,7 @@ export default function PricingPage() {
                   {plan.features.map((feature, index) => (
                     <li key={index} className="flex items-start gap-3">
                       <svg
-                        className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#d4af37]"
+                        className="mt-0.5 h-5 w-5 flex-shrink-0 text-accent"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -172,7 +175,7 @@ export default function PricingPage() {
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
-                      <span className="text-sm text-white/70">{feature}</span>
+                      <span className="text-sm text-calm-charcoal">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -182,13 +185,12 @@ export default function PricingPage() {
                   onClick={() => handleSubscribe(plan)}
                   disabled={isLoading === plan.id}
                   className={`
-                    w-full rounded-lg py-3 font-semibold transition-all
+                    w-full rounded-xl py-3 font-semibold transition-all
                     ${
                       plan.is_popular
-                        ? 'bg-gradient-to-r from-[#d4af37] to-[#f4e5c2] text-[#0a0e27] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]'
-                        : 'border border-white/20 text-white hover:border-[#d4af37] hover:bg-[#d4af37]/10'
+                        ? 'btn-primary'
+                        : 'btn-secondary'
                     }
-                    disabled:cursor-not-allowed disabled:opacity-50
                   `}
                 >
                   {isLoading === plan.id ? (
@@ -222,8 +224,8 @@ export default function PricingPage() {
           </div>
 
           {/* FAQ Section */}
-          <div className="mt-20">
-            <h2 className="mb-8 text-center text-2xl font-bold text-white">
+          <div className="mt-16">
+            <h2 className="mb-8 text-center text-2xl font-bold text-calm-obsidian">
               자주 묻는 질문
             </h2>
             <div className="grid gap-4 md:grid-cols-2">
@@ -247,10 +249,10 @@ export default function PricingPage() {
               ].map((faq, index) => (
                 <div
                   key={index}
-                  className="rounded-xl border border-white/10 bg-white/5 p-6"
+                  className="card p-6"
                 >
-                  <h3 className="mb-2 font-semibold text-white">{faq.q}</h3>
-                  <p className="text-sm text-white/60">{faq.a}</p>
+                  <h3 className="mb-2 font-semibold text-calm-obsidian">{faq.q}</h3>
+                  <p className="text-sm text-calm-charcoal">{faq.a}</p>
                 </div>
               ))}
             </div>

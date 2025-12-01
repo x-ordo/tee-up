@@ -122,8 +122,8 @@ export default function AdminChatsPage() {
       <main className="mx-auto max-w-7xl px-6 py-8">
         {/* Error Alert */}
         {error && (
-          <div className="mb-6 rounded-lg border border-error bg-error/10 p-4">
-            <p className="text-error">{error}</p>
+          <div role="alert" aria-live="polite" className="alert-error mb-6">
+            {error}
           </div>
         )}
 

@@ -44,9 +44,9 @@ export default function ResetPasswordPage() {
         subtitle="비밀번호 재설정 링크를 보내드렸습니다"
       >
         <div className="space-y-6 text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#d4af37]/20">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-accent-light">
             <svg
-              className="h-8 w-8 text-[#d4af37]"
+              className="h-8 w-8 text-accent"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -60,21 +60,21 @@ export default function ResetPasswordPage() {
             </svg>
           </div>
 
-          <p className="text-white/70">
-            <span className="font-medium text-white">{email}</span>
+          <p className="text-body-md text-calm-charcoal">
+            <span className="font-medium text-calm-obsidian">{email}</span>
             으로
             <br />
             비밀번호 재설정 링크를 발송했습니다.
           </p>
 
-          <p className="text-sm text-white/50">
+          <p className="text-body-sm text-calm-ash">
             이메일이 도착하지 않았다면 스팸 폴더를 확인해주세요.
           </p>
 
           <div className="pt-4">
             <Link
               href="/auth/login"
-              className="font-medium text-[#d4af37] transition-colors hover:text-[#f4e5c2]"
+              className="font-medium text-accent transition-colors hover:text-accent-dark"
             >
               로그인 페이지로 돌아가기
             </Link>
@@ -91,7 +91,7 @@ export default function ResetPasswordPage() {
     >
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-400">
+          <div className="rounded-xl border border-error bg-error-bg p-4 text-body-sm text-error">
             {error}
           </div>
         )}
@@ -118,11 +118,11 @@ export default function ResetPasswordPage() {
           재설정 링크 받기
         </AuthButton>
 
-        <div className="text-center text-sm text-white/60">
+        <div className="text-center text-body-sm text-calm-charcoal">
           비밀번호가 기억나셨나요?{' '}
           <Link
             href="/auth/login"
-            className="font-medium text-[#d4af37] transition-colors hover:text-[#f4e5c2]"
+            className="font-medium text-accent transition-colors hover:text-accent-dark"
           >
             로그인
           </Link>

@@ -43,44 +43,49 @@ export default function BookingModal({
   }
 
   return (
-    <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm">
-      <div className="mx-auto mt-16 max-w-lg rounded-3xl border border-white/10 bg-[var(--lux-carbon)]/95 p-6 text-[var(--lux-rose)] shadow-2xl">
+    <div className="modal-overlay">
+      <div className="modal-container mx-4 max-w-lg animate-scaleIn p-6">
         {!submitted ? (
           <>
-            <div className="mb-4 flex items-center justify-between">
-              <h4 className="font-display text-xl text-white">
+            <div className="mb-6 flex items-center justify-between">
+              <h4 className="font-display text-display-sm font-semibold text-calm-obsidian">
                 {type === 'reservation' ? '레슨 예약 정보' : '대기 신청'}
               </h4>
-              <button onClick={onClose} className="rounded-full border border-white/20 px-3 py-1 text-sm text-white/80">
+              <button
+                onClick={onClose}
+                className="btn-ghost"
+              >
                 닫기
               </button>
             </div>
-            <p className="mb-4 text-sm text-[var(--lux-rose)]/80">
-              담당 프로: <span className="text-white">{proName}</span>
+            <p className="mb-6 text-body-sm text-calm-charcoal">
+              담당 프로: <span className="font-semibold text-calm-obsidian">{proName}</span>
               {selectedDateTime ? (
                 <>
-                  {' '}
-                  · 예약 일시 <span className="text-white">{selectedDateTime.replace('T', ' ')}</span>
+                  {' '}· 예약 일시{' '}
+                  <span className="font-semibold text-calm-obsidian">
+                    {selectedDateTime.replace('T', ' ')}
+                  </span>
                 </>
               ) : null}
             </p>
 
-            <div className="grid gap-3">
+            <div className="space-y-4">
               <input
-                className="rounded-2xl border border-white/15 bg-white/5 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--lux-gold)]/40"
+                className="input"
                 placeholder="성함"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
               <input
-                className="rounded-2xl border border-white/15 bg-white/5 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--lux-gold)]/40"
+                className="input"
                 placeholder="연락처 (- 없이 입력)"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 <select
-                  className="rounded-2xl border border-white/15 bg-white/5 px-3 py-2"
+                  className="select"
                   value={people}
                   onChange={(e) => setPeople(parseInt(e.target.value || '1', 10))}
                 >
@@ -91,7 +96,7 @@ export default function BookingModal({
                   ))}
                 </select>
                 <select
-                  className="rounded-2xl border border-white/15 bg-white/5 px-3 py-2"
+                  className="select"
                   value={service}
                   onChange={(e) => setService(e.target.value)}
                 >
@@ -105,19 +110,24 @@ export default function BookingModal({
                 </select>
               </div>
               <input
-                className="rounded-2xl border border-white/15 bg-white/5 px-3 py-2"
+                className="input"
                 placeholder="레슨 장소 (예: 청담 Studio)"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
               <textarea
-                className="min-h-[80px] rounded-2xl border border-white/15 bg-white/5 px-3 py-2"
+                className="input min-h-[100px] resize-none"
                 placeholder="특별 요청사항"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
               />
-              <label className="mt-1 flex items-center gap-2 text-xs text-[var(--lux-rose)]/75">
-                <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} />
+              <label className="flex items-center gap-2 text-body-xs text-calm-charcoal">
+                <input
+                  type="checkbox"
+                  checked={agree}
+                  onChange={(e) => setAgree(e.target.checked)}
+                  className="h-4 w-4 rounded border-calm-stone text-accent focus:ring-accent"
+                />
                 예약 및 취소 규정에 동의합니다.
               </label>
             </div>
@@ -125,18 +135,28 @@ export default function BookingModal({
             <button
               onClick={handleSubmit}
               disabled={disabled}
-              className="mt-4 w-full rounded-full bg-gradient-to-r from-[#f4d9b0] to-[#c0a36b] px-6 py-3 text-sm font-semibold text-[#20190f] shadow-[0_15px_40px_rgba(192,163,107,0.3)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-60"
+              className="btn-primary mt-6 w-full disabled:cursor-not-allowed disabled:opacity-50"
             >
               {type === 'reservation' ? '예약 신청하기' : '대기 신청하기'}
             </button>
           </>
         ) : (
-          <div className="text-center">
-            <h4 className="font-display text-xl text-white">요청이 접수되었습니다</h4>
-            <p className="mt-2 text-sm text-[var(--lux-rose)]/80">
+          <div className="py-8 text-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-success-bg">
+              <svg className="h-8 w-8 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h4 className="font-display text-display-sm font-semibold text-calm-obsidian">
+              요청이 접수되었습니다
+            </h4>
+            <p className="mt-2 text-body-sm text-calm-charcoal">
               담당 컨시어지가 확인 후 신속히 안내해 드리겠습니다.
             </p>
-            <button onClick={onClose} className="mt-4 rounded-full border border-white/20 px-6 py-2 text-sm text-white">
+            <button
+              onClick={onClose}
+              className="btn-secondary mt-6"
+            >
               닫기
             </button>
           </div>

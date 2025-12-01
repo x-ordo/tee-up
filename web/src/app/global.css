@@ -178,8 +178,14 @@
   }
 
   .btn-primary:focus {
-    @apply ring-4;
+    @apply outline-none ring-4;
     ring-color: var(--calm-accent-light);
+  }
+
+  .btn-primary:disabled {
+    @apply cursor-not-allowed;
+    opacity: 0.6;
+    filter: grayscale(0.3);
   }
 
   .btn-secondary {
@@ -197,6 +203,18 @@
     color: var(--calm-accent);
   }
 
+  .btn-secondary:focus {
+    @apply outline-none ring-4;
+    ring-color: var(--calm-accent-light);
+  }
+
+  .btn-secondary:disabled {
+    @apply cursor-not-allowed;
+    opacity: 0.6;
+    border-color: var(--calm-stone);
+    color: var(--calm-ash);
+  }
+
   .btn-ghost {
     @apply px-4 py-2 rounded-lg;
     color: var(--calm-accent);
@@ -207,6 +225,17 @@
 
   .btn-ghost:hover {
     background: var(--calm-accent-light);
+  }
+
+  .btn-ghost:focus {
+    @apply outline-none ring-4;
+    ring-color: var(--calm-accent-light);
+  }
+
+  .btn-ghost:disabled {
+    @apply cursor-not-allowed;
+    opacity: 0.6;
+    color: var(--calm-ash);
   }
 
   /* ===== CARDS ===== */
@@ -297,6 +326,14 @@
   }
 
   .table-row:hover {
+    background: var(--calm-cloud);
+  }
+
+  .table-row:nth-child(even) {
+    background: rgba(244, 244, 242, 0.5);
+  }
+
+  .table-row:nth-child(even):hover {
     background: var(--calm-cloud);
   }
 
@@ -403,6 +440,72 @@
   .tag-error {
     background: var(--calm-error-bg);
     color: var(--calm-error);
+  }
+
+  .tag-info {
+    background: var(--calm-info-bg);
+    color: var(--calm-info);
+  }
+
+  /* ===== RADIO & CHECKBOX ===== */
+  .radio-option {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl border-2 cursor-pointer;
+    border-color: var(--calm-stone);
+    transition: all var(--transition-fast);
+  }
+
+  .radio-option:hover {
+    border-color: var(--calm-accent);
+  }
+
+  .radio-option.selected {
+    border-color: var(--calm-accent);
+    background: var(--calm-accent-light);
+  }
+
+  .radio-option:focus-within {
+    @apply outline-none ring-4;
+    ring-color: var(--calm-accent-light);
+  }
+
+  .checkbox {
+    @apply h-5 w-5 rounded border-2 cursor-pointer;
+    border-color: var(--calm-stone);
+    transition: all var(--transition-fast);
+  }
+
+  .checkbox:checked {
+    background: var(--calm-accent);
+    border-color: var(--calm-accent);
+  }
+
+  .checkbox:focus {
+    @apply outline-none ring-4;
+    ring-color: var(--calm-accent-light);
+  }
+
+  /* ===== SCHEDULE BUTTONS ===== */
+  .schedule-day-button {
+    @apply px-4 py-2 rounded-lg font-medium text-sm;
+    border: 2px solid var(--calm-stone);
+    color: var(--calm-charcoal);
+    transition: all var(--transition-fast);
+  }
+
+  .schedule-day-button:hover {
+    border-color: var(--calm-accent);
+    color: var(--calm-accent);
+  }
+
+  .schedule-day-button.selected {
+    background: var(--calm-accent);
+    border-color: var(--calm-accent);
+    color: white;
+  }
+
+  .schedule-day-button:focus {
+    @apply outline-none ring-4;
+    ring-color: var(--calm-accent-light);
   }
 
   /* ===== ALERTS ===== */
