@@ -14,12 +14,12 @@ Supabase 프로젝트 생성 및 데이터베이스 스키마 적용이 필요�
 ### 필요한 작업
 
 #### 1. Supabase 프로젝트 생성
-- [ ] https://supabase.com 에서 계정 생성
-- [ ] 새 프로젝트 생성 (지역: Northeast Asia 권장)
-- [ ] 프로젝트 URL 복사: `https://your-project.supabase.co`
+- [x] https://supabase.com 에서 계정 생성
+- [x] 새 프로젝트 생성 (지역: Northeast Asia 권장)
+- [x] 프로젝트 URL 복사: `https://yrdfopkerrrhsafynakg.supabase.co`
 - [ ] API Keys 복사:
-  - `anon` key (공개)
-  - `service_role` key (비밀)
+  - [ ] `anon` key (공개) - Project Settings → API → Project API keys → `anon` `public`
+  - [ ] `service_role` key (비밀) - Project Settings → API → Project API keys → `service_role` `secret`
 
 #### 2. 데이터베이스 스키마 적용
 - [ ] Supabase Dashboard → SQL Editor 접속
@@ -42,15 +42,16 @@ Supabase 프로젝트 생성 및 데이터베이스 스키마 적용이 필요�
 
 **프론트엔드 (`web/.env.local`)**
 ```bash
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+NEXT_PUBLIC_SUPABASE_URL=https://yrdfopkerrrhsafynakg.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<위에서 복사한 anon key>
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
 **백엔드 (`api/.env`)**
 ```bash
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+SUPABASE_URL=https://yrdfopkerrrhsafynakg.supabase.co
+SUPABASE_ANON_KEY=<위에서 복사한 anon key>
+SUPABASE_SERVICE_ROLE_KEY=<위에서 복사한 service_role key>
 ```
 
 ### 설정하지 않으면 발생하는 오류
@@ -221,30 +222,67 @@ CI/CD 파이프라인 및 배포 환경 설정이 필요합니다.
 - [ ] https://vercel.com 접속
 - [ ] GitHub 연동
 - [ ] 프로젝트 Import (`web` 디렉토리)
-- [ ] 환경변수 설정
+- [ ] Root Directory: `web` 설정
+- [ ] Framework Preset: Next.js 자동 감지 확인
+- [ ] 환경변수 설정 (Settings → Environment Variables)
 
-**Vercel 환경변수:**
-```
-NEXT_PUBLIC_SUPABASE_URL=xxx
-NEXT_PUBLIC_SUPABASE_ANON_KEY=xxx
-NEXT_PUBLIC_TOSS_CLIENT_KEY=xxx
-NEXT_PUBLIC_SITE_URL=https://your-domain.com
+**Vercel 필수 환경변수:**
+```bash
+# Supabase (Critical)
+NEXT_PUBLIC_SUPABASE_URL=https://yrdfopkerrrhsafynakg.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<Supabase Dashboard에서 복사>
+
+# Site URL (Critical)
+NEXT_PUBLIC_SITE_URL=https://your-domain.vercel.app
+
+# Analytics (선택)
+NEXT_PUBLIC_GA_ID=<Google Analytics ID>
+NEXT_PUBLIC_SENTRY_DSN=<Sentry DSN>
 ```
 
 #### 2. Railway 설정 (백엔드)
 - [ ] https://railway.app 접속
 - [ ] GitHub 연동
 - [ ] 프로젝트 Import (`api` 디렉토리)
+- [ ] Root Directory: `api` 설정
+- [ ] Build Command: `npm run build` 설정
+- [ ] Start Command: `npm start` 설정
 - [ ] 환경변수 설정
 
-#### 3. GitHub Secrets 설정
+**Railway 필수 환경변수:**
+```bash
+# Server (Critical)
+PORT=5000
+NODE_ENV=production
+
+# Supabase (Critical)
+SUPABASE_URL=https://yrdfopkerrrhsafynakg.supabase.co
+SUPABASE_ANON_KEY=<Supabase Dashboard에서 복사>
+SUPABASE_SERVICE_ROLE_KEY=<Supabase Dashboard에서 복사>
+
+# CORS (Critical)
+ALLOWED_ORIGINS=https://your-domain.vercel.app,https://teeup.kr
 ```
-VERCEL_TOKEN=xxx
-VERCEL_ORG_ID=xxx
-VERCEL_PROJECT_ID=xxx
-RAILWAY_TOKEN=xxx
-SLACK_WEBHOOK_URL=xxx (선택)
-```
+
+**Railway 추가 설정:**
+- [ ] Health Check Path: `/health` 설정
+- [ ] Public Domain 활성화 및 URL 복사
+- [ ] Vercel에 백엔드 URL 추가: `NEXT_PUBLIC_API_URL=<Railway Domain>`
+
+#### 3. GitHub Secrets 설정 (CI/CD용)
+
+**필수 Secrets:**
+- [ ] **SUPABASE_ANON_KEY** - Supabase Dashboard → API → `anon` key
+- [ ] **VERCEL_TOKEN** - Vercel Account Settings → Tokens
+- [ ] **VERCEL_ORG_ID** - Vercel Settings → General → Team ID
+- [ ] **VERCEL_PROJECT_ID** - Vercel Project Settings → Project ID
+- [ ] **RAILWAY_TOKEN** - Railway Dashboard → Tokens
+
+**선택 Secrets:**
+- [ ] **SLACK_WEBHOOK_URL** - Slack Incoming Webhooks
+- [ ] **CODECOV_TOKEN** - Codecov.io 프로젝트
+
+**설정 경로:** GitHub Repository → Settings → Secrets and variables → Actions
 
 #### 4. 도메인 설정
 - [ ] 도메인 구입 (예: teeup.kr)

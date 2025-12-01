@@ -12,12 +12,12 @@ Supabase 프로젝트 생성 및 데이터베이스 스키마 적용이 필요�
 ## 필요한 작업
 
 ### 1. Supabase 프로젝트 생성
-- [ ] https://supabase.com 에서 계정 생성
-- [ ] 새 프로젝트 생성 (지역: Northeast Asia 권장)
-- [ ] 프로젝트 URL 복사: `https://your-project.supabase.co`
+- [x] https://supabase.com 에서 계정 생성
+- [x] 새 프로젝트 생성 (지역: Northeast Asia 권장)
+- [x] 프로젝트 URL 복사: `https://yrdfopkerrrhsafynakg.supabase.co`
 - [ ] API Keys 복사:
-  - `anon` key (공개)
-  - `service_role` key (비밀)
+  - [ ] `anon` key (공개) - Project Settings → API → Project API keys → `anon` `public`
+  - [ ] `service_role` key (비밀) - Project Settings → API → Project API keys → `service_role` `secret`
 
 ### 2. 데이터베이스 스키마 적용
 - [ ] Supabase Dashboard → SQL Editor 접속
@@ -40,15 +40,16 @@ Supabase 프로젝트 생성 및 데이터베이스 스키마 적용이 필요�
 
 **프론트엔드 (`web/.env.local`)**
 ```bash
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+NEXT_PUBLIC_SUPABASE_URL=https://yrdfopkerrrhsafynakg.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<API Keys에서 복사한 anon key>
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
 **백엔드 (`api/.env`)**
 ```bash
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=your-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+SUPABASE_URL=https://yrdfopkerrrhsafynakg.supabase.co
+SUPABASE_ANON_KEY=<API Keys에서 복사한 anon key>
+SUPABASE_SERVICE_ROLE_KEY=<API Keys에서 복사한 service_role key>
 ```
 
 ## 설정하지 않으면 발생하는 오류
