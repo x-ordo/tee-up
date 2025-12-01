@@ -11,13 +11,13 @@ export default function Home() {
           </Link>
 
           <div className="hidden items-center gap-8 md:flex">
-            <Link href="/browse" className="text-body-sm font-medium text-calm-charcoal transition-colors hover:text-accent">
+            <Link href="/browse" className="rounded-lg px-2 py-1 text-body-sm font-medium text-calm-charcoal transition-colors hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent-light">
               전체 프로
             </Link>
-            <Link href="/about" className="text-body-sm font-medium text-calm-charcoal transition-colors hover:text-accent">
+            <Link href="/about" className="rounded-lg px-2 py-1 text-body-sm font-medium text-calm-charcoal transition-colors hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent-light">
               소개
             </Link>
-            <Link href="/contact" className="text-body-sm font-medium text-calm-charcoal transition-colors hover:text-accent">
+            <Link href="/contact" className="rounded-lg px-2 py-1 text-body-sm font-medium text-calm-charcoal transition-colors hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent-light">
               문의
             </Link>
           </div>
@@ -61,8 +61,8 @@ export default function Home() {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce">
-          <div className="flex flex-col items-center gap-2 text-calm-ash">
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce" aria-hidden="true">
+          <div className="flex flex-col items-center gap-2 text-calm-charcoal">
             <span className="text-body-xs uppercase tracking-widest">Scroll</span>
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />

@@ -61,7 +61,7 @@ export default function LoginPage() {
     >
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="rounded-xl border border-error bg-error-bg p-4 text-body-sm text-error">
+          <div role="alert" aria-live="polite" className="alert-error">
             {error}
           </div>
         )}
@@ -102,13 +102,13 @@ export default function LoginPage() {
           <label className="flex cursor-pointer items-center gap-2 text-calm-charcoal">
             <input
               type="checkbox"
-              className="h-4 w-4 rounded border-calm-stone bg-white text-accent focus:ring-accent/20"
+              className="h-4 w-4 rounded border-calm-stone bg-white text-accent focus:outline-none focus:ring-2 focus:ring-accent-light"
             />
             로그인 상태 유지
           </label>
           <Link
             href="/auth/reset-password"
-            className="text-accent transition-colors hover:text-accent-dark"
+            className="rounded px-1 text-accent transition-colors hover:text-accent-dark focus:outline-none focus:ring-2 focus:ring-accent-light"
           >
             비밀번호 찾기
           </Link>
@@ -131,7 +131,7 @@ export default function LoginPage() {
           계정이 없으신가요?{' '}
           <Link
             href="/auth/signup"
-            className="font-medium text-accent transition-colors hover:text-accent-dark"
+            className="rounded px-1 font-medium text-accent transition-colors hover:text-accent-dark focus:outline-none focus:ring-2 focus:ring-accent-light"
           >
             회원가입
           </Link>

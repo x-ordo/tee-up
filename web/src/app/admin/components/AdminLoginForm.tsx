@@ -77,8 +77,15 @@ export function AdminLoginForm({ onSubmit, error, isLoading }: AdminLoginFormPro
 
           {/* Error Message */}
           {displayError && (
-            <div className="rounded-lg border border-error bg-error/10 p-3">
-              <p className="text-body-sm text-error">{error}</p>
+            <div
+              role="alert"
+              aria-live="polite"
+              className="alert-error"
+            >
+              <p className="font-medium">{error}</p>
+              <p className="mt-1 text-xs opacity-80">
+                문제가 지속되면 관리자에게 문의해주세요.
+              </p>
             </div>
           )}
 

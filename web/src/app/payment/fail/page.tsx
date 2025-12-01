@@ -26,11 +26,11 @@ function PaymentFailContent() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27]">
+    <div className="flex min-h-screen items-center justify-center bg-calm-white">
       <div className="max-w-md text-center">
-        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-red-500/20">
+        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-error/10">
           <svg
-            className="h-10 w-10 text-red-400"
+            className="h-10 w-10 text-error"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -43,18 +43,18 @@ function PaymentFailContent() {
             />
           </svg>
         </div>
-        <h1 className="mb-2 text-2xl font-bold text-white">결제 실패</h1>
-        <p className="mb-8 text-white/60">{getErrorMessage()}</p>
-        <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+        <h1 className="mb-2 text-2xl font-bold text-calm-obsidian">결제 실패</h1>
+        <p className="mb-8 text-calm-charcoal">{getErrorMessage()}</p>
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
           <Link
             href="/pricing"
-            className="rounded-full bg-gradient-to-r from-[#d4af37] to-[#f4e5c2] px-6 py-3 font-medium text-[#0a0e27] transition-all hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]"
+            className="btn-primary"
           >
             다시 시도
           </Link>
           <Link
             href="/"
-            className="rounded-full border border-white/20 px-6 py-3 font-medium text-white transition-colors hover:border-[#d4af37]"
+            className="btn-secondary"
           >
             홈으로
           </Link>

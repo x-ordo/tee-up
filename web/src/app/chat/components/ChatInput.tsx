@@ -64,7 +64,7 @@ export function ChatInput({
   );
 
   return (
-    <div className="border-t border-white/10 bg-[#0a0e27]/90 p-4 backdrop-blur-xl">
+    <div className="border-t border-calm-stone bg-calm-white/90 p-4 backdrop-blur-xl">
       <div className="flex items-end gap-3">
         {/* 텍스트 입력 */}
         <div className="relative flex-1">
@@ -77,9 +77,9 @@ export function ChatInput({
             disabled={disabled || isSending}
             rows={1}
             className="
-              max-h-[120px] w-full resize-none rounded-2xl border border-white/10
-              bg-white/5 px-4 py-3 pr-12 text-white placeholder-white/30
-              transition-colors focus:border-[#d4af37] focus:outline-none
+              max-h-[120px] w-full resize-none rounded-2xl border border-calm-stone
+              bg-calm-cloud px-4 py-3 pr-12 text-calm-obsidian placeholder-calm-ash
+              transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent-light
               disabled:cursor-not-allowed disabled:opacity-50
             "
           />
@@ -87,7 +87,7 @@ export function ChatInput({
           {/* 이모지 버튼 (옵션) */}
           <button
             type="button"
-            className="absolute bottom-3 right-3 text-white/40 transition-colors hover:text-white/60"
+            className="absolute bottom-3 right-3 text-calm-ash transition-colors hover:text-calm-charcoal"
             aria-label="이모지 선택"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -107,10 +107,9 @@ export function ChatInput({
           disabled={!message.trim() || isSending || disabled}
           className="
             flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full
-            bg-gradient-to-r from-[#d4af37] to-[#f4e5c2] text-[#0a0e27]
-            transition-all duration-200
-            hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]
-            disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:shadow-none
+            bg-accent text-white transition-all duration-200
+            hover:bg-accent-dark focus:outline-none focus:ring-2 focus:ring-accent-light
+            disabled:cursor-not-allowed disabled:opacity-50
           "
           aria-label="메시지 전송"
         >
@@ -145,7 +144,7 @@ export function ChatInput({
       </div>
 
       {/* 안내 텍스트 */}
-      <p className="mt-2 text-center text-xs text-white/30">
+      <p className="mt-2 text-center text-xs text-calm-ash">
         Enter로 전송, Shift+Enter로 줄바꿈
       </p>
     </div>

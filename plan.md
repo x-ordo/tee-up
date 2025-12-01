@@ -541,10 +541,167 @@ describe('User Authentication', () => {
 
 ---
 
+## 🎨 UI/UX 원칙 준수 리팩토링 (신규 추가)
+
+> **Reference:** `/docs/UI_UX_PRINCIPLES.md`
+> **Design System:** Calm Control (Korean Luxury Minimalism)
+> **Added:** 2025-12-01
+
+### 위반 현황 요약
+
+| 심각도 | 카테고리 | 파일 수 | 설명 |
+|--------|----------|---------|------|
+| **CRITICAL** | 색상 시스템 전면 위반 | 8 | 다크 테마 + 골드 액센트 사용 |
+| **HIGH** | 접근성 (포커스 상태) | 12+ | 키보드 네비게이션 불가 |
+| **HIGH** | 컴포넌트 클래스 미사용 | 15+ | `.card`, `.btn-*` 미사용 |
+| **MEDIUM** | 스페이싱 불일치 | 10+ | 8px 기반 스케일 위반 |
+| **LOW** | 타이포그래피 | 8+ | CSS 변수 미사용 |
+
+---
+
+### P0: Critical - 색상 시스템 전면 수정 ✅ COMPLETED
+
+다크 테마(`#0a0e27`) + 골드 액센트(`#d4af37`) → 라이트 테마(`--calm-white`) + 블루 액센트(`#3B82F6`)
+
+| 파일 | 상태 | 수정 내용 |
+|------|------|----------|
+| `web/src/app/profile/ProfileTemplate.tsx` | ✅ DONE | 전체 다크→라이트 테마, 골드→블루 액센트 |
+| `web/src/app/pricing/page.tsx` | ✅ DONE | 배경 + 버튼 색상 |
+| `web/src/app/dashboard/page.tsx` | ✅ DONE | 배경 + 메트릭 카드 색상 |
+| `web/src/app/dashboard/components/StatCard.tsx` | ✅ DONE | `.card` 클래스 적용, 블루 액센트 |
+| `web/src/app/dashboard/components/LeadChart.tsx` | ✅ DONE | 차트 색상 블루로 변경 |
+| `web/src/app/dashboard/components/LeadList.tsx` | ✅ DONE | `.card`, `.tag-*` 클래스 적용 |
+| `web/src/app/chat/page.tsx` | ✅ DONE | 네비게이션 + 스피너 색상 |
+| `web/src/app/chat/[roomId]/page.tsx` | ✅ DONE | 전체 채팅 UI 색상 |
+| `web/src/app/chat/components/ChatInput.tsx` | ✅ DONE | 라이트 테마 + 포커스 상태 |
+| `web/src/app/chat/components/ChatRoomList.tsx` | ✅ DONE | `.tag-*` 클래스, 블루 액센트 |
+| `web/src/app/chat/components/MessageBubble.tsx` | ✅ DONE | 메시지 버블 라이트 테마 |
+| `web/src/app/payment/success/page.tsx` | ✅ DONE | **전면 재작성** - 라이트 테마 |
+| `web/src/app/payment/fail/page.tsx` | ✅ DONE | **전면 재작성** - 라이트 테마 |
+| `web/src/app/components/LoadingSpinner.tsx` | ✅ DONE | 스피너 색상 블루로 변경 |
+
+**수정 패턴:**
+```tsx
+// Before (다크 테마 + 골드)
+className="from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27]"
+className="text-[#d4af37] border-[#d4af37]"
+
+// After (라이트 테마 + 블루)
+className="bg-calm-white"
+className="text-calm-accent border-calm-accent"
+```
+
+---
+
+### P1: High - 접근성 개선 ✅ COMPLETED
+
+| 파일 | 상태 | 수정 내용 |
+|------|------|----------|
+| `global.css` | ✅ DONE | `.btn-*:disabled`, `.btn-*:focus` 스타일 추가, `.tag-info`, `.radio-option`, `.checkbox`, `.schedule-day-button` 추가, `.table-row:nth-child(even)` zebra striping |
+| `web/src/app/page.tsx` | ✅ DONE | 네비게이션 링크 포커스 상태, 스크롤 인디케이터 대비 개선 |
+| `web/src/app/pricing/page.tsx` | ✅ DONE | 토글 버튼 `role="switch"`, `aria-checked`, `aria-label` 추가 |
+| `web/src/app/admin/components/AdminLoginForm.tsx` | ✅ DONE | 에러 메시지 `role="alert"`, `.alert-error` 클래스, 복구 안내 추가 |
+| `web/src/app/admin/pros/[id]/page.tsx` | ✅ DONE | 탭 `role="tab"`, `aria-selected`, 저장 버튼 로딩 상태 |
+| `web/src/app/admin/pros/components/PendingProCard.tsx` | ✅ DONE | 버튼 `aria-label`, 로딩 스피너, `.btn-secondary` 적용 |
+
+---
+
+### P1: High - 컴포넌트 패턴 통일 ✅ PARTIALLY COMPLETED
+
+| 수정 유형 | 파일 | 상태 | 수정 내용 |
+|----------|------|------|----------|
+| `.alert-*` 클래스 | `web/src/app/auth/login/page.tsx` | ✅ DONE | 인라인 에러 → `.alert-error`, 포커스 링 개선 |
+| `.alert-*` 클래스 | `web/src/app/admin/chats/page.tsx` | ✅ DONE | 인라인 에러 → `.alert-error` |
+| `.card` 클래스 | `web/src/app/components/ProsDirectory.tsx` | ⬜ PENDING | 커스텀 카드 → `.card` |
+| `.card` 클래스 | `web/src/app/profile/ProfileTemplate.tsx` | ⬜ PENDING | 글래스모피즘 → `.card` |
+| `.tag` 클래스 | `web/src/app/page.tsx` | ⬜ PENDING | 커스텀 배지 → `.tag` |
+| `.label` 클래스 | `web/src/app/auth/components/AuthInput.tsx` | ⬜ PENDING | 인라인 라벨 → `.label` |
+
+---
+
+### P2: Medium - 스페이싱 표준화
+
+| 파일 | 수정 내용 |
+|------|----------|
+| `web/src/app/profile/ProfileTemplate.tsx` | `py-20` → `py-16` (과도한 패딩) |
+| `web/src/app/pricing/page.tsx` | `pb-20 pt-32` → `pb-12 pt-20` |
+| `web/src/app/chat/[roomId]/page.tsx` | `p-4` → `p-6` (최소 24px) |
+| `web/src/app/admin/users/page.tsx` | 카드 내부 `mb-2, mb-1` → `space-y-4` |
+
+---
+
+### P2: Medium - 타이포그래피 통일
+
+| 파일 | 수정 내용 |
+|------|----------|
+| `web/src/app/page.tsx` | `text-5xl` → `text-display-lg` CSS 변수 |
+| `web/src/app/admin/analytics/page.tsx` | 메트릭 숫자 `font-display` → `font-mono` |
+| `web/src/app/admin/users/page.tsx` | 메트릭 숫자 `font-display` → `font-mono` |
+| 모든 메트릭 카드 | 반응형 `text-2xl md:text-4xl` 적용 |
+
+---
+
+### P3: Low - 데이터 테이블/로딩/에러 개선 ✅ PARTIALLY COMPLETED
+
+| 카테고리 | 파일 | 상태 | 수정 내용 |
+|----------|------|------|----------|
+| Zebra Striping | global.css | ✅ DONE | `.table-row:nth-child(even)` 추가 |
+| 에러 메시지 | AdminLoginForm | ✅ DONE | 복구 경로 안내 추가 |
+| 저장 로딩 | admin/pros/[id] | ✅ DONE | 저장 버튼 로딩 상태 + 스피너 |
+| 정렬 표시기 | 테이블 헤더 | ⬜ PENDING | `↕` 아이콘 추가 |
+| LoadingSpinner | 6개 파일 | ⬜ PENDING | 커스텀 스피너 → `LoadingSpinner` 컴포넌트 |
+
+---
+
+### global.css 확장 ✅ COMPLETED
+
+다음 클래스들이 추가되었습니다:
+- `.btn-primary:focus`, `.btn-secondary:focus`, `.btn-ghost:focus` - 포커스 링 스타일
+- `.btn-primary:disabled`, `.btn-secondary:disabled`, `.btn-ghost:disabled` - 비활성화 스타일
+- `.tag-info` - 정보 태그
+- `.radio-option`, `.radio-option.selected`, `.radio-option:focus-within` - 라디오 버튼 스타일
+- `.checkbox`, `.checkbox:checked`, `.checkbox:focus` - 체크박스 스타일
+- `.schedule-day-button`, `.schedule-day-button.selected` - 일정 버튼 스타일
+- `.table-row:nth-child(even)` - Zebra striping
+
+---
+
+### tailwind.config.ts 확인 필요
+
+- [ ] `calm-*` 색상 변수 매핑 확인
+- [ ] `font-display`, `font-mono` 정의 확인
+- [ ] `text-display-lg/md/sm`, `text-body-lg/md/sm/xs` 정의 확인
+
+---
+
+### 완료 체크리스트
+
+**색상 시스템:**
+- [ ] 모든 페이지 `bg-calm-white` 배경
+- [ ] 모든 액센트 `--calm-accent: #3B82F6`
+- [ ] 골드 색상 (`#d4af37`) 제거
+- [ ] 다크 배경 (`#0a0e27`) 제거
+
+**접근성:**
+- [ ] 모든 인터랙티브 요소 포커스 링
+- [ ] 모든 폼 입력 ARIA 라벨
+- [ ] 비활성화 버튼 시각적 피드백
+- [ ] WCAG AA 대비 준수
+
+**컴포넌트:**
+- [ ] `.card` 클래스 일관 사용
+- [ ] `.btn-*` 클래스 일관 사용
+- [ ] `.alert-*` 클래스 일관 사용
+- [ ] `.tag` 클래스 일관 사용
+
+**예상 작업량:** P0-P1 (3-4일), 전체 (1-2주)
+
+---
+
 **이 문서는 매일 업데이트됩니다. 최신 상태를 확인하세요.**
 
-**Last Updated:** 2025-11-25 (채팅 관리 인터페이스 Supabase 연동 완료)
-**Next Review:** 2025-12-01
+**Last Updated:** 2025-12-01 (P0 Critical 완료, P1 접근성 개선 완료, global.css 확장 완료)
+**Next Review:** 2025-12-08
 
 ═══════════════════════════════════════════════════════════════
 ✅ VALIDATION CHECKLIST

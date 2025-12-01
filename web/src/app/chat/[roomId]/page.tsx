@@ -81,10 +81,10 @@ export default function ChatRoomPage() {
 
   if (authLoading || isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27]">
+      <div className="flex min-h-screen items-center justify-center bg-calm-white">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-[#d4af37] border-t-transparent" />
-          <p className="text-white/60">로딩 중...</p>
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-accent border-t-transparent" />
+          <p className="text-calm-ash">로딩 중...</p>
         </div>
       </div>
     );
@@ -96,16 +96,16 @@ export default function ChatRoomPage() {
 
   if (error || !room) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27]">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-calm-white">
         <div className="text-center">
           <div className="mb-4 text-6xl">😢</div>
-          <h2 className="mb-2 text-xl font-semibold text-white">
+          <h2 className="mb-2 text-xl font-semibold text-calm-obsidian">
             채팅방을 찾을 수 없습니다
           </h2>
-          <p className="mb-6 text-white/60">{error || '잘못된 접근입니다.'}</p>
+          <p className="mb-6 text-calm-charcoal">{error || '잘못된 접근입니다.'}</p>
           <Link
             href="/chat"
-            className="inline-flex items-center gap-2 rounded-full bg-[#d4af37] px-6 py-3 font-medium text-[#0a0e27]"
+            className="btn-primary inline-flex items-center gap-2"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -118,14 +118,14 @@ export default function ChatRoomPage() {
   }
 
   return (
-    <div className="flex h-screen flex-col bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27]">
+    <div className="flex h-screen flex-col bg-calm-cloud">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#0a0e27]/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-calm-stone bg-calm-white/80 backdrop-blur-xl">
         <div className="flex items-center gap-4 px-4 py-3">
           {/* Back Button */}
           <Link
             href="/chat"
-            className="flex h-10 w-10 items-center justify-center rounded-full text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-calm-charcoal transition-colors hover:bg-calm-cloud hover:text-calm-obsidian focus:outline-none focus:ring-2 focus:ring-accent-light"
           >
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -143,16 +143,16 @@ export default function ChatRoomPage() {
                   className="rounded-full object-cover"
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-[#d4af37] to-[#f4e5c2] text-sm font-bold text-[#0a0e27]">
+                <div className="flex h-full w-full items-center justify-center rounded-full bg-accent-light text-sm font-bold text-accent">
                   {otherUser?.full_name?.charAt(0) || '?'}
                 </div>
               )}
             </div>
             <div>
-              <h2 className="font-medium text-white">
+              <h2 className="font-medium text-calm-obsidian">
                 {otherUser?.full_name || '알 수 없음'}
               </h2>
-              <p className="text-xs text-white/60">
+              <p className="text-xs text-calm-charcoal">
                 {room.status === 'active'
                   ? '문의 중'
                   : room.status === 'matched'
@@ -167,13 +167,13 @@ export default function ChatRoomPage() {
             {room.status === 'active' && user.role === 'pro' && (
               <button
                 onClick={() => changeStatus('matched')}
-                className="rounded-full bg-green-500/20 px-4 py-2 text-sm font-medium text-green-400 transition-colors hover:bg-green-500/30"
+                className="rounded-full bg-success/10 px-4 py-2 text-sm font-medium text-success transition-colors hover:bg-success/20"
               >
                 매칭 확정
               </button>
             )}
             <button
-              className="flex h-10 w-10 items-center justify-center rounded-full text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-calm-charcoal transition-colors hover:bg-calm-cloud hover:text-calm-obsidian focus:outline-none focus:ring-2 focus:ring-accent-light"
               aria-label="더보기"
             >
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -224,8 +224,8 @@ export default function ChatRoomPage() {
           disabled={isSending}
         />
       ) : (
-        <div className="border-t border-white/10 bg-[#0a0e27]/90 p-4 text-center backdrop-blur-xl">
-          <p className="text-white/60">이 대화는 종료되었습니다.</p>
+        <div className="border-t border-calm-stone bg-calm-white/90 p-4 text-center backdrop-blur-xl">
+          <p className="text-calm-charcoal">이 대화는 종료되었습니다.</p>
         </div>
       )}
     </div>

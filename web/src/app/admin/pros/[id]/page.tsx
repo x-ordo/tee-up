@@ -55,6 +55,14 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
   const [enabledSections, setEnabledSections] = useState([
     'stats', 'video', 'instagram', 'youtube', 'metrics', 'programs', 'pricing', 'testimonials', 'location'
   ])
+  const [isSaving, setIsSaving] = useState(false)
+
+  const handleSave = async () => {
+    setIsSaving(true)
+    // TODO: 실제 저장 로직
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    setIsSaving(false)
+  }
 
   const [profileData, setProfileData] = useState({
     name: 'Hannah Park',
@@ -89,7 +97,24 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
               <Link href="/admin/pros" className="btn-ghost">
                 ← 목록
               </Link>
-              <button className="btn-primary">저장</button>
+              <button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="btn-primary"
+                aria-busy={isSaving}
+              >
+                {isSaving ? (
+                  <span className="flex items-center gap-2">
+                    <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" aria-hidden="true">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    저장 중...
+                  </span>
+                ) : (
+                  '저장'
+                )}
+              </button>
             </div>
           </div>
         </div>
@@ -97,11 +122,14 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
 
       {/* Tabs */}
       <div className="border-b border-calm-stone bg-white">
-        <nav className="mx-auto max-w-7xl px-6">
-          <div className="flex gap-8">
+        <nav className="mx-auto max-w-7xl px-6" aria-label="프로필 편집 탭">
+          <div className="flex gap-8" role="tablist">
             <button
               onClick={() => setActiveTab('design')}
-              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors ${
+              role="tab"
+              aria-selected={activeTab === 'design'}
+              aria-controls="design-panel"
+              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-light focus:ring-inset ${
                 activeTab === 'design'
                   ? 'border-accent text-accent'
                   : 'border-transparent text-calm-charcoal hover:text-accent'
@@ -111,7 +139,10 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
             </button>
             <button
               onClick={() => setActiveTab('content')}
-              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors ${
+              role="tab"
+              aria-selected={activeTab === 'content'}
+              aria-controls="content-panel"
+              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-light focus:ring-inset ${
                 activeTab === 'content'
                   ? 'border-accent text-accent'
                   : 'border-transparent text-calm-charcoal hover:text-accent'
@@ -121,7 +152,10 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
             </button>
             <button
               onClick={() => setActiveTab('layout')}
-              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors ${
+              role="tab"
+              aria-selected={activeTab === 'layout'}
+              aria-controls="layout-panel"
+              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-light focus:ring-inset ${
                 activeTab === 'layout'
                   ? 'border-accent text-accent'
                   : 'border-transparent text-calm-charcoal hover:text-accent'
@@ -131,7 +165,10 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
             </button>
             <button
               onClick={() => setActiveTab('preview')}
-              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors ${
+              role="tab"
+              aria-selected={activeTab === 'preview'}
+              aria-controls="preview-panel"
+              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-light focus:ring-inset ${
                 activeTab === 'preview'
                   ? 'border-accent text-accent'
                   : 'border-transparent text-calm-charcoal hover:text-accent'
@@ -147,7 +184,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
       <main className="mx-auto max-w-7xl px-6 py-8">
         {/* Design Tab */}
         {activeTab === 'design' && (
-          <div className="space-y-8">
+          <div id="design-panel" role="tabpanel" aria-labelledby="design-tab" className="space-y-8">
             <section>
               <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">컬러 테마</h2>
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -215,7 +252,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
 
         {/* Content Tab */}
         {activeTab === 'content' && (
-          <div className="space-y-8">
+          <div id="content-panel" role="tabpanel" aria-labelledby="content-tab" className="space-y-8">
             <section>
               <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">기본 정보</h2>
               <div className="card p-8">
@@ -380,7 +417,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
 
         {/* Layout Tab */}
         {activeTab === 'layout' && (
-          <div className="space-y-8">
+          <div id="layout-panel" role="tabpanel" aria-labelledby="layout-tab" className="space-y-8">
             <section>
               <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">섹션 구성</h2>
               <p className="mb-6 text-body-sm text-calm-ash">
@@ -465,7 +502,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
 
         {/* Preview Tab */}
         {activeTab === 'preview' && (
-          <div className="space-y-8">
+          <div id="preview-panel" role="tabpanel" aria-labelledby="preview-tab" className="space-y-8">
             <section>
               <div className="mb-6 flex items-center justify-between">
                 <h2 className="text-2xl font-semibold text-calm-obsidian">미리보기</h2>

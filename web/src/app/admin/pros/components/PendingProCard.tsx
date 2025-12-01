@@ -107,13 +107,26 @@ export function PendingProCard({ pro, onApprove, onReject, isProcessing }: Pendi
               className="btn-primary flex-1"
               onClick={() => onApprove(pro.id)}
               disabled={isProcessing}
+              aria-busy={isProcessing}
+              aria-label={`${profileName} 프로 승인`}
             >
-              {isProcessing ? '처리 중...' : '승인'}
+              {isProcessing ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                  </svg>
+                  처리 중...
+                </span>
+              ) : (
+                '승인'
+              )}
             </button>
             <button
-              className="btn-ghost flex-1"
+              className="btn-secondary flex-1"
               onClick={() => onReject(pro.id)}
               disabled={isProcessing}
+              aria-label={`${profileName} 프로 거부`}
             >
               거부
             </button>

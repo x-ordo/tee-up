@@ -37,15 +37,15 @@ export function LoadingSpinner({
   const content = (
     <div className="text-center">
       <div
-        className={`mx-auto mb-6 animate-spin rounded-full border-4 border-[#d4af37] border-t-transparent ${sizeClasses[size]}`}
+        className={`mx-auto mb-6 animate-spin rounded-full border-4 border-accent border-t-transparent ${sizeClasses[size]}`}
       />
-      {message && <p className="text-white/60">{message}</p>}
+      {message && <p className="text-calm-ash">{message}</p>}
     </div>
   );
 
   if (fullScreen) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#0a0e27] via-[#1a1f3a] to-[#0a0e27]">
+      <div className="flex min-h-screen items-center justify-center bg-calm-white">
         {content}
       </div>
     );

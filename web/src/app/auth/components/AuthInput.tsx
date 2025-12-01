@@ -10,9 +10,11 @@ interface AuthInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
   ({ label, error, icon, className = '', ...props }, ref) => {
+    const inputId = props.id || props.name;
+
     return (
       <div className="space-y-2">
-        <label className="block text-body-sm font-medium text-calm-charcoal">
+        <label htmlFor={inputId} className="label">
           {label}
         </label>
         <div className="relative">
@@ -23,12 +25,15 @@ export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
           )}
           <input
             ref={ref}
+            id={inputId}
+            aria-invalid={!!error}
+            aria-describedby={error ? `${inputId}-error` : undefined}
             className={`
               input w-full
               ${icon ? 'pl-12' : ''}
               ${
                 error
-                  ? 'border-error focus:border-error focus:ring-error/20'
+                  ? 'border-error focus:border-error focus:ring-2 focus:ring-error/30'
                   : ''
               }
               ${className}
@@ -37,7 +42,9 @@ export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
           />
         </div>
         {error && (
-          <p className="text-body-sm text-error">{error}</p>
+          <p id={`${inputId}-error`} role="alert" className="text-body-sm text-error">
+            {error}
+          </p>
         )}
       </div>
     );

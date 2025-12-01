@@ -33,7 +33,7 @@ export function MessageBubble({
               className="rounded-full object-cover"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-[#d4af37] to-[#f4e5c2] text-sm font-bold text-[#0a0e27]">
+            <div className="flex h-full w-full items-center justify-center rounded-full bg-accent-light text-sm font-bold text-accent">
               {sender?.full_name?.charAt(0) || '?'}
             </div>
           )}
@@ -47,7 +47,7 @@ export function MessageBubble({
       <div className={`max-w-[70%] ${isOwn ? 'items-end' : 'items-start'}`}>
         {/* Sender Name (for received messages) */}
         {!isOwn && sender && (
-          <p className="mb-1 text-xs font-medium text-white/60">
+          <p className="mb-1 text-xs font-medium text-calm-charcoal">
             {sender.full_name}
           </p>
         )}
@@ -57,8 +57,8 @@ export function MessageBubble({
             rounded-2xl px-4 py-2.5
             ${
               isOwn
-                ? 'rounded-tr-sm bg-gradient-to-r from-[#d4af37] to-[#f4e5c2] text-[#0a0e27]'
-                : 'rounded-tl-sm bg-white/10 text-white'
+                ? 'rounded-tr-sm bg-accent text-white'
+                : 'rounded-tl-sm bg-calm-cloud text-calm-obsidian'
             }
           `}
         >
@@ -69,7 +69,7 @@ export function MessageBubble({
 
         {/* Time and Read Status */}
         <div
-          className={`mt-1 flex items-center gap-1 text-xs text-white/40 ${
+          className={`mt-1 flex items-center gap-1 text-xs text-calm-ash ${
             isOwn ? 'justify-end' : 'justify-start'
           }`}
         >
@@ -80,7 +80,7 @@ export function MessageBubble({
             <span>
               {message.is_read ? (
                 <svg
-                  className="h-4 w-4 text-[#d4af37]"
+                  className="h-4 w-4 text-accent"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -123,14 +123,14 @@ interface TypingIndicatorProps {
 export function TypingIndicator({ userName }: TypingIndicatorProps) {
   return (
     <div className="flex items-center gap-3">
-      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10">
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-calm-cloud">
         <div className="flex gap-1">
-          <span className="h-2 w-2 animate-bounce rounded-full bg-white/40" style={{ animationDelay: '0ms' }} />
-          <span className="h-2 w-2 animate-bounce rounded-full bg-white/40" style={{ animationDelay: '150ms' }} />
-          <span className="h-2 w-2 animate-bounce rounded-full bg-white/40" style={{ animationDelay: '300ms' }} />
+          <span className="h-2 w-2 animate-bounce rounded-full bg-calm-ash" style={{ animationDelay: '0ms' }} />
+          <span className="h-2 w-2 animate-bounce rounded-full bg-calm-ash" style={{ animationDelay: '150ms' }} />
+          <span className="h-2 w-2 animate-bounce rounded-full bg-calm-ash" style={{ animationDelay: '300ms' }} />
         </div>
       </div>
-      <span className="text-sm text-white/40">
+      <span className="text-sm text-calm-ash">
         {userName ? `${userName}님이 입력 중...` : '입력 중...'}
       </span>
     </div>
@@ -146,10 +146,10 @@ export function DateDivider({ date }: DateDividerProps) {
   return (
     <div className="relative py-4">
       <div className="absolute inset-0 flex items-center">
-        <div className="w-full border-t border-white/10" />
+        <div className="w-full border-t border-calm-stone" />
       </div>
       <div className="relative flex justify-center">
-        <span className="bg-[#0a0e27] px-4 text-xs text-white/40">
+        <span className="bg-calm-cloud px-4 text-xs text-calm-ash">
           {format(date, 'yyyy년 M월 d일 EEEE', { locale: ko })}
         </span>
       </div>
