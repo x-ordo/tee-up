@@ -76,13 +76,12 @@ describe('useFocusTrap', () => {
     Object.defineProperty(tabEvent, 'shiftKey', { value: false });
     document.dispatchEvent(tabEvent);
 
-    // 기본 동작이 막혀야 함 (실제 포커스 이동은 브라우저 이벤트에서 처리)
-    // 이 테스트에서는 onClose가 호출되지 않았음을 확인
-    expect(document.activeElement).toBe(input);
+    // 마지막 요소에서 Tab을 누르면 첫 번째 요소로 순환해야 함
+    expect(document.activeElement).toBe(button1);
   });
 
   it('should trap Shift+Tab at first element', async () => {
-    const { container, button1 } = createMockContainer();
+    const { container, button1, input } = createMockContainer();
     const ref = { current: container };
 
     renderHook(() => useFocusTrap({ containerRef: ref, isActive: true }));
@@ -95,7 +94,7 @@ describe('useFocusTrap', () => {
     const tabEvent = new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true });
     document.dispatchEvent(tabEvent);
 
-    // 기본 동작이 막혀야 함
-    expect(document.activeElement).toBe(button1);
+    // 첫 번째 요소에서 Shift+Tab을 누르면 마지막 요소로 순환해야 함
+    expect(document.activeElement).toBe(input);
   });
 });
