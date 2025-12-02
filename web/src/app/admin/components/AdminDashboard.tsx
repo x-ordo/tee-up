@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ThemeToggle } from '@/app/components/ThemeToggle'
 
 const adminStats = [
   { label: '대기 중인 프로', value: '12', status: 'warning', link: '/admin/pros/pending' },
@@ -77,6 +78,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
               <p className="text-body-sm text-calm-ash">시스템 관리 및 모니터링</p>
             </div>
             <div className="flex items-center gap-4">
+              <ThemeToggle />
               <Link href="/" className="btn-ghost">
                 사용자 페이지로
               </Link>

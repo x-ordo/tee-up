@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import { NoSearchResults } from './EmptyState'
 
 export type ProItem = {
   slug: string
@@ -142,12 +143,14 @@ export default function ProsDirectory({ pros }: { pros: ProItem[] }) {
 
       {/* Empty State */}
       {filtered.length === 0 && (
-        <div className="card bg-calm-cloud p-12 text-center">
-          <p className="text-body-lg text-calm-charcoal">검색 결과가 없습니다.</p>
-          <p className="mt-2 text-body-sm text-calm-ash">
-            다른 검색어나 필터를 시도해 보세요.
-          </p>
-        </div>
+        <NoSearchResults
+          searchTerm={q || undefined}
+          onClear={() => {
+            setQ('')
+            setCity('')
+            setSpec('')
+          }}
+        />
       )}
     </section>
   )

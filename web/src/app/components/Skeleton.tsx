@@ -4,15 +4,86 @@ import { cn } from '@/lib/utils';
 
 interface SkeletonProps {
   className?: string;
+  'aria-label'?: string;
 }
 
-export function Skeleton({ className }: SkeletonProps) {
+export function Skeleton({ className, 'aria-label': ariaLabel = '로딩 중' }: SkeletonProps) {
   return (
     <div
       className={cn(
         'skeleton',
         className
       )}
+      role="status"
+      aria-label={ariaLabel}
+    />
+  );
+}
+
+// T038: SkeletonCard variant
+export function SkeletonCard({ className }: { className?: string }) {
+  return (
+    <div
+      className={cn('card overflow-hidden', className)}
+      role="status"
+      aria-busy="true"
+      aria-live="polite"
+      aria-label="카드 로딩 중"
+    >
+      <Skeleton className="h-48 w-full rounded-none" aria-label="이미지 로딩 중" />
+      <div className="card-content space-y-3">
+        <Skeleton className="h-4 w-2/3" aria-label="제목 로딩 중" />
+        <Skeleton className="h-3 w-full" aria-label="설명 로딩 중" />
+        <Skeleton className="h-3 w-4/5" aria-label="설명 로딩 중" />
+      </div>
+    </div>
+  );
+}
+
+// T039: SkeletonText variant
+interface SkeletonTextProps {
+  lines?: number;
+  className?: string;
+}
+
+export function SkeletonText({ lines = 3, className }: SkeletonTextProps) {
+  return (
+    <div
+      className={cn('space-y-2', className)}
+      role="status"
+      aria-busy="true"
+      aria-live="polite"
+      aria-label="텍스트 로딩 중"
+    >
+      {Array.from({ length: lines }).map((_, i) => (
+        <Skeleton
+          key={i}
+          className={cn('h-4', i === lines - 1 ? 'w-3/4' : 'w-full')}
+          aria-label={`텍스트 줄 ${i + 1} 로딩 중`}
+        />
+      ))}
+    </div>
+  );
+}
+
+// T040: SkeletonAvatar variant
+interface SkeletonAvatarProps {
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  className?: string;
+}
+
+export function SkeletonAvatar({ size = 'md', className }: SkeletonAvatarProps) {
+  const sizeClasses = {
+    sm: 'h-8 w-8',
+    md: 'h-10 w-10',
+    lg: 'h-16 w-16',
+    xl: 'h-24 w-24',
+  };
+
+  return (
+    <Skeleton
+      className={cn('rounded-full', sizeClasses[size], className)}
+      aria-label="프로필 이미지 로딩 중"
     />
   );
 }

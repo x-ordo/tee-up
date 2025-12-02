@@ -13,9 +13,11 @@
     --calm-obsidian: #1A1A17;
 
     /* ===== ACCENT COLOR (Data Focus) ===== */
-    --calm-accent: #3B82F6;
+    /* Updated for WCAG AA compliance (4.5:1 contrast ratio on white) */
+    --calm-accent: #2563EB;           /* Primary accent - 4.7:1 on #FAFAF9 */
     --calm-accent-light: #DBEAFE;
     --calm-accent-dark: #1E40AF;
+    --accent: #2563EB;                /* Tailwind compatibility */
 
     /* ===== FUNCTIONAL COLORS ===== */
     --calm-success: #10B981;
@@ -26,6 +28,11 @@
     --calm-error-bg: #FEE2E2;
     --calm-info: #8B5CF6;
     --calm-info-bg: #EDE9FE;
+
+    /* ===== EXTERNAL BRAND COLORS ===== */
+    --brand-kakao: #FEE500;
+    --brand-kakao-text: #191919;
+    --brand-kakao-hover: #FDD835;
 
     /* ===== GLASS & GLOW (uiverse.io influence) ===== */
     --glass-bg: rgba(255, 255, 255, 0.7);
@@ -91,6 +98,53 @@
     --transition-fast: 150ms ease-in-out;
     --transition-base: 300ms ease-in-out;
     --transition-slow: 500ms ease-in-out;
+
+    /* ===== ANIMATION TIMING ===== */
+    --duration-fast: 150ms;
+    --duration-normal: 200ms;
+    --duration-slow: 300ms;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* ===== DARK MODE TOKENS ===== */
+  .dark {
+    /* Base Neutrals (inverted for dark mode) */
+    --calm-white: #0F0F0E;
+    --calm-cloud: #1A1A17;
+    --calm-stone: #2A2A26;
+    --calm-ash: #6A6A65;
+    --calm-charcoal: #A3A39E;
+    --calm-obsidian: #FAFAF9;
+
+    /* Accent (adjusted for dark mode visibility and WCAG AA) */
+    --calm-accent: #60A5FA;           /* Lighter blue for dark bg - 4.6:1 on #0F0F0E */
+    --calm-accent-light: #1E3A5F;
+    --calm-accent-dark: #93C5FD;
+    --accent: #60A5FA;
+
+    /* Functional colors (adjusted for dark mode visibility) */
+    --calm-success: #34D399;
+    --calm-success-bg: #064E3B;
+    --calm-warning: #FBBF24;
+    --calm-warning-bg: #78350F;
+    --calm-error: #F87171;
+    --calm-error-bg: #7F1D1D;
+    --calm-info: #A78BFA;
+    --calm-info-bg: #4C1D95;
+
+    /* Glass & Glow (adjusted for dark mode) */
+    --glass-bg: rgba(26, 26, 23, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glow-accent: rgba(59, 130, 246, 0.25);
+    --glow-success: rgba(52, 211, 153, 0.2);
+
+    /* Shadows (stronger for dark mode) */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
   }
 
   body {
@@ -140,6 +194,19 @@
     text-decoration: underline;
   }
 
+  /* ===== FOCUS VISIBILITY (Accessibility) ===== */
+  a:focus-visible {
+    outline: 2px solid var(--calm-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  button:focus-visible,
+  [role="button"]:focus-visible {
+    outline: 2px solid var(--calm-accent);
+    outline-offset: 2px;
+  }
+
   /* ===== SCROLLBAR ===== */
   ::-webkit-scrollbar {
     width: 10px;
@@ -172,12 +239,17 @@
     transition: all var(--transition-base);
   }
 
-  .btn-primary:hover {
+  .btn-primary:hover:not(:disabled) {
     filter: brightness(1.1);
     box-shadow: 0 15px 30px var(--glow-accent);
+    transform: scale(1.02);
   }
 
-  .btn-primary:focus {
+  .btn-primary:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  .btn-primary:focus-visible {
     @apply outline-none ring-4;
     ring-color: var(--calm-accent-light);
   }
@@ -198,12 +270,17 @@
     transition: all var(--transition-base);
   }
 
-  .btn-secondary:hover {
+  .btn-secondary:hover:not(:disabled) {
     border-color: var(--calm-accent);
     color: var(--calm-accent);
+    transform: scale(1.02);
   }
 
-  .btn-secondary:focus {
+  .btn-secondary:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  .btn-secondary:focus-visible {
     @apply outline-none ring-4;
     ring-color: var(--calm-accent-light);
   }
@@ -227,7 +304,7 @@
     background: var(--calm-accent-light);
   }
 
-  .btn-ghost:focus {
+  .btn-ghost:focus-visible {
     @apply outline-none ring-4;
     ring-color: var(--calm-accent-light);
   }
@@ -243,12 +320,15 @@
     @apply bg-white border rounded-2xl overflow-hidden;
     border-color: var(--calm-stone);
     box-shadow: var(--shadow-md);
-    transition: all var(--transition-base);
+    transition: transform var(--duration-normal) var(--ease-out),
+                box-shadow var(--duration-normal) var(--ease-out),
+                border-color var(--duration-normal) var(--ease-out);
   }
 
   .card:hover {
     border-color: var(--calm-accent);
     box-shadow: 0 10px 30px var(--glow-accent);
+    transform: translateY(-2px);
   }
 
   .card-content {
@@ -540,8 +620,51 @@
 
   /* ===== SKELETON LOADING ===== */
   .skeleton {
+    @apply rounded-lg;
+    background: linear-gradient(
+      90deg,
+      var(--calm-cloud) 0%,
+      var(--calm-stone) 50%,
+      var(--calm-cloud) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+  }
+
+  .skeleton-pulse {
     @apply animate-pulse rounded-lg;
     background: var(--calm-cloud);
+  }
+
+  /* ===== TABLE SCROLL CONTAINER ===== */
+  .table-scroll-container {
+    position: relative;
+  }
+
+  .table-scroll-container::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 2rem;
+    pointer-events: none;
+    background: linear-gradient(to left, white, transparent);
+  }
+
+  @media (min-width: 768px) {
+    .table-scroll-container::after {
+      display: none;
+    }
+  }
+
+  .table-scroll-container > div {
+    overflow-x: auto;
+  }
+
+  .table-scroll-container table {
+    min-width: 800px;
+    width: 100%;
   }
 }
 
@@ -550,9 +673,40 @@
   @keyframes fadeIn {
     from {
       opacity: 0;
+      transform: translateY(8px);
     }
     to {
       opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes modalScaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95) translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
     }
   }
 
@@ -588,6 +742,85 @@
 
   .animate-scaleIn {
     animation: scaleIn 0.3s ease-out;
+  }
+
+  /* ===== MICRO-INTERACTIONS ===== */
+  .btn-hover {
+    transition: transform var(--duration-fast) var(--ease-out),
+                box-shadow var(--duration-fast) var(--ease-out);
+  }
+
+  .btn-hover:hover:not(:disabled) {
+    transform: scale(1.02);
+  }
+
+  .btn-hover:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  .card-hover {
+    transition: transform var(--duration-normal) var(--ease-out),
+                box-shadow var(--duration-normal) var(--ease-out),
+                border-color var(--duration-normal) var(--ease-out);
+  }
+
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .link-hover {
+    transition: color var(--duration-fast) var(--ease-in-out);
+  }
+
+  .link-hover:hover {
+    color: var(--calm-accent);
+  }
+
+  .fade-in {
+    animation: fadeIn var(--duration-slow) var(--ease-out) forwards;
+  }
+
+  /* Staggered fade-in for lists */
+  .stagger-fade-in > * {
+    opacity: 0;
+    animation: fadeIn var(--duration-slow) var(--ease-out) forwards;
+  }
+
+  .stagger-fade-in > *:nth-child(1) { animation-delay: 0ms; }
+  .stagger-fade-in > *:nth-child(2) { animation-delay: 100ms; }
+  .stagger-fade-in > *:nth-child(3) { animation-delay: 200ms; }
+  .stagger-fade-in > *:nth-child(4) { animation-delay: 300ms; }
+  .stagger-fade-in > *:nth-child(5) { animation-delay: 400ms; }
+  .stagger-fade-in > *:nth-child(6) { animation-delay: 500ms; }
+
+  /* Modal animations */
+  .modal-overlay-animate {
+    animation: modalFadeIn var(--duration-normal) var(--ease-out) forwards;
+  }
+
+  .modal-content-animate {
+    animation: modalScaleIn var(--duration-slow) var(--ease-out) forwards;
+  }
+
+  /* ===== PREFERS REDUCED MOTION ===== */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+
+    .animate-fadeIn,
+    .animate-slideUp,
+    .animate-scaleIn {
+      animation: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
   }
 
   /* ===== GLASS MORPHISM ===== */

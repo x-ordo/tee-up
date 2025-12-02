@@ -35,11 +35,18 @@ export function LoadingSpinner({
   };
 
   const content = (
-    <div className="text-center">
+    <div
+      className="text-center"
+      role="status"
+      aria-busy="true"
+      aria-live="polite"
+    >
       <div
         className={`mx-auto mb-6 animate-spin rounded-full border-4 border-accent border-t-transparent ${sizeClasses[size]}`}
+        aria-hidden="true"
       />
       {message && <p className="text-calm-ash">{message}</p>}
+      <span className="sr-only">{message || '로딩 중'}</span>
     </div>
   );
 
@@ -52,6 +59,50 @@ export function LoadingSpinner({
   }
 
   return content;
+}
+
+// Button with loading state for actions
+interface LoadingButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  loading?: boolean;
+  loadingText?: string;
+  variant?: 'primary' | 'secondary' | 'ghost';
+  children: React.ReactNode;
+}
+
+export function LoadingButton({
+  loading = false,
+  loadingText = '처리 중...',
+  variant = 'primary',
+  children,
+  disabled,
+  className = '',
+  ...props
+}: LoadingButtonProps) {
+  const variantClasses = {
+    primary: 'btn-primary',
+    secondary: 'btn-secondary',
+    ghost: 'btn-ghost',
+  };
+
+  return (
+    <button
+      disabled={loading || disabled}
+      className={`${variantClasses[variant]} relative inline-flex items-center justify-center gap-2 ${className}`}
+      aria-busy={loading}
+      {...props}
+    >
+      {loading && (
+        <div
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
+          aria-hidden="true"
+        />
+      )}
+      <span className={loading ? 'invisible' : ''}>{children}</span>
+      {loading && (
+        <span className="sr-only">{loadingText}</span>
+      )}
+    </button>
+  );
 }
 
 export default LoadingSpinner;

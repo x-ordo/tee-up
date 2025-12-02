@@ -4,6 +4,7 @@ import '@fontsource/pretendard/500.css'
 import '@fontsource/pretendard/600.css'
 import '@fontsource/pretendard/700.css'
 import type { Metadata, Viewport } from 'next'
+import { ThemeProvider } from 'next-themes'
 import {
   JsonLd,
   getOrganizationSchema,
@@ -146,7 +147,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="ko" className="scroll-smooth">
+    <html lang="ko" className="scroll-smooth" suppressHydrationWarning>
       <head>
         {/* Preconnect to external domains for performance */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -162,7 +163,16 @@ export default function RootLayout({
         <JsonLd data={getWebsiteSchema()} />
         <JsonLd data={getServiceSchema()} />
       </head>
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }

@@ -6,6 +6,8 @@ import { useState } from 'react'
 import type { ProfileData } from './profile-data'
 import BookingModal from '../components/BookingModal'
 import { KakaoTalkButton } from '../components/KakaoTalkButton'
+import { ThemeToggle } from '../components/ThemeToggle'
+import { useScrollVisibility } from '@/hooks/useScrollVisibility'
 
 export function ProfileTemplate({ data }: { data: ProfileData }) {
   const {
@@ -26,22 +28,79 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
   } = data
 
   const [open, setOpen] = useState(false)
+  const { isVisible: ctaVisible, hide: hideCta } = useScrollVisibility({ delay: 1000 })
+  const [ctaMinimized, setCtaMinimized] = useState(false)
 
   return (
     <div className="min-h-screen bg-calm-white">
+      {/* Theme Toggle - Fixed Position */}
+      <div className="fixed top-6 right-6 z-50">
+        <ThemeToggle className="bg-white/80 backdrop-blur-md shadow-lg" />
+      </div>
+
       {/* Floating Sticky CTAs */}
-      <div className="fixed bottom-8 right-8 z-50 flex flex-col gap-3 animate-fadeIn">
-        {profile.kakaoTalkId && (
-          <KakaoTalkButton kakaoTalkId={profile.kakaoTalkId} proName={profile.name} />
+      <div
+        data-testid="floating-cta"
+        className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ${
+          ctaVisible && !ctaMinimized
+            ? 'opacity-100 translate-y-0'
+            : ctaMinimized
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 translate-y-4 pointer-events-none'
+        }`}
+      >
+        {/* Minimized State (mobile) */}
+        {ctaMinimized && (
+          <button
+            onClick={() => setCtaMinimized(false)}
+            className="btn-primary h-14 w-14 rounded-full p-0 shadow-lg md:hidden"
+            aria-label="CTA 메뉴 열기"
+          >
+            <span className="text-xl">💬</span>
+          </button>
         )}
-        <button
-          onClick={() => setOpen(true)}
-          className="btn-primary px-8 py-4 text-lg shadow-lg transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-accent-light"
-        >
-          <span className="flex items-center gap-2">
-            💬 레슨 상담하기
-          </span>
-        </button>
+
+        {/* Full CTA (visible when not minimized) */}
+        {!ctaMinimized && (
+          <div className="flex flex-col gap-3 animate-fadeIn">
+            {/* Close/Minimize button - mobile only */}
+            <button
+              onClick={() => {
+                setCtaMinimized(true)
+                hideCta()
+              }}
+              className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-calm-charcoal text-white text-xs flex items-center justify-center md:hidden"
+              aria-label="CTA 최소화"
+            >
+              ×
+            </button>
+
+            {/* Desktop: Show both buttons */}
+            <div className="hidden md:flex md:flex-col md:gap-3">
+              {profile.kakaoTalkId && (
+                <KakaoTalkButton kakaoTalkId={profile.kakaoTalkId} proName={profile.name} />
+              )}
+              <button
+                onClick={() => setOpen(true)}
+                className="btn-primary px-8 py-4 text-lg shadow-lg transition-all duration-300 hover:scale-105"
+              >
+                <span className="flex items-center gap-2">
+                  💬 레슨 상담하기
+                </span>
+              </button>
+            </div>
+
+            {/* Mobile: Single button with action sheet behavior */}
+            <button
+              onClick={() => setOpen(true)}
+              className="btn-primary px-6 py-3 text-base shadow-lg md:hidden"
+            >
+              <span className="flex items-center gap-2">
+                💬 레슨 문의
+              </span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Hero Section - Immersive Full Screen */}
@@ -103,7 +162,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce" aria-hidden="true">
           <div className="flex flex-col items-center gap-2 text-white/60">
             <span className="text-sm">Scroll</span>
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -113,7 +172,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
         </div>
       </header>
 
-      <main className="relative">
+      <main className="relative pb-24 md:pb-0">
         {/* Stats Highlight - Cards */}
         <section className="relative -mt-32 px-6 pb-16">
           <div className="mx-auto max-w-7xl">

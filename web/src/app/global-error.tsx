@@ -8,20 +8,35 @@ interface GlobalErrorProps {
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
   return (
     <html lang="ko">
-      <body className="bg-[#FAFAF9]">
+      <body style={{ backgroundColor: 'var(--calm-white, #FAFAF9)' }}>
         <div className="flex min-h-screen items-center justify-center px-6">
           <div className="max-w-md text-center">
             {/* 경고 아이콘 */}
-            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-[#FEE2E2]">
-              <svg className="h-10 w-10 text-[#EF4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div
+              className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full"
+              style={{ backgroundColor: 'var(--calm-error-bg, #FEE2E2)' }}
+            >
+              <svg
+                className="h-10 w-10"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                style={{ color: 'var(--calm-error, #EF4444)' }}
+              >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
               </svg>
             </div>
 
-            <h1 className="mb-4 text-2xl font-semibold text-[#1A1A17]">
+            <h1
+              className="mb-4 text-2xl font-semibold"
+              style={{ color: 'var(--calm-obsidian, #1A1A17)' }}
+            >
               심각한 오류가 발생했습니다
             </h1>
-            <p className="mb-8 text-base text-[#52524E]">
+            <p
+              className="mb-8 text-base"
+              style={{ color: 'var(--calm-charcoal, #52524E)' }}
+            >
               페이지를 불러오는 중 문제가 발생했습니다.
               <br />
               페이지를 새로고침하거나 잠시 후 다시 시도해 주세요.
@@ -30,13 +45,13 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
               <button
                 onClick={reset}
-                className="rounded-xl bg-[#3B82F6] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#2563EB]"
+                className="btn-primary"
               >
                 다시 시도
               </button>
               <a
                 href="/"
-                className="rounded-xl border-2 border-[#E8E8E5] bg-white px-6 py-3 text-sm font-medium text-[#52524E] transition-colors hover:border-[#3B82F6] hover:text-[#3B82F6]"
+                className="btn-secondary"
               >
                 홈으로 이동
               </a>
@@ -44,8 +59,15 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
 
             {process.env.NODE_ENV === 'development' && (
               <div className="mt-8 text-left">
-                <p className="mb-2 text-sm text-[#78786E]">오류 정보:</p>
-                <pre className="overflow-auto rounded-xl border border-[#EF4444] bg-[#FEE2E2] p-4 text-xs text-[#EF4444]">
+                <p
+                  className="mb-2 text-sm"
+                  style={{ color: 'var(--calm-ash, #78786E)' }}
+                >
+                  오류 정보:
+                </p>
+                <pre
+                  className="alert-error overflow-auto rounded-xl p-4 text-xs"
+                >
                   {error.message}
                 </pre>
               </div>

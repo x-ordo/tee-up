@@ -88,7 +88,7 @@ export function LeadChart({
           <polyline
             points={chartData.points}
             fill="none"
-            stroke="#3B82F6"
+            stroke="var(--calm-accent)"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -97,8 +97,8 @@ export function LeadChart({
           {/* Gradient Definition */}
           <defs>
             <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.5" />
-              <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
+              <stop offset="0%" stopColor="var(--calm-accent)" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="var(--calm-accent)" stopOpacity="0" />
             </linearGradient>
           </defs>
         </svg>

@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import { useChatRooms } from '@/hooks/useChat';
 import { ChatRoomList } from './components/ChatRoomList';
+import { NoConversations } from '@/app/components/EmptyState';
+import { ErrorState } from '@/app/components/ErrorState';
 
 export default function ChatPage() {
   const router = useRouter();
@@ -59,9 +61,13 @@ export default function ChatPage() {
           </div>
 
           {error ? (
-            <div className="p-8 text-center">
-              <p className="text-error">{error}</p>
-            </div>
+            <ErrorState
+              title="대화를 불러올 수 없습니다"
+              description={error}
+              showHomeLink={false}
+            />
+          ) : rooms.length === 0 ? (
+            <NoConversations />
           ) : (
             <ChatRoomList
               rooms={rooms}

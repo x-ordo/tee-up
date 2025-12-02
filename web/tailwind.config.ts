@@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss'
 import { fontFamily } from 'tailwindcss/defaultTheme'
 
 const config: Config = {
+  darkMode: 'selector',
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -10,7 +11,29 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Neutrals (Korean Luxury)
+        // CSS Variable References (auto-switch in dark mode)
+        'calm-white': 'var(--calm-white)',
+        'calm-cloud': 'var(--calm-cloud)',
+        'calm-stone': 'var(--calm-stone)',
+        'calm-ash': 'var(--calm-ash)',
+        'calm-charcoal': 'var(--calm-charcoal)',
+        'calm-obsidian': 'var(--calm-obsidian)',
+        'calm-accent': 'var(--calm-accent)',
+        'calm-accent-light': 'var(--calm-accent-light)',
+        'calm-accent-dark': 'var(--calm-accent-dark)',
+        'calm-success': 'var(--calm-success)',
+        'calm-success-bg': 'var(--calm-success-bg)',
+        'calm-warning': 'var(--calm-warning)',
+        'calm-warning-bg': 'var(--calm-warning-bg)',
+        'calm-error': 'var(--calm-error)',
+        'calm-error-bg': 'var(--calm-error-bg)',
+        'calm-info': 'var(--calm-info)',
+        'calm-info-bg': 'var(--calm-info-bg)',
+        // Brand colors
+        'brand-kakao': 'var(--brand-kakao)',
+        'brand-kakao-text': 'var(--brand-kakao-text)',
+        'brand-kakao-hover': 'var(--brand-kakao-hover)',
+        // Neutrals (Korean Luxury) - static fallbacks
         calm: {
           white: '#FAFAF9',
           cloud: '#F4F4F2',
@@ -19,13 +42,13 @@ const config: Config = {
           charcoal: '#52524E',
           obsidian: '#1A1A17',
         },
-        // Accent
+        // Accent - static fallbacks
         accent: {
-          DEFAULT: '#3B82F6',
+          DEFAULT: '#2563EB',  // WCAG AA compliant (4.7:1 on white)
           light: '#DBEAFE',
           dark: '#1E40AF',
         },
-        // Functional
+        // Functional - static fallbacks
         success: {
           DEFAULT: '#10B981',
           bg: '#D1FAE5',
@@ -108,6 +131,7 @@ const config: Config = {
         'fadeIn': 'fadeIn 0.3s ease-in-out',
         'slideUp': 'slideUp 0.4s ease-out',
         'scaleIn': 'scaleIn 0.3s ease-out',
+        'shimmer': 'shimmer 2s infinite linear',
       },
       keyframes: {
         fadeIn: {
@@ -121,6 +145,10 @@ const config: Config = {
         scaleIn: {
           '0%': { transform: 'scale(0.95)', opacity: '0' },
           '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
         },
       },
     },

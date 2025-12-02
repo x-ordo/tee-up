@@ -82,10 +82,15 @@ export function KakaoTalkButton({
       hover:border-accent hover:text-accent
     `,
     minimal: `
-      border-none bg-[#FEE500] text-[#191919]
-      hover:bg-[#FDD835] hover:shadow-lg
+      border-none hover:shadow-lg
     `,
   };
+
+  // Minimal variant needs inline styles for CSS variables
+  const minimalStyles = variant === 'minimal' ? {
+    backgroundColor: 'var(--brand-kakao)',
+    color: 'var(--brand-kakao-text)',
+  } : {};
 
   return (
     <a
@@ -101,6 +106,7 @@ export function KakaoTalkButton({
         ${variantStyles[variant]}
         ${className}
       `}
+      style={minimalStyles}
       aria-label={`카카오톡으로 ${proName}에게 문의`}
     >
       {/* 카카오톡 아이콘 */}
@@ -143,11 +149,15 @@ export function KakaoChannelAddButton({
       target="_blank"
       rel="noopener noreferrer"
       className={`
-        inline-flex items-center gap-2 rounded-lg bg-[#FEE500] px-4 py-2
-        text-sm font-medium text-[#191919] transition-all duration-200
-        hover:bg-[#FDD835] hover:shadow-md
+        inline-flex items-center gap-2 rounded-lg px-4 py-2
+        text-sm font-medium transition-all duration-200
+        hover:shadow-md
         ${className}
       `}
+      style={{
+        backgroundColor: 'var(--brand-kakao)',
+        color: 'var(--brand-kakao-text)',
+      }}
       aria-label="카카오톡 채널 추가"
     >
       <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">

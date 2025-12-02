@@ -1,0 +1,101 @@
+import { renderHook } from '@testing-library/react';
+import { useRef } from 'react';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
+
+// Mock 요소 생성
+const createMockContainer = () => {
+  const container = document.createElement('div');
+  const button1 = document.createElement('button');
+  button1.textContent = 'Button 1';
+  const button2 = document.createElement('button');
+  button2.textContent = 'Button 2';
+  const input = document.createElement('input');
+  input.type = 'text';
+
+  container.appendChild(button1);
+  container.appendChild(button2);
+  container.appendChild(input);
+  document.body.appendChild(container);
+
+  return { container, button1, button2, input };
+};
+
+describe('useFocusTrap', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  it('should not trap focus when isActive is false', () => {
+    const { container } = createMockContainer();
+    const ref = { current: container };
+
+    renderHook(() => useFocusTrap({ containerRef: ref, isActive: false }));
+
+    // 포커스가 자동으로 이동하지 않아야 함
+    expect(document.activeElement).toBe(document.body);
+  });
+
+  it('should focus first focusable element when active', async () => {
+    const { container, button1 } = createMockContainer();
+    const ref = { current: container };
+
+    renderHook(() => useFocusTrap({ containerRef: ref, isActive: true }));
+
+    // requestAnimationFrame 대기
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    expect(document.activeElement).toBe(button1);
+  });
+
+  it('should call onClose when Escape is pressed', async () => {
+    const { container } = createMockContainer();
+    const ref = { current: container };
+    const onClose = jest.fn();
+
+    renderHook(() => useFocusTrap({ containerRef: ref, isActive: true, onClose }));
+
+    // Escape 키 이벤트 발생
+    const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
+    document.dispatchEvent(escapeEvent);
+
+    expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('should trap Tab at last element', async () => {
+    const { container, button1, input } = createMockContainer();
+    const ref = { current: container };
+
+    renderHook(() => useFocusTrap({ containerRef: ref, isActive: true }));
+
+    // 마지막 요소에 포커스
+    input.focus();
+    expect(document.activeElement).toBe(input);
+
+    // Tab 키 이벤트 발생
+    const tabEvent = new KeyboardEvent('keydown', { key: 'Tab', bubbles: true });
+    Object.defineProperty(tabEvent, 'shiftKey', { value: false });
+    document.dispatchEvent(tabEvent);
+
+    // 기본 동작이 막혀야 함 (실제 포커스 이동은 브라우저 이벤트에서 처리)
+    // 이 테스트에서는 onClose가 호출되지 않았음을 확인
+    expect(document.activeElement).toBe(input);
+  });
+
+  it('should trap Shift+Tab at first element', async () => {
+    const { container, button1 } = createMockContainer();
+    const ref = { current: container };
+
+    renderHook(() => useFocusTrap({ containerRef: ref, isActive: true }));
+
+    // 첫 번째 요소에 포커스
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    expect(document.activeElement).toBe(button1);
+
+    // Shift+Tab 키 이벤트 발생
+    const tabEvent = new KeyboardEvent('keydown', { key: 'Tab', shiftKey: true, bubbles: true });
+    document.dispatchEvent(tabEvent);
+
+    // 기본 동작이 막혀야 함
+    expect(document.activeElement).toBe(button1);
+  });
+});

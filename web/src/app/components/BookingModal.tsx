@@ -1,6 +1,7 @@
 "use client"
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
+import { useFocusTrap } from '@/hooks/useFocusTrap'
 
 type Service = { name: string; duration: string; price: string }
 
@@ -28,9 +29,31 @@ export default function BookingModal({
   const [agree, setAgree] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
+  // Focus management
+  const modalRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLElement | null>(null)
+
+  // Store trigger element when modal opens
   useEffect(() => {
-    if (open) setSubmitted(false)
+    if (open) {
+      triggerRef.current = document.activeElement as HTMLElement
+      setSubmitted(false)
+    }
   }, [open])
+
+  // Restore focus when modal closes
+  useEffect(() => {
+    if (!open && triggerRef.current) {
+      triggerRef.current.focus()
+    }
+  }, [open])
+
+  // Focus trap and Escape key handling
+  useFocusTrap({
+    containerRef: modalRef,
+    isActive: open,
+    onClose,
+  })
 
   const disabled = useMemo(() => !name || !phone || !agree, [name, phone, agree])
 
@@ -43,12 +66,19 @@ export default function BookingModal({
   }
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-container mx-4 max-w-lg animate-scaleIn p-6">
+    <div className="modal-overlay modal-overlay-animate" onClick={onClose}>
+      <div
+        ref={modalRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="booking-modal-title"
+        className="modal-container mx-4 max-w-lg modal-content-animate p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
         {!submitted ? (
           <>
             <div className="mb-6 flex items-center justify-between">
-              <h4 className="font-display text-display-sm font-semibold text-calm-obsidian">
+              <h4 id="booking-modal-title" className="font-display text-display-sm font-semibold text-calm-obsidian">
                 {type === 'reservation' ? '레슨 예약 정보' : '대기 신청'}
               </h4>
               <button

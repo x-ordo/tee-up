@@ -8,7 +8,7 @@ TEE:UP is a premium golf lesson matching platform connecting VIP golfers with ve
 
 **Status:** Phase 1 MVP (Active Development)
 **Tech Stack:** Next.js 14 (App Router) + Express.js + Supabase (PostgreSQL)
-**Design Philosophy:** "Calm Control" (차분한 통제) — 90% neutrals, 10% accent blue (#3B82F6)
+**Design Philosophy:** "Calm Control" (차분한 통제) — 90% neutrals, 10% accent blue (#2563EB)
 
 ## Development Commands
 
@@ -299,3 +299,12 @@ Both frontend and backend use **strict mode**.
 - **Media Storage:** Cloudinary or AWS S3 (Phase 2)
 - **Accessibility:** WCAG AA compliance required (test with automated tools)
 - **Localization:** Primary language is Korean, English as secondary
+
+## Active Technologies
+- TypeScript 5.x, Next.js 14 (App Router) + React 18, Tailwind CSS 3.x, existing global.css design tokens (001-ux-a11y-fixes)
+- N/A (프론트엔드 전용 변경) (001-ux-a11y-fixes)
+- TypeScript 5.9, React 18.2, Next.js 14.0 + Tailwind CSS 3.4, @fontsource/pretendard, clsx, tailwind-merge (002-ui-ux-color)
+- localStorage (테마 설정 저장) (002-ui-ux-color)
+
+## Recent Changes
+- 001-ux-a11y-fixes: Added TypeScript 5.x, Next.js 14 (App Router) + React 18, Tailwind CSS 3.x, existing global.css design tokens

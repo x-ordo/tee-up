@@ -162,8 +162,11 @@ export default function AdminUsersPage() {
             />
           </div>
 
-          <div className="table-container">
-            <table className="w-full">
+          <div className="table-container relative">
+            {/* Scroll hint for mobile */}
+            <div className="pointer-events-none absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white to-transparent md:hidden" aria-hidden="true" />
+            <div className="overflow-x-auto">
+            <table className="min-w-[800px] w-full">
               <thead>
                 <tr className="table-header">
                   <th className="text-left">ID</th>
@@ -240,6 +243,7 @@ export default function AdminUsersPage() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         </section>
 
