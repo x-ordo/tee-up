@@ -14,6 +14,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.0] - 2025-12-02
+
+### Added
+- 다크 모드 토글 기능 (ThemeToggle 컴포넌트)
+- 마이크로 인터랙션 및 UI 애니메이션 개선
+- 스켈레톤 로딩 UI 강화
+
+### Changed
+- 디자인 시스템 색상 일관성 개선
+- 접근성 (a11y) 표준 준수 강화
+- 프론트엔드 컴포넌트 반응형 디자인 최적화
+
+### Fixed
+- CI/CD 빌드 오류 수정 (Supabase 환경변수 폴백 처리)
+- useFocusTrap 테스트 케이스 순환 포커스 동작 수정
+- 단위 테스트 통과율 개선 (100/109 passed)
+
+### Technical
+- PR #13 병합: UI/UX 검증 전략 및 색상 체계 개선
+- E2E 테스트 안정성 향상
+- TypeScript strict 모드 타입 안정성 유지
+
+---
+
 ## [1.0.0-beta] - 2025-12-01
 
 ### Added
@@ -121,6 +145,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Description |
 |---------|------|-------------|
+| 0.2.0 | 2025-12-02 | UI/UX 개선, 다크모드 토글, CI/CD 안정성 향상 |
 | 1.0.0-beta | 2025-12-01 | 디자인 시스템 통일, 접근성 개선, UI/UX 완성도 향상 |
 | 1.0.0-alpha | 2025-11-27 | Phase 1 MVP 초기 릴리스 |
 
