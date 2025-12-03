@@ -26,7 +26,7 @@ export default function Home() {
           <div className="flex items-center gap-4">
             <ThemeToggle />
             <Link href="/get-started" className="btn-primary">
-              시작하기
+              바로 시작하기
             </Link>
           </div>
         </div>
@@ -37,29 +37,26 @@ export default function Home() {
         <div className="relative z-10 mx-auto max-w-6xl text-center">
           <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-accent bg-accent-light px-6 py-3">
             <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />
-            <span className="text-body-sm font-medium text-accent-dark">AI 기반 스마트 매칭</span>
+            <span className="text-body-sm font-medium text-accent-dark">AI가 추천하는 맞춤 프로</span>
           </div>
 
           <h1 className="mb-6 font-display text-5xl font-bold leading-tight text-calm-obsidian md:text-6xl lg:text-7xl">
-            당신만을 위한
+            나에게 꼭 맞는
             <br />
-            <span className="text-accent">
-              프리미엄 골프 레슨
-            </span>
+            <span className="text-accent">프리미엄 골프 레슨을 간편하게</span>
           </h1>
 
           <p className="mx-auto mb-12 max-w-2xl text-body-lg leading-relaxed text-calm-charcoal">
-            엄선된 투어 프로와 함께하는 특별한 레슨 경험.
-            <br />
-            데이터 기반의 정교한 매칭으로 실력 향상의 지름길을 찾아드립니다.
+            투어 경험이 풍부한 프로들을 한눈에 비교하고, 원하는 스타일로 바로 상담하세요.
+            AI 추천과 실시간 매칭으로 실력 향상의 지름길을 안내합니다.
           </p>
 
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <button className="btn-primary px-10 py-4 text-lg">
-              AI 매칭 시작하기
+              3분 만에 AI 매칭
             </button>
             <Link href="/profile" className="btn-secondary px-10 py-4 text-lg">
-              전체 프로 보기
+              프로 리스트 보기
             </Link>
           </div>
         </div>
@@ -85,7 +82,7 @@ export default function Home() {
               <span className="text-accent">나만의 프로</span>
             </h2>
             <p className="mx-auto max-w-2xl text-body-lg text-calm-charcoal">
-              간단한 설문으로 나의 스타일과 목표에 최적화된 프로님을 만나보세요.
+              몇 가지 질문에 답하면 내 플레이 성향과 목표에 딱 맞는 프로를 추천해드려요.
             </p>
           </div>
 
@@ -93,18 +90,18 @@ export default function Home() {
             {[
               {
                 icon: '🎯',
-                title: '나의 목표 설정',
-                description: '현재 실력과 개선하고 싶은 부분을 알려주세요',
+                title: '목표 설정',
+                description: '현재 실력과 바라는 변화를 알려주세요.',
               },
               {
                 icon: '🤖',
-                title: 'AI 정밀 분석',
-                description: '수천 건의 데이터로 최적의 프로를 찾아드립니다',
+                title: 'AI 추천',
+                description: '수천 건의 데이터를 기반으로 어울리는 프로를 찾아드려요.',
               },
               {
                 icon: '✨',
-                title: '최적의 매칭',
-                description: '당신에게 딱 맞는 프로와 레슨을 시작하세요',
+                title: '바로 상담',
+                description: '마음에 드는 프로와 바로 상담을 시작해보세요.',
               },
             ].map((step, idx) => (
               <div
@@ -125,10 +122,10 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-16 text-center">
             <h2 className="mb-4 font-display text-display-md font-bold text-calm-obsidian">
-              검증된 프로 골퍼들
+              믿고 맡길 수 있는 프로 골퍼
             </h2>
             <p className="mx-auto max-w-2xl text-body-lg text-calm-charcoal">
-              LPGA, PGA 투어 경험의 최고 수준 프로들과 함께하세요
+              LPGA, PGA 투어 경험을 갖춘 프로들이 친절하게 도와드립니다.
             </p>
           </div>
 
@@ -161,7 +158,7 @@ export default function Home() {
               href="/profile"
               className="inline-flex items-center gap-2 text-body-lg font-semibold text-accent transition-all hover:gap-4"
             >
-              전체 프로 보기
+              모든 프로 살펴보기
               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
@@ -200,13 +197,13 @@ export default function Home() {
         <div className="mx-auto max-w-4xl">
           <div className="rounded-3xl border-2 border-accent bg-accent-light p-16 text-center">
             <h2 className="mb-6 font-display text-display-md font-bold text-calm-obsidian">
-              지금 시작하세요
+              지금 바로 시작해보세요
             </h2>
             <p className="mx-auto mb-10 max-w-2xl text-body-lg text-calm-charcoal">
-              AI 매칭으로 당신에게 완벽한 골프 프로를 찾아드립니다
+              간단한 질문만으로 내게 맞는 프로를 추천받고, 바로 상담까지 이어가세요.
             </p>
             <button className="btn-primary px-12 py-5 text-lg">
-              무료로 시작하기
+              무료 매칭 받아보기
             </button>
           </div>
         </div>
@@ -224,7 +221,7 @@ export default function Home() {
               <p className="mb-6 text-body-md leading-relaxed text-calm-charcoal">
                 프리미엄 골프 레슨 매칭 플랫폼.
                 <br />
-                검증된 프로 골퍼들과 함께 당신의 골프 실력을 한 단계 업그레이드하세요.
+                검증된 프로와 함께 부담 없이 실력을 키워보세요.
               </p>
               <div className="flex gap-4">
                 <a

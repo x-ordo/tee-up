@@ -31,15 +31,14 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               className="mb-4 text-2xl font-semibold"
               style={{ color: 'var(--calm-obsidian, #1A1A17)' }}
             >
-              심각한 오류가 발생했습니다
+              문제가 발생했어요
             </h1>
             <p
               className="mb-8 text-base"
               style={{ color: 'var(--calm-charcoal, #52524E)' }}
             >
-              페이지를 불러오는 중 문제가 발생했습니다.
-              <br />
-              페이지를 새로고침하거나 잠시 후 다시 시도해 주세요.
+              페이지를 불러오지 못했어요.
+              새로고침하거나 잠시 후 다시 시도해주세요.
             </p>
 
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
@@ -60,11 +59,11 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
             {process.env.NODE_ENV === 'development' && (
               <div className="mt-8 text-left">
                 <p
-                  className="mb-2 text-sm"
-                  style={{ color: 'var(--calm-ash, #78786E)' }}
-                >
-                  오류 정보:
-                </p>
+                className="mb-2 text-sm"
+                style={{ color: 'var(--calm-ash, #78786E)' }}
+              >
+                  오류 정보
+              </p>
                 <pre
                   className="alert-error overflow-auto rounded-xl p-4 text-xs"
                 >

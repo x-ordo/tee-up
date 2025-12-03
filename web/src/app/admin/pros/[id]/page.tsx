@@ -91,11 +91,11 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-semibold text-calm-obsidian">프로필 편집</h1>
-              <p className="text-body-sm text-calm-ash">프로 #{params.id} 프로필 커스터마이징</p>
+              <p className="text-body-sm text-calm-ash">프로 #{params.id} 프로필을 원하는 모습으로 꾸며보세요.</p>
             </div>
             <div className="flex gap-3">
               <Link href="/admin/pros" className="btn-ghost">
-                ← 목록
+                ← 목록으로
               </Link>
               <button
                 onClick={handleSave}
@@ -109,10 +109,10 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                     </svg>
-                    저장 중...
+                    저장 중입니다
                   </span>
                 ) : (
-                  '저장'
+                  '변경사항 저장'
                 )}
               </button>
             </div>

@@ -10,9 +10,9 @@ export default function NotFound() {
             <span className="text-display-sm font-bold text-accent">404</span>
           </div>
         }
-        title="페이지를 찾을 수 없습니다"
-        description="요청하신 페이지가 존재하지 않거나 이동되었을 수 있습니다."
-        action={{ label: '홈으로 이동', href: '/' }}
+        title="페이지를 찾지 못했어요"
+        description="주소가 잘못되었거나 페이지가 이동했을 수 있어요."
+        action={{ label: '홈으로 돌아가기', href: '/' }}
       />
     </div>
   );

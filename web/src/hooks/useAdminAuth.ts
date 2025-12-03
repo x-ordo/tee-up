@@ -59,7 +59,7 @@ export function useAdminAuth(): UseAdminAuthReturn {
       setUser(data.user)
     } catch (err) {
       console.error('Login error:', err)
-      setError(err instanceof Error ? err.message : '로그인에 실패했습니다.')
+      setError(err instanceof Error ? err.message : '로그인에 실패했습니다. 잠시 후 다시 시도해주세요.')
       throw err
     } finally {
       setIsLoading(false)

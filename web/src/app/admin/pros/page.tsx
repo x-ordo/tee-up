@@ -24,10 +24,10 @@ export default function AdminProsPage() {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-semibold text-calm-obsidian">프로 관리</h1>
-              <p className="text-body-sm text-calm-ash">프로 신청 검토 및 승인된 프로 관리</p>
+              <p className="text-body-sm text-calm-ash">신청을 검토하고 승인된 프로를 한눈에 관리하세요.</p>
             </div>
             <Link href="/admin" className="btn-ghost">
-              ← 대시보드
+              ← 대시보드로
             </Link>
           </div>
         </div>
@@ -84,7 +84,7 @@ export default function AdminProsPage() {
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-accent border-t-transparent"></div>
-            <span className="ml-3 text-calm-ash">데이터를 불러오는 중...</span>
+            <span className="ml-3 text-calm-ash">데이터를 불러오고 있어요...</span>
           </div>
         ) : (
           <>

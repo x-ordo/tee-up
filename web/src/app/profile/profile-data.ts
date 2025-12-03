@@ -75,7 +75,7 @@ export const profileLibrary: Record<string, ProfileData> = {
       title: 'Signature Performance Architect',
       subtitle: 'Private Member Profile',
       summary:
-        '투어 현장과 럭셔리 라이프스타일 사이를 유연하게 오가며, 집중력과 미니멀 스윙을 디자인하는 엘리트 코치. Apple Store 제품 페이지처럼 정제된 경험을 위해 모든 세션은 하나의 작품처럼 큐레이션됩니다.',
+        '투어 경험과 라이프스타일을 모두 아는 엘리트 코치. 동작은 단순하게, 피드백은 정교하게 전달해 세션마다 깔끔한 완성도를 제공합니다.',
       heroImage: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1400&q=80',
       instagramUsername: 'elliotkim.golf',
       youtubeChannelId: 'UCE_M8A5yxnLfW0KghEeajjQ',
@@ -90,22 +90,22 @@ export const profileLibrary: Record<string, ProfileData> = {
     storySections: [
       {
         title: 'SILHOUETTE',
-        heading: '정적인 라인과 리듬으로 완성되는 시그니처 스윙.',
-        body: '애플 스토어가 제품을 하나씩 전시하듯, 엘리엇의 레슨은 동작을 최소화한 채 꼭 필요한 감각만 남깁니다. 초고속 카메라와 ProMotion 수준의 모션 캡처가 균형 잡힌 실루엣을 즉시 보여줍니다.',
+        heading: '과하지 않은 라인과 리듬으로 만드는 시그니처 스윙',
+        body: '동작을 최소화해 필요한 감각만 잡아드립니다. 초고속 카메라와 모션 캡처로 내 스윙 실루엣을 바로 확인하고 다듬을 수 있어요.',
         image: 'https://images.unsplash.com/photo-1493666438817-866a91353ca9?auto=format&fit=crop&w=1200&q=80',
         align: 'left',
       },
       {
         title: 'AURA',
-        heading: '명품 부티크처럼 고요한 톤온톤 스튜디오.',
-        body: '오뜨 꾸뛰르 하우스의 샴페인 골드 팔레트를 레퍼런스로 조명과 퍼포먼스 데이터를 배치했습니다. 입장부터 종료까지 전담 큐레이터가 동선과 음악, 향을 맞춤 설계합니다.',
+        heading: '차분한 톤온톤 스튜디오에서 몰입도 높게',
+        body: '조명과 음악까지 신경 쓴 공간에서 편안하게 연습합니다. 입장부터 마무리까지 전담 큐레이터가 동선을 챙겨 드려요.',
         image: 'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80',
         align: 'right',
       },
       {
         title: 'PRECISION',
-        heading: '애플 프로덕트 페이지 같은 디테일의 피드백.',
-        body: '피드백 리포트는 디바이스 언박싱 경험처럼 한눈에 흐름이 읽히도록 디자인되었습니다. 모션 그래프, 샤프트 텐션, 퍼팅 스트로크 파형을 인터랙티브 캔버스로 제공하여 언제든 복기할 수 있습니다.',
+        heading: '한눈에 읽히는 깔끔한 피드백',
+        body: '모션 그래프와 퍼팅 스트로크를 보기 쉽게 정리해 드립니다. 세션 후에도 언제든 다시 확인하며 바로 연습에 옮길 수 있어요.',
         image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80',
         align: 'left',
       },

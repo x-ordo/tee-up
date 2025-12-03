@@ -42,7 +42,7 @@ export function useAuth() {
           user: null,
           isLoading: false,
           isAuthenticated: false,
-          error: '사용자 정보를 불러오는데 실패했습니다.',
+          error: '사용자 정보를 불러오지 못했어요. 잠시 후 다시 시도해주세요.',
         });
       }
     };
@@ -95,7 +95,7 @@ export function useAuth() {
     setState((prev) => ({
       ...prev,
       isLoading: false,
-      error: result.error?.message || '회원가입에 실패했습니다.',
+      error: result.error?.message || '회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.',
     }));
 
     return {
@@ -123,7 +123,7 @@ export function useAuth() {
     setState((prev) => ({
       ...prev,
       isLoading: false,
-      error: result.error?.message || '로그인에 실패했습니다.',
+      error: result.error?.message || '로그인에 실패했습니다. 잠시 후 다시 시도해주세요.',
     }));
 
     return {
@@ -149,7 +149,7 @@ export function useAuth() {
       setState((prev) => ({
         ...prev,
         isLoading: false,
-        error: result.error || '로그아웃에 실패했습니다.',
+        error: result.error || '로그아웃에 실패했습니다. 잠시 후 다시 시도해주세요.',
       }));
     }
 
@@ -165,7 +165,7 @@ export function useAuth() {
     setState((prev) => ({
       ...prev,
       isLoading: false,
-      error: result.success ? null : result.error || '요청에 실패했습니다.',
+      error: result.success ? null : result.error || '요청에 실패했습니다. 잠시 후 다시 시도해주세요.',
     }));
 
     return result;
@@ -180,7 +180,7 @@ export function useAuth() {
     setState((prev) => ({
       ...prev,
       isLoading: false,
-      error: result.success ? null : result.error || '변경에 실패했습니다.',
+      error: result.success ? null : result.error || '변경에 실패했습니다. 잠시 후 다시 시도해주세요.',
     }));
 
     return result;
@@ -190,7 +190,7 @@ export function useAuth() {
   const handleProfileUpdate = useCallback(
     async (updates: Partial<Pick<IUser, 'full_name' | 'phone' | 'avatar_url'>>) => {
       if (!state.user) {
-        return { success: false, error: '로그인이 필요합니다.' };
+        return { success: false, error: '로그인이 필요합니다. 먼저 로그인해주세요.' };
       }
 
       setState((prev) => ({ ...prev, isLoading: true, error: null }));

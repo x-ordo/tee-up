@@ -31,14 +31,14 @@ export function AdminLoginForm({ onSubmit, error, isLoading }: AdminLoginFormPro
     <div className="flex min-h-screen items-center justify-center bg-calm-white">
       <div className="card w-full max-w-md p-8">
         <h1 className="mb-6 text-center text-2xl font-semibold text-calm-obsidian">
-          Admin Login
+          관리자 로그인
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email Input */}
           <div>
             <label htmlFor="email" className="mb-2 block text-body-sm font-medium text-calm-charcoal">
-              Email
+              이메일
             </label>
             <input
               id="email"
@@ -58,7 +58,7 @@ export function AdminLoginForm({ onSubmit, error, isLoading }: AdminLoginFormPro
           {/* Password Input */}
           <div>
             <label htmlFor="password" className="mb-2 block text-body-sm font-medium text-calm-charcoal">
-              Password
+              비밀번호
             </label>
             <input
               id="password"
@@ -69,7 +69,7 @@ export function AdminLoginForm({ onSubmit, error, isLoading }: AdminLoginFormPro
                 handleChange()
               }}
               className="input w-full"
-              placeholder="Enter admin password"
+              placeholder="관리자 비밀번호를 입력하세요"
               disabled={isLoading}
               required
             />
@@ -84,7 +84,7 @@ export function AdminLoginForm({ onSubmit, error, isLoading }: AdminLoginFormPro
             >
               <p className="font-medium">{error}</p>
               <p className="mt-1 text-xs opacity-80">
-                문제가 지속되면 관리자에게 문의해주세요.
+                계속 문제가 발생하면 운영 팀에 알려주세요.
               </p>
             </div>
           )}
@@ -94,7 +94,7 @@ export function AdminLoginForm({ onSubmit, error, isLoading }: AdminLoginFormPro
             className="btn-primary w-full"
             disabled={isLoading}
           >
-            {isLoading ? 'Logging in...' : 'Login'}
+            {isLoading ? '로그인 중...' : '로그인'}
           </button>
         </form>
       </div>

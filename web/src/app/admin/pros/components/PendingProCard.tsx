@@ -9,9 +9,9 @@ interface PendingProCardProps {
 }
 
 export function PendingProCard({ pro, onApprove, onReject, isProcessing }: PendingProCardProps) {
-  const profileName = pro.profiles?.full_name || '이름 없음'
+  const profileName = pro.profiles?.full_name || '이름 미입력'
   const profileImage = pro.profile_image_url || pro.hero_image_url || '/placeholder-profile.jpg'
-  const phone = pro.profiles?.phone || '연락처 없음'
+  const phone = pro.profiles?.phone || '연락처 미입력'
 
   return (
     <div className="card">
@@ -116,7 +116,7 @@ export function PendingProCard({ pro, onApprove, onReject, isProcessing }: Pendi
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
-                  처리 중...
+                  처리 중입니다
                 </span>
               ) : (
                 '승인'
@@ -128,7 +128,7 @@ export function PendingProCard({ pro, onApprove, onReject, isProcessing }: Pendi
               disabled={isProcessing}
               aria-label={`${profileName} 프로 거부`}
             >
-              거부
+              반려
             </button>
           </div>
         </div>

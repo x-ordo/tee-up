@@ -79,7 +79,7 @@ export default function BookingModal({
           <>
             <div className="mb-6 flex items-center justify-between">
               <h4 id="booking-modal-title" className="font-display text-display-sm font-semibold text-calm-obsidian">
-                {type === 'reservation' ? '레슨 예약 정보' : '대기 신청'}
+                {type === 'reservation' ? '레슨 예약하기' : '대기 신청하기'}
               </h4>
               <button
                 onClick={onClose}
@@ -103,13 +103,13 @@ export default function BookingModal({
             <div className="space-y-4">
               <input
                 className="input"
-                placeholder="성함"
+                placeholder="성함을 입력하세요"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
               <input
                 className="input"
-                placeholder="연락처 (- 없이 입력)"
+                placeholder="연락처를 입력하세요 (- 없이)"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
               />
@@ -141,13 +141,13 @@ export default function BookingModal({
               </div>
               <input
                 className="input"
-                placeholder="레슨 장소 (예: 청담 Studio)"
+                placeholder="레슨 희망 장소 (예: 청담 Studio)"
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
               <textarea
                 className="input min-h-[100px] resize-none"
-                placeholder="특별 요청사항"
+                placeholder="요청 사항을 적어주세요"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
               />
@@ -158,7 +158,7 @@ export default function BookingModal({
                   onChange={(e) => setAgree(e.target.checked)}
                   className="h-4 w-4 rounded border-calm-stone text-accent focus:ring-accent"
                 />
-                예약 및 취소 규정에 동의합니다.
+                예약 및 취소 안내를 확인했어요.
               </label>
             </div>
 
@@ -178,10 +178,10 @@ export default function BookingModal({
               </svg>
             </div>
             <h4 className="font-display text-display-sm font-semibold text-calm-obsidian">
-              요청이 접수되었습니다
+              신청이 완료됐어요
             </h4>
             <p className="mt-2 text-body-sm text-calm-charcoal">
-              담당 컨시어지가 확인 후 신속히 안내해 드리겠습니다.
+              담당 프로가 확인한 뒤 빠르게 연락드릴게요.
             </p>
             <button
               onClick={onClose}
@@ -195,4 +195,3 @@ export default function BookingModal({
     </div>
   )
 }
-
