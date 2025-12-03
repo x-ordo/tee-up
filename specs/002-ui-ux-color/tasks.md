@@ -231,6 +231,32 @@ T047 (ErrorState) || T051 (chat empty)
 
 ---
 
+## Phase 9: Material Design 3 Integration ✅ COMPLETED
+
+**Purpose**: Integrate M3 design system tokens for enhanced motion, color roles, and shape consistency
+
+**Goal**: 플랫폼이 Material Design 3 (M3) 디자인 시스템의 핵심 요소를 채택하여 현대적이고 자연스러운 사용자 경험을 제공
+
+### Implementation for User Story 6
+
+- [x] T061 [US6] Add M3 Motion Tokens (Standard Scheme easing curves) to web/src/app/global.css
+- [x] T062 [P] [US6] Add M3 Duration Tokens (short1-4, medium1-4, long1-2) to web/src/app/global.css
+- [x] T063 [P] [US6] Add M3 Shape Tokens (extra-small, small, medium, large, extra-large, full) to web/src/app/global.css
+- [x] T064 [US6] Add M3 Color Roles (surface, on-surface, outline, container) to web/src/app/global.css
+- [x] T065 [P] [US6] Add M3 Color Roles for dark mode (tonal elevation) to web/src/app/global.css
+- [x] T066 [US6] Apply M3 Standard Easing to .btn-primary, .btn-secondary, .btn-ghost in web/src/app/global.css
+- [x] T067 [P] [US6] Apply M3 Shape Tokens to .card, .modal, .input, .select in web/src/app/global.css
+- [x] T068 [P] [US6] Apply M3 Color Roles to .table-container, .metric-card, .chat-container in web/src/app/global.css
+- [x] T069 [P] [US6] Apply M3 Container Roles to .tag, .alert classes in web/src/app/global.css
+- [x] T070 [US6] Apply M3 Standard Motion to .fade-in, .card-hover, .btn-hover utilities in web/src/app/global.css
+- [x] T071 [US6] Update spec.md with M3 integration requirements (FR-015 to FR-020) in specs/002-ui-ux-color/spec.md
+- [x] T072 [US6] Run build to verify no CSS syntax errors
+- [x] T073 [US6] Run theme.spec.ts tests to verify backward compatibility (65 passed)
+
+**Checkpoint**: US6 complete - M3 Standard Motion, Color Roles, and Shape Tokens integrated with backward compatibility
+
+---
+
 ## Notes
 
 - [P] tasks = different files, no dependencies within phase
@@ -239,4 +265,4 @@ T047 (ErrorState) || T051 (chat empty)
 - Tests in Phase 8 validate all stories together
 - Commit after each phase or logical group
 - Stop at any checkpoint to validate story independently
-- Total: 60 tasks across 8 phases
+- Total: 73 tasks across 9 phases (60 original + 13 M3 integration)

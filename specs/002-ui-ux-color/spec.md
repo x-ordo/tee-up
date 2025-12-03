@@ -92,6 +92,23 @@
 
 ---
 
+### User Story 6 - Material Design 3 Design System Integration (Priority: P1)
+
+플랫폼이 Material Design 3 (M3) 디자인 시스템의 핵심 요소를 채택하여 현대적이고 자연스러운 사용자 경험을 제공한다.
+
+**Why this priority**: M3는 Google의 최신 디자인 시스템으로, 물리 기반 모션, 체계화된 색상 역할, 표준화된 형태 토큰을 제공한다. 이를 TEE:UP의 "Calm Control" 철학과 조화롭게 통합하여 프리미엄 골프 매칭 플랫폼에 적합한 세련된 경험을 구현한다.
+
+**Independent Test**: M3 Standard Motion이 적용된 버튼/카드 인터랙션이 자연스럽고, 색상 역할이 일관되게 적용되며, shape 토큰이 표준화되어 있는지 확인
+
+**Acceptance Scenarios**:
+
+1. **Given** 사용자가 버튼을 클릭하면, **When** 버튼이 눌리는 효과가 나타날 때, **Then** M3 Standard Easing (`cubic-bezier(0.2, 0, 0, 1)`)으로 자연스러운 물리 기반 애니메이션이 적용된다
+2. **Given** 개발자가 컴포넌트를 스타일링할 때, **When** 색상을 적용하면, **Then** M3 Color Roles (surface, on-surface, outline 등)를 사용하여 의미론적으로 일관된 색상을 적용할 수 있다
+3. **Given** 다크 모드가 활성화되면, **When** 카드나 모달이 표시될 때, **Then** Tonal Elevation으로 표면 색상이 단계적으로 밝아져 깊이가 표현된다
+4. **Given** 컴포넌트의 border-radius를 설정할 때, **When** shape 토큰을 사용하면, **Then** M3 Shape Scale (4px, 8px, 12px, 16px, 24px)에 맞는 일관된 둥글기가 적용된다
+
+---
+
 ### Edge Cases
 
 - 사용자가 테마를 빠르게 여러 번 전환할 때 애니메이션이 중첩되지 않아야 한다
@@ -102,6 +119,8 @@
   - **네트워크 오류** (fetch failed, timeout): "인터넷 연결을 확인해 주세요"
   - **클라이언트 오류** (4xx): "요청을 처리할 수 없습니다" (404는 별도 페이지)
   - **서버 오류** (5xx): "서버에 문제가 발생했습니다. 잠시 후 다시 시도해 주세요"
+- M3 Expressive Motion Scheme은 프리미엄 브랜드 이미지와 맞지 않으므로 Standard Scheme만 사용한다
+- Dynamic Color (사용자 배경화면 기반)는 브랜드 일관성을 해치므로 적용하지 않는다
 
 ## Requirements *(mandatory)*
 
@@ -128,6 +147,30 @@
   - UI components and graphical objects: minimum 3:1 contrast ratio
 - **FR-013**: *(Merged into FR-005)*
 - **FR-014**: System MUST provide consistent hover states across all clickable elements
+- **FR-015**: System MUST implement M3 Standard Motion Scheme easing curves:
+  - Standard: `cubic-bezier(0.2, 0, 0, 1)` for general transitions
+  - Standard Decelerate: `cubic-bezier(0, 0, 0, 1)` for entering elements
+  - Standard Accelerate: `cubic-bezier(0.3, 0, 1, 1)` for exiting elements
+- **FR-016**: System MUST implement M3 Duration Tokens:
+  - Short (50-200ms): micro-interactions, ripples
+  - Medium (250-400ms): state changes, hover effects
+  - Long (450-500ms): page-level animations, modals
+- **FR-017**: System MUST implement M3 Color Roles for semantic color usage:
+  - Surface roles: surface, surface-variant, on-surface, on-surface-variant
+  - Outline roles: outline, outline-variant
+  - Container roles: primary-container, error-container, etc.
+- **FR-018**: System MUST implement M3 Shape Scale tokens:
+  - Extra Small: 4px (chips, small badges)
+  - Small: 8px (buttons, inputs)
+  - Medium: 12px (cards, dialogs)
+  - Large: 16px (modals, sheets)
+  - Extra Large: 24px (hero sections)
+  - Full: 9999px (pills, avatars)
+- **FR-019**: System MUST implement Tonal Elevation for dark mode depth:
+  - Surface-dim: base dark surface
+  - Surface: elevated surface level 1
+  - Surface-bright: elevated surface level 2+
+- **FR-020**: System MUST maintain backward compatibility with existing --calm-* tokens
 
 ### Key Entities
 
@@ -135,6 +178,9 @@
 - **ThemePreference**: system | light | dark - 사용자의 테마 선호 설정
 - **LoadingState**: idle | loading | success | error - 데이터 로딩 상태
 - **ColorToken**: CSS 변수로 정의된 색상 값 (--calm-*, --success-*, --error-*, --brand-*)
+- **M3MotionToken**: M3 easing 및 duration 토큰 (--ease-standard, --duration-medium2, etc.)
+- **M3ColorRole**: M3 semantic color role (--surface, --on-surface, --outline, etc.)
+- **M3ShapeToken**: M3 shape scale 토큰 (--shape-small, --shape-medium, etc.)
 
 ## Success Criteria *(mandatory)*
 
@@ -147,6 +193,9 @@
 - **SC-005**: 에러 상태에서 "다시 시도" 버튼 클릭 시 해당 요청이 재실행된다
 - **SC-006**: lighthouse 접근성 점수 90점 이상 유지
 - **SC-007**: prefers-reduced-motion 설정 시 모든 애니메이션이 즉시 전환으로 대체된다
+- **SC-008**: M3 Standard Easing 적용 시 애니메이션이 물리 기반으로 자연스럽게 느껴진다
+- **SC-009**: M3 Color Roles 사용 시 모든 컴포넌트에서 일관된 의미론적 색상이 적용된다
+- **SC-010**: M3 Shape Scale 사용 시 모든 border-radius가 표준화된 토큰 값을 사용한다
 
 ## Assumptions
 
@@ -154,11 +203,25 @@
 - 다크 모드 색상은 Korean Luxury Minimalism 철학에 맞춰 차분한 톤으로 설계한다
 - 애니메이션은 Tailwind CSS의 transition 유틸리티와 커스텀 keyframes를 사용한다
 - localStorage를 사용하여 테마 설정을 저장한다 (서버 동기화 불필요)
+- M3 디자인 시스템 요소는 TEE:UP의 "Calm Control" 철학과 조화롭게 통합된다
+- M3 Standard Motion Scheme만 사용하여 차분하고 프리미엄한 느낌을 유지한다
+- 기존 --calm-* 토큰과 새로운 M3 토큰이 병행 사용될 수 있다
 
 ## Out of Scope
 
 - 사용자별 커스텀 색상 테마 (개인화된 색상 선택)
 - 고대비 모드 (WCAG AAA 수준의 특수 접근성 모드)
 - 복잡한 페이지 전환 애니메이션 (route transition)
-- 3D 또는 물리 기반 애니메이션
+- 3D 또는 물리 기반 스프링 애니메이션 (CSS cubic-bezier로 근사치 사용)
 - 서버 측 테마 설정 저장 (인증된 사용자 동기화)
+- M3 Dynamic Color (사용자 배경화면 기반 색상 생성)
+- M3 Expressive Motion Scheme (바운스가 있는 과장된 애니메이션)
+- M3 전체 컴포넌트 라이브러리 도입 (필요한 토큰만 선택적 도입)
+
+## References
+
+- [Material Design 3 Official Documentation](https://m3.material.io/)
+- [M3 Color System](https://m3.material.io/styles/color/system/how-the-system-works)
+- [M3 Motion & Easing](https://m3.material.io/styles/motion/easing-and-duration/tokens-specs)
+- [M3 Shape System](https://m3.material.io/styles/shape/corner-radius-scale)
+- [M3 Elevation](https://m3.material.io/styles/elevation/tokens)
