@@ -1,133 +1,50 @@
-<!--
-  SYNC IMPACT REPORT
-  ==================
-  Version change: 0.0.0 → 1.0.0 (Initial constitution)
-
-  Modified principles: N/A (new file)
-
-  Added sections:
-  - Core Principles (5 principles)
-  - Performance & Quality Standards
-  - Development Workflow
-  - Governance
-
-  Removed sections: N/A
-
-  Templates requiring updates:
-  - .specify/templates/plan-template.md: ✅ Constitution Check section exists
-  - .specify/templates/spec-template.md: ✅ Compatible (no changes needed)
-  - .specify/templates/tasks-template.md: ✅ Compatible (no changes needed)
-  - .specify/templates/checklist-template.md: ✅ Compatible (no changes needed)
-  - .specify/templates/agent-file-template.md: ✅ Compatible (no changes needed)
-
-  Follow-up TODOs: None
--->
-
-# TEE:UP Constitution
+# [PROJECT_NAME] Constitution
+<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
 
 ## Core Principles
 
-### I. User-Centric Design (Korean Luxury Minimalism)
+### [PRINCIPLE_1_NAME]
+<!-- Example: I. Library-First -->
+[PRINCIPLE_1_DESCRIPTION]
+<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
 
-All user interfaces MUST adhere to the "Calm Control" (차분한 통제) design philosophy:
+### [PRINCIPLE_2_NAME]
+<!-- Example: II. CLI Interface -->
+[PRINCIPLE_2_DESCRIPTION]
+<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
 
-- **90/10 Rule**: 90% neutral tones (calm-white, calm-cloud, calm-stone), 10% accent blue (#3B82F6)
-- **Show, Don't Tell**: Visual storytelling over text; let data and imagery communicate value
-- **Data Clarity**: All metrics MUST be scannable at a glance; no cognitive overload
-- **No Unnecessary Copy**: Every text element MUST justify its presence; default to removal
+### [PRINCIPLE_3_NAME]
+<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
+[PRINCIPLE_3_DESCRIPTION]
+<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
 
-**Rationale**: VIP golfers and professional instructors expect premium, distraction-free experiences that respect their time and attention.
+### [PRINCIPLE_4_NAME]
+<!-- Example: IV. Integration Testing -->
+[PRINCIPLE_4_DESCRIPTION]
+<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
 
-### II. Trust & Transparency
+### [PRINCIPLE_5_NAME]
+<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
+[PRINCIPLE_5_DESCRIPTION]
+<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
 
-All platform interactions MUST build user trust through honest, clear communication:
+## [SECTION_2_NAME]
+<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
 
-- **No Dark Patterns**: Pricing MUST be explicit; subscription limits MUST be visible before action
-- **Verified Professionals**: Pro profiles MUST display verification badges based on actual credentials
-- **Off-Platform Payment Clarity**: System MUST clearly communicate that lesson fees are paid directly to pros
-- **Lead-Based Model Transparency**: Free inquiry limits (3/month) MUST be visible to pros before registration
+[SECTION_2_CONTENT]
+<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
 
-**Rationale**: Premium platforms earn loyalty through honesty, not manipulation. Users who feel tricked will not return.
+## [SECTION_3_NAME]
+<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
 
-### III. Mobile-First Accessibility
-
-All features MUST prioritize mobile experience and accessibility standards:
-
-- **Responsive Design**: Support 320px to 4K; mobile breakpoints MUST be tested first
-- **WCAG AA Compliance**: All interactive elements MUST meet contrast ratios, keyboard navigation, and ARIA requirements
-- **Touch-Friendly**: Tap targets MUST be minimum 44x44px; gestures MUST have alternatives
-- **Performance Budget**: LCP < 2.5s on 4G mobile connections
-
-**Rationale**: Target users (VIP golfers, busy professionals) primarily access on mobile between activities.
-
-### IV. Test-First Quality
-
-All production code MUST be covered by appropriate tests:
-
-- **E2E for Critical Paths**: User authentication, pro verification, and booking flows MUST have Playwright tests
-- **Unit Tests for Logic**: Business logic in hooks, utilities, and services MUST have Jest coverage
-- **Contract Tests for APIs**: Backend endpoints MUST have request/response validation tests
-- **No Silent Failures**: All errors MUST be logged and user-facing errors MUST be actionable
-
-**Rationale**: Premium service requires premium reliability. Broken features damage trust irreparably.
-
-### V. Incremental Delivery
-
-All features MUST be delivered in independently testable increments:
-
-- **Phase-Based Development**: MVP first, then progressive enhancement (Phase 1 → 2 → 3)
-- **User Story Independence**: Each story MUST be deployable without requiring other stories
-- **Feature Flags Over Branches**: Long-running features MUST use flags, not long-lived branches
-- **Checkpoint Validation**: Each phase MUST pass validation before next phase begins
-
-**Rationale**: Rapid iteration with working software beats perfect plans. Ship value early, learn, adapt.
-
-## Performance & Quality Standards
-
-All code MUST meet these measurable standards:
-
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| Page Load (LCP) | < 2.5s | Lighthouse, Vercel Analytics |
-| API Response (p95) | < 200ms | Supabase Dashboard, Sentry |
-| Uptime | 99.5% (MVP), 99.9% (GA) | UptimeRobot |
-| Error Rate | < 1% sessions | Sentry |
-| Accessibility | WCAG AA | axe-core, manual audit |
-| Test Coverage | > 80% critical paths | Jest, Playwright |
-
-Violations MUST be documented in plan.md "Complexity Tracking" section with justification.
-
-## Development Workflow
-
-All development MUST follow this process:
-
-1. **Specification** (`/speckit.specify`): User stories with acceptance criteria
-2. **Planning** (`/speckit.plan`): Technical approach with constitution check
-3. **Task Generation** (`/speckit.tasks`): Ordered, parallel-aware task list
-4. **Implementation** (`/speckit.implement`): Execute tasks with checkpoint validation
-5. **Analysis** (`/speckit.analyze`): Cross-artifact consistency verification
-
-Pull requests MUST reference the originating spec and pass all constitution checks.
+[SECTION_3_CONTENT]
+<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
 
 ## Governance
+<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-This constitution supersedes all other development practices in this repository.
+[GOVERNANCE_RULES]
+<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
 
-**Amendment Process**:
-
-1. Propose change in ADR format (`/docs/specs/ADRs/`)
-2. Tech lead review required
-3. Update constitution version per semantic versioning:
-   - MAJOR: Principle removal or incompatible redefinition
-   - MINOR: New principle or material expansion
-   - PATCH: Clarification, wording, or typo fixes
-4. Propagate changes to dependent templates
-5. Commit with message: `docs: amend constitution to vX.Y.Z`
-
-**Compliance Review**:
-
-- All PRs MUST verify compliance with active principles
-- Quarterly review of constitution relevance
-- Constitution violations MUST be logged and addressed
-
-**Version**: 1.0.0 | **Ratified**: 2025-12-02 | **Last Amended**: 2025-12-02
+**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
+<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
