@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { ThemeToggle } from '../app/components/ThemeToggle'
+import { Button } from './ui/Button' // Import Button component
 
 export default function Header() {
   return (
@@ -34,9 +35,11 @@ export default function Header() {
         <div className="flex items-center gap-4">
           <ThemeToggle />
           {/* Primary CTA */}
-          <Link href="/get-started" className="btn-primary">
-            바로 시작하기
-          </Link>
+          <Button asChild variant="primary" size="md">
+            <Link href="/get-started">
+              바로 시작하기
+            </Link>
+          </Button>
           {/* Mobile Hamburger (Hidden on desktop) */}
           {/* <button className="md:hidden">
             <svg

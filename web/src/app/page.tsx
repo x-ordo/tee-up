@@ -1,11 +1,12 @@
 import Link from 'next/link'
 import { ThemeToggle } from './components/ThemeToggle'
+import { Button } from './components/ui/Button'
+import { Card } from './components/ui/Card'
+import { Tag } from './components/ui/Tag'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-calm-white">
-
-
+    <div className="">
       {/* Hero Section */}
       <section className="relative flex min-h-[calc(100vh-theme(spacing.20))] items-center justify-center overflow-hidden px-space-4 py-space-16 md:py-space-32">
         <div className="relative z-10 mx-auto max-w-screen-md text-center bg-tee-surface p-space-8 rounded-xl shadow-card">
@@ -26,9 +27,11 @@ export default function Home() {
           </p>
 
           <div className="flex justify-center">
-            <Link href="/get-started" className="btn-primary text-h3 px-space-6 py-space-4">
-              3분 만에 AI 매칭 시작하기
-            </Link>
+            <Button asChild variant="primary" size="lg">
+              <Link href="/get-started">
+                3분 만에 AI 매칭 시작하기
+              </Link>
+            </Button>
           </div>
         </div>
 
@@ -75,14 +78,14 @@ export default function Home() {
                 description: '마음에 드는 프로와 바로 상담을 시작해보세요.',
               },
             ].map((step, idx) => (
-              <div
+              <Card
                 key={idx}
-                className="card group p-space-8"
+                className="group p-space-8"
               >
                 <div className="mb-space-6 text-6xl">{step.icon}</div>
                 <h3 className="mb-space-3 text-h3 font-bold text-tee-ink-strong">{step.title}</h3>
                 <p className="text-body leading-normal text-tee-ink-strong">{step.description}</p>
-              </div>
+              </Card>
             ))}
           </div>
         </div>
@@ -107,9 +110,9 @@ export default function Home() {
               { initial: 'J', title: 'PGA Master', tours: '10+ 투어' },
               { initial: 'S', title: 'KLPGA', tours: '5+ 투어' },
             ].map((pro, idx) => (
-              <div
+              <Card
                 key={idx}
-                className="card group p-space-8"
+                className="group p-space-8"
               >
                 <div className="flex items-center gap-space-6">
                   <div className="flex h-space-20 w-space-20 items-center justify-center rounded-full bg-tee-accent-primary text-3xl font-bold text-tee-surface">
@@ -119,8 +122,7 @@ export default function Home() {
                     <p className="mb-space-1 text-body font-medium text-tee-accent-secondary">{pro.title}</p>
                     <p className="text-h3 font-bold text-tee-ink-strong">{pro.tours}</p>
                   </div>
-                </div>
-              </div>
+                </Card>
             ))}
           </div>
 
@@ -141,7 +143,7 @@ export default function Home() {
       {/* Stats Section */}
       <section className="bg-tee-background px-space-4 py-space-16 md:py-space-32">
         <div className="mx-auto max-w-screen-xl">
-          <div className="card p-space-16">
+          <Card className="p-space-16">
             <div className="grid gap-space-12 md:grid-cols-4">
               {[
                 { value: '50+', label: '검증된 프로' },
@@ -158,25 +160,26 @@ export default function Home() {
                   </p>
                 </div>
               ))}
-            </div>
-          </div>
+          </Card>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="px-space-4 py-space-16 md:py-space-32">
         <div className="mx-auto max-w-screen-lg">
-          <div className="rounded-2xl border border-tee-accent-primary bg-tee-background p-space-16 text-center shadow-card">
+          <Card className="border border-tee-accent-primary bg-tee-background p-space-16 text-center">
             <h2 className="mb-space-6 text-h2 font-bold text-tee-ink-strong">
               지금 바로 시작해보세요
             </h2>
             <p className="mx-auto mb-space-10 max-w-prose text-body text-tee-ink-strong">
               간단한 질문만으로 내게 맞는 프로를 추천받고, 바로 상담까지 이어가세요.
             </p>
-            <Link href="/get-started" className="btn-primary px-space-8 py-space-4 text-h3">
-              무료 매칭 받아보기
-            </Link>
-          </div>
+            <Button asChild variant="primary" size="lg">
+              <Link href="/get-started">
+                무료 매칭 받아보기
+              </Link>
+            </Button>
+          </Card>
         </div>
       </section>
 
