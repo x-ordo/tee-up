@@ -174,10 +174,9 @@ export default function AdminChatsPage() {
             <input type="search" placeholder="골퍼/프로 이름 검색..." className="input w-64" />
           </div>
 
-          <div className="table-container relative">
+          <div className="table-container relative overflow-x-auto">
             {/* Scroll hint for mobile */}
             <div className="pointer-events-none absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white to-transparent md:hidden" aria-hidden="true" />
-            <div className="overflow-x-auto">
             <table className="min-w-[800px] w-full">
               <thead>
                 <tr className="table-header">
@@ -258,7 +257,6 @@ export default function AdminChatsPage() {
                 ))}
               </tbody>
             </table>
-            </div>
           </div>
 
           {chatRooms.length === 0 && (

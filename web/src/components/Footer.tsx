@@ -12,7 +12,7 @@ export default function Footer() {
             <Link href="/" className="mb-space-4 block text-h3 font-bold text-tee-surface">
               TEE:UP
             </Link>
-            <p className="text-body text-tee-ink-light">
+            <p className="text-body text-tee-background/70">
               나만을 위한 프리미엄 골프 레슨 매칭 플랫폼
             </p>
           </div>
@@ -22,17 +22,17 @@ export default function Footer() {
             <h4 className="mb-space-4 text-h3 font-semibold">바로가기</h4>
             <ul>
               <li className="mb-space-2">
-                <Link href="/find-pros" className="text-body text-tee-ink-light hover:text-tee-accent-secondary">
+                <Link href="/find-pros" className="text-body text-tee-background/70 hover:text-tee-accent-secondary">
                   프로 찾기
                 </Link>
               </li>
               <li className="mb-space-2">
-                <Link href="/how-it-works" className="text-body text-tee-ink-light hover:text-tee-accent-secondary">
+                <Link href="/how-it-works" className="text-body text-tee-background/70 hover:text-tee-accent-secondary">
                   이용 방법
                 </Link>
               </li>
               <li className="mb-space-2">
-                <Link href="/community" className="text-body text-tee-ink-light hover:text-tee-accent-secondary">
+                <Link href="/community" className="text-body text-tee-background/70 hover:text-tee-accent-secondary">
                   커뮤니티
                 </Link>
               </li>
@@ -44,12 +44,12 @@ export default function Footer() {
             <h4 className="mb-space-4 text-h3 font-semibold">법률</h4>
             <ul>
               <li className="mb-space-2">
-                <Link href="/terms" className="text-body text-tee-ink-light hover:text-tee-accent-secondary">
+                <Link href="/terms" className="text-body text-tee-background/70 hover:text-tee-accent-secondary">
                   이용약관
                 </Link>
               </li>
               <li className="mb-space-2">
-                <Link href="/privacy" className="text-body text-tee-ink-light hover:text-tee-accent-secondary">
+                <Link href="/privacy" className="text-body text-tee-background/70 hover:text-tee-accent-secondary">
                   개인정보처리방침
                 </Link>
               </li>
@@ -61,11 +61,11 @@ export default function Footer() {
             <h4 className="mb-space-4 text-h3 font-semibold">문의</h4>
             <ul>
               <li className="mb-space-2">
-                <a href="mailto:contact@teeup.com" className="text-body text-tee-ink-light hover:text-tee-accent-secondary">
+                <a href="mailto:contact@teeup.com" className="text-body text-tee-background/70 hover:text-tee-accent-secondary">
                   contact@teeup.com
                 </a>
               </li>
-              <li className="text-body text-tee-ink-light">
+              <li className="text-body text-tee-background/70">
                 운영 시간: 09:00 - 18:00 (주말 및 공휴일 제외)
               </li>
             </ul>
@@ -73,7 +73,7 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="mt-space-12 border-t border-tee-ink-light/20 pt-space-8 text-center text-body text-tee-ink-light">
+        <div className="mt-space-12 border-t border-tee-background/20 pt-space-8 text-center text-body text-tee-background/70">
           &copy; {currentYear} TEE:UP. All rights reserved.
         </div>
       </div>

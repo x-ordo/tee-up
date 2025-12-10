@@ -4,8 +4,10 @@ interface UseFocusTrapOptions {
   onClose?: () => void;
 }
 
+const FOCUSABLE_SELECTOR = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 const useFocusTrap = (
-  containerRef: RefObject<HTMLElement>,
+  containerRef: RefObject<HTMLElement | null>,
   isActive: boolean,
   options: UseFocusTrapOptions = {}
 ) => {
@@ -16,12 +18,12 @@ const useFocusTrap = (
       if (!containerRef.current) return;
 
       const focusableElements = containerRef.current.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        FOCUSABLE_SELECTOR
       );
       if (focusableElements.length === 0) return;
 
       const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableableElements.length - 1];
+      const lastElement = focusableElements[focusableElements.length - 1];
 
       if (e.key === 'Tab') {
         if (e.shiftKey && document.activeElement === firstElement) {
@@ -43,15 +45,11 @@ const useFocusTrap = (
   useEffect(() => {
     if (isActive && containerRef.current) {
       const focusableElements = containerRef.current.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        FOCUSABLE_SELECTOR
       );
       const firstElement = focusableElements[0];
-      console.log('Focus trap activated. First element:', firstElement);
       if (firstElement) {
         firstElement.focus();
-        console.log('Attempted to focus first element:', firstElement);
-      } else {
-        console.log('No first element found to focus.');
       }
       document.addEventListener('keydown', handleKeyDown);
     }
