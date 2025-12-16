@@ -1,159 +1,115 @@
-import type { Config } from 'tailwindcss'
-import { fontFamily } from 'tailwindcss/defaultTheme'
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
-  darkMode: 'selector',
+  darkMode: ['class'],
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    container: {
+      center: true,
+      padding: '2rem',
+      screens: {
+        '2xl': '1400px',
+      },
+    },
     extend: {
       colors: {
-        // CSS Variable References (auto-switch in dark mode)
-        'calm-white': 'var(--calm-white)',
-        'calm-cloud': 'var(--calm-cloud)',
-        'calm-stone': 'var(--calm-stone)',
-        'calm-ash': 'var(--calm-ash)',
-        'calm-charcoal': 'var(--calm-charcoal)',
-        'calm-obsidian': 'var(--calm-obsidian)',
-        'calm-accent': 'var(--calm-accent)',
-        'calm-accent-light': 'var(--calm-accent-light)',
-        'calm-accent-dark': 'var(--calm-accent-dark)',
-        'calm-success': 'var(--calm-success)',
-        'calm-success-bg': 'var(--calm-success-bg)',
-        'calm-warning': 'var(--calm-warning)',
-        'calm-warning-bg': 'var(--calm-warning-bg)',
-        'calm-error': 'var(--calm-error)',
-        'calm-error-bg': 'var(--calm-error-bg)',
-        'calm-info': 'var(--calm-info)',
-        'calm-info-bg': 'var(--calm-info-bg)',
-        // Brand colors
-        'brand-kakao': 'var(--brand-kakao)',
-        'brand-kakao-text': 'var(--brand-kakao-text)',
-        'brand-kakao-hover': 'var(--brand-kakao-hover)',
-        // Neutrals (Korean Luxury) - static fallbacks
-        calm: {
-          white: '#FAFAF9',
-          cloud: '#F4F4F2',
-          stone: '#E8E8E5',
-          ash: '#B8B8B3',
-          charcoal: '#52524E',
-          obsidian: '#1A1A17',
-        },
-        // Accent - static fallbacks
-        accent: {
-          DEFAULT: '#2563EB',  // WCAG AA compliant (4.7:1 on white)
-          light: '#DBEAFE',
-          dark: '#1E40AF',
-        },
-        // Functional - static fallbacks
-        success: {
-          DEFAULT: '#10B981',
-          bg: '#D1FAE5',
-        },
-        warning: {
-          DEFAULT: '#F59E0B',
-          bg: '#FEF3C7',
-        },
-        error: {
-          DEFAULT: '#EF4444',
-          bg: '#FEE2E2',
-        },
-        info: {
-          DEFAULT: '#8B5CF6',
-          bg: '#EDE9FE',
-        },
+        // Core Palette
+        'tee-background': '#F7F4F0', // Neutral Background
+        'tee-surface': '#FFFFFF',    // UI Surface / Card Background
+        'tee-ink-strong': '#1A1A1A', // Primary Text / Headings
+        'tee-ink-light': '#52524E',  // Secondary Text / Subheadings
+        'tee-accent-primary': '#0A362B', // Primary Brand Accent (e.g., CTA, active states)
+        'tee-accent-secondary': '#B39A68', // Secondary Accent (e.g., Highlights, badges)
+
+        // State Colors (Derived from primary/secondary or standard)
+        'tee-accent-primary-hover': '#072A21', // Darker primary for hover
+        'tee-accent-primary-active': '#051E18', // Even darker for active
+        'tee-accent-primary-disabled': '#B4C6BF', // Lighter, desaturated for disabled
+        'tee-error': '#D32F2F',      // Error messages/states
+        'tee-success': '#388E3C',    // Success messages/states
+        'tee-warning': '#FBC02D',    // Warning messages/states
+        'tee-info': '#1976D2',       // Informational messages/states
+
+        // Semantic UI Colors (if needed, map to core palette)
+        // 'ui-border': 'tee-ink-light/20',
+        // 'ui-focus-ring': 'tee-accent-primary/50',
       },
       fontFamily: {
-        sans: ['Pretendard', 'Inter', 'system-ui', 'sans-serif'],
-        display: ['Pretendard', 'Inter', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Consolas', 'monospace'],
+        pretendard: ['var(--font-pretendard)'],
+        inter: ['var(--font-inter)'],
+        // For code snippets or monospaced elements if needed
+        // 'jetbrains-mono': ['var(--font-jetbrains-mono)'],
       },
       fontSize: {
-        'display-lg': ['3rem', { lineHeight: '1.25', letterSpacing: '-0.02em' }],
-        'display-md': ['2.25rem', { lineHeight: '1.25', letterSpacing: '-0.02em' }],
-        'display-sm': ['1.875rem', { lineHeight: '1.25', letterSpacing: '-0.02em' }],
-        'body-lg': ['1.125rem', { lineHeight: '1.5' }],
-        'body-md': ['1rem', { lineHeight: '1.5' }],
-        'body-sm': ['0.875rem', { lineHeight: '1.5' }],
-        'body-xs': ['0.75rem', { lineHeight: '1.5' }],
+        h1: ['3rem', { lineHeight: '1.2' }],      // ~48px
+        h2: ['2.25rem', { lineHeight: '1.25' }],  // ~36px
+        h3: ['1.5rem', { lineHeight: '1.33' }],   // ~24px
+        body: ['1rem', { lineHeight: '1.5' }],    // ~16px
+        caption: ['0.875rem', { lineHeight: '1.4' }], // ~14px
       },
       spacing: {
-        '0': '0',
-        '1': '0.25rem',
-        '2': '0.5rem',
-        '3': '0.75rem',
-        '4': '1rem',
-        '5': '1.25rem',
-        '6': '1.5rem',
-        '8': '2rem',
-        '10': '2.5rem',
-        '12': '3rem',
-        '16': '4rem',
-        '20': '5rem',
-        '24': '6rem',
-        '32': '8rem',
+        'space-1': '0.25rem', // 4px
+        'space-2': '0.5rem',  // 8px
+        'space-3': '0.75rem', // 12px
+        'space-4': '1rem',    // 16px
+        'space-5': '1.25rem', // 20px
+        'space-6': '1.5rem',  // 24px
+        'space-7': '1.75rem', // 28px
+        'space-8': '2rem',    // 32px
+        'space-10': '2.5rem', // 40px
+        'space-12': '3rem',   // 48px
+        'space-16': '4rem',   // 64px
+        'space-20': '5rem',   // 80px
+        'space-24': '6rem',   // 96px
+        'space-32': '8rem',   // 128px
       },
       borderRadius: {
-        'sm': '0.5rem',
-        'md': '0.75rem',
-        'lg': '1rem',
-        'xl': '1.5rem',
-        '2xl': '2rem',
-        '3xl': '3rem',
+        'none': '0',
+        'sm': '0.25rem',    // 4px
+        'md': '0.5rem',     // 8px
+        'lg': '1rem',       // 16px
+        'xl': '1.25rem',    // 20px
         'full': '9999px',
       },
       boxShadow: {
-        'sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-        'md': '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-        'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1)',
-        'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
-        '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-        'glow-accent': '0 10px 30px rgba(59, 130, 246, 0.15)',
-        'glow-success': '0 10px 30px rgba(16, 185, 129, 0.12)',
-      },
-      transitionDuration: {
-        'fast': '150ms',
-        'base': '300ms',
-        'slow': '500ms',
-      },
-      backdropBlur: {
-        'xs': '2px',
-        'sm': '4px',
-        'md': '12px',
-        'lg': '16px',
-        'xl': '24px',
-        '2xl': '40px',
-      },
-      animation: {
-        'fadeIn': 'fadeIn 0.3s ease-in-out',
-        'slideUp': 'slideUp 0.4s ease-out',
-        'scaleIn': 'scaleIn 0.3s ease-out',
-        'shimmer': 'shimmer 2s infinite linear',
+        'card': '0px 2px 8px rgba(0, 0, 0, 0.05)', // Subtle shadow for cards
       },
       keyframes: {
+        'accordion-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
+        },
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
-        slideUp: {
-          '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
+        'marquee': {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(calc(-100% - var(--gap)))' },
         },
-        scaleIn: {
-          '0%': { transform: 'scale(0.95)', opacity: '0' },
-          '100%': { transform: 'scale(1)', opacity: '1' },
+        'marquee-vertical': {
+          from: { transform: 'translateY(0)' },
+          to: { transform: 'translateY(calc(-100% - var(--gap)))' },
         },
-        shimmer: {
-          '0%': { backgroundPosition: '-200% 0' },
-          '100%': { backgroundPosition: '200% 0' },
-        },
+      },
+      animation: {
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
+        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        'marquee': 'marquee var(--duration) linear infinite',
+        'marquee-vertical': 'marquee-vertical var(--duration) linear infinite',
       },
     },
   },
-  plugins: [],
-}
+  plugins: [require('tailwindcss-animate')],
+};
 
-export default config
+export default config;

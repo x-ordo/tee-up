@@ -1,0 +1,55 @@
+<!-- TEE UP Logo – φ-based Layout, Flat Gold Ball -->
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 100 160">
+
+    <defs>
+        <style type="text/css">
+            <![CDATA[
+            .tee-stroke {
+                stroke: #181716;
+                stroke-linecap: round;
+                fill: none;
+            }
+
+            .tee-text-main {
+                font-family: 'Poppins', 'Avenir Next', sans-serif;
+                font-weight: 600;
+                letter-spacing: 0.08em;
+            }
+
+            .tee-text-sub {
+                font-family: 'Poppins', 'Avenir Next', sans-serif;
+                font-weight: 300;
+                letter-spacing: 0.15em;
+            }
+            ]]>
+        </style>
+    </defs>
+
+    <!-- Transparent background -->
+    <rect width="100" height="160" fill="none" />
+
+    <!-- Symbol: Tee + Ball (위 블록) -->
+    <g transform="translate(0,15)">
+        <!-- 상단 바 -->
+        <path d="M10 65 Q 38 75, 83.3 55" class="tee-stroke" stroke-width="6" />
+
+        <!-- 기둥 -->
+        <path d="M38 72 L 38 92" class="tee-stroke" stroke-width="6" />
+    </g>
+
+    <!-- 공: 완전 플랫 사틴 골드 -->
+    <g transform="translate(70,70)">
+        <circle cx="0" cy="0" r="9" fill="#D7BA74" />
+    </g>
+
+    <!-- Typography: φ 비율 기반 세로 배치 -->
+    <!-- 메인 텍스트 기준선 y ≈ 124 (심벌과의 간격, 하단 여백 비율이 φ에 근사) -->
+    <text x="50" y="124" text-anchor="middle" class="tee-text-main" font-size="18" fill="#181716">
+        TEE UP
+    </text>
+
+    <!-- 서브 텍스트 기준선 y ≈ 132 -->
+    <text x="50" y="132" text-anchor="middle" class="tee-text-sub" font-size="5" fill="#7C7C7C">
+        PRECISION REDEFINED
+    </text>
+</svg>

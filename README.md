@@ -1,21 +1,21 @@
 ---
 title: TEE:UP 프로젝트 README
-version: 2.0.0
+version: 3.0.0
 status: Approved
 owner: "@tech-lead"
 created: 2025-11-24
-updated: 2025-11-25
+updated: 2025-12-16
 reviewers: ["@product-manager", "@backend-lead"]
 language: Korean (한국어)
 ---
 
 # TEE:UP (티업)
 
-## 프리미엄 골프 레슨 매칭 플랫폼
+## 골프 프로 포트폴리오 SaaS
 
-> **Status:** Phase 1 MVP (Active Development)
+> **Status:** Phase 2 (Portfolio SaaS Pivot)
 > **Target Launch:** Q1 2025
-> **Version:** 2.0.0
+> **Version:** 3.0.0
 
 ---
 
@@ -23,6 +23,7 @@ language: Korean (한국어)
 
 | 버전 | 날짜 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
+| 3.0.0 | 2025-12-16 | @tech-lead | SaaS 피봇: Express 제거, 웹 단독 실행 |
 | 2.0.0 | 2025-11-25 | @tech-lead | Master Prompt 표준 적용 |
 | 1.0.0 | 2025-11-24 | @tech-lead | 최초 작성 |
 
@@ -30,15 +31,17 @@ language: Korean (한국어)
 
 ## 개요 (Overview)
 
-TEE:UP은 VIP 골퍼와 검증된 프로 골퍼를 연결하는 **매거진 스타일, 데이터 기반 플랫폼**입니다.
+TEE:UP은 골프 프로를 위한 **포트폴리오 SaaS** 플랫폼입니다. 프로가 자신만의 미니사이트를 만들고, 리드를 수집하며, 브랜딩을 강화할 수 있습니다.
+
+**핵심 전략:** "White Labeling" - 플랫폼 브랜딩 최소화, 프로 개인 브랜드 극대화
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                     TEE:UP                                  │
-│         "골프 레슨의 시작, TEE:UP"                            │
+│         "나만의 골프 포트폴리오, TEE:UP"                       │
 ├─────────────────────────────────────────────────────────────┤
-│  골퍼: 프로 발견 → 프로필 비교 → 1:1 채팅 → 레슨 예약         │
-│  프로: 프로필 등록 → 퍼스널 브랜딩 → 리드 수신 → 고객 확보     │
+│  프로: 포트폴리오 생성 → 테마 선택 → 리드 수집 → 레슨 확보     │
+│  골퍼: 프로 발견 → 포트폴리오 탐색 → 문의 → 레슨 예약          │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -46,11 +49,11 @@ TEE:UP은 VIP 골퍼와 검증된 프로 골퍼를 연결하는 **매거진 스�
 
 | 기능 | 설명 | 상태 |
 |------|------|------|
-| **Visual-First 프로필** | 멋진 이미지, 영상, 검증된 자격증 | ✅ 완료 |
-| **즉각적인 매칭** | 빠른 연결을 위한 실시간 채팅 | 📋 Phase 2 |
-| **신뢰 구축** | LPGA/PGA 인증 배지, 통계, 리뷰 | ✅ 완료 |
-| **투명한 가격** | 명확한 요금, 오프라인 결제 | ✅ 완료 |
-| **프로 대시보드** | 분석, 리드 관리, 구독 관리 | 📋 Phase 2 |
+| **3종 포트폴리오 템플릿** | Visual, Curriculum, Social | ✅ 완료 |
+| **리드 캡처** | 문의폼, 카카오톡, 전화 클릭 추적 | ✅ 완료 |
+| **프로 대시보드** | 리드 관리, 분석 | ✅ 완료 |
+| **스튜디오 페이지** | 아카데미/팀 페이지 | 🚧 진행중 |
+| **일정/예약** | 예약 요청, 확정, 리마인드 | 📋 P1 |
 
 ---
 
@@ -68,52 +71,40 @@ TEE:UP은 VIP 골퍼와 검증된 프로 골퍼를 연결하는 **매거진 스�
 
 ```bash
 # 저장소 클론
-git clone https://github.com/your-org/tee-up.git
+git clone https://github.com/Prometheus-P/tee-up.git
 cd tee-up
 
-# 프론트엔드 의존성 설치
+# 의존성 설치
 cd web
-npm install
-
-# 백엔드 의존성 설치
-cd ../api
 npm install
 ```
 
 ### 환경 변수 설정
 
 ```bash
-# 프론트엔드 환경 변수
+# 환경 변수 설정
 cp web/.env.example web/.env.local
-
-# 백엔드 환경 변수
-cp api/.env.example api/.env
 ```
 
-자세한 환경 설정은 [ENVIRONMENT.md](ENVIRONMENT.md)를 참조하세요.
+필수 환경 변수:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
 
 ### 개발 서버 실행
 
 ```bash
-# 프론트엔드 (http://localhost:3000)
 cd web
 npm run dev
-
-# 백엔드 (http://localhost:5000)
-cd api
-npm start
+# → http://localhost:3000
 ```
 
 ### 프로덕션 빌드
 
 ```bash
-# 프론트엔드
 cd web
-npm run build
-npm run start
-
-# 백엔드
-cd api
 npm run build
 npm start
 ```
@@ -124,92 +115,60 @@ npm start
 
 ```
 tee-up/
-├── 📄 CONTEXT.md              # 프로젝트 단일 진실 공급원
+├── 📄 CLAUDE.md               # Claude Code 가이드 (핵심)
 ├── 📄 README.md               # 프로젝트 소개 (현재 문서)
-├── 📄 ENVIRONMENT.md          # 환경 설정 가이드
-├── 📄 plan.md                 # TDD 개발 계획
-├── 📄 .env.example            # 환경 변수 템플릿
 ├── 📄 .gitignore              # Git 제외 파일
 │
-├── 📁 docs/                   # 문서 루트
-│   ├── 📁 specs/              # 기술 명세서
-│   │   ├── PRD.md             # 제품 요구사항
-│   │   ├── ARCHITECTURE.md    # 시스템 아키텍처
-│   │   ├── API_SPEC.md        # REST API 명세
-│   │   ├── DATA_MODEL.md      # 데이터베이스 스키마
-│   │   └── 📁 ADRs/           # 아키텍처 결정 기록
-│   │
-│   ├── 📁 guides/             # 개발 가이드
-│   │   ├── TDD_GUIDE.md       # TDD 가이드
-│   │   ├── CLEAN_CODE_GUIDE.md # 클린 코드 규칙
-│   │   └── ERROR_HANDLING_GUIDE.md # 에러 처리
-│   │
-│   ├── 📁 business/           # 비즈니스 문서
-│   │   ├── BUSINESS_PLAN.md   # 사업 계획
-│   │   └── PRD.md             # 제품 요구사항
-│   │
-│   └── 📁 operations/         # 운영 문서
-│       ├── DEPLOYMENT_CHECKLIST.md
-│       └── INCIDENT_RESPONSE.md
-│
-├── 📁 .github/                # GitHub 설정
-│   ├── 📁 workflows/          # CI/CD 파이프라인
-│   └── 📁 ISSUE_TEMPLATE/     # 이슈 템플릿
-│
-├── 📁 web/                    # Next.js 프론트엔드
+├── 📁 web/                    # Next.js 14 풀스택 앱
 │   ├── src/
-│   │   ├── app/               # App Router 페이지
+│   │   ├── app/               # App Router
+│   │   │   ├── (portfolio)/   # 프로 포트폴리오 페이지
+│   │   │   ├── (dashboard)/   # 프로 대시보드 (인증 필요)
+│   │   │   ├── admin/         # 플랫폼 관리자
+│   │   │   └── api/           # Route Handlers (웹훅용)
+│   │   ├── actions/           # Server Actions (백엔드 로직)
 │   │   ├── components/        # React 컴포넌트
-│   │   └── lib/               # 유틸리티
+│   │   │   ├── ui/            # shadcn/ui 컴포넌트
+│   │   │   └── portfolio/     # 포트폴리오 템플릿
+│   │   └── lib/supabase/      # Supabase 클라이언트
+│   ├── e2e/                   # Playwright E2E 테스트
 │   └── package.json
 │
-├── 📁 api/                    # Express.js 백엔드
-│   ├── src/
-│   │   ├── routes/            # API 라우트
-│   │   ├── services/          # 비즈니스 로직
-│   │   └── middleware/        # 미들웨어
-│   └── package.json
+├── 📁 supabase/               # 데이터베이스
+│   ├── schema.sql             # 기본 스키마
+│   └── migrations/            # 마이그레이션 SQL
 │
-├── 📁 tests/                  # 테스트
-│   ├── unit/                  # 단위 테스트
-│   ├── integration/           # 통합 테스트
-│   └── e2e/                   # E2E 테스트
-│
-├── 📁 scripts/                # 유틸리티 스크립트
-└── 📁 infra/                  # 인프라 코드 (IaC)
+└── 📁 specs/                  # 기능 명세 (SpecKit)
+    └── {feature-id}/
+        ├── spec.md
+        ├── plan.md
+        └── tasks.md
 ```
+
+> ⚠️ **Note:** `web/lib/` 폴더의 `chat/`, `leads/`, `payments/` 모듈은 기존 중개 플랫폼 코드로, 현재 DEPRECATED 상태입니다.
 
 ---
 
 ## 기술 스택
 
-### 프론트엔드
-
 | 기술 | 버전 | 용도 |
 |------|------|------|
-| Next.js | 14.x | App Router 프레임워크 |
-| TypeScript | 5.x | 정적 타입 (strict mode) |
-| Tailwind CSS | 3.x | 유틸리티 스타일링 |
-| Pretendard | - | 한국어 폰트 |
-| Inter | - | 영문 폰트 |
+| **Next.js** | 14.x | 풀스택 프레임워크 (App Router + Server Actions) |
+| **TypeScript** | 5.x | 정적 타입 (strict mode) |
+| **Tailwind CSS** | 3.x | 유틸리티 스타일링 |
+| **Supabase** | - | PostgreSQL + Auth + RLS |
+| **shadcn/ui** | - | UI 컴포넌트 |
+| **Playwright** | - | E2E 테스트 |
+| **Pretendard** | - | 한국어 폰트 |
+| **Inter** | - | 영문 폰트 |
 
-### 백엔드
-
-| 기술 | 버전 | 용도 |
-|------|------|------|
-| Express.js | 4.x | REST API 프레임워크 |
-| TypeScript | 5.x | 정적 타입 시스템 |
-| Supabase | - | PostgreSQL + Auth + Realtime |
-
-### 인프라 (계획)
+### 인프라
 
 | 서비스 | 용도 |
 |--------|------|
-| Supabase | 데이터베이스, 인증, 실시간 |
-| Cloudinary/S3 | 미디어 저장소 |
-| Toss Payments | 구독 결제 |
-| Vercel | 프론트엔드 호스팅 |
-| Railway/Fly.io | 백엔드 호스팅 |
+| Vercel | 호스팅 (추천) |
+| Supabase | 데이터베이스, 인증 |
+| Stripe / Toss Payments | 결제 (리드 기반 과금) |
 
 ---
 
@@ -243,31 +202,29 @@ TEE:UP은 **Korean Luxury Minimalism** 디자인 원칙을 따릅니다.
 
 ## 개발 로드맵
 
-### Phase 1: MVP (4주) - "Showcase"
+### P0 (MVP - 필수)
 
 | 상태 | 기능 |
 |------|------|
-| ✅ | 프로 프로필 페이지 |
-| ✅ | 검색/필터 프로 디렉토리 |
-| ✅ | Korean Luxury Minimalism 디자인 시스템 |
-| 🚧 | 관리자 대시보드 |
-| 📋 | 카카오톡 링크 통합 |
+| ✅ | 3종 포트폴리오 템플릿 |
+| ✅ | 프로 대시보드 |
+| 🚧 | 대화형 무드 온보딩 (60초 세팅) |
+| 🚧 | 연락처 마스킹 + '연락처 보기' 버튼 |
+| 📋 | 문의 폼 + 리드 대시보드 |
 
-### Phase 2: Beta (8주) - "Lock-in"
+### P1
 
 | 상태 | 기능 |
 |------|------|
-| 🚧 | 사용자 인증 (Supabase Auth) |
-| 📋 | 인앱 채팅 (Supabase Realtime) |
-| 📋 | 프로 대시보드 및 분석 |
-| 📋 | Toss Payments 구독 |
+| 📋 | 일정/예약 요청/확정/취소 |
+| 📋 | 리마인드 (이메일/푸시) |
 
-### Phase 3: Scale (Future)
+### P2 (후순위)
 
-- 수익 최적화
-- 고급 분석
-- AI 기반 매칭
-- 모바일 앱
+| 상태 | 기능 |
+|------|------|
+| 📋 | 아카데미(스튜디오) + 원장 대시보드 |
+| 📋 | 캘린더 연동 / Open API |
 
 ---
 
@@ -337,20 +294,21 @@ git push origin feat/amazing-feature
 
 ### 골퍼 (무료)
 
-- 프로 프로필 탐색
-- 무제한 문의 전송
-- 프로와 직접 레슨 예약
+- 프로 포트폴리오 탐색
+- 문의 전송
+- 프로와 직접 레슨 예약 (오프라인 결제)
 
 ### 프로
 
 | 티어 | 가격 | 기능 |
 |------|------|------|
-| **Basic** | 무료 | 월 3건 문의 |
-| **Pro** | ₩49,000/월 | 무제한 문의 + 분석 |
+| **Free** | 무료 | 포트폴리오, 월 3건 연락처 노출 |
+| **Basic** | ₩29,000/월 | 월 10건 연락처 노출, 모든 템플릿 |
+| **Pro** | ₩49,000/월 | 무제한 연락처 노출 + 분석 + 커스텀 도메인 |
 
 ### 수익 모델
 
-- 프로 구독료 기반 수익
+- **리드(연락처 보기 클릭) 기반 과금** - 실질적 가치 발생 시점에 과금
 - 레슨 결제 수수료 없음
 
 ---
@@ -378,10 +336,11 @@ git push origin feat/amazing-feature
 
 ## 보안 및 개인정보
 
-- **전화번호 개인정보**: 채팅 시작 전까지 숨김
-- **PII 암호화**: 모든 민감 데이터 암호화
+- **연락처 마스킹**: 전화번호 텍스트 직접 노출 금지, '연락처 보기' 버튼을 통해서만 접근
+- **이벤트 로깅**: 모든 연락처 조회는 RPC를 통해 기록 (과금 근거)
+- **Rate Limiting**: 스팸/남용 방지
+- **RLS (Row Level Security)**: Supabase RLS로 데이터 접근 제어
 - **GDPR/PIPA 준수**: 사용자 동의 플로우, 데이터 삭제 권한
-- **콘텐츠 모더레이션**: 프로필 검토, 스팸 탐지
 
 ---
 

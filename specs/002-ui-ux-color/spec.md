@@ -30,6 +30,8 @@
 
 **Why this priority**: 마이크로인터랙션은 사용자 행동에 대한 즉각적인 피드백을 제공하여 인터페이스의 반응성과 품질을 높인다. Korean Luxury Minimalism 디자인 철학에서 섬세한 애니메이션은 "Calm Control" 경험의 핵심이다.
 
+**Note**: 이 스토리는 인터랙션 패턴(hover, click, fade-in)을 정의합니다. 구체적인 easing curve와 duration 토큰은 US6 (M3 Integration)에서 정의됩니다.
+
 **Independent Test**: 버튼 hover, 카드 hover, 링크 클릭 등의 인터랙션에서 부드러운 전환 효과가 있는지 확인
 
 **Acceptance Scenarios**:
@@ -85,7 +87,7 @@
 
 **Acceptance Scenarios**:
 
-1. **Given** 프로 검색 결과가 없을 때, **When** 빈 목록이 표시되면, **Then** 일러스트레이션과 "검색 조건을 변경해 보세요" 같은 안내 메시지가 표시된다
+1. **Given** 프로 검색 결과가 없을 때, **When** 빈 목록이 표시되면, **Then** SVG 아이콘(Heroicons 또는 커스텀)과 "검색 조건을 변경해 보세요" 같은 안내 메시지가 표시된다 *(Design Assets: EmptyState 컴포넌트는 `icon` prop으로 React 컴포넌트를 받아 유연하게 아이콘을 지정. 기본값은 MagnifyingGlassIcon, InboxIcon, ChatBubbleIcon 등 Heroicons 사용)*
 2. **Given** API 요청이 실패했을 때, **When** 에러 상태가 되면, **Then** 사용자 친화적인 에러 메시지와 "다시 시도" 버튼이 표시된다
 3. **Given** 신규 사용자가 채팅 목록을 볼 때, **When** 대화 기록이 없으면, **Then** "아직 대화가 없습니다. 프로에게 먼저 문의해 보세요" 메시지와 CTA 버튼이 표시된다
 4. **Given** 404 페이지에 도달했을 때, **When** 페이지가 표시되면, **Then** 브랜드에 맞는 디자인의 404 페이지와 홈으로 돌아가기 버튼이 표시된다
@@ -111,7 +113,7 @@
 
 ### Edge Cases
 
-- 사용자가 테마를 빠르게 여러 번 전환할 때 애니메이션이 중첩되지 않아야 한다
+- 사용자가 테마를 빠르게 여러 번 전환할 때: 200ms 디바운스 적용하여 마지막 상태만 반영 (애니메이션 중첩 방지)
 - 시스템 테마 변경 이벤트를 감지하여 자동으로 테마가 전환되어야 한다
 - 애니메이션이 reduced motion 설정을 존중해야 한다 (prefers-reduced-motion)
 - 스켈레톤 UI가 실제 콘텐츠와 유사한 레이아웃을 가져야 한다
@@ -121,6 +123,7 @@
   - **서버 오류** (5xx): "서버에 문제가 발생했습니다. 잠시 후 다시 시도해 주세요"
 - M3 Expressive Motion Scheme은 프리미엄 브랜드 이미지와 맞지 않으므로 Standard Scheme만 사용한다
 - Dynamic Color (사용자 배경화면 기반)는 브랜드 일관성을 해치므로 적용하지 않는다
+- localStorage 사용 불가 시 (프라이빗 브라우징, 저장 용량 초과): 테마 토글은 정상 작동하되 세션 종료 시 설정이 초기화됨 (시스템 설정으로 폴백)
 
 ## Requirements *(mandatory)*
 
@@ -145,7 +148,6 @@
   - Normal text (< 18pt / 24px): minimum 4.5:1 contrast ratio
   - Large text (≥ 18pt / 24px or 14pt bold): minimum 3:1 contrast ratio
   - UI components and graphical objects: minimum 3:1 contrast ratio
-- **FR-013**: *(Merged into FR-005)*
 - **FR-014**: System MUST provide consistent hover states across all clickable elements
 - **FR-015**: System MUST implement M3 Standard Motion Scheme easing curves:
   - Standard: `cubic-bezier(0.2, 0, 0, 1)` for general transitions
@@ -189,11 +191,11 @@
 - **SC-001**: 모든 페이지에서 다크/라이트 모드 전환 시 0.3초 이내에 테마가 적용된다
 - **SC-002**: 다크 모드에서 모든 텍스트가 WCAG AA 기준 4.5:1 이상의 명암비를 유지한다
 - **SC-003**: 모든 인터랙티브 요소에 hover 상태 전환이 200ms 이내에 완료된다
-- **SC-004**: 데이터 로딩 시 100ms 이상 지연되면 스켈레톤 UI가 표시된다
+- **SC-004**: 데이터 로딩 시 100ms 초과 지연되면 스켈레톤 UI가 표시된다 (>100ms, 100ms 이하는 스켈레톤 없이 대기)
 - **SC-005**: 에러 상태에서 "다시 시도" 버튼 클릭 시 해당 요청이 재실행된다
 - **SC-006**: lighthouse 접근성 점수 90점 이상 유지
 - **SC-007**: prefers-reduced-motion 설정 시 모든 애니메이션이 즉시 전환으로 대체된다
-- **SC-008**: M3 Standard Easing 적용 시 애니메이션이 물리 기반으로 자연스럽게 느껴진다
+- **SC-008**: M3 Standard Easing 적용 시 모든 transition 속성에 `cubic-bezier(0.2, 0, 0, 1)` 또는 정의된 M3 easing 변수(--ease-standard, --ease-standard-decelerate, --ease-standard-accelerate)가 사용된다
 - **SC-009**: M3 Color Roles 사용 시 모든 컴포넌트에서 일관된 의미론적 색상이 적용된다
 - **SC-010**: M3 Shape Scale 사용 시 모든 border-radius가 표준화된 토큰 값을 사용한다
 
@@ -217,6 +219,14 @@
 - M3 Dynamic Color (사용자 배경화면 기반 색상 생성)
 - M3 Expressive Motion Scheme (바운스가 있는 과장된 애니메이션)
 - M3 전체 컴포넌트 라이브러리 도입 (필요한 토큰만 선택적 도입)
+
+## Clarifications
+
+### Session 2025-12-10
+
+- Q: What should happen when localStorage is unavailable? → A: Allow toggle but don't persist (session-only theme)
+- Q: Should skeleton UI appear at exactly 100ms delay, or only when delay exceeds 100ms? → A: Show skeleton when delay > 100ms (greater than)
+- Q: How should rapid theme toggle clicks be handled? → A: Debounce: ignore rapid clicks, apply last state after 200ms
 
 ## References
 

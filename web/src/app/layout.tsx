@@ -1,8 +1,4 @@
 import './global.css'
-import '@fontsource/pretendard/400.css'
-import '@fontsource/pretendard/500.css'
-import '@fontsource/pretendard/600.css'
-import '@fontsource/pretendard/700.css'
 import type { Metadata, Viewport } from 'next'
 import { ThemeProvider } from 'next-themes'
 import {
@@ -11,6 +7,8 @@ import {
   getWebsiteSchema,
   getServiceSchema,
 } from '@/lib/seo/structured-data'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://teeup.golf'
 
@@ -68,18 +66,11 @@ export const metadata: Metadata = {
     siteName: 'TEE:UP',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/og-image.svg',
         width: 1200,
         height: 630,
         alt: 'TEE:UP - 프리미엄 골프 레슨 플랫폼',
-        type: 'image/jpeg',
-      },
-      {
-        url: '/og-image-square.jpg',
-        width: 600,
-        height: 600,
-        alt: 'TEE:UP 로고',
-        type: 'image/jpeg',
+        type: 'image/svg+xml',
       },
     ],
   },
@@ -87,7 +78,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'TEE:UP | 프리미엄 골프 레슨 매칭 플랫폼',
     description: '검증된 프로 골퍼와 함께하는 프리미엄 골프 레슨',
-    images: ['/og-image.jpg'],
+    images: ['/og-image.svg'],
     creator: '@teeup_golf',
     site: '@teeup_golf',
   },
@@ -130,7 +121,7 @@ export const metadata: Metadata = {
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
     other: [
-      { rel: 'mask-icon', url: '/safari-pinned-tab.svg', color: '#d4af37' },
+      { rel: 'mask-icon', url: '/safari-pinned-tab.svg', color: '#D7BA74' },
     ],
   },
   manifest: '/manifest.json',
@@ -163,14 +154,18 @@ export default function RootLayout({
         <JsonLd data={getWebsiteSchema()} />
         <JsonLd data={getServiceSchema()} />
       </head>
-      <body className="antialiased">
+      <body className="antialiased min-h-screen flex flex-col">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Header />
+          <main className="flex-grow pt-20">
+            {children}
+          </main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

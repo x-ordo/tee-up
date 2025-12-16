@@ -7,7 +7,7 @@ import type { ProfileData } from './profile-data'
 import BookingModal from '../components/BookingModal'
 import { KakaoTalkButton } from '../components/KakaoTalkButton'
 import { ThemeToggle } from '../components/ThemeToggle'
-import { useScrollVisibility } from '@/hooks/useScrollVisibility'
+import useScrollVisibility from '@/hooks/useScrollVisibility'
 
 export function ProfileTemplate({ data }: { data: ProfileData }) {
   const {
@@ -409,7 +409,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                       }`}
                   >
                     {idx === 1 && (
-                      <div className="absolute right-8 top-8 rounded-full bg-accent px-4 py-1 text-xs font-bold text-white">
+                      <div className="absolute right-8 top-8 rounded-full bg-tee-accent-primary px-4 py-1 text-xs font-bold text-white">
                         POPULAR
                       </div>
                     )}

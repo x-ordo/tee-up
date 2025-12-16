@@ -26,7 +26,7 @@ export default function Error({ error, reset }: ErrorProps) {
 
         {process.env.NODE_ENV === 'development' && (
           <details className="mt-8 text-left">
-            <summary className="cursor-pointer text-body-sm text-calm-ash hover:text-calm-charcoal">
+            <summary className="cursor-pointer text-body-sm text-calm-charcoal hover:text-calm-obsidian">
               오류 상세 정보 (개발 모드)
             </summary>
             <pre className="mt-4 overflow-auto rounded-xl border border-error bg-error-bg p-4 text-body-xs text-error">

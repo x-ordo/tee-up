@@ -33,49 +33,42 @@ export function EmptyState({
   className = '',
 }: EmptyStateProps) {
   const defaultIcon = (
-    <svg
-      className="h-12 w-12 text-calm-ash"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-      aria-hidden="true"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-      />
+    <svg width="56" height="56" viewBox="0 0 100 100" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(0,10)">
+        <path d="M14 56 Q 40 64, 78 50" stroke="#CFCFCA" strokeWidth="5" strokeLinecap="round" fill="none" />
+        <path d="M40 58 L 40 72" stroke="#CFCFCA" strokeWidth="5" strokeLinecap="round" fill="none" />
+        <circle cx="74" cy="44" r="8" fill="#E3E3DF" />
+      </g>
     </svg>
   );
 
   return (
     <div
-      className={`flex flex-col items-center justify-center py-16 text-center ${className}`}
+      className={`empty-state ${className}`} /* Apply base empty-state class */
       role="status"
       aria-live="polite"
     >
-      <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-calm-cloud">
+      <div className="empty-icon">
         {icon || defaultIcon}
       </div>
 
-      <h3 className="mb-2 text-xl font-semibold text-calm-obsidian">
+      <h3 className="empty-title">
         {title}
       </h3>
 
       {description && (
-        <p className="mb-6 max-w-md text-body-md text-calm-charcoal">
+        <p className="empty-text">
           {description}
         </p>
       )}
 
       {action && (
         action.href ? (
-          <Link href={action.href} className="btn-primary">
+          <Link href={action.href} className="btn btn-primary"> {/* Use btn and btn-primary classes */}
             {action.label}
           </Link>
         ) : (
-          <button onClick={action.onClick} className="btn-primary">
+          <button onClick={action.onClick} className="btn btn-primary"> {/* Use btn and btn-primary classes */}
             {action.label}
           </button>
         )
@@ -96,7 +89,7 @@ export function NoSearchResults({
     <EmptyState
       icon={
         <svg
-          className="h-12 w-12 text-calm-ash"
+          className="h-12 w-12 text-tee-fog" /* Updated color */
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -126,7 +119,7 @@ export function NoConversations() {
     <EmptyState
       icon={
         <svg
-          className="h-12 w-12 text-calm-ash"
+          className="h-12 w-12 text-tee-fog" /* Updated color */
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -152,7 +145,7 @@ export function NoProfiles() {
     <EmptyState
       icon={
         <svg
-          className="h-12 w-12 text-calm-ash"
+          className="h-12 w-12 text-tee-fog" /* Updated color */
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

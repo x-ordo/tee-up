@@ -3,6 +3,18 @@
 **Branch**: `002-ui-ux-color` | **Date**: 2025-12-02 | **Spec**: [spec.md](./spec.md)
 **Input**: Feature specification from `/specs/002-ui-ux-color/spec.md`
 
+## Dependencies
+
+**Prerequisite Feature**: This feature extends work done in `001-ux-a11y-fixes`. Ensure the following before implementation:
+
+1. ✅ `001-ux-a11y-fixes` branch merged to main, OR
+2. ⚠️ If working in parallel, manually resolve conflicts in:
+   - `web/src/app/global.css` (brand colors, focus states)
+   - `web/src/app/error.tsx` (semantic color tokens)
+   - `web/src/app/components/KakaoTalkButton.tsx` (brand color variables)
+
+**Conflict Resolution**: 002 tokens should extend 001 tokens, not replace them. Both features define `--brand-kakao-*` variables — ensure single definition in final merge.
+
 ## Summary
 
 이 기능은 TEE:UP 플랫폼의 UI/UX를 개선하여 다크 모드 지원, 마이크로인터랙션, 확장된 색상 시스템, 로딩/스켈레톤 UI, 빈 상태/에러 상태 UI를 구현한다. 기존 Korean Luxury Minimalism 디자인 철학("Calm Control")을 유지하면서 사용자 경험을 향상시킨다.

@@ -52,7 +52,7 @@ const nextConfig = {
    * optimizePackageImports: ['@fontsource/pretendard', 'lodash', 'date-fns']
    */
   experimental: {
-    optimizePackageImports: ['@fontsource/pretendard'],
+    optimizePackageImports: [], // Removed @fontsource/pretendard
   },
 }
 

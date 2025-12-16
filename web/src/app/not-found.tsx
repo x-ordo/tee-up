@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { EmptyState } from '@/app/components/EmptyState';
 
 export default function NotFound() {

@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import { useRef } from 'react';
-import { useFocusTrap } from '@/hooks/useFocusTrap';
+import useFocusTrap from '@/hooks/useFocusTrap';
 
 // Mock 요소 생성
 const createMockContainer = () => {
@@ -29,7 +29,7 @@ describe('useFocusTrap', () => {
     const { container } = createMockContainer();
     const ref = { current: container };
 
-    renderHook(() => useFocusTrap({ containerRef: ref, isActive: false }));
+    renderHook(() => useFocusTrap(ref, false));
 
     // 포커스가 자동으로 이동하지 않아야 함
     expect(document.activeElement).toBe(document.body);
@@ -39,7 +39,7 @@ describe('useFocusTrap', () => {
     const { container, button1 } = createMockContainer();
     const ref = { current: container };
 
-    renderHook(() => useFocusTrap({ containerRef: ref, isActive: true }));
+    renderHook(() => useFocusTrap(ref, true));
 
     // requestAnimationFrame 대기
     await new Promise((resolve) => requestAnimationFrame(resolve));
@@ -52,7 +52,7 @@ describe('useFocusTrap', () => {
     const ref = { current: container };
     const onClose = jest.fn();
 
-    renderHook(() => useFocusTrap({ containerRef: ref, isActive: true, onClose }));
+    renderHook(() => useFocusTrap(ref, true, { onClose }));
 
     // Escape 키 이벤트 발생
     const escapeEvent = new KeyboardEvent('keydown', { key: 'Escape' });
@@ -65,7 +65,7 @@ describe('useFocusTrap', () => {
     const { container, button1, input } = createMockContainer();
     const ref = { current: container };
 
-    renderHook(() => useFocusTrap({ containerRef: ref, isActive: true }));
+    renderHook(() => useFocusTrap(ref, true));
 
     // 마지막 요소에 포커스
     input.focus();
@@ -84,7 +84,7 @@ describe('useFocusTrap', () => {
     const { container, button1, input } = createMockContainer();
     const ref = { current: container };
 
-    renderHook(() => useFocusTrap({ containerRef: ref, isActive: true }));
+    renderHook(() => useFocusTrap(ref, true));
 
     // 첫 번째 요소에 포커스
     await new Promise((resolve) => requestAnimationFrame(resolve));

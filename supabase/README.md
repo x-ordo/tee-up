@@ -1,12 +1,54 @@
 # Supabase Setup Guide
 
-This guide walks through setting up Supabase for the TEE:UP platform.
+This guide walks through setting up Supabase for the TEE:UP Portfolio SaaS platform.
 
 ## Prerequisites
 
 - Supabase account (sign up at https://supabase.com)
 - Node.js and npm installed
 - Git repository initialized
+
+## Migrations
+
+마이그레이션을 순서대로 실행하세요:
+
+```sql
+-- 기본 스키마
+schema.sql
+
+-- 마이그레이션 (순서대로)
+migrations/001_add_theme_and_new_columns.sql
+migrations/002_add_studios.sql
+migrations/003_add_leads.sql
+migrations/004_add_portfolio_sections.sql
+migrations/005_archive_chat.sql
+migrations/006_saas_pivot_sites_and_events.sql  -- SaaS 피봇 핵심!
+migrations/007_seed_theme_presets.sql           -- 테마 프리셋 시드
+```
+
+### 마이그레이션 006 핵심 테이블
+
+| 테이블 | 설명 |
+|--------|------|
+| `sites` | 사이트 인스턴스 (프로/스튜디오 공통) |
+| `theme_presets` | 무드 프리셋 토큰 (Classic, Editorial, Air) |
+| `site_theme` | 사이트 적용 테마 설정 |
+| `site_theme_answers` | 온보딩 답변 로그 (분석용) |
+| `site_events` | 이벤트 로그 (과금/분석의 핵심) |
+| `rate_limits` | Rate limiting |
+
+### 핵심 RPC 함수
+
+```sql
+-- 이벤트 로깅 (anon 허용, published만, rate limit 포함)
+tup_log_site_event(site_id, event_type, visitor_id, ip_hash, ...)
+
+-- 테마 설정 (인증된 소유자만)
+tup_set_site_theme(site_id, preset_slug, variant, accent_color)
+
+-- Rate limit 체크
+tup_rate_limit_hit(key_type, key_value, action, limit, window_minutes)
+```
 
 ## Step 1: Create Supabase Project
 

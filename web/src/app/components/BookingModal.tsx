@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState, useRef } from 'react'
-import { useFocusTrap } from '@/hooks/useFocusTrap'
+import useFocusTrap from '@/hooks/useFocusTrap'
 
 type Service = { name: string; duration: string; price: string }
 
@@ -49,11 +49,11 @@ export default function BookingModal({
   }, [open])
 
   // Focus trap and Escape key handling
-  useFocusTrap({
-    containerRef: modalRef,
-    isActive: open,
-    onClose,
-  })
+  useFocusTrap(
+    modalRef,
+    open,
+    { onClose }
+  )
 
   const disabled = useMemo(() => !name || !phone || !agree, [name, phone, agree])
 

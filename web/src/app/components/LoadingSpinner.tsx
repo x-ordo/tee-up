@@ -28,10 +28,10 @@ export function LoadingSpinner({
   size = 'md',
   fullScreen = true
 }: LoadingSpinnerProps) {
-  const sizeClasses = {
-    sm: 'h-8 w-8',
-    md: 'h-16 w-16',
-    lg: 'h-20 w-20',
+  const svgSize = {
+    sm: '24', // Adjusted from 40 for better scale
+    md: '40',
+    lg: '64', // Larger size
   };
 
   const content = (
@@ -41,18 +41,27 @@ export function LoadingSpinner({
       aria-busy="true"
       aria-live="polite"
     >
-      <div
-        className={`mx-auto mb-6 animate-spin rounded-full border-4 border-accent border-t-transparent ${sizeClasses[size]}`}
-        aria-hidden="true"
-      />
-      {message && <p className="text-calm-ash">{message}</p>}
+      <svg
+        className="mx-auto mb-6"
+        width={svgSize[size]}
+        height={svgSize[size]}
+        viewBox="0 0 40 40" // Original SVG viewBox, scaling handled by width/height
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle cx="20" cy="20" r="16" stroke="var(--tee-fog)" strokeWidth="4" fill="none" />
+        <path d="M20 4 A 16 16 0 0 1 36 20" stroke="var(--tee-gold)" strokeWidth="4" strokeLinecap="round" fill="none">
+          <animateTransform attributeName="transform" type="rotate" from="0 20 20" to="360 20 20" dur="1s" repeatCount="indefinite" />
+        </path>
+      </svg>
+      {message && <p className="text-tee-obsidian">{message}</p>}
       <span className="sr-only">{message || '로딩 중'}</span>
     </div>
   );
 
   if (fullScreen) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-calm-white">
+      <div className="flex min-h-screen items-center justify-center bg-tee-sand">
         {content}
       </div>
     );
@@ -93,7 +102,7 @@ export function LoadingButton({
     >
       {loading && (
         <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-4 w-4 animate-spin rounded-full border-2 border-tee-gold border-t-transparent"
           aria-hidden="true"
         />
       )}

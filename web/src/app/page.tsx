@@ -1,71 +1,43 @@
-import Link from 'next/link'
-import { ThemeToggle } from './components/ThemeToggle'
+import Link from 'next/link';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-calm-white">
-      {/* Navigation */}
-      <nav className="fixed top-0 z-50 w-full border-b border-calm-stone bg-calm-white/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <Link href="/" className="font-display text-2xl font-bold text-calm-obsidian">
-            TEE<span className="text-accent">:</span>UP
-          </Link>
-
-          <div className="hidden items-center gap-8 md:flex">
-            <Link href="/browse" className="rounded-lg px-2 py-1 text-body-sm font-medium text-calm-charcoal transition-colors hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent-light">
-              전체 프로
-            </Link>
-            <Link href="/about" className="rounded-lg px-2 py-1 text-body-sm font-medium text-calm-charcoal transition-colors hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent-light">
-              소개
-            </Link>
-            <Link href="/contact" className="rounded-lg px-2 py-1 text-body-sm font-medium text-calm-charcoal transition-colors hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent-light">
-              문의
-            </Link>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <ThemeToggle />
-            <Link href="/get-started" className="btn-primary">
-              바로 시작하기
-            </Link>
-          </div>
-        </div>
-      </nav>
-
+    <div className="">
       {/* Hero Section */}
-      <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 pt-20">
-        <div className="relative z-10 mx-auto max-w-6xl text-center">
-          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-accent bg-accent-light px-6 py-3">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-accent" />
-            <span className="text-body-sm font-medium text-accent-dark">AI가 추천하는 맞춤 프로</span>
+      <section className="relative flex min-h-[calc(100vh-theme(spacing.20))] items-center justify-center overflow-hidden px-space-4 py-space-16 md:py-space-32">
+        <div className="relative z-10 mx-auto max-w-screen-md text-center bg-tee-surface p-space-8 rounded-xl shadow-card">
+          <div className="mb-space-4 inline-flex items-center gap-space-2 rounded-full border border-tee-ink-light/20 bg-tee-background px-space-4 py-space-1">
+            <span className="h-space-2 w-space-2 animate-pulse rounded-full bg-tee-accent-primary" />
+            <span className="text-caption font-medium text-tee-ink-light">AI가 추천하는 맞춤 프로</span>
           </div>
 
-          <h1 className="mb-6 font-display text-5xl font-bold leading-tight text-calm-obsidian md:text-6xl lg:text-7xl">
+          <h1 className="mb-space-4 text-h1 font-bold leading-tight tracking-tight text-tee-ink-strong">
             나에게 꼭 맞는
             <br />
-            <span className="text-accent">프리미엄 골프 레슨을 간편하게</span>
+            <span className="text-tee-accent-primary">프리미엄 골프 레슨을 간편하게</span>
           </h1>
 
-          <p className="mx-auto mb-12 max-w-2xl text-body-lg leading-relaxed text-calm-charcoal">
+          <p className="mx-auto mb-space-8 max-w-prose text-body leading-normal text-tee-ink-strong">
             투어 경험이 풍부한 프로들을 한눈에 비교하고, 원하는 스타일로 바로 상담하세요.
             AI 추천과 실시간 매칭으로 실력 향상의 지름길을 안내합니다.
           </p>
 
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <button className="btn-primary px-10 py-4 text-lg">
-              3분 만에 AI 매칭
-            </button>
-            <Link href="/profile" className="btn-secondary px-10 py-4 text-lg">
-              프로 리스트 보기
-            </Link>
+          <div className="flex justify-center">
+            <Button asChild variant="primary" size="lg">
+              <Link href="/onboarding/mood">
+                3분 만에 AI 매칭 시작하기
+              </Link>
+            </Button>
           </div>
         </div>
 
         {/* Scroll Indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce" aria-hidden="true">
-          <div className="flex flex-col items-center gap-2 text-calm-charcoal">
-            <span className="text-body-xs uppercase tracking-widest">Scroll</span>
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div className="absolute bottom-space-8 left-1/2 -translate-x-1/2 animate-bounce" aria-hidden="true">
+          <div className="flex flex-col items-center gap-space-1 text-tee-ink-light">
+            <span className="text-caption uppercase tracking-wider">Scroll</span>
+            <svg className="h-space-5 w-space-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
           </div>
@@ -73,20 +45,20 @@ export default function Home() {
       </section>
 
       {/* AI Matching Section */}
-      <section className="bg-calm-cloud px-6 py-32">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 font-display text-display-md font-bold text-calm-obsidian">
+      <section className="bg-tee-background px-space-4 py-space-16 md:py-space-32">
+        <div className="mx-auto max-w-screen-xl">
+          <div className="mb-space-12 text-center">
+            <h2 className="mb-space-4 text-h2 font-bold text-tee-ink-strong">
               AI가 찾아주는
               <br />
-              <span className="text-accent">나만의 프로</span>
+              <span className="text-tee-accent-primary">나만의 프로</span>
             </h2>
-            <p className="mx-auto max-w-2xl text-body-lg text-calm-charcoal">
+            <p className="mx-auto max-w-prose text-body text-tee-ink-strong">
               몇 가지 질문에 답하면 내 플레이 성향과 목표에 딱 맞는 프로를 추천해드려요.
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3 stagger-fade-in">
+          <div className="grid gap-space-8 md:grid-cols-3 stagger-fade-in">
             {[
               {
                 icon: '🎯',
@@ -104,62 +76,62 @@ export default function Home() {
                 description: '마음에 드는 프로와 바로 상담을 시작해보세요.',
               },
             ].map((step, idx) => (
-              <div
+              <Card
                 key={idx}
-                className="card group p-8"
+                className="group p-space-8"
               >
-                <div className="mb-6 text-6xl">{step.icon}</div>
-                <h3 className="mb-3 text-xl font-bold text-calm-obsidian">{step.title}</h3>
-                <p className="text-body-md leading-relaxed text-calm-charcoal">{step.description}</p>
-              </div>
+                <div className="mb-space-6 text-6xl">{step.icon}</div>
+                <h3 className="mb-space-3 text-h3 font-bold text-tee-ink-strong">{step.title}</h3>
+                <p className="text-body leading-normal text-tee-ink-strong">{step.description}</p>
+              </Card>
             ))}
           </div>
         </div>
       </section>
 
       {/* Featured Pros Snippet */}
-      <section className="px-6 py-32">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 font-display text-display-md font-bold text-calm-obsidian">
+      <section className="px-space-4 py-space-16 md:py-space-32">
+        <div className="mx-auto max-w-screen-xl">
+          <div className="mb-space-12 text-center">
+            <h2 className="mb-space-4 text-h2 font-bold text-tee-ink-strong">
               믿고 맡길 수 있는 프로 골퍼
             </h2>
-            <p className="mx-auto max-w-2xl text-body-lg text-calm-charcoal">
+            <p className="mx-auto max-w-prose text-body text-tee-ink-strong">
               LPGA, PGA 투어 경험을 갖춘 프로들이 친절하게 도와드립니다.
             </p>
           </div>
 
           {/* Abstract Pro Cards */}
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-space-6 md:grid-cols-3">
             {[
               { initial: 'H', title: 'LPGA Tour', tours: '8+ 투어' },
               { initial: 'J', title: 'PGA Master', tours: '10+ 투어' },
               { initial: 'S', title: 'KLPGA', tours: '5+ 투어' },
             ].map((pro, idx) => (
-              <div
+              <Card
                 key={idx}
-                className="card group p-8 transition-all duration-300 hover:shadow-lg"
+                className="group p-space-8"
               >
-                <div className="flex items-center gap-6">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-accent text-3xl font-bold text-white">
+                <div className="flex items-center gap-space-6">
+                  <div className="flex h-space-20 w-space-20 items-center justify-center rounded-full bg-tee-accent-primary text-3xl font-bold text-tee-surface">
                     {pro.initial}
                   </div>
                   <div>
-                    <p className="mb-1 text-body-sm font-medium text-accent">{pro.title}</p>
-                    <p className="text-2xl font-bold text-calm-obsidian">{pro.tours}</p>
+                    <p className="mb-space-1 text-body font-medium text-tee-accent-secondary">{pro.title}</p>
+                    <p className="text-h3 font-bold text-tee-ink-strong">{pro.tours}</p>
                   </div>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
 
-          <div className="mt-12 text-center">
+          <div className="mt-space-12 text-center">
             <Link
               href="/profile"
-              className="inline-flex items-center gap-2 text-body-lg font-semibold text-accent transition-all hover:gap-4"
+              className="inline-flex items-center gap-space-2 text-body font-semibold text-tee-accent-primary transition-all hover:gap-space-4"
             >
               모든 프로 살펴보기
-              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-space-5 w-space-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
@@ -168,10 +140,10 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-calm-cloud px-6 py-32">
-        <div className="mx-auto max-w-7xl">
-          <div className="card p-16">
-            <div className="grid gap-12 md:grid-cols-4">
+      <section className="bg-tee-background px-space-4 py-space-16 md:py-space-32">
+        <div className="mx-auto max-w-screen-xl">
+          <Card className="p-space-16">
+            <div className="grid gap-space-12 md:grid-cols-4">
               {[
                 { value: '50+', label: '검증된 프로' },
                 { value: '1,200+', label: '성공 매칭' },
@@ -179,134 +151,37 @@ export default function Home() {
                 { value: '95%', label: '재예약률' },
               ].map((stat, idx) => (
                 <div key={idx} className="text-center">
-                  <div className="mb-3 font-display text-display-lg font-bold text-accent">
+                  <div className="mb-space-3 text-h1 font-bold text-tee-accent-secondary">
                     {stat.value}
                   </div>
-                  <p className="text-body-sm font-medium uppercase tracking-wider text-calm-charcoal">
+                  <p className="text-body font-medium uppercase tracking-wide text-tee-ink-strong">
                     {stat.label}
                   </p>
                 </div>
               ))}
             </div>
-          </div>
+          </Card>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="px-6 py-32">
-        <div className="mx-auto max-w-4xl">
-          <div className="rounded-3xl border-2 border-accent bg-accent-light p-16 text-center">
-            <h2 className="mb-6 font-display text-display-md font-bold text-calm-obsidian">
+      <section className="px-space-4 py-space-16 md:py-space-32">
+        <div className="mx-auto max-w-screen-lg">
+          <Card className="border border-tee-accent-primary bg-tee-background p-space-16 text-center">
+            <h2 className="mb-space-6 text-h2 font-bold text-tee-ink-strong">
               지금 바로 시작해보세요
             </h2>
-            <p className="mx-auto mb-10 max-w-2xl text-body-lg text-calm-charcoal">
+            <p className="mx-auto mb-space-10 max-w-prose text-body text-tee-ink-strong">
               간단한 질문만으로 내게 맞는 프로를 추천받고, 바로 상담까지 이어가세요.
             </p>
-            <button className="btn-primary px-12 py-5 text-lg">
-              무료 매칭 받아보기
-            </button>
-          </div>
+            <Button asChild variant="primary" size="lg">
+              <Link href="/get-started">
+                무료 매칭 받아보기
+              </Link>
+            </Button>
+          </Card>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="border-t border-calm-stone bg-calm-cloud px-6 py-16">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-12 md:grid-cols-4">
-            {/* Company Info */}
-            <div className="md:col-span-2">
-              <Link href="/" className="mb-6 inline-block font-display text-3xl font-bold text-calm-obsidian">
-                TEE<span className="text-accent">:</span>UP
-              </Link>
-              <p className="mb-6 text-body-md leading-relaxed text-calm-charcoal">
-                프리미엄 골프 레슨 매칭 플랫폼.
-                <br />
-                검증된 프로와 함께 부담 없이 실력을 키워보세요.
-              </p>
-              <div className="flex gap-4">
-                <a
-                  href="#"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-calm-stone text-calm-charcoal transition-all hover:border-accent hover:text-accent"
-                  aria-label="인스타그램"
-                >
-                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073z" />
-                  </svg>
-                </a>
-                <a
-                  href="#"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-calm-stone text-calm-charcoal transition-all hover:border-accent hover:text-accent"
-                  aria-label="유튜브"
-                >
-                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-
-            {/* Quick Links */}
-            <div>
-              <h3 className="mb-6 text-lg font-semibold text-calm-obsidian">바로가기</h3>
-              <ul className="space-y-3">
-                <li>
-                  <Link href="/profile" className="text-body-md text-calm-charcoal transition-colors hover:text-accent">
-                    전체 프로 보기
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/about" className="text-body-md text-calm-charcoal transition-colors hover:text-accent">
-                    회사 소개
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/how-it-works" className="text-body-md text-calm-charcoal transition-colors hover:text-accent">
-                    이용 방법
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/pricing" className="text-body-md text-calm-charcoal transition-colors hover:text-accent">
-                    요금 안내
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            {/* Support */}
-            <div>
-              <h3 className="mb-6 text-lg font-semibold text-calm-obsidian">고객 지원</h3>
-              <ul className="space-y-3">
-                <li>
-                  <Link href="/contact" className="text-body-md text-calm-charcoal transition-colors hover:text-accent">
-                    문의하기
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/faq" className="text-body-md text-calm-charcoal transition-colors hover:text-accent">
-                    자주 묻는 질문
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/terms" className="text-body-md text-calm-charcoal transition-colors hover:text-accent">
-                    이용약관
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/privacy" className="text-body-md text-calm-charcoal transition-colors hover:text-accent">
-                    개인정보처리방침
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="mt-12 border-t border-calm-stone pt-8 text-center">
-            <p className="text-body-sm text-calm-ash">
-              © 2025 TEE:UP. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
