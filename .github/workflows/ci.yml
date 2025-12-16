@@ -1,6 +1,7 @@
 # ═══════════════════════════════════════════════════════════════
 # TEE:UP CI 파이프라인
 # 목적: 코드 품질 검증, 테스트, 보안 스캔
+# Note: Express.js backend removed - now using Next.js Server Actions
 # ═══════════════════════════════════════════════════════════════
 
 name: CI
@@ -34,32 +35,18 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: |
-            web/package-lock.json
-            api/package-lock.json
+          cache-dependency-path: web/package-lock.json
 
-      - name: Install Frontend Dependencies
+      - name: Install Dependencies
         working-directory: ./web
         run: npm ci
 
-      - name: Install Backend Dependencies
-        working-directory: ./api
-        run: npm ci
-
-      - name: Lint Frontend
+      - name: Lint
         working-directory: ./web
         run: npm run lint
 
-      - name: Lint Backend
-        working-directory: ./api
-        run: npm run lint
-
-      - name: Type Check Frontend
+      - name: Type Check
         working-directory: ./web
-        run: npm run type-check
-
-      - name: Type Check Backend
-        working-directory: ./api
         run: npm run type-check
 
   # ═══════════════════════════════════════════════════════════════
@@ -78,26 +65,14 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: |
-            web/package-lock.json
-            api/package-lock.json
+          cache-dependency-path: web/package-lock.json
 
-      - name: Install Frontend Dependencies
+      - name: Install Dependencies
         working-directory: ./web
         run: npm ci
 
-      - name: Install Backend Dependencies
-        working-directory: ./api
-        run: npm ci
-
-      - name: Run Frontend Unit Tests
+      - name: Run Unit Tests
         working-directory: ./web
-        run: npm run test:coverage
-        env:
-          CI: true
-
-      - name: Run Backend Unit Tests
-        working-directory: ./api
         run: npm run test:coverage
         env:
           CI: true
@@ -105,52 +80,8 @@ jobs:
       - name: Upload Coverage
         uses: codecov/codecov-action@v3
         with:
-          files: ./web/coverage/lcov.info,./api/coverage/lcov.info
+          files: ./web/coverage/lcov.info
           fail_ci_if_error: false
-
-  # ═══════════════════════════════════════════════════════════════
-  # 통합 테스트
-  # ═══════════════════════════════════════════════════════════════
-  test-integration:
-    name: Integration Tests
-    runs-on: ubuntu-latest
-    needs: lint
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: teeup_test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: api/package-lock.json
-
-      - name: Install Backend Dependencies
-        working-directory: ./api
-        run: npm ci
-
-      - name: Run Integration Tests
-        working-directory: ./api
-        run: npm run test -- --testPathPattern="integration|e2e" --passWithNoTests
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/teeup_test
-          NODE_ENV: test
 
   # ═══════════════════════════════════════════════════════════════
   # 빌드 검증
@@ -158,7 +89,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: [test-unit, test-integration]
+    needs: [test-unit]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -168,42 +99,25 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: |
-            web/package-lock.json
-            api/package-lock.json
+          cache-dependency-path: web/package-lock.json
 
-      - name: Install Frontend Dependencies
+      - name: Install Dependencies
         working-directory: ./web
         run: npm ci
 
-      - name: Install Backend Dependencies
-        working-directory: ./api
-        run: npm ci
-
-      - name: Build Frontend
+      - name: Build
         working-directory: ./web
         run: npm run build
         env:
-          NEXT_PUBLIC_API_URL: https://api.teeup.kr
           NEXT_PUBLIC_SUPABASE_URL: https://yrdfopkerrrhsafynakg.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           NEXT_PUBLIC_SITE_URL: https://teeup.kr
 
-      - name: Build Backend
-        working-directory: ./api
-        run: npm run build
-
-      - name: Upload Frontend Build
+      - name: Upload Build
         uses: actions/upload-artifact@v4
         with:
           name: frontend-build
           path: web/.next
-
-      - name: Upload Backend Build
-        uses: actions/upload-artifact@v4
-        with:
-          name: backend-build
-          path: api/dist
 
   # ═══════════════════════════════════════════════════════════════
   # 보안 스캔
@@ -221,13 +135,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Audit Frontend Dependencies
+      - name: Audit Dependencies
         working-directory: ./web
-        run: npm audit --audit-level=high
-        continue-on-error: true
-
-      - name: Audit Backend Dependencies
-        working-directory: ./api
         run: npm audit --audit-level=high
         continue-on-error: true
 
