@@ -99,7 +99,7 @@ export function SocialTemplate({ profile }: SocialTemplateProps) {
                 href={profile.open_chat_url || `https://open.kakao.com/o/${profile.kakao_talk_id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FEE500] text-[#3C1E1E] transition-transform hover:scale-110"
+                className="flex h-12 w-12 items-center justify-center rounded-full bg-tee-kakao text-tee-kakao-text transition-transform hover:scale-110"
                 aria-label="KakaoTalk"
               >
                 <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">

@@ -36,7 +36,7 @@ export function SiteTemplate({ site, theme }: SiteTemplateProps) {
     : '예약하기';
 
   return (
-    <div className="min-h-screen bg-calm-white">
+    <div className="min-h-screen bg-tee-background">
       {/* Hero Section */}
       <header className="relative h-[70vh] min-h-[500px] overflow-hidden">
         {/* Background Image */}
@@ -50,11 +50,11 @@ export function SiteTemplate({ site, theme }: SiteTemplateProps) {
             sizes="100vw"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-calm-stone to-calm-cloud" />
+          <div className="absolute inset-0 bg-gradient-to-br from-tee-stone to-tee-surface" />
         )}
 
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-calm-obsidian via-calm-obsidian/50 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-tee-ink-strong via-tee-ink-strong/50 to-transparent" />
 
         {/* Content */}
         <div className="relative flex h-full items-end">
@@ -117,12 +117,12 @@ export function SiteTemplate({ site, theme }: SiteTemplateProps) {
       {site.gallery_images && site.gallery_images.length > 0 && (
         <section className="px-6 py-12">
           <div className="mx-auto max-w-4xl">
-            <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">갤러리</h2>
+            <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">갤러리</h2>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
               {site.gallery_images.slice(0, 6).map((image, idx) => (
                 <div
                   key={idx}
-                  className="relative aspect-square overflow-hidden rounded-xl border border-calm-stone"
+                  className="relative aspect-square overflow-hidden rounded-xl border border-tee-stone"
                 >
                   <Image
                     src={image}
@@ -140,10 +140,10 @@ export function SiteTemplate({ site, theme }: SiteTemplateProps) {
 
       {/* Video Section */}
       {site.video_url && (
-        <section className="bg-calm-cloud px-6 py-12">
+        <section className="bg-tee-surface px-6 py-12">
           <div className="mx-auto max-w-4xl">
-            <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">영상</h2>
-            <div className="overflow-hidden rounded-xl border border-calm-stone">
+            <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">영상</h2>
+            <div className="overflow-hidden rounded-xl border border-tee-stone">
               <video
                 controls
                 preload="metadata"
@@ -166,28 +166,28 @@ export function SiteTemplate({ site, theme }: SiteTemplateProps) {
                 {(site.has_phone || site.has_email) && (
                   <Link
                     href={`/site/${site.handle}/contact`}
-                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-left hover:bg-calm-cloud"
+                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-left hover:bg-tee-surface"
                   >
                     <span className="text-xl">📞</span>
-                    <span className="font-medium text-calm-obsidian">연락처 보기</span>
+                    <span className="font-medium text-tee-ink-strong">연락처 보기</span>
                   </Link>
                 )}
                 {site.has_kakao && (
                   <Link
                     href={`/site/${site.handle}/contact?action=kakao`}
-                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-left hover:bg-calm-cloud"
+                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-left hover:bg-tee-surface"
                   >
                     <span className="text-xl">💬</span>
-                    <span className="font-medium text-calm-obsidian">카카오톡 문의</span>
+                    <span className="font-medium text-tee-ink-strong">카카오톡 문의</span>
                   </Link>
                 )}
                 {site.has_booking && (
                   <Link
                     href={`/site/${site.handle}/contact?action=booking`}
-                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-left hover:bg-calm-cloud"
+                    className="flex items-center gap-3 rounded-lg px-4 py-3 text-left hover:bg-tee-surface"
                   >
                     <span className="text-xl">📅</span>
-                    <span className="font-medium text-calm-obsidian">예약하기</span>
+                    <span className="font-medium text-tee-ink-strong">예약하기</span>
                   </Link>
                 )}
               </div>
@@ -218,8 +218,8 @@ export function SiteTemplate({ site, theme }: SiteTemplateProps) {
       <div className="h-32" />
 
       {/* Minimal Footer */}
-      <footer className="border-t border-calm-stone py-6">
-        <p className="text-center text-sm text-calm-charcoal">
+      <footer className="border-t border-tee-stone py-6">
+        <p className="text-center text-sm text-tee-ink-light">
           Powered by{' '}
           <a
             href="https://teeup.kr"

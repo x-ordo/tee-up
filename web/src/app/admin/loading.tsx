@@ -2,7 +2,7 @@ import { DashboardCardSkeleton, Skeleton } from '@/app/components/Skeleton';
 
 export default function AdminLoading() {
   return (
-    <div className="min-h-screen bg-calm-white p-8">
+    <div className="min-h-screen bg-tee-background p-8">
       <div className="mx-auto max-w-7xl">
         {/* Header */}
         <div className="mb-8">
@@ -22,7 +22,7 @@ export default function AdminLoading() {
           <div className="table-header">
             <Skeleton className="h-6 w-32" />
           </div>
-          <div className="divide-y divide-calm-stone">
+          <div className="divide-y divide-tee-stone">
             {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="flex items-center gap-4 p-4">
                 <Skeleton className="h-10 w-10 rounded-full" />

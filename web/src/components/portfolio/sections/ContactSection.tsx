@@ -40,7 +40,7 @@ export function ContactSection({
               <Button
                 asChild
                 size="lg"
-                className="gap-2 bg-[#FEE500] text-[#3C1E1E] hover:bg-[#FDD835]"
+                className="gap-2 bg-tee-kakao text-tee-kakao-text hover:bg-tee-kakao/90"
               >
                 <a href={openChatUrl} target="_blank" rel="noopener noreferrer">
                   <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">

@@ -98,14 +98,14 @@ export default function AdminAnalyticsPage() {
   const { timePeriod, setTimePeriod } = useTimePeriod('30')
 
   return (
-    <div className="min-h-screen bg-calm-white">
+    <div className="min-h-screen bg-tee-background">
       {/* Admin Header */}
-      <header className="border-b border-calm-stone bg-white">
+      <header className="border-b border-tee-stone bg-white">
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-semibold text-calm-obsidian">분석</h1>
-              <p className="text-body-sm text-calm-ash">플랫폼 성과 및 비즈니스 지표</p>
+              <h1 className="text-2xl font-semibold text-tee-ink-strong">분석</h1>
+              <p className="text-body-sm text-tee-ink-muted">플랫폼 성과 및 비즈니스 지표</p>
             </div>
             <Link href="/admin" className="btn-ghost">
               ← 대시보드
@@ -115,30 +115,30 @@ export default function AdminAnalyticsPage() {
       </header>
 
       {/* Navigation Tabs */}
-      <div className="border-b border-calm-stone bg-white">
+      <div className="border-b border-tee-stone bg-white">
         <nav className="mx-auto max-w-7xl px-6">
           <div className="flex gap-8">
             <Link
               href="/admin"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               대시보드
             </Link>
             <Link
               href="/admin/pros"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               프로 관리
             </Link>
             <Link
               href="/admin/chats"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               채팅 관리
             </Link>
             <Link
               href="/admin/users"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               사용자 관리
             </Link>
@@ -157,14 +157,14 @@ export default function AdminAnalyticsPage() {
         {/* KPI Overview */}
         <section className="mb-12">
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-semibold text-calm-obsidian">핵심 성과 지표</h2>
+            <h2 className="text-2xl font-semibold text-tee-ink-strong">핵심 성과 지표</h2>
             <TimePeriodFilter timePeriod={timePeriod} onPeriodChange={setTimePeriod} />
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {kpiMetrics.map((metric, idx) => (
               <div key={idx} className="card p-6">
-                <p className="mb-2 text-body-sm font-medium text-calm-ash">{metric.label}</p>
-                <p className="mb-1 font-display text-3xl font-bold text-calm-obsidian">
+                <p className="mb-2 text-body-sm font-medium text-tee-ink-muted">{metric.label}</p>
+                <p className="mb-1 font-display text-3xl font-bold text-tee-ink-strong">
                   {metric.value}
                 </p>
                 <p
@@ -174,7 +174,7 @@ export default function AdminAnalyticsPage() {
                 >
                   {metric.change}
                 </p>
-                <p className="text-body-xs text-calm-ash">{metric.description}</p>
+                <p className="text-body-xs text-tee-ink-muted">{metric.description}</p>
               </div>
             ))}
           </div>
@@ -182,10 +182,10 @@ export default function AdminAnalyticsPage() {
 
         {/* Revenue Trends */}
         <section className="mb-12">
-          <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">수익 트렌드</h2>
+          <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">수익 트렌드</h2>
           <div className="card p-8">
             <div className="mb-6">
-              <h3 className="text-xl font-semibold text-calm-obsidian">월별 수익 현황</h3>
+              <h3 className="text-xl font-semibold text-tee-ink-strong">월별 수익 현황</h3>
             </div>
 
             <div className="table-container">
@@ -202,12 +202,12 @@ export default function AdminAnalyticsPage() {
                 <tbody>
                   {revenueData.map((data, idx) => (
                     <tr key={idx} className="table-row">
-                      <td className="table-cell font-semibold text-calm-obsidian">{data.month}</td>
+                      <td className="table-cell font-semibold text-tee-ink-strong">{data.month}</td>
                       <td className="table-cell text-center font-mono">{data.subscriptions}</td>
                       <td className="table-cell text-center font-mono text-success">
                         +{data.newPros}
                       </td>
-                      <td className="table-cell text-right font-mono font-semibold text-calm-obsidian">
+                      <td className="table-cell text-right font-mono font-semibold text-tee-ink-strong">
                         {data.revenue.toLocaleString('ko-KR')}원
                       </td>
                       <td className="table-cell text-right font-semibold text-success">
@@ -222,17 +222,17 @@ export default function AdminAnalyticsPage() {
             </div>
 
             <div className="mt-6 grid gap-4 md:grid-cols-3">
-              <div className="rounded-xl border border-calm-stone bg-calm-cloud/50 p-4">
-                <p className="mb-1 text-body-sm text-calm-ash">평균 구독 가격</p>
-                <p className="font-display text-2xl font-bold text-calm-obsidian">₩49,000</p>
+              <div className="rounded-xl border border-tee-stone bg-tee-surface/50 p-4">
+                <p className="mb-1 text-body-sm text-tee-ink-muted">평균 구독 가격</p>
+                <p className="font-display text-2xl font-bold text-tee-ink-strong">₩49,000</p>
               </div>
-              <div className="rounded-xl border border-calm-stone bg-calm-cloud/50 p-4">
-                <p className="mb-1 text-body-sm text-calm-ash">구독 전환율</p>
-                <p className="font-display text-2xl font-bold text-calm-obsidian">25.5%</p>
+              <div className="rounded-xl border border-tee-stone bg-tee-surface/50 p-4">
+                <p className="mb-1 text-body-sm text-tee-ink-muted">구독 전환율</p>
+                <p className="font-display text-2xl font-bold text-tee-ink-strong">25.5%</p>
               </div>
-              <div className="rounded-xl border border-calm-stone bg-calm-cloud/50 p-4">
-                <p className="mb-1 text-body-sm text-calm-ash">이탈률</p>
-                <p className="font-display text-2xl font-bold text-calm-obsidian">4.2%</p>
+              <div className="rounded-xl border border-tee-stone bg-tee-surface/50 p-4">
+                <p className="mb-1 text-body-sm text-tee-ink-muted">이탈률</p>
+                <p className="font-display text-2xl font-bold text-tee-ink-strong">4.2%</p>
               </div>
             </div>
           </div>
@@ -240,10 +240,10 @@ export default function AdminAnalyticsPage() {
 
         {/* Pro Performance Leaderboard */}
         <section className="mb-12">
-          <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">프로 성과 순위</h2>
+          <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">프로 성과 순위</h2>
           <div className="card p-6">
             <div className="mb-4">
-              <p className="text-body-sm text-calm-ash">
+              <p className="text-body-sm text-tee-ink-muted">
                 프로필 조회수, 리드 수, 매칭 성공률 기준
               </p>
             </div>
@@ -271,10 +271,10 @@ export default function AdminAnalyticsPage() {
                             idx === 0
                               ? 'bg-warning text-white'
                               : idx === 1
-                                ? 'bg-calm-ash text-white'
+                                ? 'bg-tee-ink-muted text-white'
                                 : idx === 2
                                   ? 'bg-warning-bg text-warning'
-                                  : 'bg-calm-cloud text-calm-charcoal'
+                                  : 'bg-tee-surface text-tee-ink-light'
                           }`}
                         >
                           {idx + 1}
@@ -282,8 +282,8 @@ export default function AdminAnalyticsPage() {
                       </td>
                       <td className="table-cell">
                         <div>
-                          <p className="font-semibold text-calm-obsidian">{pro.name}</p>
-                          <p className="text-body-xs text-calm-ash">ID: {pro.id}</p>
+                          <p className="font-semibold text-tee-ink-strong">{pro.name}</p>
+                          <p className="text-body-xs text-tee-ink-muted">ID: {pro.id}</p>
                         </div>
                       </td>
                       <td className="table-cell text-center font-mono">{pro.profileViews}</td>
@@ -310,43 +310,43 @@ export default function AdminAnalyticsPage() {
 
         {/* Platform Health */}
         <section>
-          <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">플랫폼 상태</h2>
+          <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">플랫폼 상태</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             <div className="card p-6">
-              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 프로 활동률
               </h4>
-              <div className="mb-2 font-display text-3xl font-bold text-calm-obsidian">83.0%</div>
-              <p className="mb-4 text-body-sm text-calm-charcoal">
+              <div className="mb-2 font-display text-3xl font-bold text-tee-ink-strong">83.0%</div>
+              <p className="mb-4 text-body-sm text-tee-ink-light">
                 최근 7일 내 채팅 응답한 프로 비율
               </p>
-              <div className="h-2 w-full rounded-full bg-calm-cloud">
+              <div className="h-2 w-full rounded-full bg-tee-surface">
                 <div className="h-2 rounded-full bg-success" style={{ width: '83%' }}></div>
               </div>
             </div>
 
             <div className="card p-6">
-              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 골퍼 참여도
               </h4>
-              <div className="mb-2 font-display text-3xl font-bold text-calm-obsidian">71.5%</div>
-              <p className="mb-4 text-body-sm text-calm-charcoal">
+              <div className="mb-2 font-display text-3xl font-bold text-tee-ink-strong">71.5%</div>
+              <p className="mb-4 text-body-sm text-tee-ink-light">
                 최근 30일 내 활동한 골퍼 비율
               </p>
-              <div className="h-2 w-full rounded-full bg-calm-cloud">
+              <div className="h-2 w-full rounded-full bg-tee-surface">
                 <div className="h-2 rounded-full bg-info" style={{ width: '71.5%' }}></div>
               </div>
             </div>
 
             <div className="card p-6">
-              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 재예약률
               </h4>
-              <div className="mb-2 font-display text-3xl font-bold text-calm-obsidian">64.2%</div>
-              <p className="mb-4 text-body-sm text-calm-charcoal">
+              <div className="mb-2 font-display text-3xl font-bold text-tee-ink-strong">64.2%</div>
+              <p className="mb-4 text-body-sm text-tee-ink-light">
                 첫 레슨 후 재예약하는 골퍼 비율
               </p>
-              <div className="h-2 w-full rounded-full bg-calm-cloud">
+              <div className="h-2 w-full rounded-full bg-tee-surface">
                 <div className="h-2 rounded-full bg-accent" style={{ width: '64.2%' }}></div>
               </div>
             </div>
@@ -354,26 +354,26 @@ export default function AdminAnalyticsPage() {
 
           <div className="mt-6 grid gap-6 md:grid-cols-2">
             <div className="card p-6">
-              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 평균 레슨 주기
               </h4>
-              <div className="mb-2 font-display text-3xl font-bold text-calm-obsidian">
+              <div className="mb-2 font-display text-3xl font-bold text-tee-ink-strong">
                 14.3일
               </div>
-              <p className="text-body-sm text-calm-charcoal">
+              <p className="text-body-sm text-tee-ink-light">
                 골퍼가 레슨을 다시 예약하기까지 걸리는 평균 시간
               </p>
               <div className="mt-4 text-body-xs text-success">↓ 1.8일 지난 달 대비 단축</div>
             </div>
 
             <div className="card p-6">
-              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 프로당 평균 수입
               </h4>
-              <div className="mb-2 font-display text-3xl font-bold text-calm-obsidian">
+              <div className="mb-2 font-display text-3xl font-bold text-tee-ink-strong">
                 ₩847,000
               </div>
-              <p className="text-body-sm text-calm-charcoal">
+              <p className="text-body-sm text-tee-ink-light">
                 프로 1명이 플랫폼을 통해 얻는 월평균 레슨 수입 (추정)
               </p>
               <div className="mt-4 text-body-xs text-success">↑ ₩124,000 지난 달 대비 증가</div>

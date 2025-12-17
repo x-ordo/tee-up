@@ -10,7 +10,7 @@ TEE:UP is a **Golf Pro Personal Branding Portfolio SaaS** platform. It provides 
 
 **Status:** Phase 2 (Portfolio SaaS Pivot)
 **Tech Stack:** Next.js 14 (App Router) + Server Actions + Supabase (PostgreSQL)
-**Design Philosophy:** "Calm Control" (차분한 통제) — 90% neutrals, 10% accent blue (#2563EB)
+**Design Philosophy:** "Calm Control" (차분한 통제) — 90% neutrals, 10% accent green (#0A362B)
 
 ## Development Commands
 
@@ -155,25 +155,39 @@ Run migrations in order:
 ## Design System
 
 ### Color Philosophy
-**"Monochrome + Single Accent"** - 90% calm neutrals, 10% accent blue
+**"Monochrome + Single Accent"** - 90% calm neutrals, 10% accent green
 
 ```css
-/* Semantic Tokens */
---tee-background: var(--calm-white)
---tee-surface: var(--calm-cloud)
---tee-ink-strong: var(--calm-obsidian)
---tee-ink-light: var(--calm-charcoal)
---tee-accent-primary: var(--calm-accent)
+/* Design Tokens (tee-* unified naming) */
+--tee-background: #F7F4F0;    /* Warm beige background */
+--tee-surface: #FFFFFF;       /* White card/surface */
+--tee-stone: #E8E8E5;         /* Border/divider */
+--tee-ink-strong: #1A1A1A;    /* Primary text */
+--tee-ink-light: #52524E;     /* Secondary text */
+--tee-ink-muted: #8A8A87;     /* Tertiary/placeholder text */
+--tee-accent-primary: #0A362B; /* Forest green accent */
+--tee-accent-secondary: #B39A68; /* Gold accent */
 
-/* Base Neutrals */
---calm-white: #FAFAF9
---calm-cloud: #F4F4F2
---calm-stone: #E8E8E5
---calm-charcoal: #52524E
---calm-obsidian: #1A1A17
+/* State Colors */
+--tee-error: #D32F2F;
+--tee-success: #388E3C;
+--tee-warning: #FBC02D;
+--tee-info: #1976D2;
 
-/* Accent */
---calm-accent: #3B82F6
+/* Brand Colors */
+--tee-kakao: #FEE500;         /* KakaoTalk */
+```
+
+### Dark Mode
+Dark mode is supported via `next-themes` with `.dark` class:
+```css
+.dark {
+  --tee-background: #1A1A17;
+  --tee-surface: #2A2A27;
+  --tee-ink-strong: #FAFAF9;
+  --tee-ink-light: #A8A8A5;
+  --tee-accent-primary: #4ABA9A;
+}
 ```
 
 ### Typography

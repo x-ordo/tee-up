@@ -7,7 +7,7 @@ interface ApprovedProsTableProps {
 
 export function ApprovedProsTable({ pros }: ApprovedProsTableProps) {
   return (
-    <div className="table-container relative">
+    <div className="approved-pros-table table-container relative" data-testid="approved-pros-table">
       {/* Scroll hint for mobile */}
       <div className="pointer-events-none absolute right-0 top-0 h-full w-8 bg-gradient-to-l from-white to-transparent md:hidden" aria-hidden="true" />
       <div className="overflow-x-auto">
@@ -28,7 +28,7 @@ export function ApprovedProsTable({ pros }: ApprovedProsTableProps) {
         <tbody>
           {pros.map((pro) => (
             <tr key={pro.id} className="table-row">
-              <td className="table-cell font-semibold text-calm-obsidian">
+              <td className="table-cell font-semibold text-tee-ink-strong">
                 {pro.profiles?.full_name || '이름 없음'}
               </td>
               <td className="table-cell">{pro.title}</td>
@@ -44,7 +44,7 @@ export function ApprovedProsTable({ pros }: ApprovedProsTableProps) {
                   className={`rounded-full px-3 py-1 text-body-xs font-medium ${
                     pro.subscription_tier === 'pro'
                       ? 'bg-success-bg text-success'
-                      : 'bg-calm-cloud text-calm-charcoal'
+                      : 'bg-tee-surface text-tee-ink-light'
                   }`}
                 >
                   {pro.subscription_tier === 'pro' ? 'Pro' : 'Basic'}

@@ -61,20 +61,20 @@ export default function TestSupabasePage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-calm-white p-8">
+    <div className="min-h-screen bg-tee-background p-8">
       <div className="mx-auto max-w-2xl">
-        <h1 className="mb-8 text-3xl font-bold text-calm-obsidian">
+        <h1 className="mb-8 text-3xl font-bold text-tee-ink-strong">
           Supabase Connection Test
         </h1>
 
-        <div className="rounded-2xl border border-calm-stone bg-white p-6">
+        <div className="rounded-2xl border border-tee-stone bg-white p-6">
           {/* Connection Status */}
           <div className="mb-6">
-            <h2 className="mb-2 text-lg font-semibold text-calm-obsidian">
+            <h2 className="mb-2 text-lg font-semibold text-tee-ink-strong">
               Connection Status
             </h2>
             {connected === null && (
-              <p className="text-calm-ash">Testing connection...</p>
+              <p className="text-tee-ink-muted">Testing connection...</p>
             )}
             {connected === true && (
               <p className="text-success">✅ Connected successfully!</p>
@@ -88,24 +88,24 @@ export default function TestSupabasePage() {
           {error && (
             <div className="mb-6 rounded-lg border border-error bg-error/10 p-4">
               <h3 className="mb-2 font-semibold text-error">Error:</h3>
-              <p className="font-mono text-sm text-calm-charcoal">{error}</p>
+              <p className="font-mono text-sm text-tee-ink-light">{error}</p>
             </div>
           )}
 
           {/* Tables Found */}
           {tables.length > 0 && (
             <div className="mb-6">
-              <h2 className="mb-2 text-lg font-semibold text-calm-obsidian">
+              <h2 className="mb-2 text-lg font-semibold text-tee-ink-strong">
                 Tables Found ({tables.length}/4)
               </h2>
               <ul className="space-y-2">
                 {tables.map((table) => (
                   <li
                     key={table}
-                    className="flex items-center gap-2 text-calm-charcoal"
+                    className="flex items-center gap-2 text-tee-ink-light"
                   >
                     <span className="text-success">✓</span>
-                    <code className="rounded bg-calm-cloud px-2 py-1 text-sm">
+                    <code className="rounded bg-tee-surface px-2 py-1 text-sm">
                       {table}
                     </code>
                   </li>
@@ -115,20 +115,20 @@ export default function TestSupabasePage() {
           )}
 
           {/* Environment Info */}
-          <div className="border-t border-calm-stone pt-6">
-            <h2 className="mb-2 text-lg font-semibold text-calm-obsidian">
+          <div className="border-t border-tee-stone pt-6">
+            <h2 className="mb-2 text-lg font-semibold text-tee-ink-strong">
               Configuration
             </h2>
             <dl className="space-y-2 text-sm">
               <div>
-                <dt className="font-semibold text-calm-charcoal">Supabase URL:</dt>
-                <dd className="font-mono text-calm-ash">
+                <dt className="font-semibold text-tee-ink-light">Supabase URL:</dt>
+                <dd className="font-mono text-tee-ink-muted">
                   {process.env.NEXT_PUBLIC_SUPABASE_URL || 'Not set'}
                 </dd>
               </div>
               <div>
-                <dt className="font-semibold text-calm-charcoal">API Key:</dt>
-                <dd className="font-mono text-calm-ash">
+                <dt className="font-semibold text-tee-ink-light">API Key:</dt>
+                <dd className="font-mono text-tee-ink-muted">
                   {process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
                     ? `${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY.slice(0, 20)}...`
                     : 'Not set'}

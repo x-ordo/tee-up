@@ -2,7 +2,7 @@ import { ProDirectorySkeleton, Skeleton } from '@/app/components/Skeleton';
 
 export default function ProfileLoading() {
   return (
-    <div className="min-h-screen bg-calm-white px-6 py-24">
+    <div className="min-h-screen bg-tee-background px-6 py-24">
       <div className="mx-auto max-w-7xl">
         {/* Header Skeleton */}
         <div className="mb-12 text-center">

@@ -19,7 +19,7 @@ export const AuthInput = forwardRef<HTMLInputElement, AuthInputProps>(
         </label>
         <div className="relative">
           {icon && (
-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-calm-ash">
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-tee-ink-muted">
               {icon}
             </div>
           )}

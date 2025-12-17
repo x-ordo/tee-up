@@ -49,11 +49,11 @@ export function ErrorState({
         </svg>
       </div>
 
-      <h3 className="mb-2 text-xl font-semibold text-calm-obsidian">
+      <h3 className="mb-2 text-xl font-semibold text-tee-ink-strong">
         {title}
       </h3>
 
-      <p className="mb-6 max-w-md text-body-md text-calm-charcoal">
+      <p className="mb-6 max-w-md text-body-md text-tee-ink-light">
         {description}
       </p>
 

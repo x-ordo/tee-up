@@ -65,11 +65,11 @@ function PaymentSuccessContent() {
 
   if (isProcessing) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-calm-white">
+      <div className="flex min-h-screen items-center justify-center bg-tee-background">
         <div className="text-center">
           <div className="mx-auto mb-6 h-16 w-16 animate-spin rounded-full border-4 border-accent border-t-transparent" />
-          <h1 className="mb-2 text-2xl font-bold text-calm-obsidian">결제 처리 중...</h1>
-          <p className="text-calm-ash">잠시만 기다려주세요.</p>
+          <h1 className="mb-2 text-2xl font-bold text-tee-ink-strong">결제 처리 중...</h1>
+          <p className="text-tee-ink-muted">잠시만 기다려주세요.</p>
         </div>
       </div>
     );
@@ -77,7 +77,7 @@ function PaymentSuccessContent() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-calm-white">
+      <div className="flex min-h-screen items-center justify-center bg-tee-background">
         <div className="max-w-md text-center">
           <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-error/10">
             <svg
@@ -94,8 +94,8 @@ function PaymentSuccessContent() {
               />
             </svg>
           </div>
-          <h1 className="mb-2 text-2xl font-bold text-calm-obsidian">결제 오류</h1>
-          <p className="mb-6 text-calm-charcoal">{error}</p>
+          <h1 className="mb-2 text-2xl font-bold text-tee-ink-strong">결제 오류</h1>
+          <p className="mb-6 text-tee-ink-light">{error}</p>
           <Link
             href="/pricing"
             className="btn-primary inline-flex items-center gap-2"
@@ -108,7 +108,7 @@ function PaymentSuccessContent() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-calm-white">
+    <div className="flex min-h-screen items-center justify-center bg-tee-background">
       <div className="max-w-md text-center">
         <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-success/10">
           <svg
@@ -125,8 +125,8 @@ function PaymentSuccessContent() {
             />
           </svg>
         </div>
-        <h1 className="mb-2 text-2xl font-bold text-calm-obsidian">구독 완료!</h1>
-        <p className="mb-8 text-calm-charcoal">
+        <h1 className="mb-2 text-2xl font-bold text-tee-ink-strong">구독 완료!</h1>
+        <p className="mb-8 text-tee-ink-light">
           Pro 플랜이 활성화되었습니다.
           <br />
           이제 무제한 리드와 모든 프리미엄 기능을 이용할 수 있습니다.

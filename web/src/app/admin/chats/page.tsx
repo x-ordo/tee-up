@@ -54,24 +54,24 @@ export default function AdminChatsPage() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-calm-white">
+      <div className="flex min-h-screen items-center justify-center bg-tee-background">
         <div className="text-center">
           <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-accent border-t-transparent"></div>
-          <p className="text-calm-ash">데이터를 불러오는 중...</p>
+          <p className="text-tee-ink-muted">데이터를 불러오는 중...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-calm-white">
+    <div className="min-h-screen bg-tee-background">
       {/* Admin Header */}
-      <header className="border-b border-calm-stone bg-white">
+      <header className="border-b border-tee-stone bg-white">
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-semibold text-calm-obsidian">채팅 관리</h1>
-              <p className="text-body-sm text-calm-ash">실시간 대화 모니터링 및 중재</p>
+              <h1 className="text-2xl font-semibold text-tee-ink-strong">채팅 관리</h1>
+              <p className="text-body-sm text-tee-ink-muted">실시간 대화 모니터링 및 중재</p>
             </div>
             <Link href="/admin" className="btn-ghost">
               ← 대시보드
@@ -81,18 +81,18 @@ export default function AdminChatsPage() {
       </header>
 
       {/* Navigation Tabs */}
-      <div className="border-b border-calm-stone bg-white">
+      <div className="border-b border-tee-stone bg-white">
         <nav className="mx-auto max-w-7xl px-6">
           <div className="flex gap-8">
             <Link
               href="/admin"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               대시보드
             </Link>
             <Link
               href="/admin/pros"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               프로 관리
             </Link>
@@ -104,13 +104,13 @@ export default function AdminChatsPage() {
             </Link>
             <Link
               href="/admin/users"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               사용자 관리
             </Link>
             <Link
               href="/admin/analytics"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               분석
             </Link>
@@ -132,11 +132,11 @@ export default function AdminChatsPage() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {chatStats.map((stat, idx) => (
               <div key={idx} className="card p-6">
-                <p className="mb-2 text-body-sm font-medium text-calm-ash">{stat.label}</p>
-                <p className="mb-1 font-display text-3xl font-bold text-calm-obsidian">
+                <p className="mb-2 text-body-sm font-medium text-tee-ink-muted">{stat.label}</p>
+                <p className="mb-1 font-display text-3xl font-bold text-tee-ink-strong">
                   {stat.value}
                 </p>
-                <p className="text-body-xs text-calm-charcoal">{stat.change}</p>
+                <p className="text-body-xs text-tee-ink-light">{stat.change}</p>
               </div>
             ))}
           </div>
@@ -146,7 +146,7 @@ export default function AdminChatsPage() {
         {flaggedMessages.length > 0 && (
           <section className="mb-12">
             <div className="mb-6 flex items-center justify-between">
-              <h2 className="text-2xl font-semibold text-calm-obsidian">
+              <h2 className="text-2xl font-semibold text-tee-ink-strong">
                 신고된 메시지 ({flaggedMessages.length})
               </h2>
             </div>
@@ -168,7 +168,7 @@ export default function AdminChatsPage() {
         {/* Active Chat Rooms Section */}
         <section>
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-semibold text-calm-obsidian">
+            <h2 className="text-2xl font-semibold text-tee-ink-strong">
               채팅방 목록 ({chatRooms.length})
             </h2>
             <input type="search" placeholder="골퍼/프로 이름 검색..." className="input w-64" />
@@ -198,22 +198,22 @@ export default function AdminChatsPage() {
                     </td>
                     <td className="table-cell">
                       <div>
-                        <p className="font-semibold text-calm-obsidian">{room.golferName}</p>
-                        <p className="text-body-xs text-calm-ash">{room.golferPhone || '-'}</p>
+                        <p className="font-semibold text-tee-ink-strong">{room.golferName}</p>
+                        <p className="text-body-xs text-tee-ink-muted">{room.golferPhone || '-'}</p>
                       </div>
                     </td>
                     <td className="table-cell">
                       <div>
-                        <p className="font-semibold text-calm-obsidian">{room.proName}</p>
-                        <p className="text-body-xs text-calm-ash">ID: {room.proId.slice(0, 8)}</p>
+                        <p className="font-semibold text-tee-ink-strong">{room.proName}</p>
+                        <p className="text-body-xs text-tee-ink-muted">ID: {room.proId.slice(0, 8)}</p>
                       </div>
                     </td>
                     <td className="table-cell max-w-xs">
                       <div>
-                        <p className="truncate text-body-sm text-calm-charcoal">
+                        <p className="truncate text-body-sm text-tee-ink-light">
                           {room.lastMessage || '-'}
                         </p>
-                        <p className="text-body-xs text-calm-ash">{room.lastMessageTime || '-'}</p>
+                        <p className="text-body-xs text-tee-ink-muted">{room.lastMessageTime || '-'}</p>
                       </div>
                     </td>
                     <td className="table-cell text-center">
@@ -222,7 +222,7 @@ export default function AdminChatsPage() {
                           {room.unreadCount}
                         </span>
                       ) : (
-                        <span className="text-calm-ash">—</span>
+                        <span className="text-tee-ink-muted">—</span>
                       )}
                     </td>
                     <td className="table-cell text-center">
@@ -232,7 +232,7 @@ export default function AdminChatsPage() {
                             ? 'bg-info-bg text-info'
                             : room.status === 'matched'
                               ? 'bg-success-bg text-success'
-                              : 'bg-calm-cloud text-calm-charcoal'
+                              : 'bg-tee-surface text-tee-ink-light'
                         }`}
                       >
                         {room.status === 'active'
@@ -242,7 +242,7 @@ export default function AdminChatsPage() {
                             : '종료'}
                       </span>
                     </td>
-                    <td className="table-cell text-center text-body-xs text-calm-ash">
+                    <td className="table-cell text-center text-body-xs text-tee-ink-muted">
                       {room.createdAt}
                     </td>
                     <td className="table-cell text-right">
@@ -260,40 +260,40 @@ export default function AdminChatsPage() {
           </div>
 
           {chatRooms.length === 0 && (
-            <div className="rounded-2xl border border-calm-stone bg-calm-cloud/50 p-12 text-center">
-              <p className="text-body-lg text-calm-ash">채팅방이 없습니다.</p>
+            <div className="rounded-2xl border border-tee-stone bg-tee-surface/50 p-12 text-center">
+              <p className="text-body-lg text-tee-ink-muted">채팅방이 없습니다.</p>
             </div>
           )}
         </section>
 
         {/* Chat Insights */}
         <section className="mt-12">
-          <h3 className="mb-6 text-xl font-semibold text-calm-obsidian">채팅 인사이트</h3>
+          <h3 className="mb-6 text-xl font-semibold text-tee-ink-strong">채팅 인사이트</h3>
           <div className="grid gap-6 md:grid-cols-2">
             <div className="card p-6">
-              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 평균 응답 시간
               </h4>
-              <div className="mb-2 font-display text-3xl font-bold text-calm-obsidian">-</div>
-              <p className="text-body-sm text-calm-charcoal">
+              <div className="mb-2 font-display text-3xl font-bold text-tee-ink-strong">-</div>
+              <p className="text-body-sm text-tee-ink-light">
                 프로 평균 첫 응답까지 걸리는 시간
               </p>
-              <div className="mt-4 text-body-xs text-calm-ash">데이터 수집 중</div>
+              <div className="mt-4 text-body-xs text-tee-ink-muted">데이터 수집 중</div>
             </div>
 
             <div className="card p-6">
-              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 매칭 성공률
               </h4>
-              <div className="mb-2 font-display text-3xl font-bold text-calm-obsidian">
+              <div className="mb-2 font-display text-3xl font-bold text-tee-ink-strong">
                 {stats.totalRooms > 0
                   ? `${((stats.matchedRooms / stats.totalRooms) * 100).toFixed(1)}%`
                   : '-'}
               </div>
-              <p className="text-body-sm text-calm-charcoal">
+              <p className="text-body-sm text-tee-ink-light">
                 채팅 시작 후 실제 레슨으로 이어진 비율
               </p>
-              <div className="mt-4 text-body-xs text-calm-ash">전체 채팅방 기준</div>
+              <div className="mt-4 text-body-xs text-tee-ink-muted">전체 채팅방 기준</div>
             </div>
           </div>
         </section>

@@ -51,11 +51,11 @@ export default function PricingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-calm-white">
+    <div className="min-h-screen bg-tee-background">
       {/* Navigation */}
-      <nav className="fixed top-0 z-50 w-full border-b border-calm-stone bg-calm-white/80 backdrop-blur-xl">
+      <nav className="fixed top-0 z-50 w-full border-b border-tee-stone bg-tee-background/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <Link href="/" className="font-display text-2xl font-bold text-calm-obsidian">
+          <Link href="/" className="font-display text-2xl font-bold text-tee-ink-strong">
             TEE<span className="text-accent">:</span>UP
           </Link>
         </div>
@@ -66,10 +66,10 @@ export default function PricingPage() {
         <div className="mx-auto max-w-5xl">
           {/* Header */}
           <div className="mb-12 text-center">
-            <h1 className="mb-4 font-display text-4xl font-bold text-calm-obsidian md:text-5xl">
+            <h1 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong md:text-5xl">
               심플한 <span className="text-accent">요금제</span>
             </h1>
-            <p className="mx-auto max-w-2xl text-lg text-calm-charcoal">
+            <p className="mx-auto max-w-2xl text-lg text-tee-ink-light">
               더 많은 고객을 만나고 비즈니스를 성장시키세요.
               <br />
               성과에 맞는 요금만 지불하면 됩니다.
@@ -80,7 +80,7 @@ export default function PricingPage() {
           <div className="mb-12 flex items-center justify-center gap-4">
             <span
               className={`text-sm font-medium ${
-                billingInterval === 'month' ? 'text-calm-obsidian' : 'text-calm-ash'
+                billingInterval === 'month' ? 'text-tee-ink-strong' : 'text-tee-ink-muted'
               }`}
             >
               월간 결제
@@ -96,7 +96,7 @@ export default function PricingPage() {
               aria-label={`결제 주기 전환 (현재: ${billingInterval === 'year' ? '연간' : '월간'})`}
               className={`
                 relative h-8 w-14 rounded-full transition-colors focus:outline-none focus:ring-4 focus:ring-accent-light
-                ${billingInterval === 'year' ? 'bg-accent' : 'bg-calm-stone'}
+                ${billingInterval === 'year' ? 'bg-accent' : 'bg-tee-stone'}
               `}
             >
               <span
@@ -108,7 +108,7 @@ export default function PricingPage() {
             </button>
             <span
               className={`flex items-center gap-2 text-sm font-medium ${
-                billingInterval === 'year' ? 'text-calm-obsidian' : 'text-calm-ash'
+                billingInterval === 'year' ? 'text-tee-ink-strong' : 'text-tee-ink-muted'
               }`}
             >
               연간 결제
@@ -141,17 +141,17 @@ export default function PricingPage() {
 
                 {/* Plan Info */}
                 <div className="mb-6">
-                  <h3 className="mb-2 text-xl font-bold text-calm-obsidian">
+                  <h3 className="mb-2 text-xl font-bold text-tee-ink-strong">
                     {plan.name}
                   </h3>
                   <div className="flex items-baseline gap-1">
-                    <span className="font-mono text-4xl font-bold text-calm-obsidian">
+                    <span className="font-mono text-4xl font-bold text-tee-ink-strong">
                       {plan.price === 0
                         ? '무료'
                         : `₩${plan.price.toLocaleString()}`}
                     </span>
                     {plan.price > 0 && (
-                      <span className="text-calm-ash">
+                      <span className="text-tee-ink-muted">
                         /{plan.interval === 'month' ? '월' : '년'}
                       </span>
                     )}
@@ -175,7 +175,7 @@ export default function PricingPage() {
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
-                      <span className="text-sm text-calm-charcoal">{feature}</span>
+                      <span className="text-sm text-tee-ink-light">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -225,7 +225,7 @@ export default function PricingPage() {
 
           {/* FAQ Section */}
           <div className="mt-16">
-            <h2 className="mb-8 text-center text-2xl font-bold text-calm-obsidian">
+            <h2 className="mb-8 text-center text-2xl font-bold text-tee-ink-strong">
               자주 묻는 질문
             </h2>
             <div className="grid gap-4 md:grid-cols-2">
@@ -251,8 +251,8 @@ export default function PricingPage() {
                   key={index}
                   className="card p-6"
                 >
-                  <h3 className="mb-2 font-semibold text-calm-obsidian">{faq.q}</h3>
-                  <p className="text-sm text-calm-charcoal">{faq.a}</p>
+                  <h3 className="mb-2 font-semibold text-tee-ink-strong">{faq.q}</h3>
+                  <p className="text-sm text-tee-ink-light">{faq.a}</p>
                 </div>
               ))}
             </div>

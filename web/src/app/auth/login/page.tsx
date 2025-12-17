@@ -99,10 +99,10 @@ export default function LoginPage() {
         />
 
         <div className="flex items-center justify-between text-body-sm">
-          <label className="flex cursor-pointer items-center gap-2 text-calm-charcoal">
+          <label className="flex cursor-pointer items-center gap-2 text-tee-ink-light">
             <input
               type="checkbox"
-              className="h-4 w-4 rounded border-calm-stone bg-white text-accent focus:outline-none focus:ring-2 focus:ring-accent-light"
+              className="h-4 w-4 rounded border-tee-stone bg-white text-accent focus:outline-none focus:ring-2 focus:ring-accent-light"
             />
             로그인 상태 유지
           </label>
@@ -120,14 +120,14 @@ export default function LoginPage() {
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-calm-stone" />
+            <div className="w-full border-t border-tee-stone" />
           </div>
           <div className="relative flex justify-center text-body-sm">
-            <span className="bg-calm-cloud px-4 text-calm-ash">또는</span>
+            <span className="bg-tee-surface px-4 text-tee-ink-muted">또는</span>
           </div>
         </div>
 
-        <div className="text-center text-body-sm text-calm-charcoal">
+        <div className="text-center text-body-sm text-tee-ink-light">
           계정이 없으신가요?{' '}
           <Link
             href="/auth/signup"

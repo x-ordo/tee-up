@@ -68,14 +68,14 @@ interface AdminDashboardProps {
 
 export function AdminDashboard({ onLogout }: AdminDashboardProps) {
   return (
-    <div className="min-h-screen bg-calm-white">
+    <div className="min-h-screen bg-tee-background">
       {/* Admin Header */}
-      <header className="border-b border-calm-stone bg-white">
+      <header className="border-b border-tee-stone bg-white">
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-semibold text-calm-obsidian">Admin Dashboard</h1>
-              <p className="text-body-sm text-calm-ash">시스템 관리 및 모니터링</p>
+              <h1 className="text-2xl font-semibold text-tee-ink-strong">Admin Dashboard</h1>
+              <p className="text-body-sm text-tee-ink-muted">시스템 관리 및 모니터링</p>
             </div>
             <div className="flex items-center gap-4">
               <ThemeToggle />
@@ -93,7 +93,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
       </header>
 
       {/* Navigation Tabs */}
-      <div className="border-b border-calm-stone bg-white">
+      <div className="border-b border-tee-stone bg-white">
         <nav className="mx-auto max-w-7xl px-6">
           <div className="flex gap-8">
             <Link
@@ -104,25 +104,25 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
             </Link>
             <Link
               href="/admin/pros"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               프로 관리
             </Link>
             <Link
               href="/admin/chats"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               채팅 관리
             </Link>
             <Link
               href="/admin/users"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               사용자 관리
             </Link>
             <Link
               href="/admin/analytics"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               분석
             </Link>
@@ -134,7 +134,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
       <main className="mx-auto max-w-7xl px-6 py-8">
         {/* Stats Grid */}
         <section className="mb-12">
-          <h2 className="mb-6 text-xl font-semibold text-calm-obsidian">시스템 현황</h2>
+          <h2 className="mb-6 text-xl font-semibold text-tee-ink-strong">시스템 현황</h2>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {adminStats.map((stat) => (
               <Link
@@ -160,7 +160,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
           {/* Recent Pro Applications */}
           <section>
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-calm-obsidian">최근 프로 신청</h2>
+              <h2 className="text-xl font-semibold text-tee-ink-strong">최근 프로 신청</h2>
               <Link href="/admin/pros/pending" className="text-body-sm font-semibold text-accent hover:text-accent-dark">
                 전체 보기 →
               </Link>
@@ -180,10 +180,10 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
                 <tbody>
                   {recentApplications.map((app) => (
                     <tr key={app.id} className="table-row">
-                      <td className="table-cell font-semibold text-calm-obsidian">{app.name}</td>
+                      <td className="table-cell font-semibold text-tee-ink-strong">{app.name}</td>
                       <td className="table-cell">{app.title}</td>
                       <td className="table-cell">{app.location}</td>
-                      <td className="table-cell text-body-xs text-calm-ash">{app.appliedAt}</td>
+                      <td className="table-cell text-body-xs text-tee-ink-muted">{app.appliedAt}</td>
                       <td className="table-cell text-right">
                         <Link
                           href={`/admin/pros/review/${app.id}`}
@@ -199,8 +199,8 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
             </div>
 
             {recentApplications.length === 0 && (
-              <div className="rounded-2xl border border-calm-stone bg-calm-cloud/50 p-8 text-center">
-                <p className="text-body-md text-calm-ash">대기 중인 신청이 없습니다.</p>
+              <div className="rounded-2xl border border-tee-stone bg-tee-surface/50 p-8 text-center">
+                <p className="text-body-md text-tee-ink-muted">대기 중인 신청이 없습니다.</p>
               </div>
             )}
           </section>
@@ -208,7 +208,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
           {/* Recent Chats */}
           <section>
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-calm-obsidian">최근 채팅</h2>
+              <h2 className="text-xl font-semibold text-tee-ink-strong">최근 채팅</h2>
               <Link href="/admin/chats" className="text-body-sm font-semibold text-accent hover:text-accent-dark">
                 전체 보기 →
               </Link>
@@ -224,8 +224,8 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
                   <div className="card-content">
                     <div className="mb-2 flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <span className="font-semibold text-calm-obsidian">{chat.golfer}</span>
-                        <span className="text-calm-ash">↔️</span>
+                        <span className="font-semibold text-tee-ink-strong">{chat.golfer}</span>
+                        <span className="text-tee-ink-muted">↔️</span>
                         <span className="font-semibold text-accent">{chat.pro}</span>
                       </div>
                       <span
@@ -237,16 +237,16 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
                         {chat.status === 'active' ? '진행 중' : '매칭 완료'}
                       </span>
                     </div>
-                    <p className="mb-2 text-body-sm text-calm-charcoal">{chat.lastMessage}</p>
-                    <p className="text-body-xs text-calm-ash">{chat.timestamp}</p>
+                    <p className="mb-2 text-body-sm text-tee-ink-light">{chat.lastMessage}</p>
+                    <p className="text-body-xs text-tee-ink-muted">{chat.timestamp}</p>
                   </div>
                 </Link>
               ))}
             </div>
 
             {recentChats.length === 0 && (
-              <div className="rounded-2xl border border-calm-stone bg-calm-cloud/50 p-8 text-center">
-                <p className="text-body-md text-calm-ash">활성 채팅이 없습니다.</p>
+              <div className="rounded-2xl border border-tee-stone bg-tee-surface/50 p-8 text-center">
+                <p className="text-body-md text-tee-ink-muted">활성 채팅이 없습니다.</p>
               </div>
             )}
           </section>
@@ -254,7 +254,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
 
         {/* System Alerts */}
         <section className="mt-12">
-          <h2 className="mb-4 text-xl font-semibold text-calm-obsidian">시스템 알림</h2>
+          <h2 className="mb-4 text-xl font-semibold text-tee-ink-strong">시스템 알림</h2>
           <div className="space-y-3">
             <div className="alert alert-warning">
               <strong>⚠️ 승인 대기:</strong> 12명의 프로 신청이 검토를 기다리고 있습니다.

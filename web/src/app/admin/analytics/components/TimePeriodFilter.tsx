@@ -21,7 +21,7 @@ export function TimePeriodFilter({ timePeriod, onPeriodChange }: TimePeriodFilte
           className={`rounded-lg px-4 py-2 text-body-sm font-medium transition-colors ${
             timePeriod === period.value
               ? 'bg-accent text-white'
-              : 'bg-calm-cloud text-calm-charcoal hover:bg-calm-stone'
+              : 'bg-tee-surface text-tee-ink-light hover:bg-tee-stone'
           }`}
         >
           {period.label}

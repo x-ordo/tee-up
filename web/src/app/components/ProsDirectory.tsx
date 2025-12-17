@@ -91,7 +91,7 @@ export default function ProsDirectory({ pros }: { pros: ProItem[] }) {
             className="card group animate-slideUp"
           >
             {/* Pro Image */}
-            <div className="relative h-64 overflow-hidden bg-calm-cloud">
+            <div className="relative h-64 overflow-hidden bg-tee-surface">
               <Image
                 src={pro.image}
                 alt={pro.name}
@@ -105,16 +105,16 @@ export default function ProsDirectory({ pros }: { pros: ProItem[] }) {
             <div className="card-content">
               {/* Role & City */}
               <div className="flex items-center justify-between">
-                <span className="text-body-xs font-medium uppercase tracking-wide text-calm-ash">
+                <span className="text-body-xs font-medium uppercase tracking-wide text-tee-ink-muted">
                   {pro.role}
                 </span>
-                <span className="rounded-full bg-calm-cloud px-3 py-1 text-body-xs text-calm-charcoal">
+                <span className="rounded-full bg-tee-surface px-3 py-1 text-body-xs text-tee-ink-light">
                   {pro.city}
                 </span>
               </div>
 
               {/* Name */}
-              <h4 className="font-display text-display-sm font-semibold text-calm-obsidian transition-colors duration-200 group-hover:text-accent">
+              <h4 className="font-display text-display-sm font-semibold text-tee-ink-strong transition-colors duration-200 group-hover:text-accent">
                 {pro.name}
               </h4>
 
@@ -128,11 +128,11 @@ export default function ProsDirectory({ pros }: { pros: ProItem[] }) {
               </div>
 
               {/* Rate & CTA */}
-              <div className="flex items-center justify-between border-t border-calm-stone pt-4">
+              <div className="flex items-center justify-between border-t border-tee-stone pt-4">
                 <span className="text-body-sm font-semibold text-accent">
                   {pro.rate ?? '요청 시 안내'}
                 </span>
-                <span className="rounded-xl border-2 border-calm-stone bg-white px-4 py-2 text-body-sm font-medium text-calm-charcoal transition-all duration-200 group-hover:border-accent group-hover:bg-accent-light group-hover:text-accent-dark">
+                <span className="rounded-xl border-2 border-tee-stone bg-white px-4 py-2 text-body-sm font-medium text-tee-ink-light transition-all duration-200 group-hover:border-accent group-hover:bg-accent-light group-hover:text-accent-dark">
                   프로필 보기
                 </span>
               </div>

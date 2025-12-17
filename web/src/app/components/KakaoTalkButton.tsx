@@ -78,7 +78,7 @@ export function KakaoTalkButton({
       hover:shadow-glow-accent
     `,
     secondary: `
-      border-2 border-calm-stone bg-white text-calm-charcoal
+      border-2 border-tee-stone bg-white text-tee-ink-light
       hover:border-accent hover:text-accent
     `,
     minimal: `

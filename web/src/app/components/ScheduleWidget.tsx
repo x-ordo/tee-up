@@ -38,7 +38,7 @@ export default function ScheduleWidget({ onSelect }: { onSelect?: (iso: string) 
               'min-w-[110px] rounded-xl border-2 px-4 py-3 text-body-sm font-medium transition-all duration-200 ' +
               (i === dayIndex
                 ? 'border-accent bg-accent-light text-accent-dark'
-                : 'border-calm-stone bg-white text-calm-charcoal hover:border-accent hover:bg-calm-cloud')
+                : 'border-tee-stone bg-white text-tee-ink-light hover:border-accent hover:bg-tee-surface')
             }
           >
             {fmt(d)}
@@ -56,7 +56,7 @@ export default function ScheduleWidget({ onSelect }: { onSelect?: (iso: string) 
               'rounded-full border-2 px-4 py-2 text-body-sm font-medium transition-all duration-200 ' +
               (time === t
                 ? 'border-accent bg-accent text-white'
-                : 'border-calm-stone bg-white text-calm-charcoal hover:border-accent hover:text-accent')
+                : 'border-tee-stone bg-white text-tee-ink-light hover:border-accent hover:text-accent')
             }
           >
             {t}
@@ -65,8 +65,8 @@ export default function ScheduleWidget({ onSelect }: { onSelect?: (iso: string) 
       </div>
 
       {/* 선택된 날짜/시간 표시 */}
-      <div className="rounded-lg bg-calm-cloud px-4 py-3 text-body-sm text-calm-charcoal">
-        선택: <span className="font-semibold text-calm-obsidian">{dateISO}</span>{' '}
+      <div className="rounded-lg bg-tee-surface px-4 py-3 text-body-sm text-tee-ink-light">
+        선택: <span className="font-semibold text-tee-ink-strong">{dateISO}</span>{' '}
         <span className="font-semibold text-accent">{time || '—'}</span>
       </div>
     </div>

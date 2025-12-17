@@ -60,14 +60,14 @@ export default function ResetPasswordPage() {
             </svg>
           </div>
 
-          <p className="text-body-md text-calm-charcoal">
-            <span className="font-medium text-calm-obsidian">{email}</span>
+          <p className="text-body-md text-tee-ink-light">
+            <span className="font-medium text-tee-ink-strong">{email}</span>
             으로
             <br />
             비밀번호 재설정 링크를 발송했습니다.
           </p>
 
-          <p className="text-body-sm text-calm-ash">
+          <p className="text-body-sm text-tee-ink-muted">
             이메일이 도착하지 않았다면 스팸 폴더를 확인해주세요.
           </p>
 
@@ -118,7 +118,7 @@ export default function ResetPasswordPage() {
           재설정 링크 받기
         </AuthButton>
 
-        <div className="text-center text-body-sm text-calm-charcoal">
+        <div className="text-center text-body-sm text-tee-ink-light">
           비밀번호가 기억나셨나요?{' '}
           <Link
             href="/auth/login"

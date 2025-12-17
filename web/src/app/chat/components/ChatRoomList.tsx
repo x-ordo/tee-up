@@ -21,10 +21,10 @@ export function ChatRoomList({
     return (
       <div className="flex h-full flex-col items-center justify-center p-8 text-center">
         <div className="mb-4 text-6xl">💬</div>
-        <h3 className="mb-2 text-lg font-semibold text-calm-obsidian">
+        <h3 className="mb-2 text-lg font-semibold text-tee-ink-strong">
           아직 대화가 없습니다
         </h3>
-        <p className="text-sm text-calm-charcoal">
+        <p className="text-sm text-tee-ink-light">
           프로 프로필에서 문의하기를 통해
           <br />
           대화를 시작해보세요!
@@ -34,7 +34,7 @@ export function ChatRoomList({
   }
 
   return (
-    <div className="divide-y divide-calm-stone">
+    <div className="divide-y divide-tee-stone">
       {rooms.map((room) => {
         const otherUser =
           room.pro_id === currentUserId ? room.golfer : room.pro;
@@ -49,7 +49,7 @@ export function ChatRoomList({
               ${
                 isActive
                   ? 'bg-accent-light'
-                  : 'hover:bg-calm-cloud'
+                  : 'hover:bg-tee-surface'
               }
             `}
           >
@@ -81,11 +81,11 @@ export function ChatRoomList({
             {/* Content */}
             <div className="flex-1 overflow-hidden">
               <div className="flex items-center justify-between">
-                <h4 className="font-medium text-calm-obsidian">
+                <h4 className="font-medium text-tee-ink-strong">
                   {otherUser?.full_name || '알 수 없음'}
                 </h4>
                 {room.last_message && (
-                  <span className="text-xs text-calm-ash">
+                  <span className="text-xs text-tee-ink-muted">
                     {formatDistanceToNow(new Date(room.last_message.created_at), {
                       addSuffix: true,
                       locale: ko,
@@ -95,7 +95,7 @@ export function ChatRoomList({
               </div>
 
               <div className="flex items-center justify-between">
-                <p className="truncate text-sm text-calm-charcoal">
+                <p className="truncate text-sm text-tee-ink-light">
                   {room.last_message?.content || '대화를 시작해보세요'}
                 </p>
                 {room.unread_count && room.unread_count > 0 && (
@@ -115,7 +115,7 @@ export function ChatRoomList({
                         ? 'tag-info'
                         : room.status === 'matched'
                         ? 'tag-success'
-                        : 'bg-calm-stone text-calm-ash'
+                        : 'bg-tee-stone text-tee-ink-muted'
                     }
                   `}
                 >

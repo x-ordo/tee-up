@@ -20,8 +20,10 @@ const config: Config = {
         // Core Palette
         'tee-background': '#F7F4F0', // Neutral Background
         'tee-surface': '#FFFFFF',    // UI Surface / Card Background
+        'tee-stone': '#E8E8E5',      // Border / Divider
         'tee-ink-strong': '#1A1A1A', // Primary Text / Headings
         'tee-ink-light': '#52524E',  // Secondary Text / Subheadings
+        'tee-ink-muted': '#8A8A87',  // Tertiary Text / Placeholder
         'tee-accent-primary': '#0A362B', // Primary Brand Accent (e.g., CTA, active states)
         'tee-accent-secondary': '#B39A68', // Secondary Accent (e.g., Highlights, badges)
 
@@ -34,9 +36,9 @@ const config: Config = {
         'tee-warning': '#FBC02D',    // Warning messages/states
         'tee-info': '#1976D2',       // Informational messages/states
 
-        // Semantic UI Colors (if needed, map to core palette)
-        // 'ui-border': 'tee-ink-light/20',
-        // 'ui-focus-ring': 'tee-accent-primary/50',
+        // Brand Colors (Social Media)
+        'tee-kakao': '#FEE500',      // KakaoTalk
+        'tee-kakao-text': '#3C1E1E', // KakaoTalk text
       },
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],

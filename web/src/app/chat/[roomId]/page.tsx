@@ -81,10 +81,10 @@ export default function ChatRoomPage() {
 
   if (authLoading || isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-calm-white">
+      <div className="flex min-h-screen items-center justify-center bg-tee-background">
         <div className="flex flex-col items-center gap-4">
           <div className="h-12 w-12 animate-spin rounded-full border-4 border-accent border-t-transparent" />
-          <p className="text-calm-ash">로딩 중...</p>
+          <p className="text-tee-ink-muted">로딩 중...</p>
         </div>
       </div>
     );
@@ -96,13 +96,13 @@ export default function ChatRoomPage() {
 
   if (error || !room) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center bg-calm-white">
+      <div className="flex min-h-screen flex-col items-center justify-center bg-tee-background">
         <div className="text-center">
           <div className="mb-4 text-6xl">😢</div>
-          <h2 className="mb-2 text-xl font-semibold text-calm-obsidian">
+          <h2 className="mb-2 text-xl font-semibold text-tee-ink-strong">
             채팅방을 찾을 수 없습니다
           </h2>
-          <p className="mb-6 text-calm-charcoal">{error || '잘못된 접근입니다.'}</p>
+          <p className="mb-6 text-tee-ink-light">{error || '잘못된 접근입니다.'}</p>
           <Link
             href="/chat"
             className="btn-primary inline-flex items-center gap-2"
@@ -118,14 +118,14 @@ export default function ChatRoomPage() {
   }
 
   return (
-    <div className="flex h-screen flex-col bg-calm-cloud">
+    <div className="flex h-screen flex-col bg-tee-surface">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-calm-stone bg-calm-white/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-tee-stone bg-tee-background/80 backdrop-blur-xl">
         <div className="flex items-center gap-4 px-4 py-3">
           {/* Back Button */}
           <Link
             href="/chat"
-            className="flex h-10 w-10 items-center justify-center rounded-full text-calm-charcoal transition-colors hover:bg-calm-cloud hover:text-calm-obsidian focus:outline-none focus:ring-2 focus:ring-accent-light"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-tee-ink-light transition-colors hover:bg-tee-surface hover:text-tee-ink-strong focus:outline-none focus:ring-2 focus:ring-accent-light"
           >
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -149,10 +149,10 @@ export default function ChatRoomPage() {
               )}
             </div>
             <div>
-              <h2 className="font-medium text-calm-obsidian">
+              <h2 className="font-medium text-tee-ink-strong">
                 {otherUser?.full_name || '알 수 없음'}
               </h2>
-              <p className="text-xs text-calm-charcoal">
+              <p className="text-xs text-tee-ink-light">
                 {room.status === 'active'
                   ? '문의 중'
                   : room.status === 'matched'
@@ -173,7 +173,7 @@ export default function ChatRoomPage() {
               </button>
             )}
             <button
-              className="flex h-10 w-10 items-center justify-center rounded-full text-calm-charcoal transition-colors hover:bg-calm-cloud hover:text-calm-obsidian focus:outline-none focus:ring-2 focus:ring-accent-light"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-tee-ink-light transition-colors hover:bg-tee-surface hover:text-tee-ink-strong focus:outline-none focus:ring-2 focus:ring-accent-light"
               aria-label="더보기"
             >
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -224,8 +224,8 @@ export default function ChatRoomPage() {
           disabled={isSending}
         />
       ) : (
-        <div className="border-t border-calm-stone bg-calm-white/90 p-4 text-center backdrop-blur-xl">
-          <p className="text-calm-charcoal">이 대화는 종료되었습니다.</p>
+        <div className="border-t border-tee-stone bg-tee-background/90 p-4 text-center backdrop-blur-xl">
+          <p className="text-tee-ink-light">이 대화는 종료되었습니다.</p>
         </div>
       )}
     </div>

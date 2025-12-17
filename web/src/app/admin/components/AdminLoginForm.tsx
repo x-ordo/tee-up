@@ -28,16 +28,16 @@ export function AdminLoginForm({ onSubmit, error, isLoading }: AdminLoginFormPro
   const displayError = error && !errorCleared
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-calm-white">
+    <div className="flex min-h-screen items-center justify-center bg-tee-background">
       <div className="card w-full max-w-md p-8">
-        <h1 className="mb-6 text-center text-2xl font-semibold text-calm-obsidian">
+        <h1 className="mb-6 text-center text-2xl font-semibold text-tee-ink-strong">
           관리자 로그인
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email Input */}
           <div>
-            <label htmlFor="email" className="mb-2 block text-body-sm font-medium text-calm-charcoal">
+            <label htmlFor="email" className="mb-2 block text-body-sm font-medium text-tee-ink-light">
               이메일
             </label>
             <input
@@ -57,7 +57,7 @@ export function AdminLoginForm({ onSubmit, error, isLoading }: AdminLoginFormPro
 
           {/* Password Input */}
           <div>
-            <label htmlFor="password" className="mb-2 block text-body-sm font-medium text-calm-charcoal">
+            <label htmlFor="password" className="mb-2 block text-body-sm font-medium text-tee-ink-light">
               비밀번호
             </label>
             <input

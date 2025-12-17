@@ -4,11 +4,13 @@
 
 @layer base {
   :root {
-    /* Color Palette */
+    /* Color Palette - Light Mode */
     --tee-background: #F7F4F0;
     --tee-surface: #FFFFFF;
+    --tee-stone: #E8E8E5;
     --tee-ink-strong: #1A1A1A;
     --tee-ink-light: #52524E;
+    --tee-ink-muted: #8A8A87;
     --tee-accent-primary: #0A362B;
     --tee-accent-primary-hover: #072A21;
     --tee-accent-primary-active: #051E18;
@@ -19,10 +21,33 @@
     --tee-warning: #FBC02D;
     --tee-info: #1976D2;
 
+    /* Brand Colors */
+    --tee-kakao: #FEE500;
+    --tee-kakao-text: #3C1E1E;
+
     /* Font Families */
     --font-pretendard: 'Pretendard', sans-serif;
     --font-inter: 'Inter', sans-serif;
     /* --font-jetbrains-mono: 'JetBrains Mono', monospace; */
+  }
+
+  /* Dark Mode */
+  .dark {
+    --tee-background: #1A1A17;
+    --tee-surface: #2A2A27;
+    --tee-stone: #3A3A37;
+    --tee-ink-strong: #FAFAF9;
+    --tee-ink-light: #A8A8A5;
+    --tee-ink-muted: #6A6A67;
+    --tee-accent-primary: #4ABA9A;
+    --tee-accent-primary-hover: #5FCBAB;
+    --tee-accent-primary-active: #3AA98A;
+    --tee-accent-primary-disabled: #2A4A42;
+    --tee-accent-secondary: #D4B888;
+    --tee-error: #EF5350;
+    --tee-success: #66BB6A;
+    --tee-warning: #FFCA28;
+    --tee-info: #42A5F5;
   }
 
   /* Base styles */

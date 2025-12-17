@@ -19,8 +19,8 @@ export function FlaggedMessageCard({
         <div className="mb-4 flex items-start justify-between">
           <div>
             <div className="mb-2 flex items-center gap-3">
-              <span className="font-semibold text-calm-obsidian">{message.sender}</span>
-              <span className="text-body-xs text-calm-ash">
+              <span className="font-semibold text-tee-ink-strong">{message.sender}</span>
+              <span className="text-body-xs text-tee-ink-muted">
                 Chat Room #{message.chatRoomId.slice(0, 8)}
               </span>
               <span
@@ -33,13 +33,13 @@ export function FlaggedMessageCard({
                 {message.status === 'pending' ? '검토 대기' : '검토 완료'}
               </span>
             </div>
-            <p className="mb-2 text-body-sm text-calm-ash">신고 사유: {message.flagReason}</p>
-            <p className="text-body-xs text-calm-ash">신고 시각: {message.flaggedAt}</p>
+            <p className="mb-2 text-body-sm text-tee-ink-muted">신고 사유: {message.flagReason}</p>
+            <p className="text-body-xs text-tee-ink-muted">신고 시각: {message.flaggedAt}</p>
           </div>
         </div>
 
-        <div className="mb-4 rounded-lg border border-calm-stone bg-calm-cloud/50 p-4">
-          <p className="text-body-sm text-calm-obsidian">&quot;{message.content}&quot;</p>
+        <div className="mb-4 rounded-lg border border-tee-stone bg-tee-surface/50 p-4">
+          <p className="text-body-sm text-tee-ink-strong">&quot;{message.content}&quot;</p>
         </div>
 
         <div className="flex gap-3">

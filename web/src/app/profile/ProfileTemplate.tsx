@@ -32,7 +32,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
   const [ctaMinimized, setCtaMinimized] = useState(false)
 
   return (
-    <div className="min-h-screen bg-calm-white">
+    <div className="min-h-screen bg-tee-background">
       {/* Theme Toggle - Fixed Position */}
       <div className="fixed top-6 right-6 z-50">
         <ThemeToggle className="bg-white/80 backdrop-blur-md shadow-lg" />
@@ -69,7 +69,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                 setCtaMinimized(true)
                 hideCta()
               }}
-              className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-calm-charcoal text-white text-xs flex items-center justify-center md:hidden"
+              className="absolute -top-2 -right-2 h-6 w-6 rounded-full bg-tee-ink-light text-white text-xs flex items-center justify-center md:hidden"
               aria-label="CTA 최소화"
             >
               ×
@@ -115,7 +115,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
             className="object-cover scale-110"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-calm-obsidian via-calm-obsidian/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-tee-ink-strong via-tee-ink-strong/60 to-transparent" />
         </div>
 
         {/* Content */}
@@ -187,7 +187,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                     <div className="mb-3 font-display text-5xl font-bold text-accent">
                       {item.value}
                     </div>
-                    <p className="text-sm font-medium uppercase tracking-wider text-calm-charcoal">
+                    <p className="text-sm font-medium uppercase tracking-wider text-tee-ink-light">
                       {item.label}
                     </p>
                   </div>
@@ -219,10 +219,10 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
 
               {/* Bio Card */}
               <div className="card p-8 lg:p-10">
-                <h2 className="mb-6 font-display text-3xl font-bold text-calm-obsidian">
+                <h2 className="mb-6 font-display text-3xl font-bold text-tee-ink-strong">
                   프로 소개
                 </h2>
-                <p className="text-lg leading-relaxed text-calm-charcoal">
+                <p className="text-lg leading-relaxed text-tee-ink-light">
                   {profile.summary}
                 </p>
               </div>
@@ -232,7 +232,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
 
         {/* Story Sections */}
         {storySections && storySections.length > 0 && (
-          <section className="space-y-20 px-6 py-16 bg-calm-cloud">
+          <section className="space-y-20 px-6 py-16 bg-tee-surface">
             {storySections.map((section) => (
               <div
                 key={section.title}
@@ -240,10 +240,10 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
               >
                 <div className={`relative ${section.align === 'right' ? 'lg:col-start-2' : ''}`}>
                   <p className="mb-4 font-mono uppercase tracking-widest text-accent">{section.title}</p>
-                  <h3 className="mb-6 font-display text-4xl font-bold text-calm-obsidian">{section.heading}</h3>
-                  <p className="text-lg leading-relaxed text-calm-charcoal">{section.body}</p>
+                  <h3 className="mb-6 font-display text-4xl font-bold text-tee-ink-strong">{section.heading}</h3>
+                  <p className="text-lg leading-relaxed text-tee-ink-light">{section.body}</p>
                 </div>
-                <div className={`group relative aspect-square overflow-hidden rounded-3xl border border-calm-stone ${section.align === 'right' ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
+                <div className={`group relative aspect-square overflow-hidden rounded-3xl border border-tee-stone ${section.align === 'right' ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
                   <Image src={section.image} alt={section.heading} fill className="object-cover transition-transform duration-700 group-hover:scale-105" sizes="(max-width: 1024px) 100vw, 50vw" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                 </div>
@@ -257,12 +257,12 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
           <section className="px-6 py-16">
             <div className="mx-auto max-w-7xl">
               <div className="mb-12 text-center">
-                <h2 className="mb-4 font-display text-4xl font-bold text-calm-obsidian">
+                <h2 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong">
                   <a href={`https://instagram.com/${profile.instagramUsername}`} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">
                     Instagram
                   </a>
                 </h2>
-                <p className="text-lg text-calm-charcoal">@{profile.instagramUsername}</p>
+                <p className="text-lg text-tee-ink-light">@{profile.instagramUsername}</p>
               </div>
               <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
                 {instagramPosts.map((post) => (
@@ -271,7 +271,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                     href={post.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group relative aspect-square overflow-hidden rounded-xl border border-calm-stone transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                    className="group relative aspect-square overflow-hidden rounded-xl border border-tee-stone transition-all duration-300 hover:scale-105 hover:shadow-lg"
                   >
                     <Image src={post.image} alt="Instagram Post" fill className="object-cover" sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 16vw" />
                     <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity group-hover:opacity-100" />
@@ -285,15 +285,15 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
 
         {/* YouTube Videos */}
         {youtubeVideos && youtubeVideos.length > 0 && (
-          <section className="px-6 py-16 bg-calm-cloud">
+          <section className="px-6 py-16 bg-tee-surface">
             <div className="mx-auto max-w-7xl">
               <div className="mb-12 text-center">
-                <h2 className="mb-4 font-display text-4xl font-bold text-calm-obsidian">
+                <h2 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong">
                   <a href={`https://www.youtube.com/channel/${profile.youtubeChannelId}`} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">
                     YouTube
                   </a>
                 </h2>
-                <p className="text-lg text-calm-charcoal">레슨 영상과 골프 팁</p>
+                <p className="text-lg text-tee-ink-light">레슨 영상과 골프 팁</p>
               </div>
               <div className="grid gap-8 md:grid-cols-2">
                 {youtubeVideos.map((ytVideo) => (
@@ -309,7 +309,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                       ></iframe>
                     </div>
                     <div className="p-6">
-                      <h3 className="text-lg font-semibold text-calm-obsidian">{ytVideo.title}</h3>
+                      <h3 className="text-lg font-semibold text-tee-ink-strong">{ytVideo.title}</h3>
                     </div>
                   </div>
                 ))}
@@ -323,10 +323,10 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
           <section className="px-6 py-16">
             <div className="mx-auto max-w-7xl">
               <div className="mb-12 text-center">
-                <h2 className="mb-4 font-display text-4xl font-bold text-calm-obsidian">
+                <h2 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong">
                   레슨 전문 분야
                 </h2>
-                <p className="text-lg text-calm-charcoal">데이터로 검증된 실력</p>
+                <p className="text-lg text-tee-ink-light">데이터로 검증된 실력</p>
               </div>
 
               <div className="grid gap-8 md:grid-cols-2">
@@ -337,13 +337,13 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                   >
                     <div className="relative">
                       <div className="mb-6 flex items-center justify-between">
-                        <span className="text-2xl font-bold uppercase tracking-wider text-calm-obsidian">
+                        <span className="text-2xl font-bold uppercase tracking-wider text-tee-ink-strong">
                           {key === 'driver' ? '드라이버' : key === 'iron' ? '아이언' : key === 'short' ? '쇼트게임' : '퍼팅'}
                         </span>
                         <span className="font-mono text-4xl font-bold text-accent">{value}%</span>
                       </div>
 
-                      <div className="relative h-4 overflow-hidden rounded-full bg-calm-stone">
+                      <div className="relative h-4 overflow-hidden rounded-full bg-tee-stone">
                         <div
                           className="h-full rounded-full bg-accent transition-all duration-1000"
                           style={{ width: `${value}%` }}
@@ -359,13 +359,13 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
 
         {/* Teaching Programs */}
         {themes && themes.length > 0 && (
-          <section className="px-6 py-16 bg-calm-cloud">
+          <section className="px-6 py-16 bg-tee-surface">
             <div className="mx-auto max-w-7xl">
               <div className="mb-12 text-center">
-                <h2 className="mb-4 font-display text-4xl font-bold text-calm-obsidian">
+                <h2 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong">
                   커리큘럼 안내
                 </h2>
-                <p className="text-lg text-calm-charcoal">맞춤형 커리큘럼</p>
+                <p className="text-lg text-tee-ink-light">맞춤형 커리큘럼</p>
               </div>
 
               <div className="grid gap-8 md:grid-cols-3">
@@ -375,10 +375,10 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                     className="card p-8 transition-all duration-300 hover:scale-105 hover:shadow-lg"
                     style={{ animationDelay: `${idx * 0.1}s` }}
                   >
-                    <h3 className="mb-4 text-2xl font-bold text-calm-obsidian">
+                    <h3 className="mb-4 text-2xl font-bold text-tee-ink-strong">
                       {theme.title}
                     </h3>
-                    <p className="leading-relaxed text-calm-charcoal">
+                    <p className="leading-relaxed text-tee-ink-light">
                       {theme.description}
                     </p>
                   </div>
@@ -393,10 +393,10 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
           <section className="px-6 py-16">
             <div className="mx-auto max-w-7xl">
               <div className="mb-12 text-center">
-                <h2 className="mb-4 font-display text-4xl font-bold text-calm-obsidian">
+                <h2 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong">
                   수강료 안내
                 </h2>
-                <p className="text-lg text-calm-charcoal">합리적인 가격, 최고의 가치</p>
+                <p className="text-lg text-tee-ink-light">합리적인 가격, 최고의 가치</p>
               </div>
 
               <div className="grid gap-8 md:grid-cols-3">
@@ -414,12 +414,12 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                       </div>
                     )}
 
-                    <h3 className="mb-3 text-3xl font-bold text-calm-obsidian">
+                    <h3 className="mb-3 text-3xl font-bold text-tee-ink-strong">
                       {tier.name}
                     </h3>
-                    <p className="mb-8 text-calm-charcoal">{tier.duration}</p>
+                    <p className="mb-8 text-tee-ink-light">{tier.duration}</p>
 
-                    <div className="mb-10 border-t border-calm-stone pt-8">
+                    <div className="mb-10 border-t border-tee-stone pt-8">
                       <span className="font-display text-5xl font-bold text-accent">
                         {tier.price}
                       </span>
@@ -442,14 +442,14 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
         )}
 
         {/* Location & Policies */}
-        <section className="px-6 py-16 bg-calm-cloud">
+        <section className="px-6 py-16 bg-tee-surface">
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-8 lg:grid-cols-2">
               <div className="card p-10">
-                <h3 className="mb-8 text-2xl font-bold text-calm-obsidian">레슨 장소</h3>
+                <h3 className="mb-8 text-2xl font-bold text-tee-ink-strong">레슨 장소</h3>
                 <ul className="space-y-4">
                   {(locations ?? ['청담 스튜디오']).map((loc) => (
-                    <li key={loc} className="flex items-center gap-4 text-lg text-calm-charcoal">
+                    <li key={loc} className="flex items-center gap-4 text-lg text-tee-ink-light">
                       <span className="text-2xl">📍</span>
                       {loc}
                     </li>
@@ -458,10 +458,10 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
               </div>
 
               <div className="card p-10">
-                <h3 className="mb-8 text-2xl font-bold text-calm-obsidian">예약 안내</h3>
+                <h3 className="mb-8 text-2xl font-bold text-tee-ink-strong">예약 안내</h3>
                 <ul className="space-y-4">
                   {(policies ?? ['예약 변경은 레슨 1일 전까지 가능합니다']).map((policy) => (
-                    <li key={policy} className="leading-relaxed text-calm-charcoal">
+                    <li key={policy} className="leading-relaxed text-tee-ink-light">
                       • {policy}
                     </li>
                   ))}
@@ -475,10 +475,10 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
         <section className="px-6 py-16">
           <div className="mx-auto max-w-7xl">
             <div className="mb-12 text-center">
-              <h2 className="mb-4 font-display text-4xl font-bold text-calm-obsidian">
+              <h2 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong">
                 생생한 수강 후기
               </h2>
-              <p className="text-lg text-calm-charcoal">실제 수강생들의 생생한 후기</p>
+              <p className="text-lg text-tee-ink-light">실제 수강생들의 생생한 후기</p>
             </div>
 
             <div className="grid gap-8 md:grid-cols-2">
@@ -489,7 +489,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                   style={{ animationDelay: `${idx * 0.1}s` }}
                 >
                   <div className="mb-6 text-3xl text-accent">&ldquo;</div>
-                  <p className="mb-8 text-xl leading-relaxed text-calm-obsidian">
+                  <p className="mb-8 text-xl leading-relaxed text-tee-ink-strong">
                     {item.quote.replace(/(^"|"$)/g, '')}
                   </p>
 
@@ -498,7 +498,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                       <Image src={item.avatar} alt={item.name} fill className="object-cover" sizes="64px" />
                     </div>
                     <div>
-                      <p className="font-semibold text-calm-obsidian">{item.name}</p>
+                      <p className="font-semibold text-tee-ink-strong">{item.name}</p>
                       <div className="mt-1 flex gap-1 text-accent">
                         {'★★★★★'.split('').map((star, i) => (
                           <span key={i}>{star}</span>
@@ -514,13 +514,13 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
 
         {/* Similar Pros */}
         {similarPros && similarPros.length > 0 && (
-          <section className="px-6 py-16 bg-calm-cloud">
+          <section className="px-6 py-16 bg-tee-surface">
             <div className="mx-auto max-w-7xl">
               <div className="mb-12">
-                <h2 className="mb-4 font-display text-4xl font-bold text-calm-obsidian">
+                <h2 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong">
                   추천 프로 더보기
                 </h2>
-                <p className="text-lg text-calm-charcoal">나에게 맞는 다른 프로 더 찾아보기</p>
+                <p className="text-lg text-tee-ink-light">나에게 맞는 다른 프로 더 찾아보기</p>
               </div>
               <div className="grid gap-8 md:grid-cols-3">
                 {similarPros.map((pro) => (
@@ -530,8 +530,8 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                         <Image src={pro.image} alt={pro.name} fill className="object-cover" sizes="80px" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-calm-obsidian">{pro.name}</h3>
-                        <p className="text-calm-charcoal">{pro.role}</p>
+                        <h3 className="text-xl font-bold text-tee-ink-strong">{pro.name}</h3>
+                        <p className="text-tee-ink-light">{pro.role}</p>
                         <p className="mt-1 text-sm text-accent">{pro.city}</p>
                       </div>
                     </div>
@@ -547,10 +547,10 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
           <div className="mx-auto max-w-4xl">
             <div className="relative overflow-hidden rounded-3xl border-2 border-accent bg-accent-light p-16 text-center">
               <div className="relative">
-                <h2 className="mb-6 font-display text-5xl font-bold text-calm-obsidian">
+                <h2 className="mb-6 font-display text-5xl font-bold text-tee-ink-strong">
                   {profile.name}님과<br />레슨 시작하기
                 </h2>
-                <p className="mx-auto mb-10 max-w-2xl text-xl text-calm-charcoal">
+                <p className="mx-auto mb-10 max-w-2xl text-xl text-tee-ink-light">
                   지금 문의하시면 빠른 시간 내에 답변 드리겠습니다
                 </p>
                 <button

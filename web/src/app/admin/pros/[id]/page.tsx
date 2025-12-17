@@ -84,14 +84,14 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
   }
 
   return (
-    <div className="min-h-screen bg-calm-white">
+    <div className="min-h-screen bg-tee-background">
       {/* Header */}
-      <header className="border-b border-calm-stone bg-white">
+      <header className="border-b border-tee-stone bg-white">
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-semibold text-calm-obsidian">프로필 편집</h1>
-              <p className="text-body-sm text-calm-ash">프로 #{params.id} 프로필을 원하는 모습으로 꾸며보세요.</p>
+              <h1 className="text-2xl font-semibold text-tee-ink-strong">프로필 편집</h1>
+              <p className="text-body-sm text-tee-ink-muted">프로 #{params.id} 프로필을 원하는 모습으로 꾸며보세요.</p>
             </div>
             <div className="flex gap-3">
               <Link href="/admin/pros" className="btn-ghost">
@@ -121,7 +121,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
       </header>
 
       {/* Tabs */}
-      <div className="border-b border-calm-stone bg-white">
+      <div className="border-b border-tee-stone bg-white">
         <nav className="mx-auto max-w-7xl px-6" aria-label="프로필 편집 탭">
           <div className="flex gap-8" role="tablist">
             <button
@@ -132,7 +132,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
               className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-light focus:ring-inset ${
                 activeTab === 'design'
                   ? 'border-accent text-accent'
-                  : 'border-transparent text-calm-charcoal hover:text-accent'
+                  : 'border-transparent text-tee-ink-light hover:text-accent'
               }`}
             >
               🎨 디자인
@@ -145,7 +145,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
               className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-light focus:ring-inset ${
                 activeTab === 'content'
                   ? 'border-accent text-accent'
-                  : 'border-transparent text-calm-charcoal hover:text-accent'
+                  : 'border-transparent text-tee-ink-light hover:text-accent'
               }`}
             >
               ✏️ 콘텐츠
@@ -158,7 +158,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
               className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-light focus:ring-inset ${
                 activeTab === 'layout'
                   ? 'border-accent text-accent'
-                  : 'border-transparent text-calm-charcoal hover:text-accent'
+                  : 'border-transparent text-tee-ink-light hover:text-accent'
               }`}
             >
               📐 레이아웃
@@ -171,7 +171,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
               className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-light focus:ring-inset ${
                 activeTab === 'preview'
                   ? 'border-accent text-accent'
-                  : 'border-transparent text-calm-charcoal hover:text-accent'
+                  : 'border-transparent text-tee-ink-light hover:text-accent'
               }`}
             >
               👁️ 미리보기
@@ -186,7 +186,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
         {activeTab === 'design' && (
           <div id="design-panel" role="tabpanel" aria-labelledby="design-tab" className="space-y-8">
             <section>
-              <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">컬러 테마</h2>
+              <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">컬러 테마</h2>
               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 {colorThemes.map((theme) => (
                   <button
@@ -195,20 +195,20 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                     className={`group relative overflow-hidden rounded-2xl border-2 p-6 transition-all ${
                       selectedTheme === theme.id
                         ? 'border-accent shadow-lg'
-                        : 'border-calm-stone hover:border-accent/50'
+                        : 'border-tee-stone hover:border-accent/50'
                     }`}
                   >
                     <div
                       className="mb-4 h-32 rounded-xl"
                       style={{ background: theme.preview }}
                     />
-                    <h3 className="mb-2 font-semibold text-calm-obsidian">{theme.name}</h3>
+                    <h3 className="mb-2 font-semibold text-tee-ink-strong">{theme.name}</h3>
                     <div className="flex items-center gap-2">
                       <div
-                        className="h-6 w-6 rounded-full border border-calm-stone"
+                        className="h-6 w-6 rounded-full border border-tee-stone"
                         style={{ backgroundColor: theme.accent }}
                       />
-                      <span className="text-body-xs text-calm-ash">Accent</span>
+                      <span className="text-body-xs text-tee-ink-muted">Accent</span>
                     </div>
                     {selectedTheme === theme.id && (
                       <div className="absolute right-4 top-4 rounded-full bg-accent p-2 text-white">
@@ -221,26 +221,26 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
             </section>
 
             <section>
-              <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">커스텀 컬러</h2>
+              <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">커스텀 컬러</h2>
               <div className="card p-8">
                 <div className="grid gap-6 md:grid-cols-2">
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-calm-charcoal">
+                    <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                       배경 색상 (어두운 톤)
                     </label>
                     <input
                       type="color"
-                      className="h-12 w-full cursor-pointer rounded-lg border border-calm-stone"
+                      className="h-12 w-full cursor-pointer rounded-lg border border-tee-stone"
                       defaultValue="#0a0e27"
                     />
                   </div>
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-calm-charcoal">
+                    <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                       액센트 색상 (강조 색)
                     </label>
                     <input
                       type="color"
-                      className="h-12 w-full cursor-pointer rounded-lg border border-calm-stone"
+                      className="h-12 w-full cursor-pointer rounded-lg border border-tee-stone"
                       defaultValue="#d4af37"
                     />
                   </div>
@@ -254,11 +254,11 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
         {activeTab === 'content' && (
           <div id="content-panel" role="tabpanel" aria-labelledby="content-tab" className="space-y-8">
             <section>
-              <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">기본 정보</h2>
+              <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">기본 정보</h2>
               <div className="card p-8">
                 <div className="space-y-6">
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-calm-charcoal">
+                    <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                       이름
                     </label>
                     <input
@@ -270,7 +270,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-calm-charcoal">
+                    <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                       직함
                     </label>
                     <input
@@ -282,7 +282,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-calm-charcoal">
+                    <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                       자기소개
                     </label>
                     <textarea
@@ -294,7 +294,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-calm-charcoal">
+                    <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                       활동 지역
                     </label>
                     <input
@@ -309,10 +309,10 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
             </section>
 
             <section>
-              <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">히어로 이미지</h2>
+              <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">히어로 이미지</h2>
               <div className="card p-8">
                 <div className="mb-4">
-                  <label className="mb-2 block text-sm font-medium text-calm-charcoal">
+                  <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                     이미지 URL
                   </label>
                   <input
@@ -322,7 +322,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                     onChange={(e) => setProfileData({...profileData, heroImage: e.target.value})}
                   />
                 </div>
-                <div className="relative h-48 rounded-xl border border-calm-stone bg-calm-cloud p-4 overflow-hidden">
+                <div className="relative h-48 rounded-xl border border-tee-stone bg-tee-surface p-4 overflow-hidden">
                   <Image
                     src={profileData.heroImage}
                     alt="Hero preview"
@@ -338,11 +338,11 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
             </section>
 
             <section>
-              <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">SNS 연동</h2>
+              <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">SNS 연동</h2>
               <div className="card p-8">
                 <div className="space-y-6">
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-calm-charcoal">
+                    <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                       Instagram 핸들
                     </label>
                     <input
@@ -355,7 +355,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-calm-charcoal">
+                    <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                       YouTube 채널
                     </label>
                     <input
@@ -371,19 +371,19 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
             </section>
 
             <section>
-              <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">통계 & 지표</h2>
+              <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">통계 & 지표</h2>
               <div className="card p-8">
                 <div className="mb-6">
-                  <h3 className="mb-4 font-semibold text-calm-obsidian">핵심 통계 (4개)</h3>
+                  <h3 className="mb-4 font-semibold text-tee-ink-strong">핵심 통계 (4개)</h3>
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-calm-charcoal">
+                      <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                         라벨
                       </label>
                       <input type="text" className="input w-full" defaultValue="투어 경력" />
                     </div>
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-calm-charcoal">
+                      <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                         값
                       </label>
                       <input type="text" className="input w-full" defaultValue="8+ 년" />
@@ -393,11 +393,11 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                 </div>
 
                 <div>
-                  <h3 className="mb-4 font-semibold text-calm-obsidian">전문 분야 실력</h3>
+                  <h3 className="mb-4 font-semibold text-tee-ink-strong">전문 분야 실력</h3>
                   <div className="space-y-4">
                     {['드라이버', '아이언', '쇼트게임', '퍼팅'].map((skill) => (
                       <div key={skill} className="flex items-center gap-4">
-                        <span className="w-24 text-sm font-medium text-calm-charcoal">{skill}</span>
+                        <span className="w-24 text-sm font-medium text-tee-ink-light">{skill}</span>
                         <input
                           type="range"
                           min="0"
@@ -405,7 +405,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                           defaultValue="92"
                           className="flex-1"
                         />
-                        <span className="w-12 text-right font-mono text-sm text-calm-charcoal">92%</span>
+                        <span className="w-12 text-right font-mono text-sm text-tee-ink-light">92%</span>
                       </div>
                     ))}
                   </div>
@@ -419,8 +419,8 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
         {activeTab === 'layout' && (
           <div id="layout-panel" role="tabpanel" aria-labelledby="layout-tab" className="space-y-8">
             <section>
-              <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">섹션 구성</h2>
-              <p className="mb-6 text-body-sm text-calm-ash">
+              <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">섹션 구성</h2>
+              <p className="mb-6 text-body-sm text-tee-ink-muted">
                 프로필에 표시할 섹션을 선택하세요. 드래그로 순서를 변경할 수 있습니다.
               </p>
 
@@ -438,8 +438,8 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                       <div className="cursor-move text-2xl">::</div>
                       <div className="text-4xl">{section.icon}</div>
                       <div>
-                        <h3 className="font-semibold text-calm-obsidian">{section.name}</h3>
-                        <p className="text-body-sm text-calm-ash">{section.description}</p>
+                        <h3 className="font-semibold text-tee-ink-strong">{section.name}</h3>
+                        <p className="text-body-sm text-tee-ink-muted">{section.description}</p>
                       </div>
                     </div>
                     <label className="flex items-center gap-3">
@@ -449,7 +449,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                         onChange={() => toggleSection(section.id)}
                         className="h-6 w-6 cursor-pointer accent-accent"
                       />
-                      <span className="text-sm font-medium text-calm-charcoal">
+                      <span className="text-sm font-medium text-tee-ink-light">
                         {enabledSections.includes(section.id) ? '표시' : '숨김'}
                       </span>
                     </label>
@@ -459,11 +459,11 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
             </section>
 
             <section>
-              <h2 className="mb-6 text-2xl font-semibold text-calm-obsidian">레이아웃 설정</h2>
+              <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">레이아웃 설정</h2>
               <div className="card p-8">
                 <div className="space-y-6">
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-calm-charcoal">
+                    <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                       히어로 섹션 높이
                     </label>
                     <select className="input w-full">
@@ -474,7 +474,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-calm-charcoal">
+                    <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                       섹션 간격
                     </label>
                     <select className="input w-full">
@@ -485,7 +485,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                   </div>
 
                   <div>
-                    <label className="mb-2 block text-sm font-medium text-calm-charcoal">
+                    <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                       최대 너비
                     </label>
                     <select className="input w-full">
@@ -505,7 +505,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
           <div id="preview-panel" role="tabpanel" aria-labelledby="preview-tab" className="space-y-8">
             <section>
               <div className="mb-6 flex items-center justify-between">
-                <h2 className="text-2xl font-semibold text-calm-obsidian">미리보기</h2>
+                <h2 className="text-2xl font-semibold text-tee-ink-strong">미리보기</h2>
                 <div className="flex gap-3">
                   <button className="btn-ghost">📱 Mobile</button>
                   <button className="btn-ghost">💻 Desktop</button>
@@ -513,7 +513,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                 </div>
               </div>
 
-              <div className="overflow-hidden rounded-2xl border border-calm-stone bg-calm-cloud">
+              <div className="overflow-hidden rounded-2xl border border-tee-stone bg-tee-surface">
                 <iframe
                   src={`/profile/preview/${params.id}`}
                   className="h-[800px] w-full"

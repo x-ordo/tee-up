@@ -15,7 +15,7 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-calm-white px-6">
+    <div className="flex min-h-screen items-center justify-center bg-tee-background px-6">
       <div className="max-w-md">
         <ErrorState
           title="문제가 발생했습니다"
@@ -26,7 +26,7 @@ export default function Error({ error, reset }: ErrorProps) {
 
         {process.env.NODE_ENV === 'development' && (
           <details className="mt-8 text-left">
-            <summary className="cursor-pointer text-body-sm text-calm-charcoal hover:text-calm-obsidian">
+            <summary className="cursor-pointer text-body-sm text-tee-ink-light hover:text-tee-ink-strong">
               오류 상세 정보 (개발 모드)
             </summary>
             <pre className="mt-4 overflow-auto rounded-xl border border-error bg-error-bg p-4 text-body-xs text-error">

@@ -26,7 +26,7 @@ function PaymentFailContent() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-calm-white">
+    <div className="flex min-h-screen items-center justify-center bg-tee-background">
       <div className="max-w-md text-center">
         <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-error/10">
           <svg
@@ -43,8 +43,8 @@ function PaymentFailContent() {
             />
           </svg>
         </div>
-        <h1 className="mb-2 text-2xl font-bold text-calm-obsidian">결제 실패</h1>
-        <p className="mb-8 text-calm-charcoal">{getErrorMessage()}</p>
+        <h1 className="mb-2 text-2xl font-bold text-tee-ink-strong">결제 실패</h1>
+        <p className="mb-8 text-tee-ink-light">{getErrorMessage()}</p>
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
           <Link
             href="/pricing"

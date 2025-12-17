@@ -114,7 +114,7 @@ export function ProCardSkeleton() {
         </div>
 
         {/* Rate & CTA */}
-        <div className="flex items-center justify-between border-t border-calm-stone pt-4">
+        <div className="flex items-center justify-between border-t border-tee-stone pt-4">
           <Skeleton className="h-5 w-24" />
           <Skeleton className="h-10 w-24 rounded-xl" />
         </div>
@@ -126,7 +126,7 @@ export function ProCardSkeleton() {
 // 프로 프로필 상세 스켈레톤
 export function ProProfileSkeleton() {
   return (
-    <div className="min-h-screen bg-calm-white">
+    <div className="min-h-screen bg-tee-background">
       {/* Hero */}
       <div className="relative h-96 w-full">
         <Skeleton className="h-full w-full rounded-none" />
@@ -136,7 +136,7 @@ export function ProProfileSkeleton() {
       <div className="mx-auto max-w-4xl px-6 py-12">
         {/* Avatar & Name */}
         <div className="-mt-20 mb-8 flex items-end gap-6">
-          <Skeleton className="h-32 w-32 rounded-full border-4 border-calm-white" />
+          <Skeleton className="h-32 w-32 rounded-full border-4 border-tee-background" />
           <div>
             <Skeleton className="mb-2 h-8 w-48" />
             <Skeleton className="h-5 w-32" />
@@ -195,7 +195,7 @@ export function ChatMessageSkeleton({ isOwn = false }: { isOwn?: boolean }) {
 // 채팅 목록 스켈레톤
 export function ChatListSkeleton() {
   return (
-    <div className="divide-y divide-calm-stone">
+    <div className="divide-y divide-tee-stone">
       {[1, 2, 3, 4, 5].map((i) => (
         <div key={i} className="flex items-center gap-4 p-4">
           <Skeleton className="h-12 w-12 rounded-full" />

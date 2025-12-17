@@ -47,7 +47,7 @@ export function MessageBubble({
       <div className={`max-w-[70%] ${isOwn ? 'items-end' : 'items-start'}`}>
         {/* Sender Name (for received messages) */}
         {!isOwn && sender && (
-          <p className="mb-1 text-xs font-medium text-calm-charcoal">
+          <p className="mb-1 text-xs font-medium text-tee-ink-light">
             {sender.full_name}
           </p>
         )}
@@ -58,7 +58,7 @@ export function MessageBubble({
             ${
               isOwn
                 ? 'rounded-tr-sm bg-accent text-white'
-                : 'rounded-tl-sm bg-calm-cloud text-calm-obsidian'
+                : 'rounded-tl-sm bg-tee-surface text-tee-ink-strong'
             }
           `}
         >
@@ -69,7 +69,7 @@ export function MessageBubble({
 
         {/* Time and Read Status */}
         <div
-          className={`mt-1 flex items-center gap-1 text-xs text-calm-ash ${
+          className={`mt-1 flex items-center gap-1 text-xs text-tee-ink-muted ${
             isOwn ? 'justify-end' : 'justify-start'
           }`}
         >
@@ -123,14 +123,14 @@ interface TypingIndicatorProps {
 export function TypingIndicator({ userName }: TypingIndicatorProps) {
   return (
     <div className="flex items-center gap-3">
-      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-calm-cloud">
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-tee-surface">
         <div className="flex gap-1">
-          <span className="h-2 w-2 animate-bounce rounded-full bg-calm-ash" style={{ animationDelay: '0ms' }} />
-          <span className="h-2 w-2 animate-bounce rounded-full bg-calm-ash" style={{ animationDelay: '150ms' }} />
-          <span className="h-2 w-2 animate-bounce rounded-full bg-calm-ash" style={{ animationDelay: '300ms' }} />
+          <span className="h-2 w-2 animate-bounce rounded-full bg-tee-ink-muted" style={{ animationDelay: '0ms' }} />
+          <span className="h-2 w-2 animate-bounce rounded-full bg-tee-ink-muted" style={{ animationDelay: '150ms' }} />
+          <span className="h-2 w-2 animate-bounce rounded-full bg-tee-ink-muted" style={{ animationDelay: '300ms' }} />
         </div>
       </div>
-      <span className="text-sm text-calm-ash">
+      <span className="text-sm text-tee-ink-muted">
         {userName ? `${userName}님이 입력 중...` : '입력 중...'}
       </span>
     </div>
@@ -146,10 +146,10 @@ export function DateDivider({ date }: DateDividerProps) {
   return (
     <div className="relative py-4">
       <div className="absolute inset-0 flex items-center">
-        <div className="w-full border-t border-calm-stone" />
+        <div className="w-full border-t border-tee-stone" />
       </div>
       <div className="relative flex justify-center">
-        <span className="bg-calm-cloud px-4 text-xs text-calm-ash">
+        <span className="bg-tee-surface px-4 text-xs text-tee-ink-muted">
           {format(date, 'yyyy년 M월 d일 EEEE', { locale: ko })}
         </span>
       </div>

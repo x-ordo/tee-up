@@ -78,14 +78,14 @@ const userStats = [
 
 export default function AdminUsersPage() {
   return (
-    <div className="min-h-screen bg-calm-white">
+    <div className="min-h-screen bg-tee-background">
       {/* Admin Header */}
-      <header className="border-b border-calm-stone bg-white">
+      <header className="border-b border-tee-stone bg-white">
         <div className="mx-auto max-w-7xl px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-semibold text-calm-obsidian">사용자 관리</h1>
-              <p className="text-body-sm text-calm-ash">플랫폼 사용자 계정 및 활동 관리</p>
+              <h1 className="text-2xl font-semibold text-tee-ink-strong">사용자 관리</h1>
+              <p className="text-body-sm text-tee-ink-muted">플랫폼 사용자 계정 및 활동 관리</p>
             </div>
             <Link href="/admin" className="btn-ghost">
               ← 대시보드
@@ -95,24 +95,24 @@ export default function AdminUsersPage() {
       </header>
 
       {/* Navigation Tabs */}
-      <div className="border-b border-calm-stone bg-white">
+      <div className="border-b border-tee-stone bg-white">
         <nav className="mx-auto max-w-7xl px-6">
           <div className="flex gap-8">
             <Link
               href="/admin"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               대시보드
             </Link>
             <Link
               href="/admin/pros"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               프로 관리
             </Link>
             <Link
               href="/admin/chats"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               채팅 관리
             </Link>
@@ -124,7 +124,7 @@ export default function AdminUsersPage() {
             </Link>
             <Link
               href="/admin/analytics"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-calm-charcoal hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
             >
               분석
             </Link>
@@ -139,11 +139,11 @@ export default function AdminUsersPage() {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {userStats.map((stat, idx) => (
               <div key={idx} className="card p-6">
-                <p className="mb-2 text-body-sm font-medium text-calm-ash">{stat.label}</p>
-                <p className="mb-1 font-display text-3xl font-bold text-calm-obsidian">
+                <p className="mb-2 text-body-sm font-medium text-tee-ink-muted">{stat.label}</p>
+                <p className="mb-1 font-display text-3xl font-bold text-tee-ink-strong">
                   {stat.value}
                 </p>
-                <p className="text-body-xs text-calm-charcoal">{stat.change}</p>
+                <p className="text-body-xs text-tee-ink-light">{stat.change}</p>
               </div>
             ))}
           </div>
@@ -152,7 +152,7 @@ export default function AdminUsersPage() {
         {/* Users Table */}
         <section>
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-semibold text-calm-obsidian">
+            <h2 className="text-2xl font-semibold text-tee-ink-strong">
               사용자 목록 ({users.length})
             </h2>
             <input
@@ -187,8 +187,8 @@ export default function AdminUsersPage() {
                     </td>
                     <td className="table-cell">
                       <div>
-                        <p className="font-semibold text-calm-obsidian">{user.name}</p>
-                        <p className="text-body-xs text-calm-ash">{user.email}</p>
+                        <p className="font-semibold text-tee-ink-strong">{user.name}</p>
+                        <p className="text-body-xs text-tee-ink-muted">{user.email}</p>
                       </div>
                     </td>
                     <td className="table-cell font-mono text-body-sm">{user.phone}</td>
@@ -197,7 +197,7 @@ export default function AdminUsersPage() {
                         className={`rounded-full px-3 py-1 text-body-xs font-medium ${
                           user.role === 'pro'
                             ? 'bg-accent/10 text-accent'
-                            : 'bg-calm-cloud text-calm-charcoal'
+                            : 'bg-tee-surface text-tee-ink-light'
                         }`}
                       >
                         {user.role === 'pro' ? '프로' : '골퍼'}
@@ -206,21 +206,21 @@ export default function AdminUsersPage() {
                     <td className="table-cell text-center">
                       {user.role === 'pro' ? (
                         <div>
-                          <p className="font-mono font-semibold text-calm-obsidian">
+                          <p className="font-mono font-semibold text-tee-ink-strong">
                             {user.lessonsGiven}
                           </p>
-                          <p className="text-body-xs text-calm-ash">레슨 진행</p>
+                          <p className="text-body-xs text-tee-ink-muted">레슨 진행</p>
                         </div>
                       ) : (
                         <div>
-                          <p className="font-mono font-semibold text-calm-obsidian">
+                          <p className="font-mono font-semibold text-tee-ink-strong">
                             {user.lessonsBooked}
                           </p>
-                          <p className="text-body-xs text-calm-ash">레슨 예약</p>
+                          <p className="text-body-xs text-tee-ink-muted">레슨 예약</p>
                         </div>
                       )}
                     </td>
-                    <td className="table-cell text-center text-body-xs text-calm-ash">
+                    <td className="table-cell text-center text-body-xs text-tee-ink-muted">
                       {user.joinedAt}
                     </td>
                     <td className="table-cell text-center">
@@ -228,7 +228,7 @@ export default function AdminUsersPage() {
                         className={`rounded-full px-3 py-1 text-body-xs font-medium ${
                           user.status === 'active'
                             ? 'bg-success-bg text-success'
-                            : 'bg-calm-cloud text-calm-charcoal'
+                            : 'bg-tee-surface text-tee-ink-light'
                         }`}
                       >
                         {user.status === 'active' ? '활성' : '비활성'}
@@ -249,36 +249,36 @@ export default function AdminUsersPage() {
 
         {/* User Insights */}
         <section className="mt-12">
-          <h3 className="mb-6 text-xl font-semibold text-calm-obsidian">사용자 인사이트</h3>
+          <h3 className="mb-6 text-xl font-semibold text-tee-ink-strong">사용자 인사이트</h3>
           <div className="grid gap-6 md:grid-cols-3">
             <div className="card p-6">
-              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 활성 사용자 비율
               </h4>
-              <div className="mb-2 font-display text-3xl font-bold text-calm-obsidian">87.5%</div>
-              <p className="text-body-sm text-calm-charcoal">
+              <div className="mb-2 font-display text-3xl font-bold text-tee-ink-strong">87.5%</div>
+              <p className="text-body-sm text-tee-ink-light">
                 최근 30일 내 로그인한 사용자
               </p>
               <div className="mt-4 text-body-xs text-success">↑ 3.2% 지난 달 대비 상승</div>
             </div>
 
             <div className="card p-6">
-              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 골퍼당 평균 레슨
               </h4>
-              <div className="mb-2 font-display text-3xl font-bold text-calm-obsidian">2.8회</div>
-              <p className="text-body-sm text-calm-charcoal">
+              <div className="mb-2 font-display text-3xl font-bold text-tee-ink-strong">2.8회</div>
+              <p className="text-body-sm text-tee-ink-light">
                 골퍼 1명당 평균 예약 레슨 수
               </p>
               <div className="mt-4 text-body-xs text-success">↑ 0.6회 지난 분기 대비 증가</div>
             </div>
 
             <div className="card p-6">
-              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+              <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 신규 사용자 유지율
               </h4>
-              <div className="mb-2 font-display text-3xl font-bold text-calm-obsidian">64.2%</div>
-              <p className="text-body-sm text-calm-charcoal">
+              <div className="mb-2 font-display text-3xl font-bold text-tee-ink-strong">64.2%</div>
+              <p className="text-body-sm text-tee-ink-light">
                 가입 후 30일 내 재방문 비율
               </p>
               <div className="mt-4 text-body-xs text-warning">↓ 2.1% 지난 달 대비 하락</div>

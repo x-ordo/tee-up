@@ -18,7 +18,7 @@ export default function AdminLoginPage() {
   if (isLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="text-calm-ash">Loading...</div>
+        <div className="text-tee-ink-muted">Loading...</div>
       </div>
     )
   }

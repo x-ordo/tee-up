@@ -18,11 +18,11 @@ export function ThemeToggle({ className = '' }: ThemeToggleProps) {
   if (!mounted) {
     return (
       <button
-        className={`p-2 rounded-lg bg-calm-cloud ${className}`}
+        className={`p-2 rounded-lg bg-tee-surface ${className}`}
         aria-label="테마 전환"
         disabled
       >
-        <span className="w-5 h-5 block bg-calm-stone rounded animate-pulse" />
+        <span className="w-5 h-5 block bg-tee-stone rounded animate-pulse" />
       </button>
     )
   }
@@ -36,7 +36,7 @@ export function ThemeToggle({ className = '' }: ThemeToggleProps) {
   return (
     <button
       onClick={toggleTheme}
-      className={`p-2 rounded-lg transition-colors duration-200 hover:bg-calm-cloud focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-calm-accent ${className}`}
+      className={`p-2 rounded-lg transition-colors duration-200 hover:bg-tee-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tee-accent-primary ${className}`}
       aria-label={isDark ? '라이트 모드로 전환' : '다크 모드로 전환'}
       aria-pressed={isDark}
       type="button"
@@ -46,7 +46,7 @@ export function ThemeToggle({ className = '' }: ThemeToggleProps) {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="w-5 h-5 text-calm-warning"
+          className="w-5 h-5 text-tee-warning"
           aria-hidden="true"
         >
           <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
@@ -56,7 +56,7 @@ export function ThemeToggle({ className = '' }: ThemeToggleProps) {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="w-5 h-5 text-calm-charcoal"
+          className="w-5 h-5 text-tee-ink-light"
           aria-hidden="true"
         >
           <path

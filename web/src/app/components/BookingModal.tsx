@@ -78,7 +78,7 @@ export default function BookingModal({
         {!submitted ? (
           <>
             <div className="mb-6 flex items-center justify-between">
-              <h4 id="booking-modal-title" className="font-display text-display-sm font-semibold text-calm-obsidian">
+              <h4 id="booking-modal-title" className="font-display text-display-sm font-semibold text-tee-ink-strong">
                 {type === 'reservation' ? '레슨 예약하기' : '대기 신청하기'}
               </h4>
               <button
@@ -88,12 +88,12 @@ export default function BookingModal({
                 닫기
               </button>
             </div>
-            <p className="mb-6 text-body-sm text-calm-charcoal">
-              담당 프로: <span className="font-semibold text-calm-obsidian">{proName}</span>
+            <p className="mb-6 text-body-sm text-tee-ink-light">
+              담당 프로: <span className="font-semibold text-tee-ink-strong">{proName}</span>
               {selectedDateTime ? (
                 <>
                   {' '}· 예약 일시{' '}
-                  <span className="font-semibold text-calm-obsidian">
+                  <span className="font-semibold text-tee-ink-strong">
                     {selectedDateTime.replace('T', ' ')}
                   </span>
                 </>
@@ -151,12 +151,12 @@ export default function BookingModal({
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
               />
-              <label className="flex items-center gap-2 text-body-xs text-calm-charcoal">
+              <label className="flex items-center gap-2 text-body-xs text-tee-ink-light">
                 <input
                   type="checkbox"
                   checked={agree}
                   onChange={(e) => setAgree(e.target.checked)}
-                  className="h-4 w-4 rounded border-calm-stone text-accent focus:ring-accent"
+                  className="h-4 w-4 rounded border-tee-stone text-accent focus:ring-accent"
                 />
                 예약 및 취소 안내를 확인했어요.
               </label>
@@ -177,10 +177,10 @@ export default function BookingModal({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h4 className="font-display text-display-sm font-semibold text-calm-obsidian">
+            <h4 className="font-display text-display-sm font-semibold text-tee-ink-strong">
               신청이 완료됐어요
             </h4>
-            <p className="mt-2 text-body-sm text-calm-charcoal">
+            <p className="mt-2 text-body-sm text-tee-ink-light">
               담당 프로가 확인한 뒤 빠르게 연락드릴게요.
             </p>
             <button

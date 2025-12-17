@@ -14,7 +14,7 @@ export function PendingProCard({ pro, onApprove, onReject, isProcessing }: Pendi
   const phone = pro.profiles?.phone || '연락처 미입력'
 
   return (
-    <div className="card">
+    <div className="card" data-testid="pending-pro-card">
       <div className="grid gap-6 lg:grid-cols-[300px,1fr]">
         {/* Left: Pro Image & Basic Info */}
         <div>
@@ -28,12 +28,12 @@ export function PendingProCard({ pro, onApprove, onReject, isProcessing }: Pendi
             />
           </div>
           <div className="space-y-2">
-            <h3 className="text-xl font-semibold text-calm-obsidian">{profileName}</h3>
-            <p className="text-body-sm text-calm-ash">{pro.title}</p>
+            <h3 className="text-xl font-semibold text-tee-ink-strong">{profileName}</h3>
+            <p className="text-body-sm text-tee-ink-muted">{pro.title}</p>
             {pro.location && (
-              <p className="text-body-sm text-calm-charcoal">📍 {pro.location}</p>
+              <p className="text-body-sm text-tee-ink-light">📍 {pro.location}</p>
             )}
-            <p className="text-body-xs text-calm-ash">
+            <p className="text-body-xs text-tee-ink-muted">
               신청: {new Date(pro.created_at).toLocaleDateString('ko-KR')}
             </p>
           </div>
@@ -43,16 +43,16 @@ export function PendingProCard({ pro, onApprove, onReject, isProcessing }: Pendi
         <div className="space-y-6 p-6">
           {/* Contact */}
           <div>
-            <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+            <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
               연락처
             </h4>
-            <p className="text-body-sm text-calm-charcoal">📱 {phone}</p>
+            <p className="text-body-sm text-tee-ink-light">📱 {phone}</p>
           </div>
 
           {/* Specialties */}
           {pro.specialties && pro.specialties.length > 0 && (
             <div>
-              <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+              <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 전문 분야
               </h4>
               <div className="flex flex-wrap gap-2">
@@ -68,22 +68,22 @@ export function PendingProCard({ pro, onApprove, onReject, isProcessing }: Pendi
           {/* Experience */}
           {pro.tour_experience && (
             <div>
-              <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+              <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 투어 경력
               </h4>
-              <p className="text-body-sm text-calm-charcoal">{pro.tour_experience}</p>
+              <p className="text-body-sm text-tee-ink-light">{pro.tour_experience}</p>
             </div>
           )}
 
           {/* Certifications */}
           {pro.certifications && pro.certifications.length > 0 && (
             <div>
-              <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+              <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 자격증
               </h4>
               <ul className="space-y-1">
                 {pro.certifications.map((cert, index) => (
-                  <li key={index} className="text-body-sm text-calm-charcoal">
+                  <li key={index} className="text-body-sm text-tee-ink-light">
                     ✓ {cert}
                   </li>
                 ))}
@@ -94,15 +94,15 @@ export function PendingProCard({ pro, onApprove, onReject, isProcessing }: Pendi
           {/* Bio */}
           {pro.bio && (
             <div>
-              <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-calm-ash">
+              <h4 className="mb-2 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 소개
               </h4>
-              <p className="text-body-sm text-calm-charcoal line-clamp-3">{pro.bio}</p>
+              <p className="text-body-sm text-tee-ink-light line-clamp-3">{pro.bio}</p>
             </div>
           )}
 
           {/* Action Buttons */}
-          <div className="flex gap-3 border-t border-calm-stone pt-6">
+          <div className="flex gap-3 border-t border-tee-stone pt-6">
             <button
               className="btn-primary flex-1"
               onClick={() => onApprove(pro.id)}

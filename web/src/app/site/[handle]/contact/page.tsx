@@ -66,10 +66,10 @@ export default function ContactPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-calm-white">
+      <div className="flex min-h-screen items-center justify-center bg-tee-background">
         <div className="text-center">
           <div className="mb-4 h-12 w-12 animate-spin rounded-full border-4 border-accent border-t-transparent mx-auto" />
-          <p className="text-calm-charcoal">연락처 확인 중...</p>
+          <p className="text-tee-ink-light">연락처 확인 중...</p>
         </div>
       </div>
     );
@@ -77,13 +77,13 @@ export default function ContactPage() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-calm-white px-6">
+      <div className="flex min-h-screen items-center justify-center bg-tee-background px-6">
         <div className="max-w-md text-center">
           <div className="mb-4 text-4xl">⚠️</div>
-          <h1 className="mb-2 text-xl font-semibold text-calm-obsidian">
+          <h1 className="mb-2 text-xl font-semibold text-tee-ink-strong">
             연락처를 불러올 수 없습니다
           </h1>
-          <p className="mb-6 text-calm-charcoal">{error}</p>
+          <p className="mb-6 text-tee-ink-light">{error}</p>
           <Link
             href={`/site/${handle}`}
             className="btn-secondary inline-block px-6 py-3"
@@ -96,10 +96,10 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-calm-white px-6">
+    <div className="flex min-h-screen items-center justify-center bg-tee-background px-6">
       <div className="w-full max-w-md">
         <div className="card p-8">
-          <h1 className="mb-6 text-center text-2xl font-semibold text-calm-obsidian">
+          <h1 className="mb-6 text-center text-2xl font-semibold text-tee-ink-strong">
             연락처 정보
           </h1>
 
@@ -108,12 +108,12 @@ export default function ContactPage() {
             {contactInfo?.phone && (
               <a
                 href={`tel:${contactInfo.phone}`}
-                className="flex items-center gap-4 rounded-xl border border-calm-stone p-4 transition-colors hover:bg-calm-cloud"
+                className="flex items-center gap-4 rounded-xl border border-tee-stone p-4 transition-colors hover:bg-tee-surface"
               >
                 <span className="text-2xl">📞</span>
                 <div>
-                  <p className="text-sm text-calm-charcoal">전화번호</p>
-                  <p className="font-semibold text-calm-obsidian">
+                  <p className="text-sm text-tee-ink-light">전화번호</p>
+                  <p className="font-semibold text-tee-ink-strong">
                     {formatPhoneNumber(contactInfo.phone)}
                   </p>
                 </div>
@@ -124,12 +124,12 @@ export default function ContactPage() {
             {contactInfo?.email && (
               <a
                 href={`mailto:${contactInfo.email}`}
-                className="flex items-center gap-4 rounded-xl border border-calm-stone p-4 transition-colors hover:bg-calm-cloud"
+                className="flex items-center gap-4 rounded-xl border border-tee-stone p-4 transition-colors hover:bg-tee-surface"
               >
                 <span className="text-2xl">✉️</span>
                 <div>
-                  <p className="text-sm text-calm-charcoal">이메일</p>
-                  <p className="font-semibold text-calm-obsidian">
+                  <p className="text-sm text-tee-ink-light">이메일</p>
+                  <p className="font-semibold text-tee-ink-strong">
                     {contactInfo.email}
                   </p>
                 </div>
@@ -142,12 +142,12 @@ export default function ContactPage() {
                 href={contactInfo.kakao_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 rounded-xl border border-calm-stone bg-[#FEE500] p-4 transition-opacity hover:opacity-90"
+                className="flex items-center gap-4 rounded-xl border border-tee-stone bg-tee-kakao p-4 transition-opacity hover:opacity-90"
               >
                 <span className="text-2xl">💬</span>
                 <div>
-                  <p className="text-sm text-calm-obsidian/70">카카오톡</p>
-                  <p className="font-semibold text-calm-obsidian">
+                  <p className="text-sm text-tee-ink-strong/70">카카오톡</p>
+                  <p className="font-semibold text-tee-ink-strong">
                     오픈채팅 문의하기
                   </p>
                 </div>
@@ -160,12 +160,12 @@ export default function ContactPage() {
                 href={contactInfo.booking_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 rounded-xl border border-calm-stone p-4 transition-colors hover:bg-calm-cloud"
+                className="flex items-center gap-4 rounded-xl border border-tee-stone p-4 transition-colors hover:bg-tee-surface"
               >
                 <span className="text-2xl">📅</span>
                 <div>
-                  <p className="text-sm text-calm-charcoal">예약</p>
-                  <p className="font-semibold text-calm-obsidian">
+                  <p className="text-sm text-tee-ink-light">예약</p>
+                  <p className="font-semibold text-tee-ink-strong">
                     예약 페이지로 이동
                   </p>
                 </div>
@@ -177,7 +177,7 @@ export default function ContactPage() {
           <div className="mt-8 text-center">
             <Link
               href={`/site/${handle}`}
-              className="text-sm text-calm-charcoal hover:text-accent"
+              className="text-sm text-tee-ink-light hover:text-accent"
             >
               ← 프로필로 돌아가기
             </Link>
@@ -185,7 +185,7 @@ export default function ContactPage() {
         </div>
 
         {/* Notice */}
-        <p className="mt-6 text-center text-xs text-calm-charcoal/60">
+        <p className="mt-6 text-center text-xs text-tee-ink-light/60">
           연락처 조회는 프로에게 알림으로 전달됩니다
         </p>
       </div>

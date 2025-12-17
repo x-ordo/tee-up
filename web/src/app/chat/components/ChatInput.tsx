@@ -64,7 +64,7 @@ export function ChatInput({
   );
 
   return (
-    <div className="border-t border-calm-stone bg-calm-white/90 p-4 backdrop-blur-xl">
+    <div className="border-t border-tee-stone bg-tee-background/90 p-4 backdrop-blur-xl">
       <div className="flex items-end gap-3">
         {/* 텍스트 입력 */}
         <div className="relative flex-1">
@@ -77,8 +77,8 @@ export function ChatInput({
             disabled={disabled || isSending}
             rows={1}
             className="
-              max-h-[120px] w-full resize-none rounded-2xl border border-calm-stone
-              bg-calm-cloud px-4 py-3 pr-12 text-calm-obsidian placeholder-calm-ash
+              max-h-[120px] w-full resize-none rounded-2xl border border-tee-stone
+              bg-tee-surface px-4 py-3 pr-12 text-tee-ink-strong placeholder-tee-ink-muted
               transition-colors focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent-light
               disabled:cursor-not-allowed disabled:opacity-50
             "
@@ -87,7 +87,7 @@ export function ChatInput({
           {/* 이모지 버튼 (옵션) */}
           <button
             type="button"
-            className="absolute bottom-3 right-3 text-calm-ash transition-colors hover:text-calm-charcoal"
+            className="absolute bottom-3 right-3 text-tee-ink-muted transition-colors hover:text-tee-ink-light"
             aria-label="이모지 선택"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,7 +144,7 @@ export function ChatInput({
       </div>
 
       {/* 안내 텍스트 */}
-      <p className="mt-2 text-center text-xs text-calm-ash">
+      <p className="mt-2 text-center text-xs text-tee-ink-muted">
         Enter로 전송, Shift+Enter로 줄바꿈
       </p>
     </div>

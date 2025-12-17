@@ -2,7 +2,7 @@ import { EmptyState } from '@/app/components/EmptyState';
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-calm-white px-6">
+    <div className="flex min-h-screen items-center justify-center bg-tee-background px-6">
       <EmptyState
         icon={
           <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent-light">
