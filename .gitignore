@@ -270,3 +270,5 @@ certs/
 .zsh_history
 .node_repl_history
 .python_history
+
+*.png
