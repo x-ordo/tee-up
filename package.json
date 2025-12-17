@@ -1,0 +1,36 @@
+{
+  "name": "tee-up",
+  "version": "1.0.0-beta.2",
+  "description": "TEE:UP - Golf Pro Personal Branding Portfolio SaaS",
+  "private": true,
+  "scripts": {
+    "dev": "npm run dev --prefix web",
+    "build": "npm run build --prefix web",
+    "start": "npm run start --prefix web",
+    "lint": "npm run lint --prefix web",
+    "test": "npm run test --prefix web",
+    "test:watch": "npm run test:watch --prefix web",
+    "test:e2e": "npm run test:e2e --prefix web",
+    "test:e2e:ui": "npm run test:e2e:ui --prefix web",
+    "test:e2e:headed": "npm run test:e2e:headed --prefix web",
+    "type-check": "npm run type-check --prefix web",
+    "install:web": "npm install --prefix web"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Prometheus-P/tee-up.git"
+  },
+  "keywords": [
+    "golf",
+    "portfolio",
+    "saas",
+    "nextjs",
+    "supabase"
+  ],
+  "author": "TEE:UP Team",
+  "license": "PROPRIETARY",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

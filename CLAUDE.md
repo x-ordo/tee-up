@@ -14,9 +14,8 @@ TEE:UP is a **Golf Pro Personal Branding Portfolio SaaS** platform. It provides 
 
 ## Development Commands
 
+**From project root (recommended):**
 ```bash
-cd web
-npm install              # Install dependencies
 npm run dev             # Start dev server (http://localhost:3000)
 npm run build           # Production build
 npm start               # Start production server
@@ -27,6 +26,13 @@ npm run test:e2e        # Run Playwright E2E tests
 npm run test:e2e:ui     # Run Playwright with UI
 npm run test:e2e:headed # Run Playwright in headed mode
 npm run type-check      # Check TypeScript types
+npm run install:web     # Install web dependencies
+```
+
+**Or directly in web/ folder:**
+```bash
+cd web && npm install   # Install dependencies
+cd web && npm run dev   # Start dev server
 ```
 
 ## Architecture

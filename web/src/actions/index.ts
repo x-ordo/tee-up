@@ -53,3 +53,28 @@ export {
   type PortfolioSectionInsert,
   type PortfolioSectionUpdate,
 } from './portfolios';
+
+// Scheduler actions
+export {
+  getProAvailability,
+  getBlockedSlots,
+  getProBookings,
+  createBooking,
+  getAvailableSlots,
+  getAvailableSlotsWithCalendar,
+  checkSlotAvailability,
+  getMyBookings,
+  cancelBooking,
+} from './scheduler';
+
+// Calendar actions (Google Calendar integration)
+export {
+  syncBookingToCalendar,
+  removeBookingFromCalendar,
+  getCalendarBlockedSlots,
+  getCalendarEvents,
+  hasGoogleCalendarConnected,
+  getCombinedBlockedSlots,
+  type CalendarBlockedSlot,
+  type CalendarSyncResult,
+} from './calendar';
