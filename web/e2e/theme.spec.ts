@@ -120,23 +120,23 @@ test.describe('Theme on Admin Page', () => {
 
 test.describe('Theme on Profile Page', () => {
   test('should have theme toggle on profile page', async ({ page }) => {
-    await page.goto('/profile/hannah-park')
+    await page.goto('/profile/elliot-kim')
 
-    // Check theme toggle exists in navigation (use first one if multiple exist)
-    const themeToggle = page.getByRole('navigation').getByRole('button', { name: /테마 전환|라이트 모드로 전환|다크 모드로 전환/ })
+    // Check theme toggle exists (it's in a fixed position div, not navigation)
+    const themeToggle = page.getByRole('button', { name: /테마 전환|라이트 모드로 전환|다크 모드로 전환/ }).first()
     await expect(themeToggle).toBeVisible()
   })
 
   test('should toggle theme on profile page', async ({ page }) => {
-    await page.goto('/profile/hannah-park')
+    await page.goto('/profile/elliot-kim')
 
     const html = page.locator('html')
 
     // Initial state - light mode
     await expect(html).not.toHaveClass(/dark/)
 
-    // Toggle to dark mode (use navigation theme toggle to avoid duplicates)
-    const themeToggle = page.getByRole('navigation').getByRole('button', { name: /다크 모드로 전환/ })
+    // Toggle to dark mode
+    const themeToggle = page.getByRole('button', { name: /다크 모드로 전환/ }).first()
     await themeToggle.click()
 
     // Verify dark mode

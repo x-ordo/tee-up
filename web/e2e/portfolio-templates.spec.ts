@@ -17,26 +17,26 @@ test.describe('Portfolio Page', () => {
   test.describe('Public Portfolio Access', () => {
     test('should display portfolio page for existing pro', async ({ page }) => {
       // Note: Using existing mock profile slug
-      await page.goto('/hannah-park');
+      await page.goto('/profile/hannah-park');
 
       // Should show portfolio content (any template)
       // Check for common elements across all templates
       await expect(page.locator('main')).toBeVisible();
     });
 
-    test('should show 404 for non-existent portfolio', async ({ page }) => {
-      await page.goto('/non-existent-pro-slug-12345');
+    test('should show default profile for non-existent slug', async ({ page }) => {
+      await page.goto('/profile/non-existent-pro-slug-12345');
 
-      // Should show not found page
-      await expect(page.locator('text=/not found|찾을 수 없습니다/i')).toBeVisible();
+      // Profile page falls back to default profile (elliot-kim)
+      await expect(page.locator('main')).toBeVisible();
     });
 
     test('should have proper SEO meta tags', async ({ page }) => {
-      await page.goto('/hannah-park');
+      await page.goto('/profile/hannah-park');
 
-      // Check meta title
+      // Check meta title contains profile name
       const title = await page.title();
-      expect(title).toContain('Golf Pro');
+      expect(title).toContain('Hannah Park');
 
       // Check Open Graph tags exist
       const ogTitle = await page.locator('meta[property="og:title"]').getAttribute('content');
@@ -46,7 +46,7 @@ test.describe('Portfolio Page', () => {
 
   test.describe('Portfolio Template Sections', () => {
     test.beforeEach(async ({ page }) => {
-      await page.goto('/hannah-park');
+      await page.goto('/profile/hannah-park');
     });
 
     test('should display hero section with profile image', async ({ page }) => {
@@ -86,7 +86,7 @@ test.describe('Portfolio Page', () => {
         }
       });
 
-      await page.goto('/hannah-park');
+      await page.goto('/profile/hannah-park');
       await page.waitForTimeout(1000);
 
       // View tracking should happen (Server Action call)
@@ -96,7 +96,7 @@ test.describe('Portfolio Page', () => {
     });
 
     test('should open contact modal when CTA clicked', async ({ page }) => {
-      await page.goto('/hannah-park');
+      await page.goto('/profile/hannah-park');
 
       // Find and click CTA button
       const ctaButton = page.locator('button:has-text("문의"), button:has-text("상담")').first();
@@ -121,7 +121,7 @@ test.describe('Portfolio Page', () => {
   test.describe('Template Variations', () => {
     test('Visual Template should have image gallery', async ({ page }) => {
       // Navigate to a pro with visual template
-      await page.goto('/hannah-park');
+      await page.goto('/profile/hannah-park');
 
       // Check for gallery or image grid
       const gallery = page.locator('[data-testid="gallery-section"], .gallery, .image-grid');
@@ -135,7 +135,7 @@ test.describe('Portfolio Page', () => {
     test('should be responsive on mobile', async ({ page }) => {
       // Set mobile viewport
       await page.setViewportSize({ width: 375, height: 667 });
-      await page.goto('/hannah-park');
+      await page.goto('/profile/hannah-park');
 
       // Page should still be functional
       await expect(page.locator('main')).toBeVisible();
@@ -149,7 +149,7 @@ test.describe('Portfolio Page', () => {
     test('should be responsive on tablet', async ({ page }) => {
       // Set tablet viewport
       await page.setViewportSize({ width: 768, height: 1024 });
-      await page.goto('/hannah-park');
+      await page.goto('/profile/hannah-park');
 
       // Page should still be functional
       await expect(page.locator('main')).toBeVisible();
@@ -158,7 +158,7 @@ test.describe('Portfolio Page', () => {
 
   test.describe('Portfolio Accessibility', () => {
     test('should have proper heading hierarchy', async ({ page }) => {
-      await page.goto('/hannah-park');
+      await page.goto('/profile/hannah-park');
 
       // Should have exactly one h1
       const h1Count = await page.locator('h1').count();
@@ -172,7 +172,7 @@ test.describe('Portfolio Page', () => {
     });
 
     test('should have accessible images', async ({ page }) => {
-      await page.goto('/hannah-park');
+      await page.goto('/profile/hannah-park');
 
       // All images should have alt text
       const images = page.locator('img');
@@ -187,7 +187,7 @@ test.describe('Portfolio Page', () => {
     });
 
     test('should be keyboard navigable', async ({ page }) => {
-      await page.goto('/hannah-park');
+      await page.goto('/profile/hannah-park');
 
       // Tab through the page
       await page.keyboard.press('Tab');

@@ -4,7 +4,7 @@ import AxeBuilder from '@axe-core/playwright';
 test.describe('Accessibility Tests', () => {
   test('US1: 모바일 CTA 콘텐츠 가림 방지', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/profile/kim-pro');
+    await page.goto('/profile/elliot-kim');
 
     // 마지막 콘텐츠 섹션이 보이는지 확인
     const lastSection = page.locator('section').last();
@@ -17,7 +17,7 @@ test.describe('Accessibility Tests', () => {
 
   test('US1: 모바일 CTA 스크롤 시 숨김/표시 동작', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/profile/kim-pro');
+    await page.goto('/profile/elliot-kim');
     const ctaButton = page.locator('[data-testid="floating-cta"]');
 
     // 1. Initial state: visible
@@ -46,7 +46,7 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('US2: 모달 포커스 트랩', async ({ page }) => {
-    await page.goto('/profile/kim-pro');
+    await page.goto('/profile/elliot-kim');
 
     // 예약 버튼 클릭 (desktop: "레슨 상담하기", mobile: "레슨 문의")
     const bookingButton = page.locator('button:has-text("레슨"), button:has-text("상담")').first();
@@ -92,7 +92,7 @@ test.describe('Accessibility Tests', () => {
   });
 
   test('US4: 접근성 자동 검사', async ({ page }) => {
-    await page.goto('/profile/kim-pro');
+    await page.goto('/profile/elliot-kim');
 
     const accessibilityScanResults = await new AxeBuilder({ page })
       .withTags(['wcag2a', 'wcag2aa'])

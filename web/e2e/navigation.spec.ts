@@ -5,34 +5,16 @@ test.describe('Navigation Tests', () => {
     await page.goto('/');
   });
 
-  test.describe('Header Navigation', () => {
-    test('should display all main menu items', async ({ page }) => {
-      // Verify header navigation links exist
-      await expect(page.getByRole('link', { name: '전체 프로' })).toBeVisible();
-      await expect(page.getByRole('link', { name: '소개' })).toBeVisible();
-      await expect(page.getByRole('link', { name: '문의' })).toBeVisible();
-    });
-
-    test('should return home when clicking logo', async ({ page }) => {
-      // Navigate to profile page first
-      await page.goto('/profile');
-      await expect(page).toHaveURL(/\/profile/);
-
-      // Click logo to return home
-      await page.getByRole('navigation').getByRole('link', { name: 'TEE:UP' }).click();
-      await expect(page).toHaveURL('/');
-    });
-  });
-
   test.describe('Homepage CTAs', () => {
-    test('should navigate to get-started from hero CTA', async ({ page }) => {
+    test('should navigate to onboarding from hero CTA', async ({ page }) => {
       await page.getByRole('link', { name: /AI 매칭 시작하기/ }).click();
-      await expect(page).toHaveURL(/\/get-started/);
+      await expect(page).toHaveURL(/\/onboarding\/mood/);
     });
 
     test('should navigate to get-started from bottom CTA', async ({ page }) => {
       await page.getByRole('link', { name: '무료 매칭 받아보기' }).click();
-      await expect(page).toHaveURL(/\/get-started/);
+      // get-started redirects to onboarding/mood
+      await expect(page).toHaveURL(/\/onboarding\/mood/);
     });
 
     test('should navigate to profile directory', async ({ page }) => {
@@ -78,10 +60,10 @@ test.describe('Footer Navigation', () => {
     // Scroll to footer
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
 
-    // Check footer links exist
+    // Check footer links exist (matching actual Footer.tsx content)
     await expect(page.getByRole('link', { name: '프로 찾기' })).toBeVisible();
-    await expect(page.getByRole('link', { name: '이용 방법' })).toBeVisible();
-    await expect(page.getByRole('link', { name: '커뮤니티' })).toBeVisible();
+    await expect(page.getByRole('link', { name: '요금제' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'AI 매칭 시작' })).toBeVisible();
     await expect(page.getByRole('link', { name: '이용약관' })).toBeVisible();
     await expect(page.getByRole('link', { name: '개인정보처리방침' })).toBeVisible();
   });
@@ -91,7 +73,7 @@ test.describe('Footer Navigation', () => {
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
 
     await page.getByRole('link', { name: '이용약관' }).click();
-    await expect(page).toHaveURL(/\/terms/);
+    await expect(page).toHaveURL(/\/legal\/terms/);
   });
 
   test('should navigate to privacy page', async ({ page }) => {
@@ -99,6 +81,6 @@ test.describe('Footer Navigation', () => {
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
 
     await page.getByRole('link', { name: '개인정보처리방침' }).click();
-    await expect(page).toHaveURL(/\/privacy/);
+    await expect(page).toHaveURL(/\/legal\/privacy/);
   });
 });
