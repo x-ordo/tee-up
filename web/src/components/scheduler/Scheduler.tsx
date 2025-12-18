@@ -5,9 +5,9 @@ import { format, addDays, parseISO } from 'date-fns';
 import { WeekView } from './WeekView';
 import { TimeSlotPicker } from './TimeSlotPicker';
 import { BookingSheet } from './BookingSheet';
-import { getAvailableSlots, createBooking } from '@/actions/scheduler';
+import { getAvailableSlots, createBooking, getBookingSettingsByProId } from '@/actions/scheduler';
 import { cn } from '@/lib/utils';
-import type { TimeSlot, BookingRequest, DEFAULT_SCHEDULE_SETTINGS } from './types';
+import type { TimeSlot, BookingRequest, BookingSettings, DEFAULT_SCHEDULE_SETTINGS } from './types';
 
 interface SchedulerProps {
   proId: string;
@@ -30,10 +30,22 @@ export function Scheduler({
   const [isLoading, setIsLoading] = React.useState(false);
   const [isBookingOpen, setIsBookingOpen] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [bookingSettings, setBookingSettings] = React.useState<BookingSettings | undefined>(undefined);
 
   // Calculate min and max dates
   const minDate = React.useMemo(() => new Date(), []);
   const maxDate = React.useMemo(() => addDays(new Date(), maxAdvanceDays), [maxAdvanceDays]);
+
+  // Fetch booking settings on mount
+  React.useEffect(() => {
+    const fetchBookingSettings = async () => {
+      const result = await getBookingSettingsByProId(proId);
+      if (result.success) {
+        setBookingSettings(result.data);
+      }
+    };
+    fetchBookingSettings();
+  }, [proId]);
 
   // Fetch available slots when date changes
   React.useEffect(() => {
@@ -130,6 +142,7 @@ export function Scheduler({
         selectedSlot={selectedSlot}
         proId={proId}
         proName={proName}
+        bookingSettings={bookingSettings}
         onSubmit={handleBookingSubmit}
       />
     </div>

@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { Calendar, Clock, User, Phone, Mail, MessageSquare, Loader2, CheckCircle } from 'lucide-react';
+import { Calendar, Clock, User, Phone, Mail, MessageSquare, Loader2, CheckCircle, CreditCard, Shield } from 'lucide-react';
 import {
   Drawer,
   DrawerContent,
@@ -16,7 +16,8 @@ import {
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { cn } from '@/lib/utils';
-import type { TimeSlot, BookingRequest } from './types';
+import { requestDepositPayment, formatKRW } from '@/lib/payments';
+import type { TimeSlot, BookingRequest, BookingSettings } from './types';
 
 interface BookingSheetProps {
   open: boolean;
@@ -25,11 +26,12 @@ interface BookingSheetProps {
   selectedSlot: TimeSlot | null;
   proId: string;
   proName?: string;
+  bookingSettings?: BookingSettings;
   onSubmit: (request: BookingRequest) => Promise<void>;
   className?: string;
 }
 
-type BookingStep = 'form' | 'submitting' | 'success';
+type BookingStep = 'form' | 'submitting' | 'processing_payment' | 'success';
 
 export function BookingSheet({
   open,
@@ -38,6 +40,7 @@ export function BookingSheet({
   selectedSlot,
   proId,
   proName = '프로',
+  bookingSettings,
   onSubmit,
   className,
 }: BookingSheetProps) {
@@ -49,6 +52,10 @@ export function BookingSheet({
     notes: '',
   });
   const [error, setError] = React.useState<string | null>(null);
+
+  // Check if deposit payment is required
+  const isDepositRequired = bookingSettings?.deposit_enabled ?? false;
+  const depositAmount = bookingSettings?.deposit_amount ?? 30000;
 
   // Reset state when drawer opens
   React.useEffect(() => {
@@ -79,6 +86,34 @@ export function BookingSheet({
     }
 
     setError(null);
+
+    // If deposit is required, initiate payment flow
+    if (isDepositRequired) {
+      setStep('processing_payment');
+
+      try {
+        // This will redirect to Toss payment page
+        await requestDepositPayment({
+          proId,
+          proName,
+          amount: depositAmount,
+          slotStart: selectedSlot.start.toISOString(),
+          slotEnd: selectedSlot.end.toISOString(),
+          guestName: formData.name.trim(),
+          guestPhone: formData.phone.trim() || undefined,
+          guestEmail: formData.email.trim() || undefined,
+          customerNotes: formData.notes.trim() || undefined,
+        });
+        // Note: After payment, user will be redirected to /booking/success
+        // which will call createBooking with paymentKey
+      } catch (err) {
+        setError(err instanceof Error ? err.message : '결제 요청에 실패했습니다');
+        setStep('form');
+      }
+      return;
+    }
+
+    // Standard booking flow (no deposit)
     setStep('submitting');
 
     try {
@@ -112,13 +147,22 @@ export function BookingSheet({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent className={cn('max-h-[90vh]', className)}>
         {step === 'success' ? (
-          <SuccessContent onClose={handleClose} proName={proName} />
+          <SuccessContent onClose={handleClose} proName={proName} isDeposit={isDepositRequired} />
+        ) : step === 'processing_payment' ? (
+          <PaymentProcessingContent proName={proName} amount={depositAmount} />
         ) : (
           <>
             <DrawerHeader className="text-left">
-              <DrawerTitle>레슨 예약</DrawerTitle>
+              <DrawerTitle>
+                {isDepositRequired ? 'VIP 레슨 예약' : '레슨 예약'}
+              </DrawerTitle>
               <DrawerDescription>
                 {proName} 프로님과의 레슨을 예약합니다
+                {isDepositRequired && (
+                  <span className="block mt-1 text-tee-accent-primary font-medium">
+                    예약금 {formatKRW(depositAmount)}원으로 일정을 확보하세요
+                  </span>
+                )}
               </DrawerDescription>
             </DrawerHeader>
 
@@ -215,16 +259,34 @@ export function BookingSheet({
             </form>
 
             <DrawerFooter>
+              {/* Deposit info banner */}
+              {isDepositRequired && (
+                <div className="flex items-center gap-2 p-3 bg-tee-accent-primary/5 border border-tee-accent-primary/20 rounded-xl mb-2">
+                  <Shield className="h-5 w-5 text-tee-accent-primary flex-shrink-0" />
+                  <p className="text-xs text-tee-ink-light">
+                    예약금은 레슨 당일 수강료에서 차감됩니다. No-Show 방지를 위한 진성 고객 확인 절차입니다.
+                  </p>
+                </div>
+              )}
+
               <Button
                 type="submit"
                 onClick={handleSubmit}
                 disabled={step === 'submitting' || !selectedSlot}
-                className="w-full h-12 text-base font-semibold"
+                className={cn(
+                  'w-full h-12 text-base font-semibold',
+                  isDepositRequired && 'bg-gradient-to-r from-tee-accent-primary to-tee-accent-primary/80 hover:from-tee-accent-primary/90 hover:to-tee-accent-primary/70'
+                )}
               >
                 {step === 'submitting' ? (
                   <>
                     <Loader2 className="h-5 w-5 mr-2 animate-spin" />
                     예약 요청 중...
+                  </>
+                ) : isDepositRequired ? (
+                  <>
+                    <CreditCard className="h-5 w-5 mr-2" />
+                    VIP 예약 확정하기 ({formatKRW(depositAmount)}원)
                   </>
                 ) : (
                   '예약 요청하기'
@@ -270,25 +332,81 @@ function FormField({ icon, label, required, children }: FormFieldProps) {
 interface SuccessContentProps {
   onClose: () => void;
   proName: string;
+  isDeposit?: boolean;
 }
 
-function SuccessContent({ onClose, proName }: SuccessContentProps) {
+function SuccessContent({ onClose, proName, isDeposit }: SuccessContentProps) {
   return (
     <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
-      <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
-        <CheckCircle className="h-8 w-8 text-green-600" />
+      <div className={cn(
+        'w-16 h-16 rounded-full flex items-center justify-center mb-4',
+        isDeposit ? 'bg-tee-accent-primary/10' : 'bg-green-100'
+      )}>
+        <CheckCircle className={cn(
+          'h-8 w-8',
+          isDeposit ? 'text-tee-accent-primary' : 'text-green-600'
+        )} />
       </div>
       <h3 className="text-xl font-semibold text-tee-ink-strong mb-2">
-        예약 요청 완료!
+        {isDeposit ? 'VIP 예약 확정!' : '예약 요청 완료!'}
       </h3>
       <p className="text-tee-ink-light mb-6">
-        {proName} 프로님이 예약을 확인하면
-        <br />
-        연락드릴 예정입니다.
+        {isDeposit ? (
+          <>
+            예약금 결제가 완료되었습니다.
+            <br />
+            {proName} 프로님과의 레슨이 확정되었습니다.
+          </>
+        ) : (
+          <>
+            {proName} 프로님이 예약을 확인하면
+            <br />
+            연락드릴 예정입니다.
+          </>
+        )}
       </p>
       <Button onClick={onClose} className="w-full max-w-xs">
         확인
       </Button>
+    </div>
+  );
+}
+
+interface PaymentProcessingContentProps {
+  proName: string;
+  amount: number;
+}
+
+function PaymentProcessingContent({ proName, amount }: PaymentProcessingContentProps) {
+  return (
+    <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+      {/* Premium loading animation */}
+      <div className="relative w-20 h-20 mb-6">
+        <div className="absolute inset-0 rounded-full border-4 border-tee-stone" />
+        <div className="absolute inset-0 rounded-full border-4 border-tee-accent-primary border-t-transparent animate-spin" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <CreditCard className="h-8 w-8 text-tee-accent-primary" />
+        </div>
+      </div>
+
+      <h3 className="text-lg font-semibold text-tee-ink-strong mb-2">
+        결제 준비 중...
+      </h3>
+
+      <p className="text-tee-ink-light text-sm mb-4">
+        {proName} 프로님의 일정을 확보하고 있습니다
+      </p>
+
+      <div className="flex items-center gap-2 px-4 py-2 bg-tee-accent-primary/5 rounded-lg">
+        <Shield className="h-4 w-4 text-tee-accent-primary" />
+        <span className="text-sm text-tee-ink-light">
+          예약금 <span className="font-semibold text-tee-accent-primary">{formatKRW(amount)}원</span>
+        </span>
+      </div>
+
+      <p className="text-xs text-tee-ink-muted mt-4">
+        잠시 후 결제 화면으로 이동합니다
+      </p>
     </div>
   );
 }

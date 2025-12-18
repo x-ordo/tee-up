@@ -171,7 +171,14 @@ export async function getMyLeads(options?: {
 }
 
 /**
- * Check if pro has exceeded free lead limit
+ * Check if pro can receive leads
+ *
+ * MONETIZATION PIVOT: Always allow leads.
+ * - Old model: Block after 3 free leads/month
+ * - New model: Unlimited leads, billing via subscription + deposit
+ *
+ * Background counting continues via DB trigger (handle_new_lead)
+ * for analytics purposes.
  */
 export async function checkLeadLimit(proId: string): Promise<ActionResult<{
   can_receive_leads: boolean;
@@ -180,6 +187,7 @@ export async function checkLeadLimit(proId: string): Promise<ActionResult<{
   try {
     const supabase = await createClient();
 
+    // Keep query for analytics/monitoring (optional future use)
     const { data, error } = await supabase
       .from('pro_profiles')
       .select('monthly_lead_count, subscription_tier')
@@ -187,23 +195,18 @@ export async function checkLeadLimit(proId: string): Promise<ActionResult<{
       .single();
 
     if (error) {
-      return { success: false, error: error.message };
+      // Fail-open: allow leads even on error (business priority)
+      return { success: true, data: { can_receive_leads: true } };
     }
 
-    const isPremium = data.subscription_tier !== 'free';
-    const canReceiveLeads =
-      isPremium || data.monthly_lead_count < FREE_LEADS_PER_MONTH;
-
+    // MONETIZATION PIVOT: Always allow leads
+    // Counting continues via handle_new_lead trigger in 003_add_leads.sql
     return {
       success: true,
-      data: {
-        can_receive_leads: canReceiveLeads,
-        reason: canReceiveLeads
-          ? undefined
-          : 'Free lead limit reached. Upgrade to receive more leads.',
-      },
+      data: { can_receive_leads: true },
     };
   } catch (err) {
-    return { success: false, error: 'Failed to check lead limit' };
+    // Fail-open: allow leads even on error
+    return { success: true, data: { can_receive_leads: true } };
   }
 }

@@ -102,6 +102,21 @@ interface TossBillingOptions {
   failUrl: string;
 }
 
+/**
+ * Deposit payment request options
+ */
+export interface DepositPaymentRequest {
+  proId: string;
+  proName: string;
+  amount: number;
+  slotStart: string;
+  slotEnd: string;
+  guestName: string;
+  guestPhone?: string;
+  guestEmail?: string;
+  customerNotes?: string;
+}
+
 // ============================================
 // Payment Functions
 // ============================================
@@ -386,4 +401,96 @@ export async function processSubscriptionRenewal(subscriptionId: string): Promis
       updated_at: new Date().toISOString(),
     })
     .eq('id', subscriptionId);
+}
+
+// ============================================
+// Deposit Payment (예약금 결제)
+// ============================================
+
+/**
+ * 예약금 결제 요청 (Toss Payments 결제창 호출)
+ * @returns orderId - 결제 성공 후 콜백에서 사용
+ */
+export async function requestDepositPayment(
+  request: DepositPaymentRequest
+): Promise<{ orderId: string }> {
+  const toss = await initTossPayments();
+  if (!toss) throw new Error('Toss Payments not initialized');
+
+  const orderId = `dep_${request.proId.slice(0, 8)}_${Date.now()}`;
+  const baseUrl = window.location.origin;
+
+  // URL-safe 파라미터 인코딩
+  const bookingData = encodeURIComponent(
+    JSON.stringify({
+      proId: request.proId,
+      slotStart: request.slotStart,
+      slotEnd: request.slotEnd,
+      guestName: request.guestName,
+      guestPhone: request.guestPhone,
+      guestEmail: request.guestEmail,
+      customerNotes: request.customerNotes,
+    })
+  );
+
+  await toss.requestPayment('카드', {
+    amount: request.amount,
+    orderId,
+    orderName: `${request.proName} 프로 레슨 예약금`,
+    customerName: request.guestName,
+    customerEmail: request.guestEmail,
+    successUrl: `${baseUrl}/booking/success?orderId=${orderId}&data=${bookingData}`,
+    failUrl: `${baseUrl}/booking/fail`,
+  });
+
+  return { orderId };
+}
+
+/**
+ * 예약금 결제 검증 (서버 사이드)
+ * Toss API로 결제 승인 요청
+ */
+export async function confirmDepositPayment(
+  paymentKey: string,
+  orderId: string,
+  amount: number
+): Promise<{ success: boolean; error?: string; paymentData?: Record<string, unknown> }> {
+  try {
+    const response = await fetch('https://api.tosspayments.com/v1/payments/confirm', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Basic ${Buffer.from(`${TOSS_SECRET_KEY}:`).toString('base64')}`,
+      },
+      body: JSON.stringify({
+        paymentKey,
+        orderId,
+        amount,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      return {
+        success: false,
+        error: error.message || 'Payment confirmation failed',
+      };
+    }
+
+    const paymentData = await response.json();
+    return { success: true, paymentData };
+  } catch (err) {
+    console.error('confirmDepositPayment error:', err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : 'Payment confirmation failed',
+    };
+  }
+}
+
+/**
+ * 금액 포맷팅 (KRW)
+ */
+export function formatKRW(amount: number): string {
+  return new Intl.NumberFormat('ko-KR').format(amount);
 }

@@ -5,7 +5,15 @@
 
 // Database ENUM types
 export type BookingStatus = 'pending' | 'confirmed' | 'cancelled' | 'completed';
-export type PaymentStatus = 'unpaid' | 'paid' | 'refunded';
+export type PaymentStatus = 'unpaid' | 'paid' | 'deposit_paid' | 'refunded';
+
+/**
+ * Booking settings from sites table
+ */
+export interface BookingSettings {
+  deposit_enabled: boolean;
+  deposit_amount: number; // in KRW
+}
 
 /**
  * Availability schedule from database
@@ -50,6 +58,7 @@ export interface Booking {
   payment_status: PaymentStatus;
   price_amount: number | null;
   price_currency: string;
+  deposit_amount: number; // 예약금 금액 (0이면 예약금 없음)
   customer_notes: string | null;
   pro_notes: string | null;
   cancelled_at: string | null;
@@ -89,6 +98,10 @@ export interface BookingRequest {
   guest_phone?: string;
   guest_email?: string;
   customer_notes?: string;
+  // Payment fields (for deposit booking)
+  paymentKey?: string;
+  orderId?: string;
+  amount?: number;
 }
 
 /**

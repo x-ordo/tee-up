@@ -57,6 +57,12 @@ export default async function DashboardLayout({
                 리드 관리
               </Link>
               <Link
+                href="/dashboard/concierge"
+                className="text-sm font-medium text-tee-ink-light transition-colors hover:text-tee-ink-strong"
+              >
+                컨시어지
+              </Link>
+              <Link
                 href="/dashboard/settings"
                 className="text-sm font-medium text-tee-ink-light transition-colors hover:text-tee-ink-strong"
               >

@@ -7,6 +7,7 @@ import type {
   BlockedSlot,
   Booking,
   BookingRequest,
+  BookingSettings,
 } from '@/components/scheduler/types';
 import { getCalendarBlockedSlots } from './calendar';
 
@@ -94,6 +95,7 @@ export async function getProBookings(
 
 /**
  * Create a new booking request
+ * If paymentKey is provided, verifies payment with Toss before creating booking
  */
 export async function createBooking(
   request: BookingRequest
@@ -106,6 +108,43 @@ export async function createBooking(
       data: { user },
     } = await supabase.auth.getUser();
 
+    // If payment info is provided, verify with Toss first
+    let paymentVerified = false;
+    let depositAmount = 0;
+
+    if (request.paymentKey && request.orderId && request.amount) {
+      // Verify payment with Toss Payments API
+      const tossSecretKey = process.env.TOSS_SECRET_KEY;
+      if (!tossSecretKey) {
+        return { success: false, error: '결제 시스템 설정 오류' };
+      }
+
+      const response = await fetch('https://api.tosspayments.com/v1/payments/confirm', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Basic ${Buffer.from(`${tossSecretKey}:`).toString('base64')}`,
+        },
+        body: JSON.stringify({
+          paymentKey: request.paymentKey,
+          orderId: request.orderId,
+          amount: request.amount,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        return {
+          success: false,
+          error: error.message || '결제 검증에 실패했습니다.',
+        };
+      }
+
+      paymentVerified = true;
+      depositAmount = request.amount;
+    }
+
+    // Create booking with appropriate status
     const { data, error } = await supabase
       .from('bookings')
       .insert({
@@ -117,8 +156,10 @@ export async function createBooking(
         start_at: request.start_at,
         end_at: request.end_at,
         customer_notes: request.customer_notes || null,
-        status: 'pending',
-        payment_status: 'unpaid',
+        // 결제 완료 시 바로 confirmed, 아니면 pending
+        status: paymentVerified ? 'confirmed' : 'pending',
+        payment_status: paymentVerified ? 'deposit_paid' : 'unpaid',
+        deposit_amount: depositAmount,
       })
       .select()
       .single();
@@ -133,6 +174,7 @@ export async function createBooking(
 
     return { success: true, data };
   } catch (err) {
+    console.error('createBooking error:', err);
     return { success: false, error: 'Failed to create booking' };
   }
 }
@@ -329,5 +371,62 @@ export async function cancelBooking(
     return { success: true, data };
   } catch (err) {
     return { success: false, error: 'Failed to cancel booking' };
+  }
+}
+
+/**
+ * Get booking settings for a pro (via their site)
+ */
+export async function getBookingSettingsByProId(
+  proId: string
+): Promise<ActionResult<BookingSettings>> {
+  try {
+    const supabase = await createClient();
+
+    // 1. Get the pro's user_id from pro_profiles
+    const { data: proProfile, error: proError } = await supabase
+      .from('pro_profiles')
+      .select('user_id')
+      .eq('id', proId)
+      .single();
+
+    if (proError || !proProfile) {
+      // Return default settings if pro not found
+      return {
+        success: true,
+        data: { deposit_enabled: false, deposit_amount: 30000 },
+      };
+    }
+
+    // 2. Get the site's booking_settings by owner_id
+    const { data: site, error: siteError } = await supabase
+      .from('sites')
+      .select('booking_settings')
+      .eq('owner_id', proProfile.user_id)
+      .single();
+
+    if (siteError || !site) {
+      // Return default settings if site not found
+      return {
+        success: true,
+        data: { deposit_enabled: false, deposit_amount: 30000 },
+      };
+    }
+
+    // Parse booking_settings JSONB (with defaults)
+    const settings = site.booking_settings as BookingSettings | null;
+    return {
+      success: true,
+      data: {
+        deposit_enabled: settings?.deposit_enabled ?? false,
+        deposit_amount: settings?.deposit_amount ?? 30000,
+      },
+    };
+  } catch (err) {
+    console.error('getBookingSettingsByProId error:', err);
+    return {
+      success: true,
+      data: { deposit_enabled: false, deposit_amount: 30000 },
+    };
   }
 }
