@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import type { ActionResult, ThemeType } from './types';
+import { DEFAULT_SECTIONS } from '@/lib/portfolio-constants';
 
 /**
  * Portfolio section type from database
@@ -21,33 +22,6 @@ export type PortfolioSection = {
 
 export type PortfolioSectionInsert = Omit<PortfolioSection, 'id' | 'created_at' | 'updated_at'>;
 export type PortfolioSectionUpdate = Partial<Omit<PortfolioSection, 'id' | 'pro_profile_id' | 'created_at' | 'updated_at'>>;
-
-/**
- * Default sections by theme type
- */
-export const DEFAULT_SECTIONS: Record<ThemeType, { section_type: string; title: string }[]> = {
-  visual: [
-    { section_type: 'hero', title: 'Hero' },
-    { section_type: 'gallery', title: 'Gallery' },
-    { section_type: 'stats', title: 'Statistics' },
-    { section_type: 'testimonials', title: 'Testimonials' },
-    { section_type: 'contact', title: 'Contact' },
-  ],
-  curriculum: [
-    { section_type: 'hero', title: 'Hero' },
-    { section_type: 'curriculum', title: 'Curriculum' },
-    { section_type: 'pricing', title: 'Pricing' },
-    { section_type: 'faq', title: 'FAQ' },
-    { section_type: 'contact', title: 'Contact' },
-  ],
-  social: [
-    { section_type: 'hero', title: 'Hero' },
-    { section_type: 'instagram_feed', title: 'Instagram Feed' },
-    { section_type: 'youtube_embed', title: 'YouTube Videos' },
-    { section_type: 'testimonials', title: 'Testimonials' },
-    { section_type: 'contact', title: 'Contact' },
-  ],
-};
 
 /**
  * Update portfolio theme type

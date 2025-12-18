@@ -48,11 +48,13 @@ export {
   updatePaymentLink,
   updateOpenChatUrl,
   initializeDefaultSections,
-  DEFAULT_SECTIONS,
   type PortfolioSection,
   type PortfolioSectionInsert,
   type PortfolioSectionUpdate,
 } from './portfolios';
+
+// Portfolio constants (non-server)
+export { DEFAULT_SECTIONS } from '@/lib/portfolio-constants';
 
 // Scheduler actions
 export {
