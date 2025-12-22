@@ -494,3 +494,220 @@ export async function confirmDepositPayment(
 export function formatKRW(amount: number): string {
   return new Intl.NumberFormat('ko-KR').format(amount);
 }
+
+// ============================================
+// Refund Functions (환불)
+// ============================================
+
+/**
+ * Refund request options
+ */
+export interface RefundRequest {
+  paymentKey: string;
+  cancelReason: string;
+  cancelAmount?: number; // Optional for partial refund
+  refundReceiveAccount?: {
+    bank: string;
+    accountNumber: string;
+    holderName: string;
+  };
+}
+
+/**
+ * Refund result
+ */
+export interface RefundResult {
+  success: boolean;
+  error?: string;
+  cancels?: Array<{
+    cancelAmount: number;
+    cancelReason: string;
+    canceledAt: string;
+    transactionKey: string;
+  }>;
+}
+
+/**
+ * 결제 환불 요청 (Toss Payments Cancellation API)
+ * @param request 환불 요청 정보
+ * @returns 환불 결과
+ *
+ * @see https://docs.tosspayments.com/reference#%EA%B2%B0%EC%A0%9C-%EC%B7%A8%EC%86%8C
+ */
+export async function requestRefund(request: RefundRequest): Promise<RefundResult> {
+  try {
+    if (!TOSS_SECRET_KEY) {
+      return {
+        success: false,
+        error: 'Toss Secret Key not configured',
+      };
+    }
+
+    const body: Record<string, unknown> = {
+      cancelReason: request.cancelReason,
+    };
+
+    // Partial refund
+    if (request.cancelAmount !== undefined) {
+      body.cancelAmount = request.cancelAmount;
+    }
+
+    // Virtual account refund (가상계좌 환불 시 필요)
+    if (request.refundReceiveAccount) {
+      body.refundReceiveAccount = request.refundReceiveAccount;
+    }
+
+    const response = await fetch(
+      `https://api.tosspayments.com/v1/payments/${request.paymentKey}/cancel`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Basic ${Buffer.from(`${TOSS_SECRET_KEY}:`).toString('base64')}`,
+        },
+        body: JSON.stringify(body),
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: data.message || '환불 처리에 실패했습니다.',
+      };
+    }
+
+    return {
+      success: true,
+      cancels: data.cancels,
+    };
+  } catch (err) {
+    console.error('requestRefund error:', err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : '환불 처리 중 오류가 발생했습니다.',
+    };
+  }
+}
+
+/**
+ * 결제 상태 조회 (paymentKey로)
+ * @param paymentKey Toss 결제 키
+ * @returns 결제 정보
+ */
+export async function getPaymentByKey(paymentKey: string): Promise<{
+  success: boolean;
+  error?: string;
+  payment?: {
+    paymentKey: string;
+    orderId: string;
+    status: string;
+    totalAmount: number;
+    balanceAmount: number; // 남은 금액 (환불 후)
+    method: string;
+    approvedAt: string;
+    cancels?: Array<{
+      cancelAmount: number;
+      cancelReason: string;
+      canceledAt: string;
+    }>;
+  };
+}> {
+  try {
+    if (!TOSS_SECRET_KEY) {
+      return {
+        success: false,
+        error: 'Toss Secret Key not configured',
+      };
+    }
+
+    const response = await fetch(
+      `https://api.tosspayments.com/v1/payments/${paymentKey}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Basic ${Buffer.from(`${TOSS_SECRET_KEY}:`).toString('base64')}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        error: data.message || '결제 정보 조회에 실패했습니다.',
+      };
+    }
+
+    return {
+      success: true,
+      payment: data,
+    };
+  } catch (err) {
+    console.error('getPaymentByKey error:', err);
+    return {
+      success: false,
+      error: err instanceof Error ? err.message : '결제 정보 조회 중 오류가 발생했습니다.',
+    };
+  }
+}
+
+/**
+ * 환불 가능 여부 확인
+ * @param paymentKey Toss 결제 키
+ * @param refundAmount 환불 요청 금액 (optional, 전액 환불 시 생략)
+ * @returns 환불 가능 여부와 남은 금액
+ */
+export async function canRefund(
+  paymentKey: string,
+  refundAmount?: number
+): Promise<{
+  canRefund: boolean;
+  reason?: string;
+  balanceAmount?: number;
+}> {
+  const result = await getPaymentByKey(paymentKey);
+
+  if (!result.success || !result.payment) {
+    return {
+      canRefund: false,
+      reason: result.error || '결제 정보를 찾을 수 없습니다.',
+    };
+  }
+
+  const { payment } = result;
+
+  // 이미 전액 환불된 경우
+  if (payment.status === 'CANCELED') {
+    return {
+      canRefund: false,
+      reason: '이미 전액 환불된 결제입니다.',
+      balanceAmount: 0,
+    };
+  }
+
+  // 환불 가능 상태가 아닌 경우
+  if (!['DONE', 'PARTIAL_CANCELED'].includes(payment.status)) {
+    return {
+      canRefund: false,
+      reason: `환불 가능한 상태가 아닙니다. (현재 상태: ${payment.status})`,
+      balanceAmount: payment.balanceAmount,
+    };
+  }
+
+  // 부분 환불 금액 확인
+  if (refundAmount !== undefined && refundAmount > payment.balanceAmount) {
+    return {
+      canRefund: false,
+      reason: `환불 가능 금액(${formatKRW(payment.balanceAmount)}원)을 초과했습니다.`,
+      balanceAmount: payment.balanceAmount,
+    };
+  }
+
+  return {
+    canRefund: true,
+    balanceAmount: payment.balanceAmount,
+  };
+}

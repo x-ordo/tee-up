@@ -651,6 +651,185 @@ export async function validateStudioInvite(
   }
 }
 
+// ============================================
+// Pro's Studio Affiliations (N:M)
+// ============================================
+
+export type StudioAffiliation = {
+  id: string;
+  studio_id: string;
+  pro_id: string;
+  role: 'owner' | 'member';
+  is_primary: boolean;
+  joined_at: string;
+  studio?: Studio;
+};
+
+/**
+ * Get all studios the current pro belongs to
+ */
+export async function getMyStudioAffiliations(): Promise<ActionResult<StudioAffiliation[]>> {
+  try {
+    const supabase = await createClient();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { success: false, error: 'Not authenticated' };
+    }
+
+    // Get user's pro profile
+    const { data: proProfile, error: profileError } = await supabase
+      .from('pro_profiles')
+      .select('id')
+      .eq('user_id', user.id)
+      .single();
+
+    if (profileError || !proProfile) {
+      return { success: true, data: [] };
+    }
+
+    const { data, error } = await supabase
+      .from('studio_members')
+      .select(`
+        id,
+        studio_id,
+        pro_profile_id,
+        role,
+        is_primary,
+        joined_at,
+        studio:studios(*)
+      `)
+      .eq('pro_profile_id', proProfile.id)
+      .order('is_primary', { ascending: false })
+      .order('joined_at', { ascending: true });
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    const affiliations: StudioAffiliation[] = (data || []).map((item) => ({
+      id: item.id,
+      studio_id: item.studio_id,
+      pro_id: item.pro_profile_id,
+      role: item.role as 'owner' | 'member',
+      is_primary: item.is_primary,
+      joined_at: item.joined_at,
+      studio: item.studio as unknown as Studio,
+    }));
+
+    return { success: true, data: affiliations };
+  } catch (err) {
+    return { success: false, error: 'Failed to fetch studio affiliations' };
+  }
+}
+
+/**
+ * Set primary studio affiliation
+ */
+export async function setPrimaryStudio(
+  studioId: string
+): Promise<ActionResult<void>> {
+  try {
+    const supabase = await createClient();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { success: false, error: 'Not authenticated' };
+    }
+
+    // Get user's pro profile
+    const { data: proProfile, error: profileError } = await supabase
+      .from('pro_profiles')
+      .select('id')
+      .eq('user_id', user.id)
+      .single();
+
+    if (profileError || !proProfile) {
+      return { success: false, error: 'Pro profile not found' };
+    }
+
+    // Use database function to set primary
+    const { error } = await supabase.rpc('set_primary_studio', {
+      p_pro_id: proProfile.id,
+      p_studio_id: studioId,
+    });
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    revalidatePath('/dashboard/studios');
+    return { success: true, data: undefined };
+  } catch (err) {
+    return { success: false, error: 'Failed to set primary studio' };
+  }
+}
+
+/**
+ * Leave a studio (for non-owner members)
+ */
+export async function leaveStudio(studioId: string): Promise<ActionResult<void>> {
+  try {
+    const supabase = await createClient();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { success: false, error: 'Not authenticated' };
+    }
+
+    // Get user's pro profile
+    const { data: proProfile, error: profileError } = await supabase
+      .from('pro_profiles')
+      .select('id')
+      .eq('user_id', user.id)
+      .single();
+
+    if (profileError || !proProfile) {
+      return { success: false, error: 'Pro profile not found' };
+    }
+
+    // Check if owner
+    const { data: membership, error: memberError } = await supabase
+      .from('studio_members')
+      .select('id, role')
+      .eq('studio_id', studioId)
+      .eq('pro_profile_id', proProfile.id)
+      .single();
+
+    if (memberError || !membership) {
+      return { success: false, error: 'Not a member of this studio' };
+    }
+
+    if (membership.role === 'owner') {
+      return { success: false, error: '스튜디오 소유자는 탈퇴할 수 없습니다.' };
+    }
+
+    // Remove membership using database function
+    const { error } = await supabase.rpc('remove_pro_from_studio', {
+      p_pro_id: proProfile.id,
+      p_studio_id: studioId,
+    });
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    revalidatePath('/dashboard/studios');
+    return { success: true, data: undefined };
+  } catch (err) {
+    return { success: false, error: 'Failed to leave studio' };
+  }
+}
+
 /**
  * Accept an invite (join studio)
  */

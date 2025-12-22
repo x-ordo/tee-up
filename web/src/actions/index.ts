@@ -22,9 +22,25 @@ export {
   updateStudio,
   addProToStudio,
   getStudioPros,
+  getStudioById,
+  getStudioDashboardStats,
+  getStudioMembers,
+  removeStudioMember,
+  createStudioInvite,
+  getStudioInvites,
+  revokeStudioInvite,
+  validateStudioInvite,
+  acceptStudioInvite,
+  getMyStudioAffiliations,
+  setPrimaryStudio,
+  leaveStudio,
   type Studio,
   type StudioInsert,
   type StudioUpdate,
+  type StudioMember,
+  type StudioInvite,
+  type StudioAffiliation,
+  type StudioDashboardStats,
 } from './studios';
 
 // Lead actions
@@ -80,3 +96,41 @@ export {
   type CalendarBlockedSlot,
   type CalendarSyncResult,
 } from './calendar';
+
+// Refund and dispute actions
+export {
+  calculateRefundAmount,
+  requestRefund,
+  processRefund,
+  openDispute,
+  respondToDispute,
+  resolveDispute,
+  escalateDispute,
+  getDisputeLogs,
+  getAllDisputes,
+  getPendingRefunds,
+  type DisputeStatus,
+  type RefundRequest,
+  type DisputeLog,
+  type BookingWithRefund,
+} from './refunds';
+
+// Lesson log actions
+export {
+  createLessonLog,
+  getLessonLog,
+  getMyLessonLogs,
+  updateLessonLog,
+  deleteLessonLog,
+  addLessonMedia,
+  deleteLessonMedia,
+  getLessonStats,
+  getMyStudents,
+  type LessonLog,
+  type LessonMedia,
+  type LessonLogWithMedia,
+  type CreateLessonLogInput,
+  type UpdateLessonLogInput,
+  type AddMediaInput,
+  type LessonStats,
+} from './lesson-logs';

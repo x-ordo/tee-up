@@ -6,6 +6,38 @@
 import type { IKakaoShareContent, IKakaoButtonConfig } from '@/types';
 
 // ============================================
+// Alimtalk (알림톡) Exports
+// ============================================
+
+export {
+  // Core functions
+  sendAlimtalk,
+  sendBulkAlimtalk,
+
+  // Template helpers
+  sendBookingConfirmedAlimtalk,
+  sendBookingReminderAlimtalk,
+  sendBookingCancelledAlimtalk,
+  sendLessonCompletedAlimtalk,
+  sendRefundCompletedAlimtalk,
+  sendDisputeResolvedAlimtalk,
+
+  // Utilities
+  isValidPhoneNumber,
+  formatDateForAlimtalk,
+  formatTimeForAlimtalk,
+
+  // Constants
+  ALIMTALK_TEMPLATES,
+
+  // Types
+  type AlimtalkResult,
+  type AlimtalkMessage,
+  type AlimtalkButton,
+  type AlimtalkTemplateCode,
+} from './alimtalk';
+
+// ============================================
 // Constants
 // ============================================
 
