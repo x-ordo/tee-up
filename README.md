@@ -228,47 +228,6 @@ TEE:UP은 **Korean Luxury Minimalism** 디자인 원칙을 따릅니다.
 
 ---
 
-## 기여 가이드
-
-PR 제출 전 [CONTRIBUTING.md](docs/guides/CONTRIBUTING.md)를 참조하세요.
-
-### 개발 워크플로우
-
-```bash
-# 1. 저장소 Fork
-
-# 2. 기능 브랜치 생성
-git checkout -b feat/amazing-feature
-
-# 3. 변경사항 커밋 (Conventional Commits)
-git commit -m "feat(auth): add JWT refresh token"
-
-# 4. 브랜치 푸시
-git push origin feat/amazing-feature
-
-# 5. Pull Request 생성
-```
-
-### 커밋 컨벤션
-
-| Type | 설명 | 예시 |
-|------|------|------|
-| `feat` | 새 기능 | `feat(auth): add login` |
-| `fix` | 버그 수정 | `fix(api): resolve null pointer` |
-| `refactor` | 리팩토링 | `refactor(core): extract logic` |
-| `docs` | 문서 변경 | `docs(readme): update guide` |
-| `test` | 테스트 | `test(auth): add login tests` |
-| `chore` | 빌드/설정 | `chore(deps): upgrade packages` |
-
-### 코드 표준
-
-- TypeScript strict mode
-- ESLint + Prettier
-- Conventional Commits
-- WCAG AA 접근성 준수
-
----
-
 ## 문서
 
 ### 핵심 문서
@@ -356,7 +315,13 @@ git push origin feat/amazing-feature
 
 ## 라이선스
 
-Proprietary — All rights reserved.
+**Proprietary Software — All Rights Reserved**
+
+이 프로젝트는 오픈소스가 아닙니다. 모든 저작권은 TEE:UP에 있으며, 명시적 서면 허가 없이 복사, 수정, 배포가 금지됩니다.
+
+자세한 내용은 [LICENSE](./LICENSE) 파일을 참조하세요.
+
+문의: parkdavid31@gmail.com
 
 ---
 
