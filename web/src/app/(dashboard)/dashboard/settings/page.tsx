@@ -40,6 +40,7 @@ export default async function SettingsPage() {
           youtube_channel_id: profile.youtube_channel_id,
           kakao_talk_id: profile.kakao_talk_id,
           subscription_tier: profile.subscription_tier,
+          theme_config: profile.theme_config,
         }}
       />
     </div>

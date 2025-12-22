@@ -5,6 +5,7 @@ import { HeroSection, StatsSection, ContactSection } from '../sections';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import type { ProProfile } from '@/actions/profiles';
+import type { ThemeConfig } from '@/actions/theme';
 
 interface CurriculumItem {
   title: string;
@@ -27,6 +28,7 @@ interface CurriculumTemplateProps {
     priceTiers?: PriceTier[];
     faq?: { question: string; answer: string }[];
   };
+  themeConfig?: ThemeConfig;
 }
 
 /**
@@ -34,7 +36,7 @@ interface CurriculumTemplateProps {
  * Best for: Pros with structured programs, methodology-driven
  * Sections: Hero, Stats, Curriculum, Pricing, FAQ, Contact
  */
-export function CurriculumTemplate({ profile }: CurriculumTemplateProps) {
+export function CurriculumTemplate({ profile, themeConfig }: CurriculumTemplateProps) {
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
   const stats = profile.highlights || [

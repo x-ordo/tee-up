@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { HeroSection, StatsSection, TestimonialsSection, ContactSection } from '../sections';
 import { Card } from '@/components/ui/Card';
 import type { ProProfile } from '@/actions/profiles';
+import type { ThemeConfig } from '@/actions/theme';
 
 interface InstagramPost {
   id: string;
@@ -23,6 +24,7 @@ interface SocialTemplateProps {
     instagramPosts?: InstagramPost[];
     youtubeVideos?: YouTubeVideo[];
   };
+  themeConfig?: ThemeConfig;
 }
 
 /**
@@ -30,7 +32,7 @@ interface SocialTemplateProps {
  * Best for: Pros with active social presence, content creators
  * Sections: Hero, Stats, Instagram Feed, YouTube Embed, Testimonials, Contact
  */
-export function SocialTemplate({ profile }: SocialTemplateProps) {
+export function SocialTemplate({ profile, themeConfig }: SocialTemplateProps) {
   const stats = profile.highlights || [
     { label: '레슨 경력', value: '10년+' },
     { label: '팔로워', value: '10K+' },

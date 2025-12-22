@@ -9,6 +9,7 @@ import {
   ContactSection,
 } from '../sections';
 import type { ProProfile } from '@/actions/profiles';
+import type { ThemeConfig } from '@/actions/theme';
 
 interface VisualTemplateProps {
   profile: ProProfile & {
@@ -16,6 +17,7 @@ interface VisualTemplateProps {
     highlights?: { label: string; value: string; detail?: string }[];
     testimonials?: { name: string; quote: string; avatar?: string; rating?: number }[];
   };
+  themeConfig?: ThemeConfig;
 }
 
 /**
@@ -23,7 +25,7 @@ interface VisualTemplateProps {
  * Best for: Pros with great photography, visual storytellers
  * Sections: Hero, Stats, Gallery, Testimonials, Contact
  */
-export function VisualTemplate({ profile }: VisualTemplateProps) {
+export function VisualTemplate({ profile, themeConfig }: VisualTemplateProps) {
   const [_isContactOpen, setIsContactOpen] = useState(false);
 
   // Default stats if not provided

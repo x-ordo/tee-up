@@ -3,6 +3,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import type { ActionResult, ThemeType } from './types';
+import type { ThemeConfig } from './theme';
 
 /**
  * Pro Profile type from database
@@ -18,6 +19,7 @@ export type ProProfile = {
   tour_experience: string | null;
   certifications: string[];
   theme_type: ThemeType;
+  theme_config: ThemeConfig | null;
   payment_link: string | null;
   open_chat_url: string | null;
   booking_url: string | null;

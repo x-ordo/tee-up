@@ -7,6 +7,8 @@ import ProfileSection from './components/ProfileSection';
 import ContactSection from './components/ContactSection';
 import SubscriptionSection from './components/SubscriptionSection';
 import DangerZone from './components/DangerZone';
+import { ThemeCustomizer } from '@/components/portfolio';
+import { getDefaultTheme, type ThemeConfig } from '@/lib/theme-config';
 
 export type SettingsProfile = {
   id: string;
@@ -22,6 +24,7 @@ export type SettingsProfile = {
   youtube_channel_id: string | null;
   kakao_talk_id: string | null;
   subscription_tier: 'free' | 'basic' | 'pro';
+  theme_config: ThemeConfig | null;
 };
 
 interface SettingsClientProps {
@@ -38,12 +41,18 @@ export default function SettingsClient({ profile }: SettingsClientProps) {
 
   return (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-      <TabsList className="grid w-full grid-cols-4 bg-tee-stone/30">
+      <TabsList className="grid w-full grid-cols-5 bg-tee-stone/30">
         <TabsTrigger
           value="profile"
           className="data-[state=active]:bg-tee-surface data-[state=active]:text-tee-ink-strong"
         >
           프로필
+        </TabsTrigger>
+        <TabsTrigger
+          value="theme"
+          className="data-[state=active]:bg-tee-surface data-[state=active]:text-tee-ink-strong"
+        >
+          테마
         </TabsTrigger>
         <TabsTrigger
           value="contact"
@@ -81,6 +90,14 @@ export default function SettingsClient({ profile }: SettingsClientProps) {
             />
           </CardContent>
         </Card>
+      </TabsContent>
+
+      {/* Theme Tab */}
+      <TabsContent value="theme">
+        <ThemeCustomizer
+          profileId={currentProfile.id}
+          initialConfig={currentProfile.theme_config || getDefaultTheme()}
+        />
       </TabsContent>
 
       {/* Contact Tab */}

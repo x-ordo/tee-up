@@ -4,20 +4,10 @@ import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import type { ActionResult } from './types'
 import { isValidHexColor } from '@/lib/color-utils'
+import { DEFAULT_THEME, type ThemeConfig } from '@/lib/theme-config'
 
-export interface ThemeConfig {
-  accentColor: string
-  logoUrl: string | null
-  fontPreset: 'default' | 'modern' | 'classic'
-  darkModeEnabled: boolean
-}
-
-const DEFAULT_THEME: ThemeConfig = {
-  accentColor: '#0A362B',
-  logoUrl: null,
-  fontPreset: 'default',
-  darkModeEnabled: true,
-}
+// Re-export ThemeConfig type for convenience
+export type { ThemeConfig } from '@/lib/theme-config'
 
 /**
  * Get a pro's theme configuration
@@ -84,9 +74,3 @@ export async function updateProTheme(
   return { success: true, data: newConfig }
 }
 
-/**
- * Get default theme configuration
- */
-export function getDefaultTheme(): ThemeConfig {
-  return { ...DEFAULT_THEME }
-}

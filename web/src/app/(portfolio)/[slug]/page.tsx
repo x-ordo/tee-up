@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getPublicProfile, incrementProfileViews } from '@/actions/profiles';
-import { PortfolioRenderer } from '@/components/portfolio';
+import { getDefaultTheme, type ThemeConfig } from '@/lib/theme-config';
+import { PortfolioRenderer, PortfolioHeader } from '@/components/portfolio';
 
 interface PortfolioPageProps {
   params: Promise<{ slug: string }>;
@@ -44,21 +45,26 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
   });
 
   const profile = result.data;
+  const themeConfig: ThemeConfig = profile.theme_config || getDefaultTheme();
 
   // For now, render with minimal extended data
   // In production, this would fetch additional data from portfolio_sections, etc.
   return (
-    <PortfolioRenderer
-      profile={{
-        ...profile,
-        highlights: [
-          { label: '레슨 경력', value: '10년+' },
-          { label: '수강생', value: '500+' },
-          { label: '평점', value: `${profile.rating || 4.9}` },
-          { label: '조회수', value: `${profile.profile_views || 0}` },
-        ],
-        testimonials: [],
-      }}
-    />
+    <>
+      <PortfolioHeader themeConfig={themeConfig} proName={profile.title} />
+      <PortfolioRenderer
+        profile={{
+          ...profile,
+          highlights: [
+            { label: '레슨 경력', value: '10년+' },
+            { label: '수강생', value: '500+' },
+            { label: '평점', value: `${profile.rating || 4.9}` },
+            { label: '조회수', value: `${profile.profile_views || 0}` },
+          ],
+          testimonials: [],
+        }}
+        themeConfig={themeConfig}
+      />
+    </>
   );
 }
