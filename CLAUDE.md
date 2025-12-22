@@ -39,38 +39,54 @@ cd web && npm run dev   # Start dev server
 
 ### Project Structure
 ```
-tee_up/
+tee-up/
 ├── web/                          # Next.js 14 frontend (full-stack)
 │   ├── src/
-│   │   ├── app/
-│   │   │   ├── (marketing)/      # Public marketing pages
+│   │   ├── app/                  # App Router pages
 │   │   │   ├── (portfolio)/      # Pro portfolio pages
 │   │   │   │   ├── [slug]/       # Individual pro portfolio
-│   │   │   │   └── studio/[studioSlug]/  # Studio/team pages
+│   │   │   │   └── studio/[studioSlug]/
 │   │   │   ├── (dashboard)/      # Pro dashboard (auth required)
-│   │   │   │   └── dashboard/
-│   │   │   │       ├── portfolio/ # Portfolio editor
-│   │   │   │       ├── leads/    # Lead management
-│   │   │   │       └── settings/
 │   │   │   ├── admin/            # Platform admin
-│   │   │   └── api/webhooks/     # Webhooks only (Stripe, Kakao)
+│   │   │   ├── auth/             # Authentication pages
+│   │   │   ├── chat/             # Chat (legacy)
+│   │   │   ├── profile/          # Profile management
+│   │   │   ├── api/              # API routes (webhooks)
+│   │   │   └── components/       # Page-specific components
 │   │   ├── actions/              # Server Actions (backend logic)
-│   │   │   ├── profiles.ts
-│   │   │   ├── portfolios.ts
-│   │   │   ├── studios.ts
-│   │   │   ├── leads.ts
-│   │   │   └── types.ts
-│   │   ├── components/
+│   │   │   ├── profiles.ts       # User/pro profile management
+│   │   │   ├── portfolios.ts     # Portfolio CRUD
+│   │   │   ├── studios.ts        # Studio/academy management
+│   │   │   ├── leads.ts          # Lead tracking
+│   │   │   ├── scheduler.ts      # Appointment scheduling
+│   │   │   ├── calendar.ts       # Calendar management
+│   │   │   ├── refunds.ts        # Refund processing
+│   │   │   └── types.ts          # Shared types
+│   │   ├── components/           # Shared components
 │   │   │   ├── ui/               # shadcn/ui components
 │   │   │   ├── magicui/          # Magic UI components
-│   │   │   └── portfolio/        # Portfolio templates & sections
-│   │   ├── hooks/
-│   │   └── lib/supabase/
-│   └── e2e/                      # Playwright E2E tests
+│   │   │   ├── portfolio/        # Portfolio templates
+│   │   │   ├── scheduler/        # Scheduling components
+│   │   │   ├── layout/           # Layout components
+│   │   │   └── patterns/         # Reusable patterns
+│   │   ├── hooks/                # Custom React hooks
+│   │   ├── constants/            # App constants
+│   │   ├── lib/                  # Utilities
+│   │   │   ├── supabase/         # Supabase client/server
+│   │   │   ├── api/              # API utilities
+│   │   │   └── seo/              # SEO utilities
+│   │   └── types/                # TypeScript types
+│   ├── lib/                      # Legacy lib (deprecated)
+│   ├── e2e/                      # Playwright E2E tests
+│   └── __tests__/                # Jest unit tests
 ├── supabase/
 │   ├── schema.sql                # Base database schema
 │   └── migrations/               # Versioned SQL migrations
-└── specs/                        # Feature specifications
+├── specs/                        # Feature specifications
+├── .github/                      # GitHub Actions & templates
+│   ├── workflows/                # CI/CD workflows
+│   └── ISSUE_TEMPLATE/           # Issue templates
+└── .claude/                      # Claude Code settings
 ```
 
 ### Key Architectural Decisions
@@ -336,16 +352,25 @@ const supabase = createClient()
 - **Payments:** Stripe (international) / Toss Payments (Korea)
 
 ## Active Technologies
-- TypeScript 5.9, Next.js 14 (App Router), React 18
-- Tailwind CSS 3.4, shadcn/ui (New York style)
-- Supabase (PostgreSQL + Auth + RLS)
-- Playwright for E2E testing
-- TypeScript 5.x, React 18.x + Next.js 14 (App Router), shadcn/ui (Radix-based), Tailwind CSS 3.x (004-design-system-integration)
-- Supabase (PostgreSQL) for theme configurations per pro (004-design-system-integration)
+
+| Category | Technology |
+|----------|------------|
+| Framework | Next.js 14 (App Router) + React 18 |
+| Language | TypeScript 5.x (strict mode) |
+| Styling | Tailwind CSS 3.4 + shadcn/ui |
+| Database | Supabase (PostgreSQL + Auth + RLS) |
+| Testing | Playwright (E2E) + Jest (Unit) |
+| CI/CD | GitHub Actions |
+
+## License
+
+**Proprietary Software** - All rights reserved. See [LICENSE](./LICENSE) for details.
 
 ## Recent Changes
-- Portfolio SaaS Pivot: Migrated from Express.js backend to Next.js Server Actions
-- Added 3 portfolio templates (Visual, Curriculum, Social)
-- Implemented lead tracking with billing trigger
-- Added studios for team/academy pages
-- Archived legacy chat functionality
+
+- 2025-12: GitHub 기능 설정 (Branch Protection, Dependabot, Labels)
+- 2025-12: 독점 라이선스 명시 (CONTRIBUTING.md, CODE_OF_CONDUCT.md 제거)
+- Portfolio SaaS Pivot: Express.js 제거, Next.js Server Actions 전환
+- 3종 포트폴리오 템플릿 (Visual, Curriculum, Social)
+- 리드 추적 및 과금 시스템 구현
+- 스튜디오/아카데미 페이지 추가

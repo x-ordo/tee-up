@@ -271,4 +271,32 @@ certs/
 .node_repl_history
 .python_history
 
-*.png
+# ============================================
+# 🤖 AI & AUTOMATION
+# ============================================
+
+# AI pair programming tools
+.bolt/
+.lovable/
+.replit/
+replit.nix
+
+# LLM generated outputs
+*.generated.ts
+*.generated.tsx
+
+# Agent outputs
+agent-output/
+.agent/
+
+# ============================================
+# 📊 ANALYTICS & MONITORING
+# ============================================
+
+# Sentry
+.sentryclirc
+
+# Performance profiling
+*.cpuprofile
+*.heapprofile
+*.heapsnapshot
