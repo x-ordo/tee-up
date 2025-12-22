@@ -2,20 +2,105 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+TEE:UP은 현재 활발히 개발 중이며, 최신 버전에서만 보안 업데이트를 지원합니다.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| 0.2.x   | :white_check_mark: |
+| < 0.2   | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+보안 취약점을 발견하셨다면, 공개 이슈로 보고하지 마시고 다음 절차를 따라주세요:
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+### 1. 비공개 보고
+
+**GitHub Security Advisory** 사용 (권장):
+1. [Security 탭](https://github.com/Prometheus-P/tee-up/security) 접속
+2. "Report a vulnerability" 클릭
+3. 상세 정보 작성
+
+**또는 이메일로 보고:**
+- 📧 security@teeup.kr
+
+### 2. 보고서에 포함할 내용
+
+- 취약점 유형 및 설명
+- 재현 단계 (PoC 포함 시 더 좋음)
+- 영향 받는 버전/컴포넌트
+- 잠재적 영향 범위
+- (선택) 제안하는 해결 방안
+
+### 3. 응답 시간
+
+- **최초 응답:** 48시간 이내
+- **상태 업데이트:** 7일마다
+- **해결:** 심각도에 따라 7-30일
+
+### 4. 보안 취약점 공개 정책
+
+- 보고자와 합의된 일정에 따라 공개
+- 수정 패치 배포 후 최소 7일 경과 후 공개
+- 보고자 크레딧 제공 (원하는 경우)
+
+## Security Best Practices
+
+### 개발자를 위한 가이드라인
+
+#### 환경 변수
+```bash
+# .env.local 파일은 절대 커밋하지 마세요
+# .env.example만 커밋 가능
+
+NEXT_PUBLIC_SUPABASE_URL=your_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_key  # 공개 키만 사용
+SUPABASE_SERVICE_ROLE_KEY=xxx           # 서버사이드 전용, 절대 노출 금지
+```
+
+#### Supabase Row Level Security (RLS)
+- 모든 테이블에 RLS 활성화 필수
+- 사용자 데이터 접근 시 `auth.uid()` 검증
+- 공개 데이터는 명시적으로 `is_approved = true` 조건 추가
+
+#### API/Server Actions 보안
+```typescript
+// 항상 인증 확인
+const { data: { user } } = await supabase.auth.getUser()
+if (!user) throw new Error('Unauthorized')
+
+// 권한 검증 (본인 데이터만 수정)
+.eq('user_id', user.id)
+```
+
+#### 입력 검증
+- 모든 사용자 입력은 서버에서 검증
+- Zod 또는 Yup 스키마 사용 권장
+- SQL Injection은 Supabase 쿼리 빌더가 방지
+
+#### 의존성 관리
+- `npm audit` 정기 실행 (Dependabot 자동화됨)
+- 보안 취약점 발견 시 즉시 패치
+- 불필요한 의존성 최소화
+
+## Known Security Considerations
+
+### 현재 알려진 제한사항
+1. **이메일 인증 미구현** - Phase 2에서 추가 예정
+2. **Rate Limiting** - API 라우트에 부분 적용 중
+3. **2FA** - 미지원 (향후 고려)
+
+### 보안 기능 로드맵
+- [ ] 이메일 인증 (OTP)
+- [ ] API Rate Limiting 강화
+- [ ] 보안 로깅 및 모니터링
+- [ ] 정기 보안 감사
+
+## Contact
+
+보안 관련 문의:
+- 📧 security@teeup.kr
+- 🔒 [GitHub Security Advisories](https://github.com/Prometheus-P/tee-up/security)
+
+---
+
+_Last updated: 2025-12-22_
