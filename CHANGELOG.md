@@ -7,22 +7,67 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
-- `terms.test.ts` - 도메인 용어 추상화 레이어 단위 테스트 (43개 테스트 케이스)
-  - TERMS 상수 검증 (전문가, 서비스, 고객, 시설 용어)
-  - 헬퍼 함수 테스트 (withExpertName, bookingTitle, premiumBookingTitle 등)
-  - 타입 안전성 검증
-
-### Fixed
-- E2E 테스트 안정성 개선
-  - `navigation.spec.ts`: 푸터 링크 검증 시 중복 요소 문제 해결 (role="contentinfo" 사용)
-  - `portfolio-templates.spec.ts`: 다중 main 요소로 인한 strict mode 위반 수정
-  - 스튜디오 페이지 404 감지 로직 개선 (다중 브라우저 호환)
-
 ### Planned
 - Supabase 실시간 연동
 - KakaoTalk 링크 통합
 - 프로 인증 워크플로우 완성
+
+---
+
+## [1.0.0-beta.3] - 2025-12-23
+
+### Added
+
+#### 비즈니스 개선 (Week 1-4)
+- **환불 시스템**: Toss Payments 환불 API 연동, 분쟁 관리 UI
+- **레슨 일지**: CRUD 기능, 미디어 업로더 컴포넌트
+- **스튜디오 N:M 관계**: 프로-스튜디오 소속 관리
+- **카카오 알림톡**: 비즈니스 메시지 라이브러리
+- **Vercel Cron**: 예약 리마인더 알림
+
+#### 포트폴리오 기능
+- 포트폴리오 에디터 및 설정 페이지 (#39)
+- 화이트 라벨 테마 시스템 (#42)
+- 스케줄러 및 캘린더 통합 (#35)
+- `LessonLogCard` 컴포넌트 (#67)
+
+#### 인프라 & 보안
+- Supabase Storage 버킷 마이그레이션 (017)
+- `SECURITY.md` 보안 정책 문서
+- Dependabot 자동 의존성 업데이트 설정
+- 커뮤니티 가이드라인 및 라이센스
+
+#### 문서화
+- 35개 페이지 화면 정의 문서 (#38)
+- `terms.test.ts` 도메인 용어 단위 테스트 (43개 케이스)
+
+### Fixed
+
+#### 접근성 개선
+- 모달 포커스 트랩 포커스 복원 개선 (#70)
+- E2E 테스트 안정성 개선 (WebKit 호환)
+
+#### 보안 수정
+- glob 보안 취약점 수정 (GHSA-5j98-mcp5-4vw2) (#68)
+
+#### 코드 품질
+- ESLint unused variables 및 img element 경고 수정 (#69)
+- E2E 테스트 assertion 수정 및 인증 테스트 skip (#41)
+- 모바일/포트폴리오 테스트 데이터 누락 대응 (#40)
+- 404 오류 및 E2E 테스트 실패 수정 (#36)
+- Vercel Hobby 플랜 크론 일정 일간으로 변경
+
+### Changed
+- `tee-*` 디자인 토큰 통일 및 컴포넌트 라이브러리 추가
+- 디자인 시스템 통합 (004)
+- 라이센스 독점 비즈니스 저작권으로 변경
+
+### Dependencies
+- `github/codeql-action` 3 → 4
+- `actions/upload-artifact` 4 → 6
+- `actions/setup-node` 4 → 6
+- `lucide-react` 0.561.0 → 0.562.0
+- `@supabase/supabase-js` 2.88.0 → 2.89.0
 
 ---
 
@@ -211,6 +256,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Date | Description |
 |---------|------|-------------|
+| 1.0.0-beta.3 | 2025-12-23 | 비즈니스 개선 Week 1-4, 포트폴리오 에디터, 접근성 개선 |
 | 1.0.0-beta.2 | 2025-12-04 | 보안 강화, .gitignore 개편, 개발도구 설정 공유 |
 | 1.0.0-beta.1 | 2025-12-03 | 다크 모드, M3 디자인 시스템, 마이크로 인터랙션 |
 | 1.0.0-beta | 2025-12-01 | 디자인 시스템 통일, 접근성 개선, UI/UX 완성도 향상 |
