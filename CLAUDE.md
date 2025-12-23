@@ -322,6 +322,11 @@ const supabase = createClient()
 1. **main 브랜치에 직접 push 금지** - 항상 PR을 통해 머지
 2. **외부 설정/수동 작업은 GitHub Issue로 등록**
 
+### 커밋 메시지 규칙
+- **자동 생성 문구 제외** - "🤖 Generated with Claude Code", "Co-Authored-By: Claude" 등 자동 생성 문구 사용 금지
+- Conventional Commits 형식 사용 (feat, fix, docs, refactor, test, chore)
+- 한글/영문 혼용 가능
+
 ### PR 생성 절차
 ```bash
 # 1. feature 브랜치 생성

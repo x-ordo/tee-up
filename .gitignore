@@ -300,3 +300,4 @@ agent-output/
 *.cpuprofile
 *.heapprofile
 *.heapsnapshot
+.playwright-mcp/
