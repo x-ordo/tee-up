@@ -201,7 +201,7 @@ export async function getSubscription(userId: string): Promise<ISubscription | n
   const supabase = createClient();
 
   const { data, error } = await supabase
-    .from('subscriptions')
+    .from('memberships')
     .select('*')
     .eq('user_id', userId)
     .eq('status', 'active')
@@ -233,7 +233,7 @@ export async function createSubscription(
 
   // 기존 구독 확인
   const { data: existingSubscription } = await supabase
-    .from('subscriptions')
+    .from('memberships')
     .select('id')
     .eq('user_id', userId)
     .single();
@@ -241,7 +241,7 @@ export async function createSubscription(
   if (existingSubscription) {
     // 업데이트
     const { error } = await supabase
-      .from('subscriptions')
+      .from('memberships')
       .update({
         tier,
         status: 'active',
@@ -255,7 +255,7 @@ export async function createSubscription(
     if (error) return { success: false, error: error.message };
   } else {
     // 생성
-    const { error } = await supabase.from('subscriptions').insert({
+    const { error } = await supabase.from('memberships').insert({
       user_id: userId,
       tier,
       status: 'active',
@@ -288,7 +288,7 @@ export async function cancelSubscription(
   const supabase = createClient();
 
   const { error } = await supabase
-    .from('subscriptions')
+    .from('memberships')
     .update({
       cancel_at_period_end: true,
       updated_at: new Date().toISOString(),
@@ -310,7 +310,7 @@ export async function terminateSubscription(
   const supabase = createClient();
 
   const { error } = await supabase
-    .from('subscriptions')
+    .from('memberships')
     .update({
       status: 'cancelled',
       updated_at: new Date().toISOString(),
@@ -373,7 +373,7 @@ export async function processSubscriptionRenewal(subscriptionId: string): Promis
   const supabase = createClient();
 
   const { data: subscription } = await supabase
-    .from('subscriptions')
+    .from('memberships')
     .select('*')
     .eq('id', subscriptionId)
     .single();
@@ -394,7 +394,7 @@ export async function processSubscriptionRenewal(subscriptionId: string): Promis
   newPeriodEnd.setMonth(newPeriodEnd.getMonth() + 1);
 
   await supabase
-    .from('subscriptions')
+    .from('memberships')
     .update({
       current_period_start: subscription.current_period_end,
       current_period_end: newPeriodEnd.toISOString(),
