@@ -51,9 +51,14 @@ export default function TermsPage() {
           <section className="mb-space-8">
             <h2 className="mb-space-4 text-h2 font-semibold text-tee-ink-strong">제5조 (예약금 정책)</h2>
             <p className="text-body text-tee-ink-light leading-relaxed">
-              1. 레슨 예약 시 레슨 비용의 전액 또는 일부를 예약금으로 결제할 수 있습니다.<br />
-              2. 예약금은 레슨 완료 후 프로에게 정산됩니다.<br />
-              3. 예약금 결제 후 취소 시 제4조의 환불 정책이 적용됩니다.
+              1. &quot;예약금&quot;이란 원활한 레슨 예약을 보장하고 &quot;노쇼&quot;를 방지하기 위해 회원이
+              예치하는 보증금을 의미하며, 이는 레슨비와는 별개입니다.<br />
+              2. 예약된 레슨이 정상적으로 완료되면, 예약금은 회사의 정책에 따라 회원에게 전액 환불되는 것을
+              원칙으로 합니다.<br />
+              3. 실제 레슨에 대한 비용은 레슨 현장에서 회원과 프로 간에 직접 정산합니다. 회사는 회원과 프로
+              간의 직접적인 대금 결제에 관여하지 않습니다.<br />
+              4. 회원의 &quot;노쇼&quot; 또는 제4조에 따른 환불 불가 조건에 해당하는 경우, 예약금은 제6조의
+              &quot;노쇼 정책&quot;에 따라 처리됩니다.
             </p>
           </section>
 

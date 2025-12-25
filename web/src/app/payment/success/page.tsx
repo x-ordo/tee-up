@@ -4,7 +4,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
-import { createSubscription, SUBSCRIPTION_PLANS } from '@/lib/payments';
+import { createOrUpdateMembership, FEATURE_GATED_PLANS, type OldSubscriptionTier } from '@/lib/payments';
 import { LoadingSpinner } from '@/app/components/LoadingSpinner';
 
 function PaymentSuccessContent() {
@@ -21,6 +21,7 @@ function PaymentSuccessContent() {
       const orderId = searchParams.get('orderId');
       const amount = searchParams.get('amount');
       const planId = searchParams.get('planId');
+      const interval = (searchParams.get('interval') || 'month') as 'month' | 'year';
 
       if (!paymentKey || !orderId || !amount || !planId) {
         setError('결제 정보가 올바르지 않습니다.');
@@ -33,7 +34,7 @@ function PaymentSuccessContent() {
         return;
       }
 
-      const plan = SUBSCRIPTION_PLANS.find((p) => p.id === planId);
+      const plan = FEATURE_GATED_PLANS.find((p) => p.id === planId);
       if (!plan) {
         setError('잘못된 플랜입니다.');
         setIsProcessing(false);
@@ -41,12 +42,16 @@ function PaymentSuccessContent() {
       }
 
       try {
+        // Map new tier to old tier for backward compatibility
+        const oldTier: OldSubscriptionTier = plan.tier === 'premium' || plan.tier === 'pro' ? 'pro' : 'basic';
+
         // 구독 생성
-        const result = await createSubscription(
+        const result = await createOrUpdateMembership(
           user.id,
-          plan.tier,
+          oldTier,
           paymentKey,
-          plan.interval
+          user.id, // customerKey
+          interval
         );
 
         if (!result.success) {

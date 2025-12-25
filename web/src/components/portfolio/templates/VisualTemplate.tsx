@@ -101,6 +101,7 @@ export function VisualTemplate({ profile, themeConfig: _themeConfig }: VisualTem
 
       {/* Contact CTA */}
       <ContactSection
+        proId={profile.id}
         proName={profile.title.split(' ')[0] || profile.title}
         openChatUrl={profile.open_chat_url || undefined}
         paymentLink={profile.payment_link || undefined}

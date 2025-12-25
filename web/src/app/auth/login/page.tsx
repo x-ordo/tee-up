@@ -1,15 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
+import { getCurrentUserProfile } from '@/actions/profiles';
 import { AuthLayout } from '../components/AuthLayout';
 import { AuthInput } from '../components/AuthInput';
 import { AuthButton } from '../components/AuthButton';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { signIn, isLoading, error, clearError } = useAuth();
 
   const [formData, setFormData] = useState({
@@ -50,7 +52,24 @@ export default function LoginPage() {
     });
 
     if (result.success) {
-      router.push('/');
+      // Check for redirect parameter
+      const redirectUrl = searchParams.get('redirect');
+      if (redirectUrl) {
+        router.push(redirectUrl);
+        return;
+      }
+
+      // Check if user is a pro and needs onboarding
+      // The user data is fetched after sign in success
+      const profileResult = await getCurrentUserProfile();
+      if (profileResult.success && !profileResult.data) {
+        // Pro user without profile - redirect to quick setup
+        router.push('/onboarding/quick-setup');
+        return;
+      }
+
+      // Default redirect
+      router.push('/dashboard');
     }
   };
 

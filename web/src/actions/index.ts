@@ -134,3 +134,16 @@ export {
   type AddMediaInput,
   type LessonStats,
 } from './lesson-logs';
+
+// Booking request actions
+export {
+  createBookingRequest,
+  getMyBookingRequests,
+  getBookingRequest,
+  updateBookingRequestStatus,
+  getBookingRequestCounts,
+  markNotificationSent,
+  type BookingRequest,
+  type BookingRequestStatus,
+  type CreateBookingRequestInput,
+} from './booking-requests';

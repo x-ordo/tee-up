@@ -203,6 +203,7 @@ export function SocialTemplate({ profile, themeConfig: _themeConfig }: SocialTem
 
       {/* Contact */}
       <ContactSection
+        proId={profile.id}
         proName={profile.title.split(' ')[0] || profile.title}
         openChatUrl={profile.open_chat_url || undefined}
         paymentLink={profile.payment_link || undefined}

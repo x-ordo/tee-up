@@ -245,3 +245,157 @@ export async function incrementProfileViews(
     return { success: false, error: 'Failed to increment views' };
   }
 }
+
+// ============================================
+// Quick Setup (PRD v1.2)
+// ============================================
+
+export interface QuickProfileInput {
+  name: string;
+  bio?: string;
+  specialty: string;
+  location?: string;
+  priceRange?: string;
+  contactType: 'kakao' | 'phone';
+  contactValue: string;
+}
+
+/**
+ * Create a quick profile for new pros (5-minute onboarding)
+ * PRD v1.2: "무료 홍보 페이지 중심" 전략
+ */
+export async function createQuickProfile(
+  input: QuickProfileInput
+): Promise<ActionResult<{ slug: string }>> {
+  try {
+    const supabase = await createClient();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { success: false, error: 'Not authenticated' };
+    }
+
+    // Check if profile already exists
+    const { data: existingProfile } = await supabase
+      .from('pro_profiles')
+      .select('id, slug')
+      .eq('user_id', user.id)
+      .single();
+
+    if (existingProfile) {
+      // Update existing profile instead of creating new one
+      const updateData: ProProfileUpdate = {
+        title: input.name,
+        bio: input.bio || null,
+        specialties: [input.specialty],
+        location: input.location || null,
+      };
+
+      // Set contact based on type
+      if (input.contactType === 'kakao') {
+        updateData.open_chat_url = input.contactValue;
+      } else {
+        updateData.kakao_talk_id = input.contactValue; // Store phone in kakao_talk_id temporarily
+      }
+
+      const { error: updateError } = await supabase
+        .from('pro_profiles')
+        .update(updateData)
+        .eq('id', existingProfile.id);
+
+      if (updateError) {
+        return { success: false, error: updateError.message };
+      }
+
+      revalidatePath('/dashboard');
+      revalidatePath(`/profile/${existingProfile.slug}`);
+      return { success: true, data: { slug: existingProfile.slug } };
+    }
+
+    // Generate unique slug from name
+    const baseSlug = input.name
+      .toLowerCase()
+      .replace(/[가-힣]/g, (char) => {
+        // Simple Korean to romanization mapping for common syllables
+        const romanMap: Record<string, string> = {
+          '김': 'kim', '이': 'lee', '박': 'park', '최': 'choi', '정': 'jung',
+          '강': 'kang', '조': 'cho', '윤': 'yoon', '장': 'jang', '임': 'lim',
+          '한': 'han', '오': 'oh', '서': 'seo', '신': 'shin', '권': 'kwon',
+          '황': 'hwang', '안': 'ahn', '송': 'song', '전': 'jeon', '홍': 'hong',
+          '유': 'yoo', '고': 'ko', '문': 'moon', '양': 'yang', '손': 'son',
+          '배': 'bae', '백': 'baek', '허': 'heo', '남': 'nam', '심': 'shim',
+          '노': 'noh', '하': 'ha', '곽': 'kwak', '성': 'sung', '차': 'cha',
+          '주': 'joo', '우': 'woo', '민': 'min', '류': 'ryu', '나': 'na',
+          '진': 'jin', '프': 'pro', '로': 'ro',
+        };
+        return romanMap[char] || char;
+      })
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '') || 'pro';
+
+    // Add random suffix for uniqueness
+    const slug = `${baseSlug}-${Math.random().toString(36).substring(2, 6)}`;
+
+    // Build profile data
+    const profileData = {
+      user_id: user.id,
+      slug,
+      title: input.name,
+      bio: input.bio || null,
+      specialties: [input.specialty],
+      location: input.location || null,
+      certifications: [],
+      theme_type: 'curriculum' as const, // Default template
+      theme_config: null,
+      payment_link: null,
+      open_chat_url: input.contactType === 'kakao' ? input.contactValue : null,
+      booking_url: null,
+      hero_image_url: null,
+      profile_image_url: null,
+      gallery_images: [],
+      video_url: null,
+      instagram_username: null,
+      youtube_channel_id: null,
+      kakao_talk_id: input.contactType === 'phone' ? input.contactValue : null,
+      subscription_tier: 'free' as const,
+      studio_id: null,
+      tour_experience: null,
+    };
+
+    const { data, error } = await supabase
+      .from('pro_profiles')
+      .insert(profileData)
+      .select('slug')
+      .single();
+
+    if (error) {
+      // If slug collision, try with longer random suffix
+      if (error.code === '23505') {
+        const retrySlug = `${baseSlug}-${Date.now().toString(36)}`;
+        const { data: retryData, error: retryError } = await supabase
+          .from('pro_profiles')
+          .insert({ ...profileData, slug: retrySlug })
+          .select('slug')
+          .single();
+
+        if (retryError) {
+          return { success: false, error: retryError.message };
+        }
+
+        revalidatePath('/dashboard');
+        return { success: true, data: { slug: retryData.slug } };
+      }
+
+      return { success: false, error: error.message };
+    }
+
+    revalidatePath('/dashboard');
+    return { success: true, data: { slug: data.slug } };
+  } catch (err) {
+    console.error('createQuickProfile error:', err);
+    return { success: false, error: 'Failed to create profile' };
+  }
+}

@@ -9,8 +9,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Planned
 - Supabase 실시간 연동
-- KakaoTalk 링크 통합
 - 프로 인증 워크플로우 완성
+
+---
+
+## [1.0.0-beta.4] - 2025-12-26
+
+### Added
+
+#### PRD v1.2: "무료 홍보 페이지 중심" 전략
+- **가격 시스템 개편**: Free/Pro(₩49K)/Premium(₩99K)/Enterprise 4티어
+- **Quick Setup 마법사**: 5분 프로필 생성 (3단계 온보딩)
+- **간단 예약 요청 시스템**: `booking_requests` 테이블 및 Server Actions
+- **SimpleRequestForm**: 포트폴리오 페이지 내 문의 폼
+- **레슨 문의 관리**: `/dashboard/requests` 대시보드 페이지
+- **SOLAPI 알림 서비스**: SMS/카카오 알림톡 연동 라이브러리
+
+#### 신규 파일
+- `supabase/migrations/018_booking_requests.sql`
+- `web/src/actions/booking-requests.ts`
+- `web/src/components/booking/SimpleRequestForm.tsx`
+- `web/src/components/onboarding/QuickSetupWizard.tsx`
+- `web/src/app/onboarding/quick-setup/page.tsx`
+- `web/src/app/(dashboard)/dashboard/requests/page.tsx`
+- `web/src/lib/notifications/` (solapi, templates)
+
+### Changed
+- 로그인 후 프로필 없는 프로 사용자 → Quick Setup으로 리다이렉트
+- 포트폴리오 ContactSection에 문의 폼 통합
+- 가격 페이지 UI 4티어 구조로 개편
 
 ---
 
