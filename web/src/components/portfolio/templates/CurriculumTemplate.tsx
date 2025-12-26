@@ -190,31 +190,41 @@ export function CurriculumTemplate({ profile, themeConfig: _themeConfig }: Curri
 
             <div className="space-y-4">
               {profile.faq.map((item, idx) => (
-                <Card
-                  key={idx}
-                  className="cursor-pointer transition-all duration-200"
-                  onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
-                >
-                  <CardHeader className="flex flex-row items-center justify-between">
-                    <CardTitle className="text-base font-medium">
+                <Card key={idx} className="overflow-hidden">
+                  <button
+                    type="button"
+                    className="flex w-full items-center justify-between p-6 text-left transition-colors hover:bg-tee-background/50 focus:outline-none focus-visible:ring-2 focus-visible:ring-tee-accent-primary focus-visible:ring-inset"
+                    onClick={() => setExpandedFaq(expandedFaq === idx ? null : idx)}
+                    aria-expanded={expandedFaq === idx}
+                    aria-controls={`faq-answer-${idx}`}
+                  >
+                    <span className="pr-4 text-base font-medium text-tee-ink-strong">
                       {item.question}
-                    </CardTitle>
+                    </span>
                     <svg
-                      className={`h-5 w-5 text-tee-ink-light transition-transform ${
+                      className={`h-5 w-5 shrink-0 text-tee-ink-light transition-transform ${
                         expandedFaq === idx ? 'rotate-180' : ''
                       }`}
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
+                      aria-hidden="true"
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
-                  </CardHeader>
-                  {expandedFaq === idx && (
-                    <CardContent>
+                  </button>
+                  <div
+                    id={`faq-answer-${idx}`}
+                    className={`overflow-hidden transition-all duration-200 ${
+                      expandedFaq === idx ? 'max-h-96' : 'max-h-0'
+                    }`}
+                    role="region"
+                    aria-labelledby={`faq-question-${idx}`}
+                  >
+                    <div className="border-t border-tee-stone px-6 pb-6 pt-4">
                       <p className="text-tee-ink-light">{item.answer}</p>
-                    </CardContent>
-                  )}
+                    </div>
+                  </div>
                 </Card>
               ))}
             </div>

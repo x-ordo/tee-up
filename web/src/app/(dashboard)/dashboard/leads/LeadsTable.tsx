@@ -1,6 +1,8 @@
 'use client';
 
 import { ResponsiveTable } from '@/components/patterns/ResponsiveTable';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Button } from '@/components/ui/Button';
 
 type Lead = {
   id: string;
@@ -90,12 +92,31 @@ export function LeadsTable({ leads }: LeadsTableProps) {
         </div>
       )}
       emptyState={
-        <div className="py-12 text-center">
-          <p className="text-tee-ink-light">아직 리드가 없습니다.</p>
-          <p className="mt-2 text-sm text-tee-ink-light/70">
-            포트폴리오를 공유하여 첫 번째 리드를 받아보세요!
-          </p>
-        </div>
+        <EmptyState
+          icon={
+            <svg
+              className="h-8 w-8"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+          }
+          title="아직 리드가 없습니다"
+          description="포트폴리오를 공유하여 첫 번째 리드를 받아보세요!"
+          action={
+            <Button asChild>
+              <a href="/dashboard/portfolio">포트폴리오 공유하기</a>
+            </Button>
+          }
+        />
       }
     />
   );

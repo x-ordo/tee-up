@@ -68,8 +68,8 @@ export function ResponsiveTable<T extends Record<string, unknown>>({
                 key={key}
                 onClick={() => onRowClick?.(item)}
                 className={cn(
-                  'rounded-lg border border-tee-stone bg-tee-surface p-space-4',
-                  onRowClick && 'cursor-pointer hover:bg-tee-background'
+                  'rounded-lg border border-tee-stone bg-tee-surface p-space-4 transition-all',
+                  onRowClick && 'cursor-pointer hover:bg-tee-background/80 hover:border-tee-accent-primary/30 active:scale-[0.99]'
                 )}
               >
                 {mobileCard(item)}
@@ -83,8 +83,8 @@ export function ResponsiveTable<T extends Record<string, unknown>>({
               key={key}
               onClick={() => onRowClick?.(item)}
               className={cn(
-                'rounded-lg border border-tee-stone bg-tee-surface p-space-4 space-y-space-2',
-                onRowClick && 'cursor-pointer hover:bg-tee-background'
+                'rounded-lg border border-tee-stone bg-tee-surface p-space-4 space-y-space-2 transition-all',
+                onRowClick && 'cursor-pointer hover:bg-tee-background/80 hover:border-tee-accent-primary/30 active:scale-[0.99]'
               )}
             >
               {columns
@@ -132,8 +132,8 @@ export function ResponsiveTable<T extends Record<string, unknown>>({
                   key={key}
                   onClick={() => onRowClick?.(item)}
                   className={cn(
-                    'border-b border-tee-stone last:border-b-0',
-                    onRowClick && 'cursor-pointer hover:bg-tee-background'
+                    'border-b border-tee-stone last:border-b-0 transition-colors',
+                    onRowClick && 'cursor-pointer hover:bg-tee-background/80 group'
                   )}
                 >
                   {columns.map((col) => {

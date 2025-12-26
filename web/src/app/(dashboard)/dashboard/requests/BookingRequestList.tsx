@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { updateBookingRequestStatus, type BookingRequest, type BookingRequestStatus } from '@/actions';
+import { EmptyState } from '@/components/ui/EmptyState';
+import { Button } from '@/components/ui/Button';
 
 interface BookingRequestListProps {
   initialRequests: BookingRequest[];
@@ -71,13 +73,14 @@ export function BookingRequestList({ initialRequests }: BookingRequestListProps)
 
   if (requests.length === 0) {
     return (
-      <div className="rounded-xl bg-tee-surface p-12 text-center">
-        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-tee-stone/30">
+      <EmptyState
+        icon={
           <svg
-            className="h-8 w-8 text-tee-ink-muted"
+            className="h-8 w-8"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
@@ -86,14 +89,15 @@ export function BookingRequestList({ initialRequests }: BookingRequestListProps)
               d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
             />
           </svg>
-        </div>
-        <h3 className="mb-2 text-lg font-medium text-tee-ink-strong">
-          아직 문의가 없습니다
-        </h3>
-        <p className="text-sm text-tee-ink-light">
-          프로필 페이지를 공유하면 잠재 수강생들이 문의를 보낼 수 있습니다
-        </p>
-      </div>
+        }
+        title="아직 문의가 없습니다"
+        description="프로필 페이지를 공유하면 잠재 수강생들이 문의를 보낼 수 있습니다"
+        action={
+          <Button asChild>
+            <a href="/dashboard/portfolio">포트폴리오 공유하기</a>
+          </Button>
+        }
+      />
     );
   }
 
