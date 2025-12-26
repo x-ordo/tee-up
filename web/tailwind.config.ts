@@ -78,9 +78,53 @@ const config: Config = {
         'full': '9999px',
       },
       boxShadow: {
-        'card': '0px 2px 8px rgba(0, 0, 0, 0.05)', // Subtle shadow for cards
+        // Shadow Scale (Elevation System)
+        // Based on Material Design elevation with softer, warmer tones
+        'none': 'none',
+        'xs': '0 1px 2px rgba(26, 26, 26, 0.04)',           // Subtle, buttons
+        'sm': '0 2px 4px rgba(26, 26, 26, 0.06)',           // Cards, inputs
+        'md': '0 4px 8px rgba(26, 26, 26, 0.08)',           // Dropdowns, popovers
+        'lg': '0 8px 16px rgba(26, 26, 26, 0.10)',          // Modals, dialogs
+        'xl': '0 12px 24px rgba(26, 26, 26, 0.12)',         // Floating elements
+        '2xl': '0 16px 32px rgba(26, 26, 26, 0.14)',        // Hero overlays
+        // Semantic shadows
+        'card': '0 2px 8px rgba(26, 26, 26, 0.05)',         // Default card shadow
+        'card-hover': '0 4px 12px rgba(26, 26, 26, 0.08)', // Card hover state
+        'dropdown': '0 4px 12px rgba(26, 26, 26, 0.10)',   // Dropdown menus
+        'modal': '0 8px 24px rgba(26, 26, 26, 0.12)',      // Modal dialogs
+        'toast': '0 4px 16px rgba(26, 26, 26, 0.15)',      // Toast notifications
+        // Inner shadow for inputs
+        'inner': 'inset 0 1px 2px rgba(26, 26, 26, 0.06)',
+      },
+      // Z-Index Scale (Layer System)
+      // Organized by semantic layer names for consistency
+      zIndex: {
+        'base': '0',           // Default layer
+        'above': '10',         // Above base content
+        'dropdown': '50',      // Dropdown menus, select options
+        'sticky': '100',       // Sticky headers, navigation
+        'overlay': '200',      // Background overlays
+        'modal': '300',        // Modal dialogs
+        'popover': '400',      // Popovers, tooltips
+        'toast': '500',        // Toast notifications (always on top)
+        'max': '9999',         // Emergency override (use sparingly)
+      },
+      // Transition Duration Tokens
+      transitionDuration: {
+        'instant': '0ms',      // No transition
+        'fast': '100ms',       // Micro-interactions (hover, focus)
+        'normal': '200ms',     // Standard transitions
+        'slow': '300ms',       // Emphasis animations
+        'slower': '500ms',     // Complex animations
+      },
+      // Transition Timing Functions
+      transitionTimingFunction: {
+        'ease-out-soft': 'cubic-bezier(0.16, 1, 0.3, 1)',    // Smooth deceleration
+        'ease-in-out-soft': 'cubic-bezier(0.45, 0, 0.55, 1)', // Gentle in-out
+        'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',   // Playful bounce
       },
       keyframes: {
+        // Accordion animations (Radix UI)
         'accordion-down': {
           from: { height: '0' },
           to: { height: 'var(--radix-accordion-content-height)' },
@@ -89,10 +133,52 @@ const config: Config = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
+        // Fade animations
+        'fade-in': {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
         },
+        'fade-out': {
+          from: { opacity: '1' },
+          to: { opacity: '0' },
+        },
+        // Slide animations
+        'slide-in-from-top': {
+          from: { transform: 'translateY(-100%)', opacity: '0' },
+          to: { transform: 'translateY(0)', opacity: '1' },
+        },
+        'slide-in-from-bottom': {
+          from: { transform: 'translateY(100%)', opacity: '0' },
+          to: { transform: 'translateY(0)', opacity: '1' },
+        },
+        'slide-in-from-left': {
+          from: { transform: 'translateX(-100%)', opacity: '0' },
+          to: { transform: 'translateX(0)', opacity: '1' },
+        },
+        'slide-in-from-right': {
+          from: { transform: 'translateX(100%)', opacity: '0' },
+          to: { transform: 'translateX(0)', opacity: '1' },
+        },
+        // Scale animations
+        'scale-in': {
+          from: { transform: 'scale(0.95)', opacity: '0' },
+          to: { transform: 'scale(1)', opacity: '1' },
+        },
+        'scale-out': {
+          from: { transform: 'scale(1)', opacity: '1' },
+          to: { transform: 'scale(0.95)', opacity: '0' },
+        },
+        // Spin animation
+        'spin-slow': {
+          from: { transform: 'rotate(0deg)' },
+          to: { transform: 'rotate(360deg)' },
+        },
+        // Pulse animation (softer than default)
+        'pulse-soft': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.7' },
+        },
+        // Marquee animations
         'marquee': {
           from: { transform: 'translateX(0)' },
           to: { transform: 'translateX(calc(-100% - var(--gap)))' },
@@ -101,13 +187,37 @@ const config: Config = {
           from: { transform: 'translateY(0)' },
           to: { transform: 'translateY(calc(-100% - var(--gap)))' },
         },
+        // Shake animation (for errors)
+        'shake': {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-4px)' },
+          '20%, 40%, 60%, 80%': { transform: 'translateX(4px)' },
+        },
       },
       animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        // Accordion
+        'accordion-down': 'accordion-down 200ms ease-out',
+        'accordion-up': 'accordion-up 200ms ease-out',
+        // Fade
+        'fade-in': 'fade-in 200ms ease-out forwards',
+        'fade-in-slow': 'fade-in 500ms ease-out forwards',
+        'fade-out': 'fade-out 200ms ease-out forwards',
+        // Slide
+        'slide-in-top': 'slide-in-from-top 300ms ease-out',
+        'slide-in-bottom': 'slide-in-from-bottom 300ms ease-out',
+        'slide-in-left': 'slide-in-from-left 300ms ease-out',
+        'slide-in-right': 'slide-in-from-right 300ms ease-out',
+        // Scale
+        'scale-in': 'scale-in 200ms ease-out',
+        'scale-out': 'scale-out 200ms ease-out',
+        // Continuous
+        'spin-slow': 'spin-slow 2s linear infinite',
+        'pulse-soft': 'pulse-soft 2s ease-in-out infinite',
+        // Marquee
         'marquee': 'marquee var(--duration) linear infinite',
         'marquee-vertical': 'marquee-vertical var(--duration) linear infinite',
+        // Error feedback
+        'shake': 'shake 400ms ease-out',
       },
     },
   },
