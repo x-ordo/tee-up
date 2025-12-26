@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useMemo } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
 import type { ThemeType } from '@/actions/types';
@@ -8,6 +8,12 @@ import type { PortfolioSection } from '@/actions/portfolios';
 import TemplateSelector from './components/TemplateSelector';
 import SectionList from './components/SectionList';
 import SectionEditor from './components/SectionEditor';
+
+interface ProgressStep {
+  label: string;
+  completed: boolean;
+  tab?: string;
+}
 
 export type EditorProfile = {
   id: string;
@@ -45,6 +51,40 @@ export default function PortfolioEditorClient({
 
   const selectedSection = sections.find((s) => s.id === selectedSectionId) || null;
 
+  // Calculate portfolio completion progress
+  const progressSteps = useMemo((): ProgressStep[] => {
+    return [
+      {
+        label: '템플릿 선택',
+        completed: currentTheme !== 'visual', // Default is visual, so any change counts
+        tab: 'design',
+      },
+      {
+        label: '프로필 이미지',
+        completed: !!profile.profile_image_url,
+        tab: 'content',
+      },
+      {
+        label: '자기소개 작성',
+        completed: !!profile.bio && profile.bio.length > 10,
+        tab: 'content',
+      },
+      {
+        label: '전문 분야 설정',
+        completed: profile.specialties.length > 0,
+        tab: 'content',
+      },
+      {
+        label: '연락처 설정',
+        completed: !!profile.open_chat_url || !!profile.payment_link,
+        tab: 'content',
+      },
+    ];
+  }, [currentTheme, profile]);
+
+  const completedCount = progressSteps.filter((s) => s.completed).length;
+  const progressPercent = Math.round((completedCount / progressSteps.length) * 100);
+
   const handleThemeChange = (newTheme: ThemeType) => {
     setCurrentTheme(newTheme);
   };
@@ -65,8 +105,59 @@ export default function PortfolioEditorClient({
   };
 
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-      <TabsList className="grid w-full grid-cols-4 bg-tee-stone/30">
+    <div className="space-y-6">
+      {/* Progress Guide */}
+      {progressPercent < 100 && (
+        <Card className="border-tee-accent-primary/20 bg-gradient-to-r from-tee-accent-primary/5 to-transparent">
+          <CardContent className="py-4">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex-1">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="text-sm font-medium text-tee-ink-strong">
+                    포트폴리오 준비도 {progressPercent}%
+                  </span>
+                  <span className="text-xs text-tee-ink-muted">
+                    {completedCount}/{progressSteps.length} 완료
+                  </span>
+                </div>
+                <div className="h-2 overflow-hidden rounded-full bg-tee-stone/50">
+                  <div
+                    className="h-full rounded-full bg-tee-accent-primary transition-all duration-500"
+                    style={{ width: `${progressPercent}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mt-3 flex flex-wrap gap-2">
+              {progressSteps.map((step, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => step.tab && setActiveTab(step.tab)}
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                    step.completed
+                      ? 'bg-tee-success/10 text-tee-success'
+                      : 'bg-tee-stone/30 text-tee-ink-muted hover:bg-tee-stone/50'
+                  }`}
+                >
+                  {step.completed ? (
+                    <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  ) : (
+                    <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                  )}
+                  {step.label}
+                </button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+        <TabsList className="grid w-full grid-cols-4 bg-tee-stone/30">
         <TabsTrigger
           value="design"
           className="data-[state=active]:bg-tee-surface data-[state=active]:text-tee-ink-strong"
@@ -201,5 +292,6 @@ export default function PortfolioEditorClient({
         </Card>
       </TabsContent>
     </Tabs>
+    </div>
   );
 }

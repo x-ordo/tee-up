@@ -151,22 +151,60 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
-      {/* Approval Status */}
+      {/* Approval Status - Enhanced UX */}
       {!profile.is_approved && (
-        <Card className="border-tee-warning/50 bg-tee-warning/5">
-          <CardContent className="flex items-center gap-4 py-6">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-tee-warning/20">
-              <svg className="h-5 w-5 text-tee-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            </div>
-            <div>
-              <h3 className="font-medium text-tee-ink-strong">
-                프로필 승인 대기 중
-              </h3>
-              <p className="text-sm text-tee-ink-light">
-                관리자 승인 후 프로필이 공개됩니다. 보통 1-2일 소요됩니다.
-              </p>
+        <Card className="border-tee-info/30 bg-gradient-to-r from-tee-info/5 to-transparent">
+          <CardContent className="py-6">
+            <div className="flex items-start gap-4">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-tee-info/10">
+                <svg className="h-6 w-6 text-tee-info" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-tee-ink-strong">
+                  프로필 승인 대기 중 (1-2일 소요)
+                </h3>
+                <p className="mt-1 text-sm text-tee-ink-light">
+                  승인이 완료되면 알림을 보내드립니다. 그동안 아래 작업을 진행해보세요!
+                </p>
+
+                {/* What you can do now */}
+                <div className="mt-4">
+                  <p className="mb-2 text-xs font-medium uppercase tracking-wider text-tee-ink-muted">
+                    지금 할 수 있는 작업
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <Link
+                      href="/dashboard/portfolio"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-tee-surface px-3 py-1.5 text-xs font-medium text-tee-ink-strong shadow-sm transition-all hover:bg-tee-stone/50 hover:shadow"
+                    >
+                      <svg className="h-3.5 w-3.5 text-tee-accent-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                      포트폴리오 꾸미기
+                    </Link>
+                    <Link
+                      href="/dashboard/portfolio"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-tee-surface px-3 py-1.5 text-xs font-medium text-tee-ink-strong shadow-sm transition-all hover:bg-tee-stone/50 hover:shadow"
+                    >
+                      <svg className="h-3.5 w-3.5 text-tee-accent-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      사진 업로드
+                    </Link>
+                    <Link
+                      href="/dashboard/settings"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-tee-surface px-3 py-1.5 text-xs font-medium text-tee-ink-strong shadow-sm transition-all hover:bg-tee-stone/50 hover:shadow"
+                    >
+                      <svg className="h-3.5 w-3.5 text-tee-accent-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                      </svg>
+                      연락처 설정
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>

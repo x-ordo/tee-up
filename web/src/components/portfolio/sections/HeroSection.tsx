@@ -27,7 +27,7 @@ export function HeroSection({
   ctaText = '문의하기',
 }: HeroSectionProps) {
   return (
-    <header className={cn('relative h-screen overflow-hidden', className)}>
+    <header className={cn('relative min-h-[80vh] overflow-hidden', className)}>
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
@@ -42,7 +42,7 @@ export function HeroSection({
       </div>
 
       {/* Content */}
-      <div className="relative flex h-full items-end">
+      <div className="relative flex min-h-[80vh] items-end">
         <div className="mx-auto w-full max-w-7xl px-6 pb-16">
           {/* Badge */}
           {subtitle && (

@@ -192,6 +192,26 @@ export function SocialTemplate({ profile, themeConfig: _themeConfig }: SocialTem
         </section>
       )}
 
+      {/* Mid-page CTA - Prevent exit to social platforms */}
+      {(profile.instagramPosts?.length || profile.youtubeVideos?.length) && (
+        <section className="px-6 py-12">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="mb-4 text-lg text-tee-ink-light">
+              더 궁금한 점이 있으신가요?
+            </p>
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 rounded-full border-2 border-tee-accent-primary bg-transparent px-6 py-3 font-medium text-tee-accent-primary transition-all hover:bg-tee-accent-primary hover:text-white"
+            >
+              레슨 문의하기
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
+            </a>
+          </div>
+        </section>
+      )}
+
       {/* Testimonials */}
       {profile.testimonials && profile.testimonials.length > 0 && (
         <TestimonialsSection
@@ -202,13 +222,15 @@ export function SocialTemplate({ profile, themeConfig: _themeConfig }: SocialTem
       )}
 
       {/* Contact */}
-      <ContactSection
-        proId={profile.id}
-        proName={profile.title.split(' ')[0] || profile.title}
-        openChatUrl={profile.open_chat_url || undefined}
-        paymentLink={profile.payment_link || undefined}
-        bookingUrl={profile.booking_url || undefined}
-      />
+      <div id="contact">
+        <ContactSection
+          proId={profile.id}
+          proName={profile.title.split(' ')[0] || profile.title}
+          openChatUrl={profile.open_chat_url || undefined}
+          paymentLink={profile.payment_link || undefined}
+          bookingUrl={profile.booking_url || undefined}
+        />
+      </div>
 
       {/* Minimal Footer */}
       <footer className="py-8 text-center text-xs text-tee-ink-light/50">
