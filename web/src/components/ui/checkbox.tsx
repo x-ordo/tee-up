@@ -6,24 +6,31 @@ import { Check } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-type CheckboxProps = React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
+interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
+  error?: boolean;
+}
 
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   CheckboxProps
->(({ className, ...props }: CheckboxProps, ref) => (
+>(({ className, error, ...props }, ref) => (
   <CheckboxPrimitive.Root
     ref={ref}
+    aria-invalid={error ? true : undefined}
     className={cn(
-      "grid place-content-center peer h-4 w-4 shrink-0 rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground",
+      "peer h-5 w-5 shrink-0 rounded-md border border-tee-ink-light/30 bg-tee-surface shadow-sm transition-colors",
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-tee-accent-primary focus-visible:ring-offset-2 focus-visible:ring-offset-tee-background",
+      "disabled:cursor-not-allowed disabled:opacity-50",
+      "data-[state=checked]:border-tee-accent-primary data-[state=checked]:bg-tee-accent-primary data-[state=checked]:text-white",
+      error && "border-tee-error focus-visible:ring-tee-error",
       className
     )}
     {...props}
   >
     <CheckboxPrimitive.Indicator
-      className={cn("grid place-content-center text-current")}
+      className={cn("flex items-center justify-center text-current")}
     >
-      <Check className="h-4 w-4" />
+      <Check className="h-3.5 w-3.5" strokeWidth={3} />
     </CheckboxPrimitive.Indicator>
   </CheckboxPrimitive.Root>
 ))
