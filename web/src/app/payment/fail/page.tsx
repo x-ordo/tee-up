@@ -28,9 +28,9 @@ function PaymentFailContent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-tee-background">
       <div className="max-w-md text-center">
-        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-error/10">
+        <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-tee-error/10">
           <svg
-            className="h-10 w-10 text-error"
+            className="h-10 w-10 text-tee-error"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -48,13 +48,13 @@ function PaymentFailContent() {
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
           <Link
             href="/pricing"
-            className="btn-primary"
+            className="h-12 rounded-xl bg-tee-accent-primary px-6 py-3 font-medium text-white transition-colors hover:bg-tee-accent-primary-hover"
           >
             다시 시도
           </Link>
           <Link
             href="/"
-            className="btn-secondary"
+            className="h-12 rounded-xl border border-tee-stone bg-tee-surface px-6 py-3 font-medium text-tee-ink-strong transition-colors hover:bg-tee-background"
           >
             홈으로
           </Link>

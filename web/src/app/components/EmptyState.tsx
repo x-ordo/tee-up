@@ -44,31 +44,37 @@ export function EmptyState({
 
   return (
     <div
-      className={`empty-state ${className}`} /* Apply base empty-state class */
+      className={`flex flex-col items-center justify-center py-16 text-center ${className}`}
       role="status"
       aria-live="polite"
     >
-      <div className="empty-icon">
+      <div className="mb-6">
         {icon || defaultIcon}
       </div>
 
-      <h3 className="empty-title">
+      <h3 className="mb-2 text-h3 font-semibold text-tee-ink-strong">
         {title}
       </h3>
 
       {description && (
-        <p className="empty-text">
+        <p className="mb-6 max-w-md text-body text-tee-ink-light">
           {description}
         </p>
       )}
 
       {action && (
         action.href ? (
-          <Link href={action.href} className="btn btn-primary"> {/* Use btn and btn-primary classes */}
+          <Link
+            href={action.href}
+            className="h-12 rounded-xl bg-tee-accent-primary px-6 py-3 font-medium text-white transition-colors hover:bg-tee-accent-primary-hover"
+          >
             {action.label}
           </Link>
         ) : (
-          <button onClick={action.onClick} className="btn btn-primary"> {/* Use btn and btn-primary classes */}
+          <button
+            onClick={action.onClick}
+            className="h-12 rounded-xl bg-tee-accent-primary px-6 py-3 font-medium text-white transition-colors hover:bg-tee-accent-primary-hover"
+          >
             {action.label}
           </button>
         )

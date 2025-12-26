@@ -98,7 +98,7 @@ export default function ContactPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-tee-background px-6">
       <div className="w-full max-w-md">
-        <div className="card p-8">
+        <div className="rounded-2xl bg-tee-surface shadow-card p-8">
           <h1 className="mb-6 text-center text-2xl font-semibold text-tee-ink-strong">
             연락처 정보
           </h1>

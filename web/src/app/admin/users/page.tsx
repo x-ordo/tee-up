@@ -100,31 +100,31 @@ export default function AdminUsersPage() {
           <div className="flex gap-8">
             <Link
               href="/admin"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               대시보드
             </Link>
             <Link
               href="/admin/pros"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               프로 관리
             </Link>
             <Link
               href="/admin/chats"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               채팅 관리
             </Link>
             <Link
               href="/admin/users"
-              className="border-b-2 border-accent px-4 py-4 text-body-sm font-semibold text-accent"
+              className="border-b-2 border-tee-accent-primary px-4 py-4 text-body-sm font-semibold text-tee-accent-primary"
             >
               사용자 관리
             </Link>
             <Link
               href="/admin/analytics"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               분석
             </Link>
@@ -138,7 +138,7 @@ export default function AdminUsersPage() {
         <section className="mb-12">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {userStats.map((stat, idx) => (
-              <div key={idx} className="card p-6">
+              <div key={idx} className="rounded-2xl bg-tee-surface shadow-card p-6">
                 <p className="mb-2 text-body-sm font-medium text-tee-ink-muted">{stat.label}</p>
                 <p className="mb-1 font-display text-3xl font-bold text-tee-ink-strong">
                   {stat.value}
@@ -182,7 +182,7 @@ export default function AdminUsersPage() {
               <tbody>
                 {users.map((user) => (
                   <tr key={user.id} className="table-row">
-                    <td className="table-cell font-mono font-semibold text-accent">
+                    <td className="table-cell font-mono font-semibold text-tee-accent-primary">
                       {user.id}
                     </td>
                     <td className="table-cell">
@@ -196,7 +196,7 @@ export default function AdminUsersPage() {
                       <span
                         className={`rounded-full px-3 py-1 text-body-xs font-medium ${
                           user.role === 'pro'
-                            ? 'bg-accent/10 text-accent'
+                            ? 'bg-tee-accent-primary/10 text-tee-accent-primary'
                             : 'bg-tee-surface text-tee-ink-light'
                         }`}
                       >
@@ -235,7 +235,7 @@ export default function AdminUsersPage() {
                       </span>
                     </td>
                     <td className="table-cell text-right">
-                      <button className="rounded-lg border border-accent bg-accent/10 px-4 py-2 text-body-sm font-medium text-accent hover:bg-accent hover:text-white">
+                      <button className="rounded-lg border border-tee-accent-primary bg-tee-accent-primary/10 px-4 py-2 text-body-sm font-medium text-tee-accent-primary hover:bg-tee-accent-primary hover:text-white">
                         관리
                       </button>
                     </td>
@@ -251,7 +251,7 @@ export default function AdminUsersPage() {
         <section className="mt-12">
           <h3 className="mb-6 text-xl font-semibold text-tee-ink-strong">사용자 인사이트</h3>
           <div className="grid gap-6 md:grid-cols-3">
-            <div className="card p-6">
+            <div className="rounded-2xl bg-tee-surface shadow-card p-6">
               <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 활성 사용자 비율
               </h4>
@@ -262,7 +262,7 @@ export default function AdminUsersPage() {
               <div className="mt-4 text-body-xs text-success">↑ 3.2% 지난 달 대비 상승</div>
             </div>
 
-            <div className="card p-6">
+            <div className="rounded-2xl bg-tee-surface shadow-card p-6">
               <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 골퍼당 평균 레슨
               </h4>
@@ -273,7 +273,7 @@ export default function AdminUsersPage() {
               <div className="mt-4 text-body-xs text-success">↑ 0.6회 지난 분기 대비 증가</div>
             </div>
 
-            <div className="card p-6">
+            <div className="rounded-2xl bg-tee-surface shadow-card p-6">
               <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 신규 사용자 유지율
               </h4>

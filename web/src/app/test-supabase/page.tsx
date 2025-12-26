@@ -77,17 +77,17 @@ export default function TestSupabasePage() {
               <p className="text-tee-ink-muted">Testing connection...</p>
             )}
             {connected === true && (
-              <p className="text-success">✅ Connected successfully!</p>
+              <p className="text-tee-success">✅ Connected successfully!</p>
             )}
             {connected === false && (
-              <p className="text-error">❌ Connection failed</p>
+              <p className="text-tee-error">❌ Connection failed</p>
             )}
           </div>
 
           {/* Error Message */}
           {error && (
-            <div className="mb-6 rounded-lg border border-error bg-error/10 p-4">
-              <h3 className="mb-2 font-semibold text-error">Error:</h3>
+            <div className="mb-6 rounded-lg border border-tee-error bg-tee-error/10 p-4">
+              <h3 className="mb-2 font-semibold text-tee-error">Error:</h3>
               <p className="font-mono text-sm text-tee-ink-light">{error}</p>
             </div>
           )}
@@ -104,7 +104,7 @@ export default function TestSupabasePage() {
                     key={table}
                     className="flex items-center gap-2 text-tee-ink-light"
                   >
-                    <span className="text-success">✓</span>
+                    <span className="text-tee-success">✓</span>
                     <code className="rounded bg-tee-surface px-2 py-1 text-sm">
                       {table}
                     </code>
@@ -141,7 +141,7 @@ export default function TestSupabasePage() {
         <div className="mt-6 text-center">
           <a
             href="/"
-            className="text-accent hover:underline"
+            className="text-tee-accent-primary hover:underline"
           >
             ← Back to Home
           </a>

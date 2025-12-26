@@ -48,7 +48,7 @@ export function ChatRoomList({
               flex items-center gap-4 p-4 transition-colors
               ${
                 isActive
-                  ? 'bg-accent-light'
+                  ? 'bg-tee-accent-primary/10'
                   : 'hover:bg-tee-surface'
               }
             `}
@@ -63,7 +63,7 @@ export function ChatRoomList({
                   className="rounded-full object-cover"
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center rounded-full bg-accent-light text-lg font-bold text-accent">
+                <div className="flex h-full w-full items-center justify-center rounded-full bg-tee-accent-primary/10 text-lg font-bold text-tee-accent-primary">
                   {otherUser?.full_name?.charAt(0) || '?'}
                 </div>
               )}
@@ -99,7 +99,7 @@ export function ChatRoomList({
                   {room.last_message?.content || '대화를 시작해보세요'}
                 </p>
                 {room.unread_count && room.unread_count > 0 && (
-                  <span className="ml-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-accent px-1.5 text-xs font-bold text-white">
+                  <span className="ml-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-tee-accent-primary px-1.5 text-xs font-bold text-white">
                     {room.unread_count > 99 ? '99+' : room.unread_count}
                   </span>
                 )}

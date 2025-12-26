@@ -5,8 +5,8 @@ export default function NotFound() {
     <div className="flex min-h-screen items-center justify-center bg-tee-background px-6">
       <EmptyState
         icon={
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent-light">
-            <span className="text-display-sm font-bold text-accent">404</span>
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-tee-accent-primary/10">
+            <span className="text-h2 font-bold text-tee-accent-primary">404</span>
           </div>
         }
         title="페이지를 찾지 못했어요"

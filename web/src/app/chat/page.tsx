@@ -25,7 +25,7 @@ export default function ChatPage() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-tee-background">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-accent border-t-transparent" />
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-tee-accent-primary border-t-transparent" />
           <p className="text-tee-ink-muted">로딩 중...</p>
         </div>
       </div>
@@ -42,7 +42,7 @@ export default function ChatPage() {
       <nav className="sticky top-0 z-50 border-b border-tee-stone bg-tee-background/80 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <Link href="/" className="font-display text-2xl font-bold text-tee-ink-strong">
-            TEE<span className="text-accent">:</span>UP
+            TEE<span className="text-tee-accent-primary">:</span>UP
           </Link>
           <h1 className="text-lg font-semibold text-tee-ink-strong">메시지</h1>
           <div className="w-16" />

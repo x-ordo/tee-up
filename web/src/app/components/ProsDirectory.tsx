@@ -47,7 +47,7 @@ export default function ProsDirectory({ pros }: { pros: ProItem[] }) {
   return (
     <section id="pros" className="space-y-6">
       {/* Search & Filter Bar */}
-      <div className="card p-6">
+      <div className="rounded-2xl bg-tee-surface shadow-card p-6">
         <div className="grid gap-4 sm:grid-cols-[1fr,200px,200px]">
           <input
             value={q}
@@ -88,7 +88,7 @@ export default function ProsDirectory({ pros }: { pros: ProItem[] }) {
           <Link
             key={pro.slug}
             href={`/profile/${pro.slug}`}
-            className="card group animate-slideUp"
+            className="rounded-2xl bg-tee-surface shadow-card group animate-slideUp"
           >
             {/* Pro Image */}
             <div className="relative h-64 overflow-hidden bg-tee-surface">
@@ -102,7 +102,7 @@ export default function ProsDirectory({ pros }: { pros: ProItem[] }) {
             </div>
 
             {/* Pro Info */}
-            <div className="card-content">
+            <div className="p-6">
               {/* Role & City */}
               <div className="flex items-center justify-between">
                 <span className="text-body-xs font-medium uppercase tracking-wide text-tee-ink-muted">
@@ -114,7 +114,7 @@ export default function ProsDirectory({ pros }: { pros: ProItem[] }) {
               </div>
 
               {/* Name */}
-              <h4 className="font-display text-display-sm font-semibold text-tee-ink-strong transition-colors duration-200 group-hover:text-accent">
+              <h4 className="font-pretendard text-h3 font-semibold text-tee-ink-strong transition-colors duration-200 group-hover:text-tee-accent-primary">
                 {pro.name}
               </h4>
 
@@ -129,10 +129,10 @@ export default function ProsDirectory({ pros }: { pros: ProItem[] }) {
 
               {/* Rate & CTA */}
               <div className="flex items-center justify-between border-t border-tee-stone pt-4">
-                <span className="text-body-sm font-semibold text-accent">
+                <span className="text-body-sm font-semibold text-tee-accent-primary">
                   {pro.rate ?? '요청 시 안내'}
                 </span>
-                <span className="rounded-xl border-2 border-tee-stone bg-white px-4 py-2 text-body-sm font-medium text-tee-ink-light transition-all duration-200 group-hover:border-accent group-hover:bg-accent-light group-hover:text-accent-dark">
+                <span className="rounded-xl border-2 border-tee-stone bg-white px-4 py-2 text-body-sm font-medium text-tee-ink-light transition-all duration-200 group-hover:border-tee-accent-primary group-hover:bg-tee-accent-primary/10 group-hover:text-tee-accent-primary">
                   프로필 보기
                 </span>
               </div>

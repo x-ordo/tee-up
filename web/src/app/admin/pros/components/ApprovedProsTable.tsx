@@ -53,7 +53,7 @@ export function ApprovedProsTable({ pros }: ApprovedProsTableProps) {
               <td className="table-cell text-right">
                 <Link
                   href={`/admin/pros/${pro.id}`}
-                  className="rounded-lg border border-accent bg-accent/10 px-4 py-2 text-body-sm font-medium text-accent hover:bg-accent hover:text-white"
+                  className="rounded-lg border border-tee-accent-primary bg-tee-accent-primary/10 px-4 py-2 text-body-sm font-medium text-tee-accent-primary hover:bg-tee-accent-primary hover:text-white"
                 >
                   관리
                 </Link>

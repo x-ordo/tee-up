@@ -83,7 +83,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
                 사용자 페이지로
               </Link>
               {onLogout && (
-                <button onClick={onLogout} className="btn-secondary">
+                <button onClick={onLogout} className="h-12 rounded-xl border border-tee-stone bg-tee-surface px-6 py-3 font-medium text-tee-ink-strong transition-colors hover:bg-tee-background">
                   로그아웃
                 </button>
               )}
@@ -98,31 +98,31 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
           <div className="flex gap-8">
             <Link
               href="/admin"
-              className="border-b-2 border-accent px-4 py-4 text-body-sm font-semibold text-accent"
+              className="border-b-2 border-tee-accent-primary px-4 py-4 text-body-sm font-semibold text-tee-accent-primary"
             >
               대시보드
             </Link>
             <Link
               href="/admin/pros"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               프로 관리
             </Link>
             <Link
               href="/admin/chats"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               채팅 관리
             </Link>
             <Link
               href="/admin/users"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               사용자 관리
             </Link>
             <Link
               href="/admin/analytics"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               분석
             </Link>
@@ -140,14 +140,14 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
               <Link
                 key={stat.label}
                 href={stat.link}
-                className={`metric-card group cursor-pointer ${
+                className={`rounded-2xl bg-tee-surface shadow-card p-6 group cursor-pointer ${
                   stat.status === 'warning' ? 'border-2 border-warning' :
-                  stat.status === 'error' ? 'border-2 border-error' : ''
+                  stat.status === 'error' ? 'border-2 border-tee-error' : ''
                 }`}
               >
-                <div className="metric-number">{stat.value}</div>
-                <div className="metric-label">{stat.label}</div>
-                <div className="mt-3 text-body-xs text-accent opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="font-pretendard text-3xl font-bold text-tee-ink-strong">{stat.value}</div>
+                <div className="text-caption text-tee-ink-muted">{stat.label}</div>
+                <div className="mt-3 text-body-xs text-tee-accent-primary opacity-0 transition-opacity group-hover:opacity-100">
                   자세히 보기 →
                 </div>
               </Link>
@@ -161,7 +161,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
           <section>
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-xl font-semibold text-tee-ink-strong">최근 프로 신청</h2>
-              <Link href="/admin/pros/pending" className="text-body-sm font-semibold text-accent hover:text-accent-dark">
+              <Link href="/admin/pros/pending" className="text-body-sm font-semibold text-tee-accent-primary hover:text-tee-accent-primary-hover">
                 전체 보기 →
               </Link>
             </div>
@@ -187,7 +187,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
                       <td className="table-cell text-right">
                         <Link
                           href={`/admin/pros/review/${app.id}`}
-                          className="rounded-lg border border-accent bg-accent/10 px-4 py-2 text-body-sm font-medium text-accent hover:bg-accent hover:text-white"
+                          className="rounded-lg border border-tee-accent-primary bg-tee-accent-primary/10 px-4 py-2 text-body-sm font-medium text-tee-accent-primary hover:bg-tee-accent-primary hover:text-white"
                         >
                           검토
                         </Link>
@@ -209,7 +209,7 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
           <section>
             <div className="mb-4 flex items-center justify-between">
               <h2 className="text-xl font-semibold text-tee-ink-strong">최근 채팅</h2>
-              <Link href="/admin/chats" className="text-body-sm font-semibold text-accent hover:text-accent-dark">
+              <Link href="/admin/chats" className="text-body-sm font-semibold text-tee-accent-primary hover:text-tee-accent-primary-hover">
                 전체 보기 →
               </Link>
             </div>
@@ -219,14 +219,14 @@ export function AdminDashboard({ onLogout }: AdminDashboardProps) {
                 <Link
                   key={chat.id}
                   href={`/admin/chats/${chat.id}`}
-                  className="card group block"
+                  className="rounded-2xl bg-tee-surface shadow-card group block"
                 >
-                  <div className="card-content">
+                  <div className="p-6">
                     <div className="mb-2 flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <span className="font-semibold text-tee-ink-strong">{chat.golfer}</span>
                         <span className="text-tee-ink-muted">↔️</span>
-                        <span className="font-semibold text-accent">{chat.pro}</span>
+                        <span className="font-semibold text-tee-accent-primary">{chat.pro}</span>
                       </div>
                       <span
                         className={`rounded-full px-3 py-1 text-body-xs font-medium ${

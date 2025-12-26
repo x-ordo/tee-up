@@ -50,7 +50,7 @@ describe('Admin Analytics Page', () => {
       const button30Days = screen.getByRole('button', { name: /30일/i })
 
       // Default should be 30 days selected
-      expect(button30Days).toHaveClass('bg-accent')
+      expect(button30Days).toHaveClass('bg-tee-accent-primary')
     })
 
     it('should update metrics when time period changes', async () => {
@@ -64,7 +64,7 @@ describe('Admin Analytics Page', () => {
 
       await waitFor(() => {
         // Button should be selected
-        expect(button7Days).toHaveClass('bg-accent')
+        expect(button7Days).toHaveClass('bg-tee-accent-primary')
       })
     })
   })

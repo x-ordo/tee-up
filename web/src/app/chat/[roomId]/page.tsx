@@ -83,7 +83,7 @@ export default function ChatRoomPage() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-tee-background">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-12 w-12 animate-spin rounded-full border-4 border-accent border-t-transparent" />
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-tee-accent-primary border-t-transparent" />
           <p className="text-tee-ink-muted">로딩 중...</p>
         </div>
       </div>
@@ -105,7 +105,7 @@ export default function ChatRoomPage() {
           <p className="mb-6 text-tee-ink-light">{error || '잘못된 접근입니다.'}</p>
           <Link
             href="/chat"
-            className="btn-primary inline-flex items-center gap-2"
+            className="h-12 rounded-xl bg-tee-accent-primary px-6 py-3 font-medium text-white transition-colors hover:bg-tee-accent-primary-hover inline-flex items-center gap-2"
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -125,7 +125,7 @@ export default function ChatRoomPage() {
           {/* Back Button */}
           <Link
             href="/chat"
-            className="flex h-10 w-10 items-center justify-center rounded-full text-tee-ink-light transition-colors hover:bg-tee-surface hover:text-tee-ink-strong focus:outline-none focus:ring-2 focus:ring-accent-light"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-tee-ink-light transition-colors hover:bg-tee-surface hover:text-tee-ink-strong focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
           >
             <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -143,7 +143,7 @@ export default function ChatRoomPage() {
                   className="rounded-full object-cover"
                 />
               ) : (
-                <div className="flex h-full w-full items-center justify-center rounded-full bg-accent-light text-sm font-bold text-accent">
+                <div className="flex h-full w-full items-center justify-center rounded-full bg-tee-accent-primary/10 text-sm font-bold text-tee-accent-primary">
                   {otherUser?.full_name?.charAt(0) || '?'}
                 </div>
               )}
@@ -173,7 +173,7 @@ export default function ChatRoomPage() {
               </button>
             )}
             <button
-              className="flex h-10 w-10 items-center justify-center rounded-full text-tee-ink-light transition-colors hover:bg-tee-surface hover:text-tee-ink-strong focus:outline-none focus:ring-2 focus:ring-accent-light"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-tee-ink-light transition-colors hover:bg-tee-surface hover:text-tee-ink-strong focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
               aria-label="더보기"
             >
               <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

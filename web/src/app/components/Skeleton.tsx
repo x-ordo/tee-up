@@ -24,14 +24,14 @@ export function Skeleton({ className, 'aria-label': ariaLabel = '로딩 중' }: 
 export function SkeletonCard({ className }: { className?: string }) {
   return (
     <div
-      className={cn('card overflow-hidden', className)}
+      className={cn('rounded-2xl bg-tee-surface shadow-card overflow-hidden', className)}
       role="status"
       aria-busy="true"
       aria-live="polite"
       aria-label="카드 로딩 중"
     >
       <Skeleton className="h-48 w-full rounded-none" aria-label="이미지 로딩 중" />
-      <div className="card-content space-y-3">
+      <div className="p-6 space-y-3">
         <Skeleton className="h-4 w-2/3" aria-label="제목 로딩 중" />
         <Skeleton className="h-3 w-full" aria-label="설명 로딩 중" />
         <Skeleton className="h-3 w-4/5" aria-label="설명 로딩 중" />
@@ -91,12 +91,12 @@ export function SkeletonAvatar({ size = 'md', className }: SkeletonAvatarProps) 
 // 프로 카드 스켈레톤
 export function ProCardSkeleton() {
   return (
-    <div className="card overflow-hidden">
+    <div className="rounded-2xl bg-tee-surface shadow-card overflow-hidden">
       {/* Image placeholder */}
       <Skeleton className="h-64 w-full rounded-none" />
 
       {/* Content */}
-      <div className="card-content">
+      <div className="p-6">
         {/* Role & City */}
         <div className="flex items-center justify-between">
           <Skeleton className="h-4 w-20" />
@@ -151,7 +151,7 @@ export function ProProfileSkeleton() {
         {/* Stats Grid */}
         <div className="mb-8 grid grid-cols-4 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="metric-card">
+            <div key={i} className="rounded-2xl bg-tee-surface shadow-card p-6">
               <Skeleton className="mb-2 h-8 w-16" />
               <Skeleton className="h-4 w-20" />
             </div>
@@ -212,7 +212,7 @@ export function ChatListSkeleton() {
 // 대시보드 카드 스켈레톤
 export function DashboardCardSkeleton() {
   return (
-    <div className="metric-card">
+    <div className="rounded-2xl bg-tee-surface shadow-card p-6">
       <Skeleton className="mb-4 h-4 w-20" />
       <Skeleton className="mb-2 h-8 w-24" />
       <Skeleton className="h-3 w-16" />

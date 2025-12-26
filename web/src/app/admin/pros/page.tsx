@@ -39,31 +39,31 @@ export default function AdminProsPage() {
           <div className="flex gap-8">
             <Link
               href="/admin"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               대시보드
             </Link>
             <Link
               href="/admin/pros"
-              className="border-b-2 border-accent px-4 py-4 text-body-sm font-semibold text-accent"
+              className="border-b-2 border-tee-accent-primary px-4 py-4 text-body-sm font-semibold text-tee-accent-primary"
             >
               프로 관리
             </Link>
             <Link
               href="/admin/chats"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               채팅 관리
             </Link>
             <Link
               href="/admin/users"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               사용자 관리
             </Link>
             <Link
               href="/admin/analytics"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               분석
             </Link>
@@ -75,7 +75,7 @@ export default function AdminProsPage() {
       <main className="mx-auto max-w-7xl px-6 py-8">
         {/* Error Message */}
         {error && (
-          <div className="mb-6 rounded-xl border border-error bg-error-bg p-4 text-error">
+          <div className="mb-6 rounded-xl border border-tee-error bg-tee-error/10 p-4 text-tee-error">
             {error}
           </div>
         )}
@@ -83,7 +83,7 @@ export default function AdminProsPage() {
         {/* Loading State */}
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-accent border-t-transparent"></div>
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-tee-accent-primary border-t-transparent"></div>
             <span className="ml-3 text-tee-ink-muted">데이터를 불러오고 있어요...</span>
           </div>
         ) : (

@@ -44,13 +44,19 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
               <button
                 onClick={reset}
-                className="btn-primary"
+                className="h-12 rounded-xl px-6 font-medium text-white transition-colors"
+                style={{ backgroundColor: 'var(--tee-accent-primary, #0A362B)' }}
               >
                 다시 시도
               </button>
               <a
                 href="/"
-                className="btn-secondary"
+                className="h-12 rounded-xl border px-6 py-3 font-medium transition-colors"
+                style={{
+                  borderColor: 'var(--tee-stone, #E8E8E5)',
+                  color: 'var(--tee-ink-strong, #1A1A17)',
+                  backgroundColor: 'var(--tee-surface, #FFFFFF)'
+                }}
               >
                 홈으로 이동
               </a>
@@ -65,7 +71,12 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                   오류 정보
               </p>
                 <pre
-                  className="alert-error overflow-auto rounded-xl p-4 text-xs"
+                  className="overflow-auto rounded-xl border p-4 text-xs"
+                  style={{
+                    borderColor: 'var(--tee-error, #D32F2F)',
+                    backgroundColor: 'rgba(211, 47, 47, 0.1)',
+                    color: 'var(--tee-error, #D32F2F)'
+                  }}
                 >
                   {error.message}
                 </pre>

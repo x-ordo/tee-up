@@ -33,7 +33,7 @@ export function MessageBubble({
               className="rounded-full object-cover"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center rounded-full bg-accent-light text-sm font-bold text-accent">
+            <div className="flex h-full w-full items-center justify-center rounded-full bg-tee-accent-primary/10 text-sm font-bold text-tee-accent-primary">
               {sender?.full_name?.charAt(0) || '?'}
             </div>
           )}
@@ -57,7 +57,7 @@ export function MessageBubble({
             rounded-2xl px-4 py-2.5
             ${
               isOwn
-                ? 'rounded-tr-sm bg-accent text-white'
+                ? 'rounded-tr-sm bg-tee-accent-primary text-white'
                 : 'rounded-tl-sm bg-tee-surface text-tee-ink-strong'
             }
           `}
@@ -80,7 +80,7 @@ export function MessageBubble({
             <span>
               {message.is_read ? (
                 <svg
-                  className="h-4 w-4 text-accent"
+                  className="h-4 w-4 text-tee-accent-primary"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

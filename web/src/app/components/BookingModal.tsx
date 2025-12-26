@@ -78,7 +78,7 @@ export default function BookingModal({
         {!submitted ? (
           <>
             <div className="mb-6 flex items-center justify-between">
-              <h4 id="booking-modal-title" className="font-display text-display-sm font-semibold text-tee-ink-strong">
+              <h4 id="booking-modal-title" className="font-pretendard text-h3 font-semibold text-tee-ink-strong">
                 {type === 'reservation' ? '레슨 예약하기' : '대기 신청하기'}
               </h4>
               <button
@@ -156,7 +156,7 @@ export default function BookingModal({
                   type="checkbox"
                   checked={agree}
                   onChange={(e) => setAgree(e.target.checked)}
-                  className="h-4 w-4 rounded border-tee-stone text-accent focus:ring-accent"
+                  className="h-4 w-4 rounded border-tee-stone text-tee-accent-primary focus:ring-tee-accent-primary"
                 />
                 예약 및 취소 안내를 확인했어요.
               </label>
@@ -165,7 +165,7 @@ export default function BookingModal({
             <button
               onClick={handleSubmit}
               disabled={disabled}
-              className="btn-primary mt-6 w-full disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-6 h-12 w-full rounded-xl bg-tee-accent-primary px-6 py-3 font-medium text-white transition-colors hover:bg-tee-accent-primary-hover disabled:cursor-not-allowed disabled:opacity-50"
             >
               {type === 'reservation' ? '예약 신청하기' : '대기 신청하기'}
             </button>
@@ -177,7 +177,7 @@ export default function BookingModal({
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h4 className="font-display text-display-sm font-semibold text-tee-ink-strong">
+            <h4 className="font-pretendard text-h3 font-semibold text-tee-ink-strong">
               신청이 완료됐어요
             </h4>
             <p className="mt-2 text-body-sm text-tee-ink-light">
@@ -185,7 +185,7 @@ export default function BookingModal({
             </p>
             <button
               onClick={onClose}
-              className="btn-secondary mt-6"
+              className="mt-6 h-12 rounded-xl border border-tee-stone bg-tee-surface px-6 py-3 font-medium text-tee-ink-strong transition-colors hover:bg-tee-background"
             >
               닫기
             </button>

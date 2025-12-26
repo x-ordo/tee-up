@@ -32,9 +32,9 @@ export function ErrorState({
       className={`flex flex-col items-center justify-center py-16 text-center ${className}`}
       role="alert"
     >
-      <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-error-bg">
+      <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-tee-error/10">
         <svg
-          className="h-12 w-12 text-error"
+          className="h-12 w-12 text-tee-error"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -53,18 +53,24 @@ export function ErrorState({
         {title}
       </h3>
 
-      <p className="mb-6 max-w-md text-body-md text-tee-ink-light">
+      <p className="mb-6 max-w-md text-body text-tee-ink-light">
         {description}
       </p>
 
       <div className="flex flex-col gap-3 sm:flex-row">
         {onRetry && (
-          <button onClick={onRetry} className="btn-primary">
+          <button
+            onClick={onRetry}
+            className="h-12 rounded-xl bg-tee-accent-primary px-6 py-3 font-medium text-white transition-colors hover:bg-tee-accent-primary-hover"
+          >
             다시 시도
           </button>
         )}
         {showHomeLink && (
-          <Link href="/" className="btn-secondary">
+          <Link
+            href="/"
+            className="h-12 rounded-xl border border-tee-stone bg-tee-surface px-6 py-3 font-medium text-tee-ink-strong transition-colors hover:bg-tee-background"
+          >
             홈으로 이동
           </Link>
         )}

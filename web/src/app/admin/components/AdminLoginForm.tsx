@@ -29,7 +29,7 @@ export function AdminLoginForm({ onSubmit, error, isLoading }: AdminLoginFormPro
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-tee-background">
-      <div className="card w-full max-w-md p-8">
+      <div className="rounded-2xl bg-tee-surface shadow-card w-full max-w-md p-8">
         <h1 className="mb-6 text-center text-2xl font-semibold text-tee-ink-strong">
           관리자 로그인
         </h1>
@@ -80,7 +80,7 @@ export function AdminLoginForm({ onSubmit, error, isLoading }: AdminLoginFormPro
             <div
               role="alert"
               aria-live="polite"
-              className="alert-error"
+              className="rounded-xl border border-tee-error bg-tee-error/10 p-4 text-tee-error"
             >
               <p className="font-medium">{error}</p>
               <p className="mt-1 text-xs opacity-80">
@@ -91,7 +91,7 @@ export function AdminLoginForm({ onSubmit, error, isLoading }: AdminLoginFormPro
 
           <button
             type="submit"
-            className="btn-primary w-full"
+            className="h-12 rounded-xl bg-tee-accent-primary px-6 py-3 font-medium text-white transition-colors hover:bg-tee-accent-primary-hover w-full"
             disabled={isLoading}
           >
             {isLoading ? '로그인 중...' : '로그인'}

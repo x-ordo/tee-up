@@ -53,7 +53,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
         {ctaMinimized && (
           <button
             onClick={() => setCtaMinimized(false)}
-            className="btn-primary h-14 w-14 rounded-full p-0 shadow-lg md:hidden"
+            className="h-14 w-14 rounded-full bg-tee-accent-primary p-0 font-medium text-white shadow-lg transition-colors hover:bg-tee-accent-primary-hover md:hidden"
             aria-label="CTA 메뉴 열기"
           >
             <span className="text-xl">💬</span>
@@ -82,7 +82,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
               )}
               <button
                 onClick={() => setOpen(true)}
-                className="btn-primary px-8 py-4 text-lg shadow-lg transition-all duration-300 hover:scale-105"
+                className="h-12 rounded-xl bg-tee-accent-primary px-8 py-4 text-lg font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-tee-accent-primary-hover"
               >
                 <span className="flex items-center gap-2">
                   💬 레슨 상담하기
@@ -93,7 +93,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
             {/* Mobile: Single button with action sheet behavior */}
             <button
               onClick={() => setOpen(true)}
-              className="btn-primary px-6 py-3 text-base shadow-lg md:hidden"
+              className="h-12 rounded-xl bg-tee-accent-primary px-6 py-3 text-base font-medium text-white shadow-lg transition-colors hover:bg-tee-accent-primary-hover md:hidden"
             >
               <span className="flex items-center gap-2">
                 💬 레슨 문의
@@ -123,7 +123,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
           <div className="mx-auto w-full max-w-7xl px-6 pb-16">
             {/* Badges */}
             <div className="mb-6 flex flex-wrap items-center gap-3 animate-slideUp">
-              <span className="rounded-full border border-accent bg-accent/20 px-6 py-2 text-sm font-semibold text-white backdrop-blur-md">
+              <span className="rounded-full border border-tee-accent-primary bg-tee-accent-primary/20 px-6 py-2 text-sm font-semibold text-white backdrop-blur-md">
                 ✓ {profile.subtitle}
               </span>
               {profile.tier && (
@@ -135,10 +135,10 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
 
             {/* Name & Title */}
             <div className="animate-slideUp" style={{ animationDelay: '0.1s' }}>
-              <h1 className="mb-4 font-display text-7xl font-bold leading-tight text-white lg:text-8xl">
+              <h1 className="mb-4 font-pretendard text-7xl font-bold leading-tight text-white lg:text-8xl">
                 {profile.name}
               </h1>
-              <p className="mb-8 text-2xl font-medium text-accent-light">
+              <p className="mb-8 text-2xl font-medium text-white/80">
                 {profile.title}
               </p>
 
@@ -180,11 +180,11 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
               {highlights.map((item, idx) => (
                 <div
                   key={item.label}
-                  className="card group p-8 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                  className="rounded-2xl bg-tee-surface shadow-card group p-8 transition-all duration-300 hover:scale-105 hover:shadow-lg"
                   style={{ animationDelay: `${idx * 0.1}s` }}
                 >
                   <div className="relative">
-                    <div className="mb-3 font-display text-5xl font-bold text-accent">
+                    <div className="mb-3 font-pretendard text-5xl font-bold text-tee-accent-primary">
                       {item.value}
                     </div>
                     <p className="text-sm font-medium uppercase tracking-wider text-tee-ink-light">
@@ -203,7 +203,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
             <div className="grid gap-12 lg:grid-cols-[1.3fr,0.7fr]">
               {/* Video Player */}
               {video && (
-                <div className="card group overflow-hidden p-0">
+                <div className="rounded-2xl bg-tee-surface shadow-card group overflow-hidden p-0">
                   <div className="aspect-video overflow-hidden">
                     <video
                       controls
@@ -218,8 +218,8 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
               )}
 
               {/* Bio Card */}
-              <div className="card p-8 lg:p-10">
-                <h2 className="mb-6 font-display text-3xl font-bold text-tee-ink-strong">
+              <div className="rounded-2xl bg-tee-surface shadow-card p-8 lg:p-10">
+                <h2 className="mb-6 font-pretendard text-3xl font-bold text-tee-ink-strong">
                   프로 소개
                 </h2>
                 <p className="text-lg leading-relaxed text-tee-ink-light">
@@ -239,8 +239,8 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                 className={`mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-24`}
               >
                 <div className={`relative ${section.align === 'right' ? 'lg:col-start-2' : ''}`}>
-                  <p className="mb-4 font-mono uppercase tracking-widest text-accent">{section.title}</p>
-                  <h3 className="mb-6 font-display text-4xl font-bold text-tee-ink-strong">{section.heading}</h3>
+                  <p className="mb-4 font-mono uppercase tracking-widest text-tee-accent-primary">{section.title}</p>
+                  <h3 className="mb-6 font-pretendard text-4xl font-bold text-tee-ink-strong">{section.heading}</h3>
                   <p className="text-lg leading-relaxed text-tee-ink-light">{section.body}</p>
                 </div>
                 <div className={`group relative aspect-square overflow-hidden rounded-3xl border border-tee-stone ${section.align === 'right' ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
@@ -257,8 +257,8 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
           <section className="px-6 py-16">
             <div className="mx-auto max-w-7xl">
               <div className="mb-12 text-center">
-                <h2 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong">
-                  <a href={`https://instagram.com/${profile.instagramUsername}`} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">
+                <h2 className="mb-4 font-pretendard text-4xl font-bold text-tee-ink-strong">
+                  <a href={`https://instagram.com/${profile.instagramUsername}`} target="_blank" rel="noopener noreferrer" className="hover:text-tee-accent-primary transition-colors">
                     Instagram
                   </a>
                 </h2>
@@ -288,8 +288,8 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
           <section className="px-6 py-16 bg-tee-surface">
             <div className="mx-auto max-w-7xl">
               <div className="mb-12 text-center">
-                <h2 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong">
-                  <a href={`https://www.youtube.com/channel/${profile.youtubeChannelId}`} target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors">
+                <h2 className="mb-4 font-pretendard text-4xl font-bold text-tee-ink-strong">
+                  <a href={`https://www.youtube.com/channel/${profile.youtubeChannelId}`} target="_blank" rel="noopener noreferrer" className="hover:text-tee-accent-primary transition-colors">
                     YouTube
                   </a>
                 </h2>
@@ -297,7 +297,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
               </div>
               <div className="grid gap-8 md:grid-cols-2">
                 {youtubeVideos.map((ytVideo) => (
-                  <div key={ytVideo.id} className="card overflow-hidden p-0">
+                  <div key={ytVideo.id} className="rounded-2xl bg-tee-surface shadow-card overflow-hidden p-0">
                     <div className="aspect-video">
                       <iframe
                         src={`https://www.youtube.com/embed/${ytVideo.id}`}
@@ -323,7 +323,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
           <section className="px-6 py-16">
             <div className="mx-auto max-w-7xl">
               <div className="mb-12 text-center">
-                <h2 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong">
+                <h2 className="mb-4 font-pretendard text-4xl font-bold text-tee-ink-strong">
                   레슨 전문 분야
                 </h2>
                 <p className="text-lg text-tee-ink-light">데이터로 검증된 실력</p>
@@ -333,19 +333,19 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                 {Object.entries(metrics).map(([key, value]) => (
                   <div
                     key={key}
-                    className="card p-8 transition-all duration-300 hover:shadow-lg"
+                    className="rounded-2xl bg-tee-surface shadow-card p-8 transition-all duration-300 hover:shadow-lg"
                   >
                     <div className="relative">
                       <div className="mb-6 flex items-center justify-between">
                         <span className="text-2xl font-bold uppercase tracking-wider text-tee-ink-strong">
                           {key === 'driver' ? '드라이버' : key === 'iron' ? '아이언' : key === 'short' ? '쇼트게임' : '퍼팅'}
                         </span>
-                        <span className="font-mono text-4xl font-bold text-accent">{value}%</span>
+                        <span className="font-mono text-4xl font-bold text-tee-accent-primary">{value}%</span>
                       </div>
 
                       <div className="relative h-4 overflow-hidden rounded-full bg-tee-stone">
                         <div
-                          className="h-full rounded-full bg-accent transition-all duration-1000"
+                          className="h-full rounded-full bg-tee-accent-primary transition-all duration-1000"
                           style={{ width: `${value}%` }}
                         />
                       </div>
@@ -362,7 +362,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
           <section className="px-6 py-16 bg-tee-surface">
             <div className="mx-auto max-w-7xl">
               <div className="mb-12 text-center">
-                <h2 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong">
+                <h2 className="mb-4 font-pretendard text-4xl font-bold text-tee-ink-strong">
                   커리큘럼 안내
                 </h2>
                 <p className="text-lg text-tee-ink-light">맞춤형 커리큘럼</p>
@@ -372,7 +372,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                 {themes.map((theme, idx) => (
                   <div
                     key={theme.title}
-                    className="card p-8 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                    className="rounded-2xl bg-tee-surface shadow-card p-8 transition-all duration-300 hover:scale-105 hover:shadow-lg"
                     style={{ animationDelay: `${idx * 0.1}s` }}
                   >
                     <h3 className="mb-4 text-2xl font-bold text-tee-ink-strong">
@@ -393,7 +393,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
           <section className="px-6 py-16">
             <div className="mx-auto max-w-7xl">
               <div className="mb-12 text-center">
-                <h2 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong">
+                <h2 className="mb-4 font-pretendard text-4xl font-bold text-tee-ink-strong">
                   수강료 안내
                 </h2>
                 <p className="text-lg text-tee-ink-light">합리적인 가격, 최고의 가치</p>
@@ -403,8 +403,8 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                 {priceTiers.map((tier, idx) => (
                   <div
                     key={tier.name}
-                    className={`card relative p-10 transition-all duration-300 hover:scale-105 ${idx === 1
-                        ? 'border-2 border-accent'
+                    className={`rounded-2xl bg-tee-surface shadow-card relative p-10 transition-all duration-300 hover:scale-105 ${idx === 1
+                        ? 'border-2 border-tee-accent-primary'
                         : ''
                       }`}
                   >
@@ -420,7 +420,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                     <p className="mb-8 text-tee-ink-light">{tier.duration}</p>
 
                     <div className="mb-10 border-t border-tee-stone pt-8">
-                      <span className="font-display text-5xl font-bold text-accent">
+                      <span className="font-pretendard text-5xl font-bold text-tee-accent-primary">
                         {tier.price}
                       </span>
                     </div>
@@ -428,8 +428,8 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                     <button
                       onClick={() => setOpen(true)}
                       className={`w-full rounded-xl py-4 font-semibold transition-all duration-300 ${idx === 1
-                          ? 'btn-primary'
-                          : 'btn-secondary'
+                          ? 'bg-tee-accent-primary text-white hover:bg-tee-accent-primary-hover'
+                          : 'border border-tee-stone bg-tee-surface text-tee-ink-strong hover:bg-tee-background'
                         }`}
                     >
                       선택하기
@@ -445,7 +445,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
         <section className="px-6 py-16 bg-tee-surface">
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-8 lg:grid-cols-2">
-              <div className="card p-10">
+              <div className="rounded-2xl bg-tee-surface shadow-card p-10">
                 <h3 className="mb-8 text-2xl font-bold text-tee-ink-strong">레슨 장소</h3>
                 <ul className="space-y-4">
                   {(locations ?? ['청담 스튜디오']).map((loc) => (
@@ -457,7 +457,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                 </ul>
               </div>
 
-              <div className="card p-10">
+              <div className="rounded-2xl bg-tee-surface shadow-card p-10">
                 <h3 className="mb-8 text-2xl font-bold text-tee-ink-strong">예약 안내</h3>
                 <ul className="space-y-4">
                   {(policies ?? ['예약 변경은 레슨 1일 전까지 가능합니다']).map((policy) => (
@@ -475,7 +475,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
         <section className="px-6 py-16">
           <div className="mx-auto max-w-7xl">
             <div className="mb-12 text-center">
-              <h2 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong">
+              <h2 className="mb-4 font-pretendard text-4xl font-bold text-tee-ink-strong">
                 생생한 수강 후기
               </h2>
               <p className="text-lg text-tee-ink-light">실제 수강생들의 생생한 후기</p>
@@ -485,10 +485,10 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
               {testimonials.map((item, idx) => (
                 <div
                   key={item.name}
-                  className="card p-10 transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                  className="rounded-2xl bg-tee-surface shadow-card p-10 transition-all duration-300 hover:scale-105 hover:shadow-lg"
                   style={{ animationDelay: `${idx * 0.1}s` }}
                 >
-                  <div className="mb-6 text-3xl text-accent">&ldquo;</div>
+                  <div className="mb-6 text-3xl text-tee-accent-primary">&ldquo;</div>
                   <p className="mb-8 text-xl leading-relaxed text-tee-ink-strong">
                     {item.quote.replace(/(^"|"$)/g, '')}
                   </p>
@@ -499,7 +499,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                     </div>
                     <div>
                       <p className="font-semibold text-tee-ink-strong">{item.name}</p>
-                      <div className="mt-1 flex gap-1 text-accent">
+                      <div className="mt-1 flex gap-1 text-tee-accent-primary">
                         {'★★★★★'.split('').map((star, i) => (
                           <span key={i}>{star}</span>
                         ))}
@@ -517,14 +517,14 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
           <section className="px-6 py-16 bg-tee-surface">
             <div className="mx-auto max-w-7xl">
               <div className="mb-12">
-                <h2 className="mb-4 font-display text-4xl font-bold text-tee-ink-strong">
+                <h2 className="mb-4 font-pretendard text-4xl font-bold text-tee-ink-strong">
                   추천 프로 더보기
                 </h2>
                 <p className="text-lg text-tee-ink-light">나에게 맞는 다른 프로 더 찾아보기</p>
               </div>
               <div className="grid gap-8 md:grid-cols-3">
                 {similarPros.map((pro) => (
-                  <Link href={`/profile/${pro.slug}`} key={pro.slug} className="card group p-8 transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                  <Link href={`/profile/${pro.slug}`} key={pro.slug} className="rounded-2xl bg-tee-surface shadow-card group p-8 transition-all duration-300 hover:scale-105 hover:shadow-lg">
                     <div className="flex items-center gap-6">
                       <div className="relative h-20 w-20 overflow-hidden rounded-full">
                         <Image src={pro.image} alt={pro.name} fill className="object-cover" sizes="80px" />
@@ -532,7 +532,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                       <div>
                         <h3 className="text-xl font-bold text-tee-ink-strong">{pro.name}</h3>
                         <p className="text-tee-ink-light">{pro.role}</p>
-                        <p className="mt-1 text-sm text-accent">{pro.city}</p>
+                        <p className="mt-1 text-sm text-tee-accent-primary">{pro.city}</p>
                       </div>
                     </div>
                   </Link>
@@ -545,9 +545,9 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
         {/* Final CTA */}
         <section className="px-6 py-32">
           <div className="mx-auto max-w-4xl">
-            <div className="relative overflow-hidden rounded-3xl border-2 border-accent bg-accent-light p-16 text-center">
+            <div className="relative overflow-hidden rounded-3xl border-2 border-tee-accent-primary bg-tee-accent-primary/10 p-16 text-center">
               <div className="relative">
-                <h2 className="mb-6 font-display text-5xl font-bold text-tee-ink-strong">
+                <h2 className="mb-6 font-pretendard text-5xl font-bold text-tee-ink-strong">
                   {profile.name}님과<br />레슨 시작하기
                 </h2>
                 <p className="mx-auto mb-10 max-w-2xl text-xl text-tee-ink-light">
@@ -555,7 +555,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
                 </p>
                 <button
                   onClick={() => setOpen(true)}
-                  className="btn-primary px-12 py-5 text-xl shadow-lg transition-all duration-300 hover:scale-105"
+                  className="h-12 rounded-xl bg-tee-accent-primary px-12 py-5 text-xl font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-tee-accent-primary-hover"
                 >
                   레슨 문의하기
                 </button>

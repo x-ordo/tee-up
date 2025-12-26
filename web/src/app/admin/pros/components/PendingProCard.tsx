@@ -14,7 +14,7 @@ export function PendingProCard({ pro, onApprove, onReject, isProcessing }: Pendi
   const phone = pro.profiles?.phone || '연락처 미입력'
 
   return (
-    <div className="card" data-testid="pending-pro-card">
+    <div className="rounded-2xl bg-tee-surface shadow-card" data-testid="pending-pro-card">
       <div className="grid gap-6 lg:grid-cols-[300px,1fr]">
         {/* Left: Pro Image & Basic Info */}
         <div>
@@ -104,7 +104,7 @@ export function PendingProCard({ pro, onApprove, onReject, isProcessing }: Pendi
           {/* Action Buttons */}
           <div className="flex gap-3 border-t border-tee-stone pt-6">
             <button
-              className="btn-primary flex-1"
+              className="h-12 rounded-xl bg-tee-accent-primary px-6 py-3 font-medium text-white transition-colors hover:bg-tee-accent-primary-hover flex-1"
               onClick={() => onApprove(pro.id)}
               disabled={isProcessing}
               aria-busy={isProcessing}
@@ -123,7 +123,7 @@ export function PendingProCard({ pro, onApprove, onReject, isProcessing }: Pendi
               )}
             </button>
             <button
-              className="btn-secondary flex-1"
+              className="h-12 rounded-xl border border-tee-stone bg-tee-surface px-6 py-3 font-medium text-tee-ink-strong transition-colors hover:bg-tee-background flex-1"
               onClick={() => onReject(pro.id)}
               disabled={isProcessing}
               aria-label={`${profileName} 프로 거부`}

@@ -56,7 +56,7 @@ export default function AdminChatsPage() {
     return (
       <div className="flex min-h-screen items-center justify-center bg-tee-background">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-accent border-t-transparent"></div>
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-tee-accent-primary border-t-transparent"></div>
           <p className="text-tee-ink-muted">데이터를 불러오는 중...</p>
         </div>
       </div>
@@ -86,31 +86,31 @@ export default function AdminChatsPage() {
           <div className="flex gap-8">
             <Link
               href="/admin"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               대시보드
             </Link>
             <Link
               href="/admin/pros"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               프로 관리
             </Link>
             <Link
               href="/admin/chats"
-              className="border-b-2 border-accent px-4 py-4 text-body-sm font-semibold text-accent"
+              className="border-b-2 border-tee-accent-primary px-4 py-4 text-body-sm font-semibold text-tee-accent-primary"
             >
               채팅 관리
             </Link>
             <Link
               href="/admin/users"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               사용자 관리
             </Link>
             <Link
               href="/admin/analytics"
-              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-accent"
+              className="border-b-2 border-transparent px-4 py-4 text-body-sm font-medium text-tee-ink-light hover:text-tee-accent-primary"
             >
               분석
             </Link>
@@ -131,7 +131,7 @@ export default function AdminChatsPage() {
         <section className="mb-12">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {chatStats.map((stat, idx) => (
-              <div key={idx} className="card p-6">
+              <div key={idx} className="rounded-2xl bg-tee-surface shadow-card p-6">
                 <p className="mb-2 text-body-sm font-medium text-tee-ink-muted">{stat.label}</p>
                 <p className="mb-1 font-display text-3xl font-bold text-tee-ink-strong">
                   {stat.value}
@@ -193,7 +193,7 @@ export default function AdminChatsPage() {
               <tbody>
                 {chatRooms.map((room) => (
                   <tr key={room.id} className="table-row">
-                    <td className="table-cell font-mono font-semibold text-accent">
+                    <td className="table-cell font-mono font-semibold text-tee-accent-primary">
                       #{room.id.slice(0, 8)}
                     </td>
                     <td className="table-cell">
@@ -218,7 +218,7 @@ export default function AdminChatsPage() {
                     </td>
                     <td className="table-cell text-center">
                       {room.unreadCount > 0 ? (
-                        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-accent text-body-xs font-semibold text-white">
+                        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-tee-accent-primary text-body-xs font-semibold text-white">
                           {room.unreadCount}
                         </span>
                       ) : (
@@ -248,7 +248,7 @@ export default function AdminChatsPage() {
                     <td className="table-cell text-right">
                       <Link
                         href={`/admin/chats/${room.id}`}
-                        className="rounded-lg border border-accent bg-accent/10 px-4 py-2 text-body-sm font-medium text-accent hover:bg-accent hover:text-white"
+                        className="rounded-lg border border-tee-accent-primary bg-tee-accent-primary/10 px-4 py-2 text-body-sm font-medium text-tee-accent-primary hover:bg-tee-accent-primary hover:text-white"
                       >
                         보기
                       </Link>
@@ -270,7 +270,7 @@ export default function AdminChatsPage() {
         <section className="mt-12">
           <h3 className="mb-6 text-xl font-semibold text-tee-ink-strong">채팅 인사이트</h3>
           <div className="grid gap-6 md:grid-cols-2">
-            <div className="card p-6">
+            <div className="rounded-2xl bg-tee-surface shadow-card p-6">
               <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 평균 응답 시간
               </h4>
@@ -281,7 +281,7 @@ export default function AdminChatsPage() {
               <div className="mt-4 text-body-xs text-tee-ink-muted">데이터 수집 중</div>
             </div>
 
-            <div className="card p-6">
+            <div className="rounded-2xl bg-tee-surface shadow-card p-6">
               <h4 className="mb-4 text-body-sm font-semibold uppercase tracking-wide text-tee-ink-muted">
                 매칭 성공률
               </h4>

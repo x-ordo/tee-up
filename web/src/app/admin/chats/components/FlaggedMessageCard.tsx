@@ -14,7 +14,7 @@ export function FlaggedMessageCard({
   isProcessing,
 }: FlaggedMessageCardProps) {
   return (
-    <div className="card border-l-4 border-l-error">
+    <div className="rounded-2xl bg-tee-surface shadow-card border-l-4 border-l-tee-error">
       <div className="p-6">
         <div className="mb-4 flex items-start justify-between">
           <div>
@@ -44,14 +44,14 @@ export function FlaggedMessageCard({
 
         <div className="flex gap-3">
           <button
-            className="btn-primary"
+            className="h-12 rounded-xl bg-tee-accent-primary px-6 py-3 font-medium text-white transition-colors hover:bg-tee-accent-primary-hover"
             onClick={() => onAction(message.id)}
             disabled={isProcessing}
           >
             조치
           </button>
           <button
-            className="btn-ghost ml-auto"
+            className="rounded-xl px-6 py-3 font-medium text-tee-ink-light transition-colors hover:bg-tee-surface ml-auto"
             onClick={() => onDismiss(message.id)}
             disabled={isProcessing}
           >

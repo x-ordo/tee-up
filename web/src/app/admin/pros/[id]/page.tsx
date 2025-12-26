@@ -100,7 +100,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
               <button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="btn-primary"
+                className="h-12 rounded-xl bg-tee-accent-primary px-6 py-3 font-medium text-white transition-colors hover:bg-tee-accent-primary-hover"
                 aria-busy={isSaving}
               >
                 {isSaving ? (
@@ -129,10 +129,10 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
               role="tab"
               aria-selected={activeTab === 'design'}
               aria-controls="design-panel"
-              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-light focus:ring-inset ${
+              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20 focus:ring-inset ${
                 activeTab === 'design'
-                  ? 'border-accent text-accent'
-                  : 'border-transparent text-tee-ink-light hover:text-accent'
+                  ? 'border-tee-accent-primary text-tee-accent-primary'
+                  : 'border-transparent text-tee-ink-light hover:text-tee-accent-primary'
               }`}
             >
               🎨 디자인
@@ -142,10 +142,10 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
               role="tab"
               aria-selected={activeTab === 'content'}
               aria-controls="content-panel"
-              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-light focus:ring-inset ${
+              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20 focus:ring-inset ${
                 activeTab === 'content'
-                  ? 'border-accent text-accent'
-                  : 'border-transparent text-tee-ink-light hover:text-accent'
+                  ? 'border-tee-accent-primary text-tee-accent-primary'
+                  : 'border-transparent text-tee-ink-light hover:text-tee-accent-primary'
               }`}
             >
               ✏️ 콘텐츠
@@ -155,10 +155,10 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
               role="tab"
               aria-selected={activeTab === 'layout'}
               aria-controls="layout-panel"
-              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-light focus:ring-inset ${
+              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20 focus:ring-inset ${
                 activeTab === 'layout'
-                  ? 'border-accent text-accent'
-                  : 'border-transparent text-tee-ink-light hover:text-accent'
+                  ? 'border-tee-accent-primary text-tee-accent-primary'
+                  : 'border-transparent text-tee-ink-light hover:text-tee-accent-primary'
               }`}
             >
               📐 레이아웃
@@ -168,10 +168,10 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
               role="tab"
               aria-selected={activeTab === 'preview'}
               aria-controls="preview-panel"
-              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-light focus:ring-inset ${
+              className={`border-b-2 px-4 py-4 text-body-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20 focus:ring-inset ${
                 activeTab === 'preview'
-                  ? 'border-accent text-accent'
-                  : 'border-transparent text-tee-ink-light hover:text-accent'
+                  ? 'border-tee-accent-primary text-tee-accent-primary'
+                  : 'border-transparent text-tee-ink-light hover:text-tee-accent-primary'
               }`}
             >
               👁️ 미리보기
@@ -194,8 +194,8 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                     onClick={() => setSelectedTheme(theme.id)}
                     className={`group relative overflow-hidden rounded-2xl border-2 p-6 transition-all ${
                       selectedTheme === theme.id
-                        ? 'border-accent shadow-lg'
-                        : 'border-tee-stone hover:border-accent/50'
+                        ? 'border-tee-accent-primary shadow-lg'
+                        : 'border-tee-stone hover:border-tee-accent-primary/50'
                     }`}
                   >
                     <div
@@ -211,7 +211,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                       <span className="text-body-xs text-tee-ink-muted">Accent</span>
                     </div>
                     {selectedTheme === theme.id && (
-                      <div className="absolute right-4 top-4 rounded-full bg-accent p-2 text-white">
+                      <div className="absolute right-4 top-4 rounded-full bg-tee-accent-primary p-2 text-white">
                         ✓
                       </div>
                     )}
@@ -222,7 +222,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
 
             <section>
               <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">커스텀 컬러</h2>
-              <div className="card p-8">
+              <div className="rounded-2xl bg-tee-surface shadow-card p-8">
                 <div className="grid gap-6 md:grid-cols-2">
                   <div>
                     <label className="mb-2 block text-sm font-medium text-tee-ink-light">
@@ -255,7 +255,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
           <div id="content-panel" role="tabpanel" aria-labelledby="content-tab" className="space-y-8">
             <section>
               <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">기본 정보</h2>
-              <div className="card p-8">
+              <div className="rounded-2xl bg-tee-surface shadow-card p-8">
                 <div className="space-y-6">
                   <div>
                     <label className="mb-2 block text-sm font-medium text-tee-ink-light">
@@ -310,7 +310,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
 
             <section>
               <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">히어로 이미지</h2>
-              <div className="card p-8">
+              <div className="rounded-2xl bg-tee-surface shadow-card p-8">
                 <div className="mb-4">
                   <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                     이미지 URL
@@ -331,7 +331,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                     sizes="(max-width: 768px) 100vw, 600px"
                   />
                 </div>
-                <button className="btn-secondary mt-4 w-full">
+                <button className="h-12 rounded-xl border border-tee-stone bg-tee-surface px-6 py-3 font-medium text-tee-ink-strong transition-colors hover:bg-tee-background mt-4 w-full">
                   📁 이미지 업로드
                 </button>
               </div>
@@ -339,7 +339,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
 
             <section>
               <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">SNS 연동</h2>
-              <div className="card p-8">
+              <div className="rounded-2xl bg-tee-surface shadow-card p-8">
                 <div className="space-y-6">
                   <div>
                     <label className="mb-2 block text-sm font-medium text-tee-ink-light">
@@ -372,7 +372,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
 
             <section>
               <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">통계 & 지표</h2>
-              <div className="card p-8">
+              <div className="rounded-2xl bg-tee-surface shadow-card p-8">
                 <div className="mb-6">
                   <h3 className="mb-4 font-semibold text-tee-ink-strong">핵심 통계 (4개)</h3>
                   <div className="grid gap-4 md:grid-cols-2">
@@ -428,9 +428,9 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                 {availableSections.map((section) => (
                   <div
                     key={section.id}
-                    className={`card flex items-center justify-between p-6 transition-all ${
+                    className={`rounded-2xl bg-tee-surface shadow-card flex items-center justify-between p-6 transition-all ${
                       enabledSections.includes(section.id)
-                        ? 'border-accent bg-accent/5'
+                        ? 'border-tee-accent-primary bg-tee-accent-primary/5'
                         : 'bg-white'
                     }`}
                   >
@@ -447,7 +447,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                         type="checkbox"
                         checked={enabledSections.includes(section.id)}
                         onChange={() => toggleSection(section.id)}
-                        className="h-6 w-6 cursor-pointer accent-accent"
+                        className="h-6 w-6 cursor-pointer accent-tee-accent-primary"
                       />
                       <span className="text-sm font-medium text-tee-ink-light">
                         {enabledSections.includes(section.id) ? '표시' : '숨김'}
@@ -460,7 +460,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
 
             <section>
               <h2 className="mb-6 text-2xl font-semibold text-tee-ink-strong">레이아웃 설정</h2>
-              <div className="card p-8">
+              <div className="rounded-2xl bg-tee-surface shadow-card p-8">
                 <div className="space-y-6">
                   <div>
                     <label className="mb-2 block text-sm font-medium text-tee-ink-light">
@@ -509,7 +509,7 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                 <div className="flex gap-3">
                   <button className="btn-ghost">📱 Mobile</button>
                   <button className="btn-ghost">💻 Desktop</button>
-                  <button className="btn-primary">새 탭에서 열기 →</button>
+                  <button className="h-12 rounded-xl bg-tee-accent-primary px-6 py-3 font-medium text-white transition-colors hover:bg-tee-accent-primary-hover">새 탭에서 열기 →</button>
                 </div>
               </div>
 
