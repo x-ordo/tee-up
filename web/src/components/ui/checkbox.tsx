@@ -6,10 +6,45 @@ import { Check } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Checkbox component props
+ */
 interface CheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
+  /**
+   * Shows error styling when true
+   * Applies red border and sets aria-invalid
+   */
   error?: boolean;
 }
 
+/**
+ * A checkbox component built on Radix UI Checkbox.
+ *
+ * Provides an accessible, customizable checkbox with controlled/uncontrolled support.
+ *
+ * @example
+ * // Basic checkbox
+ * <Checkbox />
+ *
+ * @example
+ * // With label (using a wrapper)
+ * <div className="flex items-center gap-2">
+ *   <Checkbox id="terms" />
+ *   <label htmlFor="terms">Accept terms and conditions</label>
+ * </div>
+ *
+ * @example
+ * // Controlled checkbox
+ * <Checkbox checked={isChecked} onCheckedChange={setIsChecked} />
+ *
+ * @example
+ * // With error state
+ * <Checkbox error />
+ *
+ * @example
+ * // Disabled state
+ * <Checkbox disabled />
+ */
 const Checkbox = React.forwardRef<
   React.ElementRef<typeof CheckboxPrimitive.Root>,
   CheckboxProps

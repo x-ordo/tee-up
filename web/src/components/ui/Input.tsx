@@ -2,10 +2,23 @@ import React, { useId } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
+/**
+ * Input variants using CVA (Class Variance Authority)
+ *
+ * @example
+ * // Use with Tailwind classes
+ * className={inputVariants({ size: 'lg' })}
+ */
 const inputVariants = cva(
   'flex w-full rounded-full border border-tee-ink-light/20 bg-tee-surface text-tee-ink-strong file:border-0 file:bg-transparent file:font-medium placeholder:text-tee-ink-light focus:border-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-tee-background disabled:text-tee-ink-light transition-colors',
   {
     variants: {
+      /**
+       * Size variants
+       * - `sm`: Small input (32px height)
+       * - `default`: Standard input (40px height)
+       * - `lg`: Large input (48px height)
+       */
       size: {
         sm: 'h-8 px-3 text-sm',
         default: 'h-10 px-space-4 py-space-2 text-body',
@@ -18,14 +31,66 @@ const inputVariants = cva(
   }
 );
 
+/**
+ * Input component props
+ */
 interface InputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>,
     VariantProps<typeof inputVariants> {
+  /**
+   * Label text displayed above the input
+   * Automatically connected via htmlFor/id
+   */
   label?: string;
+
+  /**
+   * Helper text displayed below the input
+   * Hidden when error is present
+   */
   helperText?: string;
+
+  /**
+   * Error message displayed below the input
+   * Triggers error styling and aria-invalid
+   */
   error?: string;
 }
 
+/**
+ * An accessible text input component with built-in label and error handling.
+ *
+ * Features:
+ * - Auto-generated IDs for label/input association
+ * - aria-invalid and aria-describedby for accessibility
+ * - Error messages announced via role="alert"
+ * - CVA-based size variants
+ *
+ * @example
+ * // Basic input
+ * <Input placeholder="Enter your name" />
+ *
+ * @example
+ * // With label and helper text
+ * <Input
+ *   label="Email"
+ *   helperText="We'll never share your email"
+ *   type="email"
+ * />
+ *
+ * @example
+ * // With error state
+ * <Input
+ *   label="Password"
+ *   type="password"
+ *   error="Password must be at least 8 characters"
+ * />
+ *
+ * @example
+ * // Different sizes
+ * <Input size="sm" placeholder="Small" />
+ * <Input size="default" placeholder="Default" />
+ * <Input size="lg" placeholder="Large" />
+ */
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, label, helperText, error, size, ...props }, ref) => {
     const id = useId();

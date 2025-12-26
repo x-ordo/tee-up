@@ -4,6 +4,40 @@ import * as React from 'react';
 import * as SwitchPrimitives from '@radix-ui/react-switch';
 import { cn } from '@/lib/utils';
 
+/**
+ * A toggle switch component built on Radix UI Switch.
+ *
+ * Provides an accessible on/off toggle with keyboard and screen reader support.
+ *
+ * @example
+ * // Basic switch
+ * <Switch />
+ *
+ * @example
+ * // With label
+ * <div className="flex items-center gap-3">
+ *   <Switch id="notifications" />
+ *   <label htmlFor="notifications">Enable notifications</label>
+ * </div>
+ *
+ * @example
+ * // Controlled switch
+ * <Switch checked={isEnabled} onCheckedChange={setIsEnabled} />
+ *
+ * @example
+ * // Disabled state
+ * <Switch disabled />
+ *
+ * @example
+ * // In a settings form
+ * <div className="flex items-center justify-between">
+ *   <div>
+ *     <p className="font-medium">Dark Mode</p>
+ *     <p className="text-sm text-muted">Enable dark theme</p>
+ *   </div>
+ *   <Switch checked={darkMode} onCheckedChange={setDarkMode} />
+ * </div>
+ */
 const Switch = React.forwardRef<
   React.ElementRef<typeof SwitchPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>
