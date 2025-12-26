@@ -6,17 +6,71 @@ import { Check, ChevronDown, ChevronUp } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * A dropdown select component built on Radix UI Select.
+ *
+ * Provides accessible, customizable dropdown selection with keyboard navigation.
+ *
+ * @example
+ * // Basic usage
+ * <Select>
+ *   <SelectTrigger>
+ *     <SelectValue placeholder="Select a fruit" />
+ *   </SelectTrigger>
+ *   <SelectContent>
+ *     <SelectItem value="apple">Apple</SelectItem>
+ *     <SelectItem value="banana">Banana</SelectItem>
+ *     <SelectItem value="orange">Orange</SelectItem>
+ *   </SelectContent>
+ * </Select>
+ *
+ * @example
+ * // With error state
+ * <Select>
+ *   <SelectTrigger error>
+ *     <SelectValue placeholder="Required field" />
+ *   </SelectTrigger>
+ *   <SelectContent>
+ *     <SelectItem value="option1">Option 1</SelectItem>
+ *   </SelectContent>
+ * </Select>
+ *
+ * @example
+ * // Controlled select
+ * <Select value={value} onValueChange={setValue}>
+ *   <SelectTrigger>
+ *     <SelectValue />
+ *   </SelectTrigger>
+ *   <SelectContent>
+ *     <SelectItem value="a">Option A</SelectItem>
+ *     <SelectItem value="b">Option B</SelectItem>
+ *   </SelectContent>
+ * </Select>
+ */
 const Select = SelectPrimitive.Root
 
+/** Groups related select items with an optional label. */
 const SelectGroup = SelectPrimitive.Group
 
+/** Displays the selected value or placeholder text. */
 const SelectValue = SelectPrimitive.Value
 
+/**
+ * SelectTrigger props
+ */
 interface SelectTriggerProps
   extends React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger> {
+  /**
+   * Shows error styling when true
+   * Applies red border and sets aria-invalid
+   */
   error?: boolean;
 }
 
+/**
+ * The button that opens/closes the select dropdown.
+ * Displays the current selection or placeholder.
+ */
 const SelectTrigger = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Trigger>,
   SelectTriggerProps
@@ -78,6 +132,10 @@ const SelectScrollDownButton = React.forwardRef<
 SelectScrollDownButton.displayName =
   SelectPrimitive.ScrollDownButton.displayName
 
+/**
+ * The dropdown container that holds select items.
+ * Renders in a portal with animations.
+ */
 const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
@@ -125,6 +183,13 @@ const SelectLabel = React.forwardRef<
 ))
 SelectLabel.displayName = SelectPrimitive.Label.displayName
 
+/**
+ * An individual option within the select dropdown.
+ * Shows a checkmark when selected.
+ *
+ * @example
+ * <SelectItem value="option1">Option 1</SelectItem>
+ */
 const SelectItem = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
