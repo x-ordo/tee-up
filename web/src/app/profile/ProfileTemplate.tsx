@@ -104,7 +104,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
       </div>
 
       {/* Hero Section - Immersive Full Screen */}
-      <header className="relative h-screen overflow-hidden">
+      <header data-testid="hero-section" className="relative h-screen overflow-hidden">
         {/* Background Image with Parallax Effect */}
         <div className="absolute inset-0">
           <Image
@@ -174,7 +174,7 @@ export function ProfileTemplate({ data }: { data: ProfileData }) {
 
       <main className="relative pb-24 md:pb-0">
         {/* Stats Highlight - Cards */}
-        <section className="relative -mt-32 px-6 pb-16">
+        <section data-testid="stats-section" className="relative -mt-32 px-6 pb-16">
           <div className="mx-auto max-w-7xl">
             <div className="grid gap-6 md:grid-cols-4">
               {highlights.map((item, idx) => (
