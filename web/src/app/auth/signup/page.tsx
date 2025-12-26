@@ -107,7 +107,7 @@ export default function SignUpPage() {
     >
       <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
-          <div className="rounded-xl border border-error bg-error-bg p-4 text-body-sm text-error">
+          <div className="rounded-xl border border-tee-error bg-tee-error/10 p-4 text-caption text-tee-error">
             {error}
           </div>
         )}
@@ -121,11 +121,11 @@ export default function SignUpPage() {
             <label
               className={`
                 flex cursor-pointer items-center justify-center rounded-xl border-2 p-4
-                transition-all duration-200
+                transition-all duration-normal
                 ${
                   formData.role === 'golfer'
-                    ? 'border-accent bg-accent-light text-accent-dark'
-                    : 'border-tee-stone text-tee-ink-light hover:border-accent'
+                    ? 'border-tee-accent-primary bg-tee-accent-primary/10 text-tee-accent-primary'
+                    : 'border-tee-stone text-tee-ink-light hover:border-tee-accent-primary'
                 }
               `}
             >
@@ -142,11 +142,11 @@ export default function SignUpPage() {
             <label
               className={`
                 flex cursor-pointer items-center justify-center rounded-xl border-2 p-4
-                transition-all duration-200
+                transition-all duration-normal
                 ${
                   formData.role === 'pro'
-                    ? 'border-accent bg-accent-light text-accent-dark'
-                    : 'border-tee-stone text-tee-ink-light hover:border-accent'
+                    ? 'border-tee-accent-primary bg-tee-accent-primary/10 text-tee-accent-primary'
+                    : 'border-tee-stone text-tee-ink-light hover:border-tee-accent-primary'
                 }
               `}
             >
@@ -220,42 +220,42 @@ export default function SignUpPage() {
 
         {/* 약관 동의 */}
         <div className="space-y-3">
-          <label className="flex cursor-pointer items-start gap-3 text-body-sm text-tee-ink-light">
+          <label className="flex cursor-pointer items-start gap-3 text-caption text-tee-ink-light">
             <input
               type="checkbox"
               name="agreeTerms"
               checked={formData.agreeTerms}
               onChange={handleChange}
-              className="mt-0.5 h-4 w-4 rounded border-tee-stone bg-white text-accent focus:ring-accent/20"
+              className="mt-0.5 h-4 w-4 rounded border-tee-stone bg-white text-tee-accent-primary focus:ring-tee-accent-primary/20"
             />
             <span>
-              <Link href="/terms" className="text-accent hover:underline">
+              <Link href="/terms" className="text-tee-accent-primary hover:underline">
                 이용약관
               </Link>
               에 동의합니다. (필수)
             </span>
           </label>
           {formErrors.agreeTerms && (
-            <p className="ml-7 text-body-sm text-error">{formErrors.agreeTerms}</p>
+            <p className="ml-7 text-caption text-tee-error">{formErrors.agreeTerms}</p>
           )}
 
-          <label className="flex cursor-pointer items-start gap-3 text-body-sm text-tee-ink-light">
+          <label className="flex cursor-pointer items-start gap-3 text-caption text-tee-ink-light">
             <input
               type="checkbox"
               name="agreePrivacy"
               checked={formData.agreePrivacy}
               onChange={handleChange}
-              className="mt-0.5 h-4 w-4 rounded border-tee-stone bg-white text-accent focus:ring-accent/20"
+              className="mt-0.5 h-4 w-4 rounded border-tee-stone bg-white text-tee-accent-primary focus:ring-tee-accent-primary/20"
             />
             <span>
-              <Link href="/privacy" className="text-accent hover:underline">
+              <Link href="/privacy" className="text-tee-accent-primary hover:underline">
                 개인정보처리방침
               </Link>
               에 동의합니다. (필수)
             </span>
           </label>
           {formErrors.agreePrivacy && (
-            <p className="ml-7 text-body-sm text-error">{formErrors.agreePrivacy}</p>
+            <p className="ml-7 text-caption text-tee-error">{formErrors.agreePrivacy}</p>
           )}
         </div>
 
@@ -263,11 +263,11 @@ export default function SignUpPage() {
           회원가입
         </AuthButton>
 
-        <div className="text-center text-body-sm text-tee-ink-light">
+        <div className="text-center text-caption text-tee-ink-light">
           이미 계정이 있으신가요?{' '}
           <Link
             href="/auth/login"
-            className="font-medium text-accent transition-colors hover:text-accent-dark"
+            className="font-medium text-tee-accent-primary transition-colors hover:text-tee-accent-primary-hover"
           >
             로그인
           </Link>

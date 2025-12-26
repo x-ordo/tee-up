@@ -80,7 +80,7 @@ export default function LoginPage() {
     >
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div role="alert" aria-live="polite" className="alert-error">
+          <div role="alert" aria-live="polite" className="rounded-xl border border-tee-error bg-tee-error/10 p-4 text-caption text-tee-error">
             {error}
           </div>
         )}
@@ -117,17 +117,17 @@ export default function LoginPage() {
           }
         />
 
-        <div className="flex items-center justify-between text-body-sm">
+        <div className="flex items-center justify-between text-caption">
           <label className="flex cursor-pointer items-center gap-2 text-tee-ink-light">
             <input
               type="checkbox"
-              className="h-4 w-4 rounded border-tee-stone bg-white text-accent focus:outline-none focus:ring-2 focus:ring-accent-light"
+              className="h-4 w-4 rounded border-tee-stone bg-white text-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
             />
             로그인 상태 유지
           </label>
           <Link
             href="/auth/reset-password"
-            className="rounded px-1 text-accent transition-colors hover:text-accent-dark focus:outline-none focus:ring-2 focus:ring-accent-light"
+            className="rounded px-1 text-tee-accent-primary transition-colors hover:text-tee-accent-primary-hover focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
           >
             비밀번호 찾기
           </Link>
@@ -141,16 +141,16 @@ export default function LoginPage() {
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-tee-stone" />
           </div>
-          <div className="relative flex justify-center text-body-sm">
+          <div className="relative flex justify-center text-caption">
             <span className="bg-tee-surface px-4 text-tee-ink-muted">또는</span>
           </div>
         </div>
 
-        <div className="text-center text-body-sm text-tee-ink-light">
+        <div className="text-center text-caption text-tee-ink-light">
           계정이 없으신가요?{' '}
           <Link
             href="/auth/signup"
-            className="rounded px-1 font-medium text-accent transition-colors hover:text-accent-dark focus:outline-none focus:ring-2 focus:ring-accent-light"
+            className="rounded px-1 font-medium text-tee-accent-primary transition-colors hover:text-tee-accent-primary-hover focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
           >
             회원가입
           </Link>

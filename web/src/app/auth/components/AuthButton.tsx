@@ -1,5 +1,7 @@
 'use client';
 
+import { cn } from '@/lib/utils';
+
 interface AuthButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   isLoading?: boolean;
   variant?: 'primary' | 'secondary';
@@ -14,14 +16,31 @@ export function AuthButton({
   disabled,
   ...props
 }: AuthButtonProps) {
+  const baseClasses =
+    'w-full h-12 rounded-xl font-medium text-body transition-colors duration-fast focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:cursor-not-allowed';
+
   const variantClasses = {
-    primary: 'btn-primary w-full',
-    secondary: 'btn-secondary w-full',
+    primary: cn(
+      baseClasses,
+      'bg-tee-accent-primary text-white',
+      'hover:bg-tee-accent-primary-hover',
+      'active:bg-tee-accent-primary-active',
+      'disabled:bg-tee-accent-primary-disabled',
+      'focus:ring-tee-accent-primary'
+    ),
+    secondary: cn(
+      baseClasses,
+      'bg-tee-surface text-tee-ink-strong border border-tee-stone',
+      'hover:bg-tee-background',
+      'active:bg-tee-stone',
+      'disabled:bg-tee-background disabled:text-tee-ink-muted',
+      'focus:ring-tee-accent-primary'
+    ),
   };
 
   return (
     <button
-      className={`${variantClasses[variant]} ${className}`}
+      className={cn(variantClasses[variant], className)}
       disabled={disabled || isLoading}
       {...props}
     >
