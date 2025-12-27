@@ -1,7 +1,12 @@
-import { type NextRequest } from 'next/server'
+import { type NextRequest, NextResponse } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
 export async function middleware(request: NextRequest) {
+  // 메인 도메인 → 바로 온보딩으로 리다이렉트
+  if (request.nextUrl.pathname === '/') {
+    return NextResponse.redirect(new URL('/onboarding/quick-setup', request.url))
+  }
+
   return await updateSession(request)
 }
 
