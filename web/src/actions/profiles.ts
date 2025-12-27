@@ -258,6 +258,7 @@ export interface QuickProfileInput {
   priceRange?: string;
   contactType: 'kakao' | 'phone';
   contactValue: string;
+  profileImageUrl?: string;
 }
 
 /**
@@ -292,6 +293,7 @@ export async function createQuickProfile(
         bio: input.bio || null,
         specialties: [input.specialty],
         location: input.location || null,
+        profile_image_url: input.profileImageUrl || null,
       };
 
       // Set contact based on type
@@ -354,7 +356,7 @@ export async function createQuickProfile(
       open_chat_url: input.contactType === 'kakao' ? input.contactValue : null,
       booking_url: null,
       hero_image_url: null,
-      profile_image_url: null,
+      profile_image_url: input.profileImageUrl || null,
       gallery_images: [],
       video_url: null,
       instagram_username: null,

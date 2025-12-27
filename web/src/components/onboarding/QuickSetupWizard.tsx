@@ -10,6 +10,7 @@ import {
   HoleInOne,
   StepTransition,
 } from '@/components/animations/GolfAnimations';
+import { ProfileImageUpload } from './ProfileImageUpload';
 
 // ============================================
 // Types
@@ -34,6 +35,7 @@ interface QuickSetupWizardProps {
   initialData?: Partial<QuickSetupData>;
   autoSubmit?: boolean;
   isAuthenticated?: boolean;
+  userId?: string;
 }
 
 // ============================================
@@ -71,12 +73,23 @@ const inputClassName = "w-full rounded-xl border border-tee-stone bg-white px-4 
 function BasicInfoStep({
   data,
   onChange,
+  userId,
 }: {
   data: QuickSetupData;
   onChange: (updates: Partial<QuickSetupData>) => void;
+  userId?: string;
 }) {
   return (
     <div className="space-y-5">
+      {/* 프로필 사진 - 상단에 배치 */}
+      <div className="py-2">
+        <ProfileImageUpload
+          userId={userId}
+          initialImageUrl={data.profileImageUrl}
+          onImageChange={(url) => onChange({ profileImageUrl: url })}
+        />
+      </div>
+
       <div>
         <label htmlFor="name" className="mb-2 block text-sm font-medium text-tee-ink-strong">
           이름 <span className="text-tee-error">*</span>
@@ -107,16 +120,6 @@ function BasicInfoStep({
         />
         <p className="mt-1.5 text-right text-xs text-tee-ink-muted">
           {data.bio.length}/100
-        </p>
-      </div>
-
-      {/* 프로필 사진 - 선택적이므로 덜 강조 */}
-      <div className="rounded-xl border border-dashed border-tee-stone/60 bg-tee-background/50 p-4 text-center">
-        <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-tee-stone/30 text-2xl">
-          📸
-        </div>
-        <p className="text-xs text-tee-ink-muted">
-          사진은 나중에 추가해도 돼요
         </p>
       </div>
     </div>
@@ -327,7 +330,8 @@ export default function QuickSetupWizard({
   onComplete,
   initialData,
   autoSubmit = false,
-  isAuthenticated = false
+  isAuthenticated = false,
+  userId,
 }: QuickSetupWizardProps) {
   const [step, setStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -478,7 +482,7 @@ export default function QuickSetupWizard({
       {/* 스텝 콘텐츠 - 스크롤 가능 영역 */}
       <Card className="flex-1 p-5 overflow-y-auto">
         <StepTransition step={step}>
-          {step === 0 && <BasicInfoStep data={data} onChange={handleChange} />}
+          {step === 0 && <BasicInfoStep data={data} onChange={handleChange} userId={userId} />}
           {step === 1 && <LessonInfoStep data={data} onChange={handleChange} />}
           {step === 2 && <ContactStep data={data} onChange={handleChange} />}
         </StepTransition>
