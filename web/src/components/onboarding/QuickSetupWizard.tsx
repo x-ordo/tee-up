@@ -65,6 +65,9 @@ const PRICE_RANGES = [
 
 const STEP_LABELS = ['기본 정보', '레슨 정보', '연락처'];
 
+// 공통 입력 스타일 (44px+ 터치 타겟)
+const inputClassName = "w-full rounded-xl border border-tee-stone bg-white px-4 py-3.5 text-base text-tee-ink-strong placeholder:text-tee-ink-muted focus:border-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20 transition-colors";
+
 function BasicInfoStep({
   data,
   onChange,
@@ -73,7 +76,7 @@ function BasicInfoStep({
   onChange: (updates: Partial<QuickSetupData>) => void;
 }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
         <label htmlFor="name" className="mb-2 block text-sm font-medium text-tee-ink-strong">
           이름 <span className="text-tee-error">*</span>
@@ -84,7 +87,8 @@ function BasicInfoStep({
           value={data.name}
           onChange={(e) => onChange({ name: e.target.value })}
           placeholder="예: 김프로"
-          className="w-full rounded-lg border border-tee-stone bg-white px-4 py-3 text-tee-ink-strong placeholder:text-tee-ink-muted focus:border-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
+          className={inputClassName}
+          autoComplete="name"
         />
       </div>
 
@@ -98,22 +102,21 @@ function BasicInfoStep({
           value={data.bio}
           onChange={(e) => onChange({ bio: e.target.value })}
           placeholder="예: 10년 경력, 친절하고 체계적인 레슨"
-          className="w-full rounded-lg border border-tee-stone bg-white px-4 py-3 text-tee-ink-strong placeholder:text-tee-ink-muted focus:border-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
+          className={inputClassName}
           maxLength={100}
         />
-        <p className="mt-1 text-right text-xs text-tee-ink-muted">
+        <p className="mt-1.5 text-right text-xs text-tee-ink-muted">
           {data.bio.length}/100
         </p>
       </div>
 
-      <div className="rounded-lg border border-dashed border-tee-stone bg-tee-background p-6 text-center">
-        <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-tee-stone/50">
-          <svg className="h-8 w-8 text-tee-ink-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
+      {/* 프로필 사진 - 선택적이므로 덜 강조 */}
+      <div className="rounded-xl border border-dashed border-tee-stone/60 bg-tee-background/50 p-4 text-center">
+        <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-tee-stone/30 text-2xl">
+          📸
         </div>
-        <p className="text-sm text-tee-ink-light">
-          프로필 사진은 나중에 추가할 수 있어요
+        <p className="text-xs text-tee-ink-muted">
+          사진은 나중에 추가해도 돼요
         </p>
       </div>
     </div>
@@ -128,7 +131,7 @@ function LessonInfoStep({
   onChange: (updates: Partial<QuickSetupData>) => void;
 }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
         <label htmlFor="specialty" className="mb-2 block text-sm font-medium text-tee-ink-strong">
           전문 분야 <span className="text-tee-error">*</span>
@@ -137,7 +140,7 @@ function LessonInfoStep({
           id="specialty"
           value={data.specialty}
           onChange={(e) => onChange({ specialty: e.target.value })}
-          className="w-full rounded-lg border border-tee-stone bg-white px-4 py-3 text-tee-ink-strong focus:border-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
+          className={inputClassName}
         >
           <option value="">선택하세요</option>
           {SPECIALTIES.map((s) => (
@@ -158,24 +161,24 @@ function LessonInfoStep({
           value={data.location}
           onChange={(e) => onChange({ location: e.target.value })}
           placeholder="예: 강남 XX골프아카데미"
-          className="w-full rounded-lg border border-tee-stone bg-white px-4 py-3 text-tee-ink-strong placeholder:text-tee-ink-muted focus:border-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
+          className={inputClassName}
         />
       </div>
 
       <div>
-        <label htmlFor="priceRange" className="mb-2 block text-sm font-medium text-tee-ink-strong">
+        <label className="mb-2 block text-sm font-medium text-tee-ink-strong">
           레슨 가격대
         </label>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2">
           {PRICE_RANGES.map((p) => (
             <button
               key={p.value}
               type="button"
               onClick={() => onChange({ priceRange: p.value })}
-              className={`rounded-lg border px-4 py-3 text-sm font-medium transition-colors ${
+              className={`rounded-xl border px-3 py-3 text-sm font-medium transition-all active:scale-[0.98] ${
                 data.priceRange === p.value
-                  ? 'border-tee-accent-primary bg-tee-accent-primary/5 text-tee-accent-primary'
-                  : 'border-tee-stone bg-white text-tee-ink-light hover:border-tee-ink-muted'
+                  ? 'border-tee-accent-primary bg-tee-accent-primary/10 text-tee-accent-primary shadow-sm'
+                  : 'border-tee-stone bg-white text-tee-ink-light active:bg-tee-background'
               }`}
             >
               {p.label}
@@ -195,38 +198,34 @@ function ContactStep({
   onChange: (updates: Partial<QuickSetupData>) => void;
 }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
-        <label className="mb-3 block text-sm font-medium text-tee-ink-strong">
-          연락 방법 선택 <span className="text-tee-error">*</span>
+        <label className="mb-2 block text-sm font-medium text-tee-ink-strong">
+          연락 방법 <span className="text-tee-error">*</span>
         </label>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
             onClick={() => onChange({ contactType: 'kakao', contactValue: '' })}
-            className={`flex items-center justify-center gap-2 rounded-lg border px-4 py-4 text-sm font-medium transition-colors ${
+            className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-4 text-sm font-medium transition-all active:scale-[0.98] ${
               data.contactType === 'kakao'
-                ? 'border-tee-kakao bg-tee-kakao/10 text-tee-ink-strong'
-                : 'border-tee-stone bg-white text-tee-ink-light hover:border-tee-ink-muted'
+                ? 'border-yellow-400 bg-yellow-50 text-tee-ink-strong shadow-sm'
+                : 'border-tee-stone bg-white text-tee-ink-light active:bg-tee-background'
             }`}
           >
-            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 3C6.48 3 2 6.48 2 10.5c0 2.53 1.67 4.75 4.14 5.99-.16.56-.52 2.07-.6 2.38-.1.39.15.38.31.28.13-.08 1.99-1.34 2.8-1.88.43.06.88.09 1.35.09 5.52 0 10-3.48 10-7.5S17.52 3 12 3z" />
-            </svg>
+            <span className="text-lg">💬</span>
             카카오톡
           </button>
           <button
             type="button"
             onClick={() => onChange({ contactType: 'phone', contactValue: '' })}
-            className={`flex items-center justify-center gap-2 rounded-lg border px-4 py-4 text-sm font-medium transition-colors ${
+            className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-4 text-sm font-medium transition-all active:scale-[0.98] ${
               data.contactType === 'phone'
-                ? 'border-tee-accent-primary bg-tee-accent-primary/5 text-tee-accent-primary'
-                : 'border-tee-stone bg-white text-tee-ink-light hover:border-tee-ink-muted'
+                ? 'border-tee-accent-primary bg-tee-accent-primary/10 text-tee-accent-primary shadow-sm'
+                : 'border-tee-stone bg-white text-tee-ink-light active:bg-tee-background'
             }`}
           >
-            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-            </svg>
+            <span className="text-lg">📞</span>
             전화번호
           </button>
         </div>
@@ -234,11 +233,12 @@ function ContactStep({
 
       <div>
         <label htmlFor="contactValue" className="mb-2 block text-sm font-medium text-tee-ink-strong">
-          {data.contactType === 'kakao' ? '카카오톡 오픈채팅 링크' : '전화번호'}
+          {data.contactType === 'kakao' ? '오픈채팅 링크' : '전화번호'}
         </label>
         <input
           id="contactValue"
           type={data.contactType === 'phone' ? 'tel' : 'url'}
+          inputMode={data.contactType === 'phone' ? 'tel' : 'url'}
           value={data.contactValue}
           onChange={(e) => onChange({ contactValue: e.target.value })}
           placeholder={
@@ -246,12 +246,13 @@ function ContactStep({
               ? 'https://open.kakao.com/o/...'
               : '010-1234-5678'
           }
-          className="w-full rounded-lg border border-tee-stone bg-white px-4 py-3 text-tee-ink-strong placeholder:text-tee-ink-muted focus:border-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
+          className={inputClassName}
+          autoComplete={data.contactType === 'phone' ? 'tel' : 'url'}
         />
         {data.contactType === 'kakao' && (
-          <p className="mt-2 text-xs text-tee-ink-muted">
-            카카오톡 &gt; 채팅 &gt; 오픈채팅 &gt; 오픈채팅방 만들기에서 링크를 복사하세요
-          </p>
+          <div className="mt-3 rounded-lg bg-yellow-50 p-3 text-xs text-tee-ink-light">
+            💡 카카오톡 → 채팅 → 오픈채팅 → 채팅방 만들기 → 링크 복사
+          </div>
         )}
       </div>
     </div>
@@ -281,41 +282,36 @@ function CompletionStep({ profileUrl }: { profileUrl: string }) {
 
   return (
     <div className="text-center">
-      <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-tee-success/10">
-        <Check className="h-10 w-10 text-tee-success" />
-      </div>
-      <h2 className="mb-2 text-2xl font-bold text-tee-ink-strong">
-        프로필 완성!
-      </h2>
-      <p className="mb-8 text-tee-ink-light">
-        이제 인스타그램, 카카오톡 등에 링크를 공유하세요
+      <p className="mb-6 text-tee-ink-light text-sm">
+        인스타그램, 카카오톡에 공유하세요!
       </p>
 
-      <div className="mb-6 rounded-lg border border-tee-stone bg-tee-background p-4">
+      {/* 링크 복사 카드 */}
+      <div className="mb-6 rounded-xl border border-tee-stone bg-tee-background p-4">
         <p className="mb-2 text-xs text-tee-ink-muted">내 프로필 링크</p>
         <div className="flex items-center gap-2">
-          <code className="flex-1 truncate rounded bg-white px-3 py-2 text-sm text-tee-ink-strong">
+          <code className="flex-1 truncate rounded-lg bg-white px-3 py-2.5 text-sm text-tee-ink-strong border border-tee-stone">
             {profileUrl}
           </code>
           <Button
-            variant="outline"
-            size="sm"
+            variant={copied ? 'primary' : 'outline'}
             onClick={handleCopy}
-            className="flex-shrink-0"
+            className="h-10 px-4 flex-shrink-0"
           >
-            {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+            {copied ? <Check className="h-5 w-5" /> : <Copy className="h-5 w-5" />}
           </Button>
         </div>
       </div>
 
-      <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-        <Button asChild variant="primary">
+      {/* 액션 버튼 - 모바일 풀너비 */}
+      <div className="flex flex-col gap-3">
+        <Button asChild variant="primary" className="h-12 text-base">
           <a href={profileUrl} target="_blank" rel="noopener noreferrer">
-            <ExternalLink className="mr-2 h-4 w-4" />
+            <ExternalLink className="mr-2 h-5 w-5" />
             프로필 보기
           </a>
         </Button>
-        <Button asChild variant="outline">
+        <Button asChild variant="outline" className="h-12 text-base">
           <a href="/dashboard">대시보드로 이동</a>
         </Button>
       </div>
@@ -441,72 +437,82 @@ export default function QuickSetupWizard({
   if (step === 3 && completedSlug) {
     const profileUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/profile/${completedSlug}`;
     return (
-      <Card className="mx-auto max-w-md p-8">
-        <HoleInOne show={true} />
-        <div className="mt-8">
-          <CompletionStep profileUrl={profileUrl} />
-        </div>
-      </Card>
+      <div className="flex flex-col flex-1">
+        <Card className="flex-1 p-6 flex flex-col items-center justify-center">
+          <HoleInOne show={true} />
+          <div className="mt-6 w-full">
+            <CompletionStep profileUrl={profileUrl} />
+          </div>
+        </Card>
+      </div>
     );
   }
 
   // Loading state with golf spinner
   if (isSubmitting) {
     return (
-      <Card className="mx-auto max-w-md p-8">
-        <GolfProgress currentStep={step} totalSteps={3} labels={STEP_LABELS} />
-        <div className="flex items-center justify-center min-h-[300px]">
-          <GolfSpinner message="프로필을 생성하고 있어요..." />
-        </div>
-      </Card>
+      <div className="flex flex-col flex-1">
+        <Card className="p-4 mb-4">
+          <GolfProgress currentStep={step} totalSteps={3} labels={STEP_LABELS} />
+        </Card>
+        <Card className="flex-1 flex items-center justify-center">
+          <GolfSpinner message="프로필을 생성하고 있어요..." size="lg" />
+        </Card>
+      </div>
     );
   }
 
   return (
-    <Card className="mx-auto max-w-md p-8">
-      {/* 골프공 프로그레스 바 */}
-      <GolfProgress currentStep={step} totalSteps={3} labels={STEP_LABELS} />
+    <div className="flex flex-col flex-1">
+      {/* 프로그레스 바 */}
+      <Card className="p-4 mb-4">
+        <GolfProgress currentStep={step} totalSteps={3} labels={STEP_LABELS} />
+      </Card>
 
       {error && (
-        <div className="mb-6 rounded-lg border border-tee-error/20 bg-tee-error/5 p-4 text-sm text-tee-error">
+        <div className="mb-4 rounded-lg border border-tee-error/20 bg-tee-error/5 p-3 text-sm text-tee-error">
           {error}
         </div>
       )}
 
-      {/* 스텝 전환 애니메이션 */}
-      <div className="min-h-[300px]">
+      {/* 스텝 콘텐츠 - 스크롤 가능 영역 */}
+      <Card className="flex-1 p-5 overflow-y-auto">
         <StepTransition step={step}>
           {step === 0 && <BasicInfoStep data={data} onChange={handleChange} />}
           {step === 1 && <LessonInfoStep data={data} onChange={handleChange} />}
           {step === 2 && <ContactStep data={data} onChange={handleChange} />}
         </StepTransition>
-      </div>
+      </Card>
 
-      <div className="mt-8 flex justify-between">
-        <Button
-          variant="ghost"
-          onClick={handleBack}
-          disabled={step === 0 || isSubmitting}
-          className={step === 0 ? 'invisible' : ''}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          이전
-        </Button>
+      {/* 고정 하단 버튼 - 모바일 최적화 */}
+      <div className="mt-4 flex gap-3">
+        {step > 0 && (
+          <Button
+            variant="outline"
+            onClick={handleBack}
+            disabled={isSubmitting}
+            className="flex-1 h-12 text-base"
+          >
+            <ArrowLeft className="mr-2 h-5 w-5" />
+            이전
+          </Button>
+        )}
         <Button
           variant="primary"
           onClick={handleNext}
           disabled={!canProceed() || isSubmitting}
+          className={`h-12 text-base ${step === 0 ? 'w-full' : 'flex-1'}`}
         >
           {step === 2 ? (
-            isAuthenticated ? '완료 ⛳' : '로그인하고 저장'
+            isAuthenticated ? '완료 ⛳' : '로그인하고 저장 →'
           ) : (
             <>
               다음
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <ArrowRight className="ml-2 h-5 w-5" />
             </>
           )}
         </Button>
       </div>
-    </Card>
+    </div>
   );
 }

@@ -64,33 +64,31 @@ export default function QuickSetupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-tee-background to-white">
-      {/* Header */}
-      <header className="border-b border-tee-stone bg-white/80 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-          <Link href="/" className="font-display text-xl font-bold text-tee-ink-strong">
-            TEE<span className="text-tee-accent-primary">:</span>UP
-          </Link>
-          <p className="text-sm text-tee-ink-muted">
-            5분 안에 완료!
-          </p>
-        </div>
+    <div className="min-h-[100dvh] bg-gradient-to-b from-tee-background to-white flex flex-col">
+      {/* 미니멀 모바일 헤더 */}
+      <header className="flex-shrink-0 px-4 py-3 flex items-center justify-between">
+        <Link href="/" className="font-display text-lg font-bold text-tee-ink-strong">
+          TEE<span className="text-tee-accent-primary">:</span>UP
+        </Link>
+        <span className="text-xs text-tee-ink-muted bg-tee-accent-primary/10 px-2 py-1 rounded-full">
+          3분이면 끝!
+        </span>
       </header>
 
-      {/* Main Content */}
-      <main className="px-4 py-12">
-        <div className="mx-auto max-w-lg">
-          <div className="mb-8 text-center">
-            <h1 className="mb-2 text-2xl font-bold text-tee-ink-strong">
-              빠른 프로필 설정
-            </h1>
-            <p className="text-tee-ink-light">
-              인스타그램에 바로 공유할 수 있는
-              <br />
-              멋진 프로필 페이지를 만들어보세요
-            </p>
-          </div>
+      {/* 메인 콘텐츠 - 풀스크린 */}
+      <main className="flex-1 px-4 pb-4 flex flex-col">
+        {/* 타이틀 - 모바일에서 간결하게 */}
+        <div className="text-center mb-4">
+          <h1 className="text-xl font-bold text-tee-ink-strong">
+            내 프로필 만들기
+          </h1>
+          <p className="text-sm text-tee-ink-light mt-1">
+            링크 하나로 레슨 문의 받기 ✨
+          </p>
+        </div>
 
+        {/* 위자드 - flex-1로 공간 채우기 */}
+        <div className="flex-1 flex flex-col">
           <QuickSetupWizard
             onComplete={handleComplete}
             initialData={initialData}
@@ -99,13 +97,6 @@ export default function QuickSetupPage() {
           />
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="border-t border-tee-stone bg-white py-6">
-        <p className="text-center text-xs text-tee-ink-muted">
-          나중에 대시보드에서 더 자세한 정보를 추가할 수 있어요
-        </p>
-      </footer>
     </div>
   );
 }
