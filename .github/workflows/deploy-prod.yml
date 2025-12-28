@@ -1,6 +1,7 @@
 # ═══════════════════════════════════════════════════════════════
 # TEE:UP 프로덕션 배포
 # 트리거: 릴리스 태그 생성 시 (수동 승인 필요)
+# Note: Express.js backend removed - now using Next.js Server Actions
 # ═══════════════════════════════════════════════════════════════
 
 name: Deploy to Production
@@ -33,21 +34,28 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
 
       - name: Install Dependencies
-        run: |
-          cd web && npm ci
-          cd ../api && npm ci
+        working-directory: ./web
+        run: npm ci
 
-      - name: Run All Tests
+      - name: Lint & Type Check
+        working-directory: ./web
         run: |
-          cd web && npm run test
-          cd ../api && npm run test
+          npm run lint
+          npm run type-check
+
+      - name: Run Tests
+        working-directory: ./web
+        run: npm run test
+        env:
+          CI: true
 
       - name: Build Check
-        run: |
-          cd web && npm run build
-          cd ../api && npm run build
+        working-directory: ./web
+        run: npm run build
         env:
           NEXT_PUBLIC_SUPABASE_URL: https://yrdfopkerrrhsafynakg.supabase.co
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
@@ -66,10 +74,10 @@ jobs:
         run: echo "Production deployment approved"
 
   # ═══════════════════════════════════════════════════════════════
-  # 프로덕션 배포
+  # 프로덕션 배포 (Vercel)
   # ═══════════════════════════════════════════════════════════════
-  deploy-frontend:
-    name: Deploy Frontend to Vercel (Production)
+  deploy:
+    name: Deploy to Vercel (Production)
     runs-on: ubuntu-latest
     needs: approval
     steps:
@@ -85,57 +93,33 @@ jobs:
           vercel-args: '--prod'
           working-directory: ./web
 
-  deploy-backend:
-    name: Deploy Backend to Railway (Production)
-    runs-on: ubuntu-latest
-    needs: approval
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Deploy to Railway Production
-        uses: bervProject/railway-deploy@main
-        with:
-          railway_token: ${{ secrets.RAILWAY_TOKEN }}
-          service: teeup-api-prod
-
   # ═══════════════════════════════════════════════════════════════
   # 배포 후 검증
   # ═══════════════════════════════════════════════════════════════
   post-deploy:
     name: Post-deployment Verification
     runs-on: ubuntu-latest
-    needs: [deploy-frontend, deploy-backend]
+    needs: deploy
     steps:
-      - name: Health Check - Frontend
-        run: |
-          echo "Starting frontend health check..."
-          for i in {1..20}; do
-            if curl -fsS https://teeup.kr > /dev/null; then
-              echo "Frontend is healthy ✅"
-              exit 0
-            fi
-            echo "Frontend not ready yet (attempt ${i}/20). Retrying in 15 seconds..."
-            sleep 15
-          done
-          echo "Frontend failed to become healthy within the expected time ❌"
-          exit 1
+      - name: Wait for deployment
+        run: sleep 30
 
-      - name: Health Check - Backend
+      - name: Health Check
         run: |
-          echo "Starting backend health check..."
+          echo "Starting health check..."
           for i in {1..20}; do
-            if curl -fsS https://api.teeup.kr/health > /dev/null; then
-              echo "Backend is healthy ✅"
+            if curl -fsS https://tee-up.vercel.app > /dev/null; then
+              echo "Site is healthy ✅"
               exit 0
             fi
-            echo "Backend not ready yet (attempt ${i}/20). Retrying in 15 seconds..."
+            echo "Site not ready yet (attempt ${i}/20). Retrying in 15 seconds..."
             sleep 15
           done
-          echo "Backend failed to become healthy within the expected time ❌"
+          echo "Site failed to become healthy within the expected time ❌"
           exit 1
 
       - name: Send Success Notification
+        if: success() && secrets.SLACK_WEBHOOK_URL != ''
         uses: 8398a7/action-slack@v3
         with:
           status: success
@@ -145,27 +129,19 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   # ═══════════════════════════════════════════════════════════════
-  # 롤백 (실패 시)
+  # 실패 알림
   # ═══════════════════════════════════════════════════════════════
-  rollback:
-    name: Rollback on Failure
+  notify-failure:
+    name: Notify on Failure
     runs-on: ubuntu-latest
-    needs: [deploy-frontend, deploy-backend, post-deploy]
-    if: failure()
+    needs: [deploy, post-deploy]
+    if: failure() && secrets.SLACK_WEBHOOK_URL != ''
     steps:
-      - name: Rollback Vercel
-        run: echo "Rollback Vercel deployment"
-        # vercel rollback 명령 실행
-
-      - name: Rollback Railway
-        run: echo "Rollback Railway deployment"
-        # railway rollback 명령 실행
-
       - name: Send Failure Notification
         uses: 8398a7/action-slack@v3
         with:
           status: failure
-          text: '🚨 Production 배포 실패! 롤백 진행 중...'
+          text: '🚨 Production 배포 실패!'
           fields: repo,message,commit,author,workflow
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
