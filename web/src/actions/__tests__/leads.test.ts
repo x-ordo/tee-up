@@ -176,11 +176,12 @@ describe('Lead Server Actions', () => {
         expect(result.data.total_leads).toBe(50);
         expect(result.data.monthly_leads).toBe(5);
         expect(result.data.is_premium).toBe(false);
-        expect(result.data.free_leads_remaining).toBe(0); // 3 - 5 = 0 (capped at 0)
+        // MONETIZATION PIVOT: All plans now have unlimited leads (999)
+        expect(result.data.free_leads_remaining).toBe(999);
       }
     });
 
-    it('should calculate free leads remaining correctly', async () => {
+    it('should return unlimited leads for all tiers (monetization pivot)', async () => {
       mockAuthenticatedUser(mockClient);
       mockQuerySuccess(queryBuilder, {
         total_leads: 10,
@@ -192,7 +193,8 @@ describe('Lead Server Actions', () => {
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data.free_leads_remaining).toBe(2); // 3 - 1 = 2
+        // MONETIZATION PIVOT: Even free tier has unlimited leads
+        expect(result.data.free_leads_remaining).toBe(999);
       }
     });
 

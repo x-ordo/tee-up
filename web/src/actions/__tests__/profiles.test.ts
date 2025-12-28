@@ -261,6 +261,9 @@ describe('Profile Server Actions', () => {
   // createProProfile
   // ============================================
   describe('createProProfile', () => {
+    // Minimal valid profile data for createProProfile
+    // The actual type requires more fields, but Zod schema defaults handle most of them
+    // Using unknown cast because test focuses on mock behavior, not type completeness
     const validProfileData = {
       title: 'New Pro',
       slug: 'new-pro',
@@ -268,7 +271,7 @@ describe('Profile Server Actions', () => {
       certifications: [],
       theme_type: 'curriculum' as const,
       subscription_tier: 'free' as const,
-    };
+    } as unknown as Parameters<typeof createProProfile>[0];
 
     it('should create profile for authenticated user', async () => {
       mockAuthenticatedUser(mockClient);
@@ -290,7 +293,7 @@ describe('Profile Server Actions', () => {
 
     it('should generate slug from title if not provided', async () => {
       mockAuthenticatedUser(mockClient);
-      const dataWithoutSlug = { ...validProfileData, slug: undefined };
+      const dataWithoutSlug = { ...validProfileData, slug: undefined } as unknown as Parameters<typeof createProProfile>[0];
       const createdProfile = { ...mockProProfile, ...dataWithoutSlug };
       mockQuerySuccess(queryBuilder, createdProfile);
 

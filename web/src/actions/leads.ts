@@ -11,6 +11,11 @@ import {
   DB_QUERY_FAILED,
 } from '@/lib/errors';
 import { validateInput, validateId, trackLeadInputSchema } from '@/lib/validations';
+import {
+  calculateFreeLeadsRemaining,
+  isPremiumTier,
+  mapLegacyTier,
+} from '@/lib/billing';
 
 /**
  * Lead type from database
@@ -36,8 +41,6 @@ export type LeadStats = {
   free_leads_remaining: number;
   is_premium: boolean;
 };
-
-const FREE_LEADS_PER_MONTH = 3;
 
 /**
  * Track a new lead (called when contact action is taken)
@@ -133,10 +136,10 @@ export async function getLeadStats(): Promise<ActionResult<LeadStats>> {
       return { success: false, error: DB_QUERY_FAILED };
     }
 
-    const isPremium = data.subscription_tier !== 'free';
-    const freeRemaining = isPremium
-      ? 999 // Unlimited for paid tier
-      : Math.max(0, FREE_LEADS_PER_MONTH - data.monthly_lead_count);
+    // Use centralized billing utilities
+    const tier = mapLegacyTier(data.subscription_tier);
+    const premium = isPremiumTier(tier);
+    const freeRemaining = calculateFreeLeadsRemaining(tier, data.monthly_lead_count);
 
     return {
       success: true,
@@ -144,7 +147,7 @@ export async function getLeadStats(): Promise<ActionResult<LeadStats>> {
         total_leads: data.total_leads,
         monthly_leads: data.monthly_lead_count,
         free_leads_remaining: freeRemaining,
-        is_premium: isPremium,
+        is_premium: premium,
       },
     };
   } catch (err) {
