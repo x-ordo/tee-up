@@ -4,6 +4,17 @@ import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 import type { ActionResult, ThemeType } from './types';
 import type { ThemeConfig } from './theme';
+import {
+  logError,
+  addActionBreadcrumb,
+  AUTH_NOT_AUTHENTICATED,
+  DB_QUERY_FAILED,
+  // Reserved for future use in other functions
+  // PROFILE_NOT_FOUND,
+  // PROFILE_UPDATE_FAILED,
+  // PROFILE_CREATE_FAILED,
+  // PROFILE_SLUG_TAKEN,
+} from '@/lib/errors';
 
 /**
  * Pro Profile type from database
@@ -56,6 +67,8 @@ export type ProProfileUpdate = Partial<
  * Get the current authenticated user's profile
  */
 export async function getCurrentUserProfile(): Promise<ActionResult<ProProfile | null>> {
+  addActionBreadcrumb('getCurrentUserProfile');
+
   try {
     const supabase = await createClient();
 
@@ -65,7 +78,7 @@ export async function getCurrentUserProfile(): Promise<ActionResult<ProProfile |
     } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      return { success: false, error: 'Not authenticated' };
+      return { success: false, error: AUTH_NOT_AUTHENTICATED };
     }
 
     const { data, error } = await supabase
@@ -74,13 +87,16 @@ export async function getCurrentUserProfile(): Promise<ActionResult<ProProfile |
       .eq('user_id', user.id)
       .single();
 
+    // PGRST116 = no rows found (expected for new users)
     if (error && error.code !== 'PGRST116') {
-      return { success: false, error: error.message };
+      logError(error, { action: 'getCurrentUserProfile', userId: user.id });
+      return { success: false, error: DB_QUERY_FAILED };
     }
 
     return { success: true, data };
-  } catch (_err) {
-    return { success: false, error: 'Failed to fetch profile' };
+  } catch (err) {
+    const errorCode = logError(err, { action: 'getCurrentUserProfile' });
+    return { success: false, error: errorCode };
   }
 }
 
@@ -90,6 +106,8 @@ export async function getCurrentUserProfile(): Promise<ActionResult<ProProfile |
 export async function getPublicProfile(
   slug: string
 ): Promise<ActionResult<ProProfile | null>> {
+  addActionBreadcrumb('getPublicProfile', { slug });
+
   try {
     const supabase = await createClient();
 
@@ -101,15 +119,18 @@ export async function getPublicProfile(
       .single();
 
     if (error) {
+      // PGRST116 = no rows found (profile doesn't exist or not approved)
       if (error.code === 'PGRST116') {
         return { success: true, data: null };
       }
-      return { success: false, error: error.message };
+      logError(error, { action: 'getPublicProfile', metadata: { slug } });
+      return { success: false, error: DB_QUERY_FAILED };
     }
 
     return { success: true, data };
-  } catch (_err) {
-    return { success: false, error: 'Failed to fetch profile' };
+  } catch (err) {
+    const errorCode = logError(err, { action: 'getPublicProfile', metadata: { slug } });
+    return { success: false, error: errorCode };
   }
 }
 

@@ -1,3 +1,5 @@
+import { withSentryConfig } from '@sentry/nextjs';
+
 /**
  * Next.js Configuration
  * @type {import('next').NextConfig}
@@ -44,16 +46,45 @@ const nextConfig = {
    * - 큰 패키지의 트리 쉐이킹 개선
    * - 초기 로딩 시간 단축
    *
-   * 새 패키지 추가 방법:
-   * 1. 큰 번들 크기를 가진 패키지 확인 (npm run build로 분석)
-   * 2. 해당 패키지를 배열에 추가
+   * instrumentationHook: Sentry 서버 사이드 초기화를 위해 필요
    *
    * @example
    * optimizePackageImports: ['@fontsource/pretendard', 'lodash', 'date-fns']
    */
   experimental: {
     optimizePackageImports: [], // Removed @fontsource/pretendard
+    instrumentationHook: true, // Enable Sentry instrumentation
   },
-}
+};
 
-export default nextConfig
+/**
+ * Sentry Configuration Options
+ *
+ * @see https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+ */
+const sentryWebpackPluginOptions = {
+  // Organization and project settings (from environment)
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+
+  // Auth token for uploading source maps
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+
+  // Only upload source maps in production
+  silent: process.env.NODE_ENV !== 'production',
+
+  // Upload source maps to Sentry
+  widenClientFileUpload: true,
+
+  // Hides source maps from generated client bundles
+  hideSourceMaps: true,
+
+  // Webpack-specific options
+  bundleSizeOptimizations: {
+    // Remove debug logging in production
+    excludeDebugStatements: true,
+  },
+};
+
+// Wrap config with Sentry
+export default withSentryConfig(nextConfig, sentryWebpackPluginOptions)
