@@ -1,8 +1,14 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import type { ActionResult, ThemeType } from './types';
+import {
+  createCachedPublicProfile,
+  createCachedApprovedProfiles,
+  profileTag,
+  APPROVED_PROFILES_TAG,
+} from '@/lib/cache';
 import type { ThemeConfig } from './theme';
 import {
   logError,
@@ -105,13 +111,17 @@ export async function getCurrentUserProfile(): Promise<ActionResult<ProProfile |
 
 /**
  * Get a public profile by slug (no auth required)
+ *
+ * Uses unstable_cache for 5-minute TTL caching.
+ * Cache is invalidated via profileTag(slug) on profile updates.
  */
 export async function getPublicProfile(
   slug: string
 ): Promise<ActionResult<ProProfile | null>> {
   addActionBreadcrumb('getPublicProfile', { slug });
 
-  try {
+  // Create cached fetcher for this slug
+  const fetchProfile = createCachedPublicProfile(slug, async () => {
     const supabase = await createClient();
 
     const { data, error } = await supabase
@@ -124,13 +134,17 @@ export async function getPublicProfile(
     if (error) {
       // PGRST116 = no rows found (profile doesn't exist or not approved)
       if (error.code === 'PGRST116') {
-        return { success: true, data: null };
+        return { success: true as const, data: null };
       }
       logError(error, { action: 'getPublicProfile', metadata: { slug } });
-      return { success: false, error: DB_QUERY_FAILED };
+      return { success: false as const, error: DB_QUERY_FAILED };
     }
 
-    return { success: true, data };
+    return { success: true as const, data };
+  });
+
+  try {
+    return await fetchProfile();
   } catch (err) {
     const errorCode = logError(err, { action: 'getPublicProfile', metadata: { slug } });
     return { success: false, error: errorCode };
@@ -139,9 +153,13 @@ export async function getPublicProfile(
 
 /**
  * Get all approved profiles (for directory)
+ *
+ * Uses unstable_cache for 30-minute TTL caching.
+ * Cache is invalidated via APPROVED_PROFILES_TAG on profile approval/creation.
  */
 export async function getApprovedProfiles(): Promise<ActionResult<ProProfile[]>> {
-  try {
+  // Create cached fetcher for approved profiles
+  const fetchProfiles = createCachedApprovedProfiles(async () => {
     const supabase = await createClient();
 
     const { data, error } = await supabase
@@ -152,10 +170,14 @@ export async function getApprovedProfiles(): Promise<ActionResult<ProProfile[]>>
       .order('created_at', { ascending: false });
 
     if (error) {
-      return { success: false, error: error.message };
+      return { success: false as const, error: error.message };
     }
 
-    return { success: true, data: data || [] };
+    return { success: true as const, data: data || [] };
+  });
+
+  try {
+    return await fetchProfiles();
   } catch (_err) {
     return { success: false, error: 'Failed to fetch profiles' };
   }
@@ -203,6 +225,10 @@ export async function updateProProfile(
       logError(error, { action: 'updateProProfile', userId: user.id, metadata: { profileId } });
       return { success: false, error: PROFILE_UPDATE_FAILED };
     }
+
+    // Invalidate cache tags for this profile
+    revalidateTag(profileTag(data.slug));
+    revalidateTag(APPROVED_PROFILES_TAG);
 
     // Revalidate profile pages
     revalidatePath(`/${data.slug}`);
@@ -267,6 +293,9 @@ export async function createProProfile(
       logError(error, { action: 'createProProfile', userId: user.id });
       return { success: false, error: PROFILE_CREATE_FAILED };
     }
+
+    // Invalidate approved profiles cache when new profile is created
+    revalidateTag(APPROVED_PROFILES_TAG);
 
     revalidatePath('/dashboard');
     return { success: true, data };

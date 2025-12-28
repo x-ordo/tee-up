@@ -46,6 +46,13 @@ const mockCreateClient = createClient as jest.MockedFunction<typeof createClient
 // Mock next/cache
 jest.mock('next/cache', () => ({
   revalidatePath: jest.fn(),
+  revalidateTag: jest.fn(),
+  // Mock unstable_cache to just call the function directly (no caching)
+  unstable_cache: <T extends (...args: unknown[]) => Promise<unknown>>(
+    fn: T,
+    _keyParts?: string[],
+    _options?: { revalidate?: number; tags?: string[] }
+  ) => fn,
 }));
 
 describe('Profile Server Actions', () => {

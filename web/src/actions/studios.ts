@@ -1,8 +1,12 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import type { ActionResult } from './types';
+import {
+  createCachedPublicStudio,
+  studioTag,
+} from '@/lib/cache';
 
 /**
  * Studio type from database
@@ -76,11 +80,15 @@ export async function createStudio(
 
 /**
  * Get studio by slug (public)
+ *
+ * Uses unstable_cache for 10-minute TTL caching.
+ * Cache is invalidated via studioTag(slug) on studio updates.
  */
 export async function getPublicStudio(
   slug: string
 ): Promise<ActionResult<Studio | null>> {
-  try {
+  // Create cached fetcher for this studio
+  const fetchStudio = createCachedPublicStudio(slug, async () => {
     const supabase = await createClient();
 
     const { data, error } = await supabase
@@ -92,12 +100,16 @@ export async function getPublicStudio(
 
     if (error) {
       if (error.code === 'PGRST116') {
-        return { success: true, data: null };
+        return { success: true as const, data: null };
       }
-      return { success: false, error: error.message };
+      return { success: false as const, error: error.message };
     }
 
-    return { success: true, data };
+    return { success: true as const, data };
+  });
+
+  try {
+    return await fetchStudio();
   } catch (_err) {
     return { success: false, error: 'Failed to fetch studio' };
   }
@@ -163,6 +175,9 @@ export async function updateStudio(
     if (error) {
       return { success: false, error: error.message };
     }
+
+    // Invalidate cache for this studio
+    revalidateTag(studioTag(data.slug));
 
     revalidatePath(`/studio/${data.slug}`);
     revalidatePath('/dashboard/studio');

@@ -39,6 +39,17 @@ import {
 jest.mock('@/lib/supabase/server');
 const mockCreateClient = createClient as jest.MockedFunction<typeof createClient>;
 
+// Mock next/cache (for revalidateTag in related modules)
+jest.mock('next/cache', () => ({
+  revalidatePath: jest.fn(),
+  revalidateTag: jest.fn(),
+  unstable_cache: <T extends (...args: unknown[]) => Promise<unknown>>(
+    fn: T,
+    _keyParts?: string[],
+    _options?: { revalidate?: number; tags?: string[] }
+  ) => fn,
+}));
+
 describe('Lead Server Actions', () => {
   let mockClient: ReturnType<typeof createMockSupabaseClient>['mockClient'];
   let queryBuilder: ReturnType<typeof createMockSupabaseClient>['queryBuilder'];
