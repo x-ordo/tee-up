@@ -426,6 +426,67 @@ Dashboard 설정이나 수동 작업이 필요한 경우 GitHub Issue로 등록:
 - `node_modules/`, `.next/`
 - `test-results/`, `playwright-report/`
 
+## Development Principles
+
+### Core Principles
+
+| 섹션 | 핵심 원칙 |
+|------|-----------|
+| 1. TDD | 테스트 먼저 → Red/Green/Refactor 사이클 |
+| 2. 외부 설정 | 수동 설정 필요 시 GitHub Issue 등록 필수 |
+| 3. 설계 원칙 | Clean Architecture, DI, Event-Driven |
+| 4. 커밋 메시지 | Conventional Commits, AI 언급 금지 |
+| 5. 코드 스타일 | ESLint, TypeScript strict, 단일 책임 원칙 |
+| 6. 응답 원칙 | CTO 관점, 객관적, 근거 필수 |
+| 7. PR 체크리스트 | 7개 항목 체크 후 머지 |
+
+### Response Principles (응답 원칙)
+
+**CTO 관점:**
+- 결정 중심 (옵션 나열 X)
+- 트레이드오프/리스크/ROI 명시
+- P0/P1/P2 우선순위 분류
+- 간결함 유지
+
+**객관성:**
+- 감정 배제
+- 사실 기반
+- 정량적 표현
+
+**근거 확보:**
+- 공식 문서 참조
+- 코드 라인 명시 (예: `profiles.ts:123`)
+- 테스트 결과 포함
+- 벤치마크 데이터
+
+**금지 표현:**
+- ❌ "아마도...", "~일 것 같습니다"
+- ❌ "보통은...", "일반적으로..."
+- ❌ 출처 없는 주장
+
+### Business Mindset (비즈니스 마인드셋)
+
+| 항목 | 내용 |
+|------|------|
+| 소비자 중심 사고 | 리서치/피드백은 최종 사용자 관점 |
+| 비즈니스 임팩트 | 수익/비용/시장 영향 고려 |
+| 가치 전달 | 기술 ≠ 비즈니스 구분 |
+| 시장 현실 | 이상 < 실용 |
+
+B2C/B2B/B2G 전 영역 적용.
+
+### PR Checklist (7개 항목)
+
+```markdown
+- [ ] 테스트 통과 (unit + e2e)
+- [ ] 타입 체크 통과 (`npm run type-check`)
+- [ ] 린트 통과 (`npm run lint`)
+- [ ] 변경사항 문서화 (필요시)
+- [ ] 보안 검토 (인증/권한/입력 검증)
+- [ ] 성능 영향 검토
+- [ ] 롤백 계획 확인
+```
+
 ## Quick Troubleshooting
 
 ### Server Action errors
