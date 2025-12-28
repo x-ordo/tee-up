@@ -96,6 +96,74 @@ tee-up/
 3. **Route Groups** - `(portfolio)`, `(dashboard)`, `(marketing)` for layout isolation
 4. **Lead-Based Billing** - Revenue from lead captures, not chat creation
 
+### Data Flow Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        Client (Browser)                          │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐         │
+│  │   Server    │    │   Client    │    │   useAuth   │         │
+│  │  Component  │    │  Component  │    │    Hook     │         │
+│  └──────┬──────┘    └──────┬──────┘    └──────┬──────┘         │
+└─────────┼──────────────────┼──────────────────┼─────────────────┘
+          │                  │                  │
+          ▼                  ▼                  ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    Server Actions Layer                          │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐         │
+│  │ profiles.ts │    │  leads.ts   │    │ studios.ts  │         │
+│  │ portfolios  │    │ scheduler   │    │  refunds    │         │
+│  └──────┬──────┘    └──────┬──────┘    └──────┬──────┘         │
+│         │                  │                  │                 │
+│         └──────────────────┼──────────────────┘                 │
+│                            ▼                                     │
+│              ┌─────────────────────────┐                        │
+│              │  ActionResult<T> Type   │                        │
+│              │  { success, data/error }│                        │
+│              └─────────────────────────┘                        │
+└─────────────────────────────────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                      Supabase (Backend)                          │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐         │
+│  │   Auth +    │    │ PostgreSQL  │    │   Storage   │         │
+│  │   Session   │    │  + RLS      │    │   Buckets   │         │
+│  └─────────────┘    └─────────────┘    └─────────────┘         │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Security Architecture
+
+```
+Request → Middleware (session refresh)
+        → Layout (auth check)
+        → Server Action (user validation)
+        → Supabase RLS (policy enforcement)
+        → Response
+```
+
+**Security Layers:**
+| Layer | Implementation | Purpose |
+|-------|----------------|---------|
+| 1. Middleware | `middleware.ts` | Session refresh, route protection |
+| 2. Layout | `(dashboard)/layout.tsx` | Role-based access control |
+| 3. Server Action | `auth.getUser()` check | User authentication |
+| 4. Database | RLS Policies | Row-level data isolation |
+
+### State Management Strategy
+
+**Philosophy:** Server-first, minimal client state
+
+| State Type | Location | Example |
+|------------|----------|---------|
+| Auth | `useAuth()` hook | Session, user info |
+| Server Data | Server Actions | Profiles, leads, portfolios |
+| UI State | Component `useState` | Forms, modals, tabs |
+| Theme | `next-themes` | Dark/light mode |
+
+**No Redux/Zustand** - Server Actions + ISR caching reduce need for complex state management
+
 ### Server Actions Pattern
 
 ```typescript
@@ -164,14 +232,21 @@ Templates are in `/web/src/components/portfolio/templates/`
 
 ### Migrations
 
-Run migrations in order:
-```sql
--- supabase/migrations/
-001_add_theme_and_new_columns.sql
-002_add_studios.sql
-003_add_leads.sql
-004_add_portfolio_sections.sql
-005_archive_chat.sql  -- Soft-deletes legacy chat tables
+**18 migrations total** (run in order via Supabase CLI):
+
+| Migration | Purpose |
+|-----------|---------|
+| 001-005 | Core: themes, studios, leads, portfolio sections, chat archive |
+| 006-010 | Features: lessons, scheduler, calendar, refunds |
+| 011-015 | Billing pivot, profile fields, lead tracking enhancements |
+| 016-018 | Booking requests, studio members, latest features |
+
+```bash
+# Apply migrations
+supabase db push
+
+# Check status
+supabase db status
 ```
 
 ## Design System
@@ -393,8 +468,72 @@ Dashboard 설정이나 수동 작업이 필요한 경우 GitHub Issue로 등록:
 
 **Proprietary Software** - All rights reserved. See [LICENSE](./LICENSE) for details.
 
+## Known Limitations & Technical Debt
+
+### Critical (P0)
+| Issue | Impact | Recommended Fix |
+|-------|--------|-----------------|
+| Generic error handling | Production debugging difficult | Add Sentry + structured error codes |
+| No input validation schema | Security risk, poor error messages | Add Zod validation to all actions |
+
+### High Priority (P1)
+| Issue | Impact | Recommended Fix |
+|-------|--------|-----------------|
+| Limited unit tests | Risky refactoring | Add Jest tests for action layer |
+| Monetization logic scattered | Revenue tracking gaps | Centralize billing in single module |
+| RLS policies undocumented | Security audit difficult | Document policy intentions |
+
+### Medium Priority (P2)
+| Issue | Impact | Recommended Fix |
+|-------|--------|-----------------|
+| No query optimization | Potential N+1 queries | Add indexing strategy, batch queries |
+| No caching layer | Higher latency | Add Redis for hot data |
+| Vendor lock-in (Supabase) | Migration difficulty | Abstract database layer |
+
+### Low Priority (P3)
+| Issue | Impact | Recommended Fix |
+|-------|--------|-----------------|
+| No feature flags | Deployment risk | Add feature flag system |
+| No APM instrumentation | Performance blind spots | Add OpenTelemetry |
+
+## Improvement Roadmap
+
+### Phase 1: Hardening (1-2 sprints)
+- [ ] Sentry integration for error tracking
+- [ ] Zod validation schemas for all Server Actions
+- [ ] Unit tests for critical action paths
+- [ ] Document RLS policy intentions
+
+### Phase 2: Performance (1-2 months)
+- [ ] Redis caching for profiles/portfolios
+- [ ] Query optimization audit
+- [ ] Bundle size analysis
+- [ ] Core Web Vitals monitoring
+
+### Phase 3: Scale (3-6 months)
+- [ ] Multi-tenant studio support
+- [ ] Analytics pipeline
+- [ ] Feature flag system
+- [ ] Real-time notifications (Supabase Realtime)
+
+## Architecture Assessment
+
+**Overall Grade: B+ (Production-Ready with Improvements Needed)**
+
+| Area | Grade | Notes |
+|------|-------|-------|
+| Simplicity | A | Server Actions eliminate REST complexity |
+| Security | A- | 4-layer security, but RLS needs audit |
+| Type Safety | A | Strict TS, ActionResult<T> pattern |
+| Testing | B | Strong E2E, weak unit coverage |
+| Observability | C | No centralized logging/monitoring |
+| Performance | B+ | ISR caching, but no query optimization |
+
 ## Recent Changes
 
+- 2025-12: Vercel 자동 배포 설정 (CI workflow에 deploy job 추가)
+- 2025-12: Cron job 제거 (Vercel Hobby 플랜 제한)
+- 2025-12: 아키텍처 문서화 (데이터 흐름, 보안 아키텍처, 기술 부채)
 - 2025-12: GitHub 기능 설정 (Branch Protection, Dependabot, Labels)
 - 2025-12: 독점 라이선스 명시 (CONTRIBUTING.md, CODE_OF_CONDUCT.md 제거)
 - Portfolio SaaS Pivot: Express.js 제거, Next.js Server Actions 전환
