@@ -236,6 +236,9 @@ export async function deletePortfolioSection(
 
 /**
  * Reorder portfolio sections
+ *
+ * Uses batch_update_portfolio_order RPC function to update all sections
+ * in a single query instead of N separate UPDATE statements.
  */
 export async function reorderPortfolioSections(
   profileId: string,
@@ -252,10 +255,10 @@ export async function reorderPortfolioSections(
       return { success: false, error: 'Not authenticated' };
     }
 
-    // Verify ownership
+    // Get profile slug for revalidation
     const { data: profile, error: profileError } = await supabase
       .from('pro_profiles')
-      .select('id, slug')
+      .select('slug')
       .eq('id', profileId)
       .eq('user_id', user.id)
       .single();
@@ -264,16 +267,23 @@ export async function reorderPortfolioSections(
       return { success: false, error: 'Profile not found or unauthorized' };
     }
 
-    // Update display order for each section
-    const updates = sectionIds.map((sectionId, index) =>
-      supabase
-        .from('portfolio_sections')
-        .update({ display_order: index })
-        .eq('id', sectionId)
-        .eq('pro_profile_id', profileId)
-    );
+    // Build section order array for batch update
+    const sectionOrders = sectionIds.map((id, index) => ({
+      id,
+      order: index,
+    }));
 
-    await Promise.all(updates);
+    // Use RPC function for batch update (single query instead of N queries)
+    const { error: rpcError } = await supabase.rpc('batch_update_portfolio_order', {
+      p_profile_id: profileId,
+      p_user_id: user.id,
+      p_section_orders: sectionOrders,
+    });
+
+    if (rpcError) {
+      console.error('Batch update error:', rpcError);
+      return { success: false, error: 'Failed to reorder sections' };
+    }
 
     revalidatePath(`/${profile.slug}`);
     return { success: true, data: undefined };

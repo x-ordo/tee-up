@@ -158,6 +158,9 @@ export async function getLeadStats(): Promise<ActionResult<LeadStats>> {
 
 /**
  * Get leads for current pro user
+ *
+ * Uses get_user_leads RPC function to fetch leads in a single query
+ * instead of the two-query pattern (profile lookup + leads query).
  */
 export async function getMyLeads(options?: {
   limit?: number;
@@ -177,34 +180,19 @@ export async function getMyLeads(options?: {
       return { success: false, error: AUTH_NOT_AUTHENTICATED };
     }
 
-    // First get the pro profile id
-    const { data: profile, error: profileError } = await supabase
-      .from('pro_profiles')
-      .select('id')
-      .eq('user_id', user.id)
-      .single();
-
-    if (profileError || !profile) {
-      return { success: false, error: PROFILE_NOT_FOUND };
-    }
-
-    let query = supabase
-      .from('leads')
-      .select('*')
-      .eq('pro_id', profile.id)
-      .order('created_at', { ascending: false });
-
-    if (options?.limit) {
-      query = query.limit(options.limit);
-    }
-
-    if (options?.offset) {
-      query = query.range(options.offset, options.offset + (options.limit || 10) - 1);
-    }
-
-    const { data, error } = await query;
+    // Use RPC function to get leads in a single query
+    // This replaces the two-query pattern (pro_profiles → leads)
+    const { data, error } = await supabase.rpc('get_user_leads', {
+      p_user_id: user.id,
+      p_limit: options?.limit ?? 50,
+      p_offset: options?.offset ?? 0,
+    });
 
     if (error) {
+      // Handle case where user has no pro profile
+      if (error.code === 'PGRST116' || error.message?.includes('not found')) {
+        return { success: false, error: PROFILE_NOT_FOUND };
+      }
       logError(error, { action: 'getMyLeads', userId: user.id });
       return { success: false, error: DB_QUERY_FAILED };
     }

@@ -266,15 +266,10 @@ describe('Lead Server Actions', () => {
       { ...mockLead, id: 'lead-456', contact_name: 'Another Customer' },
     ];
 
-    it('should return leads for authenticated user', async () => {
+    it('should return leads for authenticated user via RPC', async () => {
       mockAuthenticatedUser(mockClient);
-      // First query: get profile
-      queryBuilder.single.mockResolvedValueOnce({
-        data: { id: 'profile-123' },
-        error: null,
-      });
-      // Second query: get leads
-      queryBuilder.order.mockResolvedValue({ data: mockLeads, error: null });
+      // Now uses get_user_leads RPC function (single query)
+      mockClient.rpc.mockResolvedValue({ data: mockLeads, error: null });
 
       const result = await getMyLeads();
 
@@ -282,34 +277,24 @@ describe('Lead Server Actions', () => {
       if (result.success) {
         expect(result.data).toEqual(mockLeads);
       }
+      expect(mockClient.rpc).toHaveBeenCalledWith('get_user_leads', {
+        p_user_id: mockUser.id,
+        p_limit: 50,
+        p_offset: 0,
+      });
     });
 
-    it('should apply limit option', async () => {
+    it('should apply limit and offset options via RPC', async () => {
       mockAuthenticatedUser(mockClient);
-      queryBuilder.single.mockResolvedValueOnce({
-        data: { id: 'profile-123' },
-        error: null,
+      mockClient.rpc.mockResolvedValue({ data: [mockLead], error: null });
+
+      await getMyLeads({ limit: 5, offset: 10 });
+
+      expect(mockClient.rpc).toHaveBeenCalledWith('get_user_leads', {
+        p_user_id: mockUser.id,
+        p_limit: 5,
+        p_offset: 10,
       });
-      // With only limit (no offset), limit() is called
-      queryBuilder.limit.mockResolvedValue({ data: [mockLead], error: null });
-
-      const result = await getMyLeads({ limit: 5 });
-
-      expect(queryBuilder.limit).toHaveBeenCalledWith(5);
-      expect(result.success).toBe(true);
-    });
-
-    it('should apply offset option', async () => {
-      mockAuthenticatedUser(mockClient);
-      queryBuilder.single.mockResolvedValueOnce({
-        data: { id: 'profile-123' },
-        error: null,
-      });
-      queryBuilder.range.mockResolvedValue({ data: [mockLead], error: null });
-
-      await getMyLeads({ offset: 10, limit: 5 });
-
-      expect(queryBuilder.range).toHaveBeenCalledWith(10, 14);
     });
 
     it('should return error for unauthenticated user', async () => {
@@ -323,11 +308,11 @@ describe('Lead Server Actions', () => {
       }
     });
 
-    it('should return error when profile not found', async () => {
+    it('should return error when profile not found via RPC', async () => {
       mockAuthenticatedUser(mockClient);
-      queryBuilder.single.mockResolvedValueOnce({
+      mockClient.rpc.mockResolvedValue({
         data: null,
-        error: { code: 'PGRST116' },
+        error: { code: 'PGRST116', message: 'not found' },
       });
 
       const result = await getMyLeads();
@@ -340,11 +325,7 @@ describe('Lead Server Actions', () => {
 
     it('should return empty array when no leads exist', async () => {
       mockAuthenticatedUser(mockClient);
-      queryBuilder.single.mockResolvedValueOnce({
-        data: { id: 'profile-123' },
-        error: null,
-      });
-      queryBuilder.order.mockResolvedValue({ data: [], error: null });
+      mockClient.rpc.mockResolvedValue({ data: [], error: null });
 
       const result = await getMyLeads();
 
@@ -354,13 +335,9 @@ describe('Lead Server Actions', () => {
       }
     });
 
-    it('should return error on database failure', async () => {
+    it('should return error on RPC failure', async () => {
       mockAuthenticatedUser(mockClient);
-      queryBuilder.single.mockResolvedValueOnce({
-        data: { id: 'profile-123' },
-        error: null,
-      });
-      queryBuilder.order.mockResolvedValue({
+      mockClient.rpc.mockResolvedValue({
         data: null,
         error: { message: 'Database error' },
       });
