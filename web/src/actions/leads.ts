@@ -2,6 +2,15 @@
 
 import { createClient } from '@/lib/supabase/server';
 import type { ActionResult, ContactMethod } from './types';
+import {
+  logError,
+  addActionBreadcrumb,
+  AUTH_NOT_AUTHENTICATED,
+  LEAD_CREATE_FAILED,
+  PROFILE_NOT_FOUND,
+  DB_QUERY_FAILED,
+} from '@/lib/errors';
+import { validateInput, validateId, trackLeadInputSchema } from '@/lib/validations';
 
 /**
  * Lead type from database
@@ -43,7 +52,26 @@ export async function trackLead(
     referrer?: string;
   }
 ): Promise<ActionResult<Lead>> {
+  addActionBreadcrumb('trackLead', { proId });
+
   try {
+    // Validate proId
+    const idValidation = validateId(proId, 'Pro ID');
+    if (!idValidation.success) {
+      return { success: false, error: idValidation.error };
+    }
+
+    // Validate lead data
+    const validation = validateInput(
+      trackLeadInputSchema,
+      leadData,
+      'trackLead'
+    );
+    if (!validation.success) {
+      return { success: false, error: validation.error };
+    }
+    const validData = validation.data;
+
     const supabase = await createClient();
 
     // Insert lead record - this triggers the billing function via DB trigger
@@ -51,22 +79,24 @@ export async function trackLead(
       .from('leads')
       .insert({
         pro_id: proId,
-        contact_name: leadData.contact_name || null,
-        contact_method: leadData.contact_method,
-        source_url: leadData.source_url || null,
-        referrer: leadData.referrer || null,
+        contact_name: validData.contact_name || null,
+        contact_method: validData.contact_method,
+        source_url: validData.source_url || null,
+        referrer: validData.referrer || null,
         is_billable: true,
       })
       .select()
       .single();
 
     if (error) {
-      return { success: false, error: error.message };
+      logError(error, { action: 'trackLead', metadata: { proId } });
+      return { success: false, error: LEAD_CREATE_FAILED };
     }
 
     return { success: true, data };
-  } catch (_err) {
-    return { success: false, error: 'Failed to track lead' };
+  } catch (err) {
+    const errorCode = logError(err, { action: 'trackLead' });
+    return { success: false, error: errorCode };
   }
 }
 
@@ -74,15 +104,18 @@ export async function trackLead(
  * Get lead statistics for current pro user
  */
 export async function getLeadStats(): Promise<ActionResult<LeadStats>> {
+  addActionBreadcrumb('getLeadStats');
+
   try {
     const supabase = await createClient();
 
     const {
       data: { user },
+      error: authError,
     } = await supabase.auth.getUser();
 
-    if (!user) {
-      return { success: false, error: 'Not authenticated' };
+    if (authError || !user) {
+      return { success: false, error: AUTH_NOT_AUTHENTICATED };
     }
 
     // Get pro profile with lead counts
@@ -93,7 +126,11 @@ export async function getLeadStats(): Promise<ActionResult<LeadStats>> {
       .single();
 
     if (error) {
-      return { success: false, error: error.message };
+      if (error.code === 'PGRST116') {
+        return { success: false, error: PROFILE_NOT_FOUND };
+      }
+      logError(error, { action: 'getLeadStats', userId: user.id });
+      return { success: false, error: DB_QUERY_FAILED };
     }
 
     const isPremium = data.subscription_tier !== 'free';
@@ -110,8 +147,9 @@ export async function getLeadStats(): Promise<ActionResult<LeadStats>> {
         is_premium: isPremium,
       },
     };
-  } catch (_err) {
-    return { success: false, error: 'Failed to get lead stats' };
+  } catch (err) {
+    const errorCode = logError(err, { action: 'getLeadStats' });
+    return { success: false, error: errorCode };
   }
 }
 
@@ -122,15 +160,18 @@ export async function getMyLeads(options?: {
   limit?: number;
   offset?: number;
 }): Promise<ActionResult<Lead[]>> {
+  addActionBreadcrumb('getMyLeads', options);
+
   try {
     const supabase = await createClient();
 
     const {
       data: { user },
+      error: authError,
     } = await supabase.auth.getUser();
 
-    if (!user) {
-      return { success: false, error: 'Not authenticated' };
+    if (authError || !user) {
+      return { success: false, error: AUTH_NOT_AUTHENTICATED };
     }
 
     // First get the pro profile id
@@ -141,7 +182,7 @@ export async function getMyLeads(options?: {
       .single();
 
     if (profileError || !profile) {
-      return { success: false, error: 'Pro profile not found' };
+      return { success: false, error: PROFILE_NOT_FOUND };
     }
 
     let query = supabase
@@ -161,12 +202,14 @@ export async function getMyLeads(options?: {
     const { data, error } = await query;
 
     if (error) {
-      return { success: false, error: error.message };
+      logError(error, { action: 'getMyLeads', userId: user.id });
+      return { success: false, error: DB_QUERY_FAILED };
     }
 
     return { success: true, data: data || [] };
-  } catch (_err) {
-    return { success: false, error: 'Failed to fetch leads' };
+  } catch (err) {
+    const errorCode = logError(err, { action: 'getMyLeads' });
+    return { success: false, error: errorCode };
   }
 }
 

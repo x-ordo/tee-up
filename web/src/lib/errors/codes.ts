@@ -84,6 +84,7 @@ export const DB_TIMEOUT = 'DB_TIMEOUT';
 // ============================================
 // Validation Errors (VALIDATION_*)
 // ============================================
+export const VALIDATION_FAILED = 'VALIDATION_FAILED';
 export const VALIDATION_REQUIRED_FIELD = 'VALIDATION_REQUIRED_FIELD';
 export const VALIDATION_INVALID_FORMAT = 'VALIDATION_INVALID_FORMAT';
 export const VALIDATION_OUT_OF_RANGE = 'VALIDATION_OUT_OF_RANGE';
@@ -140,6 +141,7 @@ export type ErrorCode =
   | typeof DB_CONSTRAINT_VIOLATION
   | typeof DB_TIMEOUT
   // Validation
+  | typeof VALIDATION_FAILED
   | typeof VALIDATION_REQUIRED_FIELD
   | typeof VALIDATION_INVALID_FORMAT
   | typeof VALIDATION_OUT_OF_RANGE
@@ -193,6 +195,7 @@ export const ERROR_MESSAGES: Record<ErrorCode, string> = {
   [DB_CONSTRAINT_VIOLATION]: '데이터 제약 조건 위반입니다.',
   [DB_TIMEOUT]: '서버 응답 시간이 초과되었습니다.',
   // Validation
+  [VALIDATION_FAILED]: '입력값 검증에 실패했습니다.',
   [VALIDATION_REQUIRED_FIELD]: '필수 항목이 누락되었습니다.',
   [VALIDATION_INVALID_FORMAT]: '입력 형식이 올바르지 않습니다.',
   [VALIDATION_OUT_OF_RANGE]: '입력 값이 허용 범위를 벗어났습니다.',

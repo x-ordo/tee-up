@@ -9,12 +9,15 @@ import {
   addActionBreadcrumb,
   AUTH_NOT_AUTHENTICATED,
   DB_QUERY_FAILED,
-  // Reserved for future use in other functions
-  // PROFILE_NOT_FOUND,
-  // PROFILE_UPDATE_FAILED,
-  // PROFILE_CREATE_FAILED,
-  // PROFILE_SLUG_TAKEN,
+  PROFILE_CREATE_FAILED,
+  PROFILE_UPDATE_FAILED,
 } from '@/lib/errors';
+import {
+  validateInput,
+  quickProfileInputSchema,
+  proProfileUpdateSchema,
+  proProfileCreateSchema,
+} from '@/lib/validations';
 
 /**
  * Pro Profile type from database
@@ -165,7 +168,19 @@ export async function updateProProfile(
   profileId: string,
   updates: ProProfileUpdate
 ): Promise<ActionResult<ProProfile>> {
+  addActionBreadcrumb('updateProProfile', { profileId });
+
   try {
+    // Validate inputs
+    const validation = validateInput(
+      proProfileUpdateSchema,
+      updates,
+      'updateProProfile'
+    );
+    if (!validation.success) {
+      return { success: false, error: validation.error };
+    }
+
     const supabase = await createClient();
 
     const {
@@ -173,19 +188,20 @@ export async function updateProProfile(
     } = await supabase.auth.getUser();
 
     if (!user) {
-      return { success: false, error: 'Not authenticated' };
+      return { success: false, error: AUTH_NOT_AUTHENTICATED };
     }
 
     const { data, error } = await supabase
       .from('pro_profiles')
-      .update(updates)
+      .update(validation.data)
       .eq('id', profileId)
       .eq('user_id', user.id) // RLS backup
       .select()
       .single();
 
     if (error) {
-      return { success: false, error: error.message };
+      logError(error, { action: 'updateProProfile', userId: user.id, metadata: { profileId } });
+      return { success: false, error: PROFILE_UPDATE_FAILED };
     }
 
     // Revalidate profile pages
@@ -193,8 +209,9 @@ export async function updateProProfile(
     revalidatePath('/dashboard/portfolio');
 
     return { success: true, data };
-  } catch (_err) {
-    return { success: false, error: 'Failed to update profile' };
+  } catch (err) {
+    const errorCode = logError(err, { action: 'updateProProfile' });
+    return { success: false, error: errorCode };
   }
 }
 
@@ -204,7 +221,19 @@ export async function updateProProfile(
 export async function createProProfile(
   profileData: Omit<ProProfileInsert, 'user_id'>
 ): Promise<ActionResult<ProProfile>> {
+  addActionBreadcrumb('createProProfile');
+
   try {
+    // Validate inputs
+    const validation = validateInput(
+      proProfileCreateSchema,
+      profileData,
+      'createProProfile'
+    );
+    if (!validation.success) {
+      return { success: false, error: validation.error };
+    }
+
     const supabase = await createClient();
 
     const {
@@ -212,13 +241,14 @@ export async function createProProfile(
     } = await supabase.auth.getUser();
 
     if (!user) {
-      return { success: false, error: 'Not authenticated' };
+      return { success: false, error: AUTH_NOT_AUTHENTICATED };
     }
 
     // Generate slug from title if not provided
+    const validatedData = validation.data;
     const slug =
-      profileData.slug ||
-      profileData.title
+      validatedData.slug ||
+      validatedData.title
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)/g, '');
@@ -226,7 +256,7 @@ export async function createProProfile(
     const { data, error } = await supabase
       .from('pro_profiles')
       .insert({
-        ...profileData,
+        ...validatedData,
         user_id: user.id,
         slug,
       })
@@ -234,13 +264,15 @@ export async function createProProfile(
       .single();
 
     if (error) {
-      return { success: false, error: error.message };
+      logError(error, { action: 'createProProfile', userId: user.id });
+      return { success: false, error: PROFILE_CREATE_FAILED };
     }
 
     revalidatePath('/dashboard');
     return { success: true, data };
-  } catch (_err) {
-    return { success: false, error: 'Failed to create profile' };
+  } catch (err) {
+    const errorCode = logError(err, { action: 'createProProfile' });
+    return { success: false, error: errorCode };
   }
 }
 
@@ -289,7 +321,20 @@ export interface QuickProfileInput {
 export async function createQuickProfile(
   input: QuickProfileInput
 ): Promise<ActionResult<{ slug: string }>> {
+  addActionBreadcrumb('createQuickProfile');
+
   try {
+    // Validate inputs
+    const validation = validateInput(
+      quickProfileInputSchema,
+      input,
+      'createQuickProfile'
+    );
+    if (!validation.success) {
+      return { success: false, error: validation.error };
+    }
+    const validInput = validation.data;
+
     const supabase = await createClient();
 
     const {
@@ -297,7 +342,7 @@ export async function createQuickProfile(
     } = await supabase.auth.getUser();
 
     if (!user) {
-      return { success: false, error: 'Not authenticated' };
+      return { success: false, error: AUTH_NOT_AUTHENTICATED };
     }
 
     // Check if profile already exists
@@ -310,18 +355,18 @@ export async function createQuickProfile(
     if (existingProfile) {
       // Update existing profile instead of creating new one
       const updateData: ProProfileUpdate = {
-        title: input.name,
-        bio: input.bio || null,
-        specialties: [input.specialty],
-        location: input.location || null,
-        profile_image_url: input.profileImageUrl || null,
+        title: validInput.name,
+        bio: validInput.bio || null,
+        specialties: [validInput.specialty],
+        location: validInput.location || null,
+        profile_image_url: validInput.profileImageUrl || null,
       };
 
       // Set contact based on type
-      if (input.contactType === 'kakao') {
-        updateData.open_chat_url = input.contactValue;
+      if (validInput.contactType === 'kakao') {
+        updateData.open_chat_url = validInput.contactValue;
       } else {
-        updateData.kakao_talk_id = input.contactValue; // Store phone in kakao_talk_id temporarily
+        updateData.kakao_talk_id = validInput.contactValue; // Store phone in kakao_talk_id temporarily
       }
 
       const { error: updateError } = await supabase
@@ -330,7 +375,8 @@ export async function createQuickProfile(
         .eq('id', existingProfile.id);
 
       if (updateError) {
-        return { success: false, error: updateError.message };
+        logError(updateError, { action: 'createQuickProfile:update', userId: user.id });
+        return { success: false, error: PROFILE_UPDATE_FAILED };
       }
 
       revalidatePath('/dashboard');
@@ -339,7 +385,7 @@ export async function createQuickProfile(
     }
 
     // Generate unique slug from name
-    const baseSlug = input.name
+    const baseSlug = validInput.name
       .toLowerCase()
       .replace(/[가-힣]/g, (char) => {
         // Simple Korean to romanization mapping for common syllables
@@ -366,23 +412,23 @@ export async function createQuickProfile(
     const profileData = {
       user_id: user.id,
       slug,
-      title: input.name,
-      bio: input.bio || null,
-      specialties: [input.specialty],
-      location: input.location || null,
+      title: validInput.name,
+      bio: validInput.bio || null,
+      specialties: [validInput.specialty],
+      location: validInput.location || null,
       certifications: [],
       theme_type: 'curriculum' as const, // Default template
       theme_config: null,
       payment_link: null,
-      open_chat_url: input.contactType === 'kakao' ? input.contactValue : null,
+      open_chat_url: validInput.contactType === 'kakao' ? validInput.contactValue : null,
       booking_url: null,
       hero_image_url: null,
-      profile_image_url: input.profileImageUrl || null,
+      profile_image_url: validInput.profileImageUrl || null,
       gallery_images: [],
       video_url: null,
       instagram_username: null,
       youtube_channel_id: null,
-      kakao_talk_id: input.contactType === 'phone' ? input.contactValue : null,
+      kakao_talk_id: validInput.contactType === 'phone' ? validInput.contactValue : null,
       subscription_tier: 'free' as const,
       studio_id: null,
       tour_experience: null,
@@ -405,20 +451,22 @@ export async function createQuickProfile(
           .single();
 
         if (retryError) {
-          return { success: false, error: retryError.message };
+          logError(retryError, { action: 'createQuickProfile:retry', userId: user.id });
+          return { success: false, error: PROFILE_CREATE_FAILED };
         }
 
         revalidatePath('/dashboard');
         return { success: true, data: { slug: retryData.slug } };
       }
 
-      return { success: false, error: error.message };
+      logError(error, { action: 'createQuickProfile:insert', userId: user.id });
+      return { success: false, error: PROFILE_CREATE_FAILED };
     }
 
     revalidatePath('/dashboard');
     return { success: true, data: { slug: data.slug } };
   } catch (err) {
-    console.error('createQuickProfile error:', err);
-    return { success: false, error: 'Failed to create profile' };
+    const errorCode = logError(err, { action: 'createQuickProfile' });
+    return { success: false, error: errorCode };
   }
 }
