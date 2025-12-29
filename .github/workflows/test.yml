@@ -30,7 +30,7 @@ jobs:
       - run: npm run lint
       - run: npm run type-check
       - run: npm test -- --coverage
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v5
         with:
           files: ./web/coverage/lcov.info
           flags: frontend
