@@ -72,10 +72,12 @@ export function TestimonialsSection({
     <section className={cn('py-16', className)}>
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-12 text-center">
-          <h2 className="mb-4 font-pretendard text-3xl font-bold text-tee-ink-strong">
+          <h2 className="mb-4 font-pretendard text-3xl font-semibold tracking-[0.04em] text-tee-ink-strong">
             {title}
           </h2>
-          <p className="text-lg text-tee-ink-light">{subtitle}</p>
+          <p className="text-sm font-medium tracking-[0.08em] text-tee-ink-light">
+            {subtitle}
+          </p>
         </div>
       </div>
 
