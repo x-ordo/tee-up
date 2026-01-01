@@ -76,6 +76,16 @@ export const urlSchema = z
   .url('올바른 URL 형식이 아닙니다');
 
 /**
+ * 업로드 URL 검증 (data URL 허용)
+ */
+export const uploadUrlSchema = z
+  .string()
+  .refine(
+    (value) => value.startsWith('data:image/') || /^https?:\/\//.test(value),
+    '올바른 이미지 URL 형식이 아닙니다'
+  );
+
+/**
  * 카카오톡 오픈채팅 URL 검증
  */
 export const kakaoOpenChatUrlSchema = z
@@ -112,28 +122,20 @@ export const quickProfileInputSchema = z.object({
     .string()
     .min(2, '이름은 최소 2자 이상이어야 합니다')
     .max(50, '이름은 최대 50자까지 가능합니다'),
-  bio: z
+  birthDate: z
     .string()
-    .max(500, '소개글은 최대 500자까지 가능합니다')
-    .optional(),
-  specialty: z
+    .regex(/^\d{4}-\d{2}-\d{2}$/, '올바른 생년월일 형식이 아닙니다 (YYYY-MM-DD)'),
+  phoneNumber: phoneSchema,
+  profileImageUrl: uploadUrlSchema,
+  proVerificationFileUrl: uploadUrlSchema,
+  primaryRegion: z
     .string()
-    .min(2, '전문 분야를 입력해주세요')
-    .max(100, '전문 분야는 최대 100자까지 가능합니다'),
-  location: z
+    .min(1, '주요 활동 지역을 선택해주세요')
+    .max(50, '지역은 최대 50자까지 가능합니다'),
+  primaryCity: z
     .string()
-    .max(100, '위치는 최대 100자까지 가능합니다')
-    .optional(),
-  priceRange: z
-    .string()
-    .max(50, '가격대는 최대 50자까지 가능합니다')
-    .optional(),
-  contactType: z.enum(['kakao', 'phone'] as const, '연락 방식을 선택해주세요'),
-  contactValue: z
-    .string()
-    .min(1, '연락처를 입력해주세요')
-    .max(200, '연락처는 최대 200자까지 가능합니다'),
-  profileImageUrl: urlSchema.optional(),
+    .min(1, '세부 지역을 입력해주세요')
+    .max(50, '세부 지역은 최대 50자까지 가능합니다'),
 });
 
 /**

@@ -9,6 +9,10 @@ export type ProProfile = {
   specialties: string[] | null
   hero_image_url: string | null
   profile_image_url: string | null
+  birth_date: string | null
+  verification_file_url: string | null
+  primary_region: string | null
+  primary_city: string | null
   profile_views: number
   monthly_chat_count: number
   total_leads: number
@@ -29,11 +33,31 @@ export type ProProfile = {
 
 export type ProProfileInsert = Omit<
   ProProfile,
-  'id' | 'profile_views' | 'monthly_chat_count' | 'total_leads' | 'matched_lessons' | 'rating' | 'subscription_tier' | 'subscription_expires_at' | 'is_approved' | 'is_featured' | 'created_at' | 'updated_at' | 'profiles'
+  | 'id'
+  | 'profile_views'
+  | 'monthly_chat_count'
+  | 'total_leads'
+  | 'matched_lessons'
+  | 'rating'
+  | 'subscription_tier'
+  | 'subscription_expires_at'
+  | 'is_approved'
+  | 'is_featured'
+  | 'created_at'
+  | 'updated_at'
+  | 'profiles'
+  | 'birth_date'
+  | 'verification_file_url'
+  | 'primary_region'
+  | 'primary_city'
 > & {
   user_id: string
   slug: string
   title: string
+  birth_date?: string | null
+  verification_file_url?: string | null
+  primary_region?: string | null
+  primary_city?: string | null
 }
 
 export type ProProfileUpdate = Partial<Omit<ProProfile, 'id' | 'user_id' | 'created_at' | 'updated_at' | 'profiles'>>

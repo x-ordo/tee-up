@@ -3,3 +3,7 @@ export { StatsSection } from './StatsSection';
 export { ContactSection } from './ContactSection';
 export { TestimonialsSection } from './TestimonialsSection';
 export { GallerySection } from './GallerySection';
+export { AchievementsSection } from './AchievementsSection';
+export { SponsorshipsSection } from './SponsorshipsSection';
+export { MediaHighlightsSection } from './MediaHighlightsSection';
+export { AvailabilitySection } from './AvailabilitySection';

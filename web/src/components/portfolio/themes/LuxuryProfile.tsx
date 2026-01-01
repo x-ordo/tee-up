@@ -171,7 +171,7 @@ function DiorProfile({
 
         {/* 스크롤 인디케이터 */}
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2">
-          <div className="w-px h-16 bg-gradient-to-b from-transparent to-black/20" />
+          <div className="w-px h-16 bg-gradient-to-b from-transparent to-[color:var(--tee-overlay-light)]" />
         </div>
       </section>
 
@@ -667,7 +667,7 @@ function ChromeHeartsProfile({
             <div 
               className="absolute inset-0"
               style={{ 
-                background: 'radial-gradient(circle at center, transparent 0%, #0A0A0A 70%)' 
+                background: 'radial-gradient(circle at center, transparent 0%, var(--tee-overlay-strong) 70%)'
               }}
             />
           </div>
@@ -695,7 +695,7 @@ function ChromeHeartsProfile({
               background: theme.effects.metallic,
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
-              textShadow: '4px 4px 8px rgba(0,0,0,0.8)',
+              textShadow: '4px 4px 8px var(--tee-overlay-strong)',
               filter: 'drop-shadow(0 0 20px rgba(196,196,196,0.3))',
             }}
           >
@@ -832,7 +832,7 @@ function ChromeHeartsProfile({
               fontFamily: theme.typography.fontDisplay,
               fontSize: '24px',
               color: theme.colors.textPrimary,
-              textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+              textShadow: '2px 2px 4px var(--tee-overlay-medium)',
             }}
           >
             Services
@@ -845,7 +845,7 @@ function ChromeHeartsProfile({
                 className="flex justify-between items-center p-6"
                 style={{ 
                   border: `1px solid ${theme.colors.border}`,
-                  background: 'rgba(0,0,0,0.3)',
+                  background: 'var(--tee-overlay-medium)',
                 }}
               >
                 <div>

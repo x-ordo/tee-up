@@ -199,7 +199,7 @@ export function parseThemeCookie(
 // ============================================
 
 export const DEFAULT_TOKENS: ThemeTokens = {
-  fontFamily: 'Pretendard, Inter, sans-serif',
+  fontFamily: 'Cafe24ProSlim, sans-serif',
   fontSizeBase: '16px',
   fontSizeH1: '2.5rem',
   fontSizeH2: '2rem',

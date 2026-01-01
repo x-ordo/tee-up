@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
-import { Check, ArrowRight, ArrowLeft, Copy, ExternalLink } from 'lucide-react';
+import { Check, ArrowRight, ArrowLeft, Copy, ExternalLink, UploadCloud, X, FileText } from 'lucide-react';
 import {
   GolfProgress,
   GolfSpinner,
@@ -11,23 +11,20 @@ import {
   StepTransition,
 } from '@/components/animations/GolfAnimations';
 import { ProfileImageUpload } from './ProfileImageUpload';
+import { uploadImage, STORAGE_BUCKETS, ALLOWED_IMAGE_TYPES, MAX_FILE_SIZES } from '@/lib/storage';
 
 // ============================================
 // Types
 // ============================================
 
 export interface QuickSetupData {
-  // Step 1: Basic Info
   name: string;
+  birthDate: string;
+  phoneNumber: string;
   profileImageUrl?: string;
-  bio: string;
-  // Step 2: Lesson Info
-  specialty: string;
-  location: string;
-  priceRange: string;
-  // Step 3: Contact
-  contactType: 'kakao' | 'phone';
-  contactValue: string;
+  proVerificationFileUrl?: string;
+  primaryRegion: string;
+  primaryCity: string;
 }
 
 interface QuickSetupWizardProps {
@@ -42,33 +39,45 @@ interface QuickSetupWizardProps {
 // Constants
 // ============================================
 
-const SPECIALTIES = [
-  { value: 'beginner', label: '입문/초보 레슨' },
-  { value: 'intermediate', label: '중급 스윙 교정' },
-  { value: 'advanced', label: '상급/싱글 코칭' },
-  { value: 'short_game', label: '숏게임 전문' },
-  { value: 'putting', label: '퍼팅 전문' },
-  { value: 'driving', label: '드라이버/비거리' },
-  { value: 'on_course', label: '필드 라운드 레슨' },
-  { value: 'junior', label: '주니어 전문' },
-  { value: 'female', label: '여성 전문' },
+const STEP_LABELS = ['기본 정보', '프로 인증', '활동 지역'];
+
+const REGIONS = [
+  { value: 'seoul', label: '서울' },
+  { value: 'gyeonggi', label: '경기' },
+  { value: 'incheon', label: '인천' },
+  { value: 'busan', label: '부산' },
+  { value: 'daegu', label: '대구' },
+  { value: 'gwangju', label: '광주' },
+  { value: 'daejeon', label: '대전' },
+  { value: 'ulsan', label: '울산' },
+  { value: 'sejong', label: '세종' },
+  { value: 'gangwon', label: '강원' },
+  { value: 'chungbuk', label: '충북' },
+  { value: 'chungnam', label: '충남' },
+  { value: 'jeonbuk', label: '전북' },
+  { value: 'jeonnam', label: '전남' },
+  { value: 'gyeongbuk', label: '경북' },
+  { value: 'gyeongnam', label: '경남' },
+  { value: 'jeju', label: '제주' },
+  { value: 'overseas', label: '해외' },
 ];
 
-const PRICE_RANGES = [
-  { value: 'budget', label: '~5만원/회' },
-  { value: 'standard', label: '5-10만원/회' },
-  { value: 'premium', label: '10-20만원/회' },
-  { value: 'luxury', label: '20만원~/회' },
-];
+const inputClassName = "w-full rounded-xl border border-tee-stone bg-white px-4 py-3.5 text-base text-tee-ink-strong placeholder:text-tee-ink-muted focus:border-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20 transition-colors";
+
+const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+const normalizePhone = (value: string) => value.replace(/\D/g, '');
+
+const formatPhone = (value: string) => {
+  const numbers = normalizePhone(value);
+  if (numbers.length <= 3) return numbers;
+  if (numbers.length <= 7) return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+  return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
+};
 
 // ============================================
 // Step Components
 // ============================================
-
-const STEP_LABELS = ['기본 정보', '레슨 정보', '연락처'];
-
-// 공통 입력 스타일 (44px+ 터치 타겟)
-const inputClassName = "w-full rounded-xl border border-tee-stone bg-white px-4 py-3.5 text-base text-tee-ink-strong placeholder:text-tee-ink-muted focus:border-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20 transition-colors";
 
 function BasicInfoStep({
   data,
@@ -79,9 +88,10 @@ function BasicInfoStep({
   onChange: (updates: Partial<QuickSetupData>) => void;
   userId?: string;
 }) {
+  const today = new Date().toISOString().split('T')[0];
+
   return (
     <div className="space-y-5">
-      {/* 프로필 사진 - 상단에 배치 */}
       <div className="py-2">
         <ProfileImageUpload
           userId={userId}
@@ -106,27 +116,181 @@ function BasicInfoStep({
       </div>
 
       <div>
-        <label htmlFor="bio" className="mb-2 block text-sm font-medium text-tee-ink-strong">
-          한 줄 소개
+        <label htmlFor="birthDate" className="mb-2 block text-sm font-medium text-tee-ink-strong">
+          생년월일 <span className="text-tee-error">*</span>
         </label>
         <input
-          id="bio"
-          type="text"
-          value={data.bio}
-          onChange={(e) => onChange({ bio: e.target.value })}
-          placeholder="예: 10년 경력, 친절하고 체계적인 레슨"
+          id="birthDate"
+          type="date"
+          value={data.birthDate}
+          onChange={(e) => onChange({ birthDate: e.target.value })}
+          max={today}
           className={inputClassName}
-          maxLength={100}
+          autoComplete="bday"
         />
-        <p className="mt-1.5 text-right text-xs text-tee-ink-muted">
-          {data.bio.length}/100
-        </p>
+      </div>
+
+      <div>
+        <label htmlFor="phoneNumber" className="mb-2 block text-sm font-medium text-tee-ink-strong">
+          연락처 <span className="text-tee-error">*</span>
+        </label>
+        <input
+          id="phoneNumber"
+          type="tel"
+          value={data.phoneNumber}
+          onChange={(e) => onChange({ phoneNumber: formatPhone(e.target.value) })}
+          placeholder="010-1234-5678"
+          className={inputClassName}
+          autoComplete="tel"
+        />
       </div>
     </div>
   );
 }
 
-function LessonInfoStep({
+function VerificationStep({
+  data,
+  onChange,
+  userId,
+}: {
+  data: QuickSetupData;
+  onChange: (updates: Partial<QuickSetupData>) => void;
+  userId?: string;
+}) {
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const hasFile = Boolean(data.proVerificationFileUrl);
+
+  const handleFileSelect = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      e.target.value = '';
+
+      if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        setError('JPG, PNG, WebP 이미지만 업로드 가능합니다.');
+        return;
+      }
+
+      if (file.size > MAX_FILE_SIZES.IMAGE) {
+        setError('5MB 이하 이미지만 업로드 가능합니다.');
+        return;
+      }
+
+      setError(null);
+      setIsUploading(true);
+
+      try {
+        if (!userId) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const result = reader.result as string;
+            onChange({ proVerificationFileUrl: result });
+            sessionStorage.setItem('pendingProVerification', result);
+            setIsUploading(false);
+          };
+          reader.readAsDataURL(file);
+          return;
+        }
+
+        const result = await uploadImage(file, userId, {
+          bucket: STORAGE_BUCKETS.PROFILE_IMAGES,
+          folder: 'verification',
+          compress: true,
+          generateThumbnail: false,
+          maxWidth: 1600,
+          maxHeight: 1600,
+          quality: 0.85,
+        });
+
+        if (result.success && result.url) {
+          onChange({ proVerificationFileUrl: result.url });
+        } else {
+          setError(result.error || '업로드에 실패했습니다.');
+        }
+      } catch {
+        setError('업로드 중 오류가 발생했습니다.');
+      } finally {
+        setIsUploading(false);
+      }
+    },
+    [userId, onChange]
+  );
+
+  const handleRemove = useCallback(() => {
+    onChange({ proVerificationFileUrl: undefined });
+    sessionStorage.removeItem('pendingProVerification');
+  }, [onChange]);
+
+  return (
+    <div className="space-y-4">
+      <div className="rounded-2xl border border-tee-stone bg-white p-5">
+        <div className="flex items-start gap-3">
+          <div className="mt-1 flex h-10 w-10 items-center justify-center rounded-full bg-tee-background">
+            <FileText className="h-5 w-5 text-tee-ink-muted" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-tee-ink-strong">프로 인증 서류 업로드</p>
+            <p className="mt-1 text-xs text-tee-ink-muted">
+              협회/리그 인증서 또는 자격증 이미지를 업로드하세요.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isUploading}
+            className="h-11 px-4"
+          >
+            <UploadCloud className="mr-2 h-4 w-4" />
+            {hasFile ? '다시 업로드' : '파일 업로드'}
+          </Button>
+
+          {hasFile && !isUploading && (
+            <div className="flex items-center gap-2 text-xs text-tee-success">
+              <Check className="h-4 w-4" />
+              업로드 완료
+            </div>
+          )}
+
+          {hasFile && !isUploading && (
+            <button
+              type="button"
+              onClick={handleRemove}
+              className="text-xs text-tee-ink-muted hover:text-tee-ink-strong"
+            >
+              <X className="mr-1 inline h-3 w-3" />
+              삭제
+            </button>
+          )}
+
+          {isUploading && (
+            <span className="text-xs text-tee-ink-muted">업로드 중...</span>
+          )}
+        </div>
+
+        {error && (
+          <p className="mt-3 text-xs text-tee-error">{error}</p>
+        )}
+      </div>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept={ALLOWED_IMAGE_TYPES.join(',')}
+        onChange={handleFileSelect}
+        className="hidden"
+        disabled={isUploading}
+      />
+    </div>
+  );
+}
+
+function ActivityLocationStep({
   data,
   onChange,
 }: {
@@ -136,127 +300,40 @@ function LessonInfoStep({
   return (
     <div className="space-y-5">
       <div>
-        <label htmlFor="specialty" className="mb-2 block text-sm font-medium text-tee-ink-strong">
-          전문 분야 <span className="text-tee-error">*</span>
+        <label htmlFor="primaryRegion" className="mb-2 block text-sm font-medium text-tee-ink-strong">
+          주요 활동 지역 <span className="text-tee-error">*</span>
         </label>
         <select
-          id="specialty"
-          value={data.specialty}
-          onChange={(e) => onChange({ specialty: e.target.value })}
+          id="primaryRegion"
+          value={data.primaryRegion}
+          onChange={(e) => onChange({ primaryRegion: e.target.value })}
           className={inputClassName}
         >
           <option value="">선택하세요</option>
-          {SPECIALTIES.map((s) => (
-            <option key={s.value} value={s.value}>
-              {s.label}
+          {REGIONS.map((region) => (
+            <option key={region.value} value={region.value}>
+              {region.label}
             </option>
           ))}
         </select>
       </div>
 
       <div>
-        <label htmlFor="location" className="mb-2 block text-sm font-medium text-tee-ink-strong">
-          레슨 장소
+        <label htmlFor="primaryCity" className="mb-2 block text-sm font-medium text-tee-ink-strong">
+          세부 지역 <span className="text-tee-error">*</span>
         </label>
         <input
-          id="location"
+          id="primaryCity"
           type="text"
-          value={data.location}
-          onChange={(e) => onChange({ location: e.target.value })}
-          placeholder="예: 강남 XX골프아카데미"
+          value={data.primaryCity}
+          onChange={(e) => onChange({ primaryCity: e.target.value })}
+          placeholder="예: 강남구, 해운대구"
           className={inputClassName}
         />
       </div>
 
-      <div>
-        <label className="mb-2 block text-sm font-medium text-tee-ink-strong">
-          레슨 가격대
-        </label>
-        <div className="grid grid-cols-2 gap-2">
-          {PRICE_RANGES.map((p) => (
-            <button
-              key={p.value}
-              type="button"
-              onClick={() => onChange({ priceRange: p.value })}
-              className={`rounded-xl border px-3 py-3 text-sm font-medium transition-all active:scale-[0.98] ${
-                data.priceRange === p.value
-                  ? 'border-tee-accent-primary bg-tee-accent-primary/10 text-tee-accent-primary shadow-sm'
-                  : 'border-tee-stone bg-white text-tee-ink-light active:bg-tee-background'
-              }`}
-            >
-              {p.label}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ContactStep({
-  data,
-  onChange,
-}: {
-  data: QuickSetupData;
-  onChange: (updates: Partial<QuickSetupData>) => void;
-}) {
-  return (
-    <div className="space-y-5">
-      <div>
-        <label className="mb-2 block text-sm font-medium text-tee-ink-strong">
-          연락 방법 <span className="text-tee-error">*</span>
-        </label>
-        <div className="grid grid-cols-2 gap-2">
-          <button
-            type="button"
-            onClick={() => onChange({ contactType: 'kakao', contactValue: '' })}
-            className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-4 text-sm font-medium transition-all active:scale-[0.98] ${
-              data.contactType === 'kakao'
-                ? 'border-yellow-400 bg-yellow-50 text-tee-ink-strong shadow-sm'
-                : 'border-tee-stone bg-white text-tee-ink-light active:bg-tee-background'
-            }`}
-          >
-            <span className="text-lg">💬</span>
-            카카오톡
-          </button>
-          <button
-            type="button"
-            onClick={() => onChange({ contactType: 'phone', contactValue: '' })}
-            className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-4 text-sm font-medium transition-all active:scale-[0.98] ${
-              data.contactType === 'phone'
-                ? 'border-tee-accent-primary bg-tee-accent-primary/10 text-tee-accent-primary shadow-sm'
-                : 'border-tee-stone bg-white text-tee-ink-light active:bg-tee-background'
-            }`}
-          >
-            <span className="text-lg">📞</span>
-            전화번호
-          </button>
-        </div>
-      </div>
-
-      <div>
-        <label htmlFor="contactValue" className="mb-2 block text-sm font-medium text-tee-ink-strong">
-          {data.contactType === 'kakao' ? '오픈채팅 링크' : '전화번호'}
-        </label>
-        <input
-          id="contactValue"
-          type={data.contactType === 'phone' ? 'tel' : 'url'}
-          inputMode={data.contactType === 'phone' ? 'tel' : 'url'}
-          value={data.contactValue}
-          onChange={(e) => onChange({ contactValue: e.target.value })}
-          placeholder={
-            data.contactType === 'kakao'
-              ? 'https://open.kakao.com/o/...'
-              : '010-1234-5678'
-          }
-          className={inputClassName}
-          autoComplete={data.contactType === 'phone' ? 'tel' : 'url'}
-        />
-        {data.contactType === 'kakao' && (
-          <div className="mt-3 rounded-lg bg-yellow-50 p-3 text-xs text-tee-ink-light">
-            💡 카카오톡 → 채팅 → 오픈채팅 → 채팅방 만들기 → 링크 복사
-          </div>
-        )}
+      <div className="rounded-lg bg-tee-background p-3 text-xs text-tee-ink-muted">
+        프로필 공개 후에도 활동 지역은 언제든지 수정할 수 있습니다.
       </div>
     </div>
   );
@@ -271,7 +348,6 @@ function CompletionStep({ profileUrl }: { profileUrl: string }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      // Fallback for older browsers
       const textArea = document.createElement('textarea');
       textArea.value = profileUrl;
       document.body.appendChild(textArea);
@@ -285,11 +361,13 @@ function CompletionStep({ profileUrl }: { profileUrl: string }) {
 
   return (
     <div className="text-center">
+      <p className="mb-2 text-tee-ink-light text-sm">
+        등록이 완료되었습니다. 인증 확인 후 공개됩니다.
+      </p>
       <p className="mb-6 text-tee-ink-light text-sm">
-        인스타그램, 카카오톡에 공유하세요!
+        프로필 링크는 승인 후에도 동일하게 유지됩니다.
       </p>
 
-      {/* 링크 복사 카드 */}
       <div className="mb-6 rounded-xl border border-tee-stone bg-tee-background p-4">
         <p className="mb-2 text-xs text-tee-ink-muted">내 프로필 링크</p>
         <div className="flex items-center gap-2">
@@ -306,7 +384,6 @@ function CompletionStep({ profileUrl }: { profileUrl: string }) {
         </div>
       </div>
 
-      {/* 액션 버튼 - 모바일 풀너비 */}
       <div className="flex flex-col gap-3">
         <Button asChild variant="primary" className="h-12 text-base">
           <a href={profileUrl} target="_blank" rel="noopener noreferrer">
@@ -341,35 +418,30 @@ export default function QuickSetupWizard({
 
   const [data, setData] = useState<QuickSetupData>({
     name: initialData?.name || '',
+    birthDate: initialData?.birthDate || '',
+    phoneNumber: initialData?.phoneNumber || '',
     profileImageUrl: initialData?.profileImageUrl,
-    bio: initialData?.bio || '',
-    specialty: initialData?.specialty || '',
-    location: initialData?.location || '',
-    priceRange: initialData?.priceRange || '',
-    contactType: initialData?.contactType || 'kakao',
-    contactValue: initialData?.contactValue || '',
+    proVerificationFileUrl: initialData?.proVerificationFileUrl,
+    primaryRegion: initialData?.primaryRegion || '',
+    primaryCity: initialData?.primaryCity || '',
   });
 
-  // 로그인 후 자동 제출
   useEffect(() => {
     if (autoSubmit && isAuthenticated && !autoSubmitTriggered.current && initialData) {
       autoSubmitTriggered.current = true;
-      // 데이터가 완전히 로드된 후 제출
       const submitData: QuickSetupData = {
         name: initialData.name || '',
+        birthDate: initialData.birthDate || '',
+        phoneNumber: initialData.phoneNumber || '',
         profileImageUrl: initialData.profileImageUrl,
-        bio: initialData.bio || '',
-        specialty: initialData.specialty || '',
-        location: initialData.location || '',
-        priceRange: initialData.priceRange || '',
-        contactType: initialData.contactType || 'kakao',
-        contactValue: initialData.contactValue || '',
+        proVerificationFileUrl: initialData.proVerificationFileUrl,
+        primaryRegion: initialData.primaryRegion || '',
+        primaryCity: initialData.primaryCity || '',
       };
 
       setData(submitData);
-      setStep(2); // 마지막 스텝으로 이동
+      setStep(2);
 
-      // 약간의 딜레이 후 자동 제출
       setTimeout(async () => {
         setIsSubmitting(true);
         try {
@@ -395,13 +467,18 @@ export default function QuickSetupWizard({
 
   const canProceed = useCallback(() => {
     if (step === 0) {
-      return data.name.trim().length >= 2;
+      return (
+        data.name.trim().length >= 2 &&
+        DATE_PATTERN.test(data.birthDate) &&
+        normalizePhone(data.phoneNumber).length >= 10 &&
+        Boolean(data.profileImageUrl)
+      );
     }
     if (step === 1) {
-      return data.specialty !== '';
+      return Boolean(data.proVerificationFileUrl);
     }
     if (step === 2) {
-      return data.contactValue.trim().length > 0;
+      return data.primaryRegion !== '' && data.primaryCity.trim().length > 0;
     }
     return false;
   }, [step, data]);
@@ -412,7 +489,6 @@ export default function QuickSetupWizard({
       return;
     }
 
-    // Final step - submit
     setIsSubmitting(true);
     setError(null);
 
@@ -420,7 +496,7 @@ export default function QuickSetupWizard({
       const result = await onComplete(data);
       if (result.success && result.slug) {
         setCompletedSlug(result.slug);
-        setStep(3); // Move to completion step
+        setStep(3);
       } else {
         setError(result.error || '프로필 생성 중 오류가 발생했습니다.');
       }
@@ -437,7 +513,6 @@ export default function QuickSetupWizard({
     }
   };
 
-  // Completion view with HoleInOne animation
   if (step === 3 && completedSlug) {
     const profileUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/profile/${completedSlug}`;
     return (
@@ -452,7 +527,6 @@ export default function QuickSetupWizard({
     );
   }
 
-  // Loading state with golf spinner
   if (isSubmitting) {
     return (
       <div className="flex flex-col flex-1">
@@ -460,7 +534,7 @@ export default function QuickSetupWizard({
           <GolfProgress currentStep={step} totalSteps={3} labels={STEP_LABELS} />
         </Card>
         <Card className="flex-1 flex items-center justify-center">
-          <GolfSpinner message="프로필을 생성하고 있어요..." size="lg" />
+          <GolfSpinner message="등록 정보를 저장하고 있어요..." size="lg" />
         </Card>
       </div>
     );
@@ -468,7 +542,6 @@ export default function QuickSetupWizard({
 
   return (
     <div className="flex flex-col flex-1">
-      {/* 프로그레스 바 */}
       <Card className="p-4 mb-4">
         <GolfProgress currentStep={step} totalSteps={3} labels={STEP_LABELS} />
       </Card>
@@ -479,16 +552,14 @@ export default function QuickSetupWizard({
         </div>
       )}
 
-      {/* 스텝 콘텐츠 - 스크롤 가능 영역 */}
       <Card className="flex-1 p-5 overflow-y-auto">
         <StepTransition step={step}>
           {step === 0 && <BasicInfoStep data={data} onChange={handleChange} userId={userId} />}
-          {step === 1 && <LessonInfoStep data={data} onChange={handleChange} />}
-          {step === 2 && <ContactStep data={data} onChange={handleChange} />}
+          {step === 1 && <VerificationStep data={data} onChange={handleChange} userId={userId} />}
+          {step === 2 && <ActivityLocationStep data={data} onChange={handleChange} />}
         </StepTransition>
       </Card>
 
-      {/* 고정 하단 버튼 - 모바일 최적화 */}
       <div className="mt-4 flex gap-3">
         {step > 0 && (
           <Button
@@ -508,7 +579,7 @@ export default function QuickSetupWizard({
           className={`h-12 text-base ${step === 0 ? 'w-full' : 'flex-1'}`}
         >
           {step === 2 ? (
-            isAuthenticated ? '완료 ⛳' : '로그인하고 저장 →'
+            isAuthenticated ? '등록 완료' : '로그인하고 저장 →'
           ) : (
             <>
               다음

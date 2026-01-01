@@ -7,6 +7,17 @@
       "caughtErrorsIgnorePattern": "^_"
     }],
     "@typescript-eslint/no-explicit-any": "warn",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "no-restricted-syntax": [
+      "warn",
+      {
+        "selector": "JSXAttribute[name.name='className'] Literal[value=/#[0-9a-fA-F]{3,6}/]",
+        "message": "Avoid hard-coded hex colors in className. Use design tokens."
+      },
+      {
+        "selector": "JSXAttribute[name.name='className'] JSXExpressionContainer TemplateElement[value.raw=/#[0-9a-fA-F]{3,6}/]",
+        "message": "Avoid hard-coded hex colors in className template literals. Use design tokens."
+      }
+    ]
   }
 }

@@ -26,3 +26,10 @@ export const DEFAULT_SECTIONS: Record<ThemeType, { section_type: string; title: 
     { section_type: 'contact', title: 'Contact' },
   ],
 };
+
+export const OPTIONAL_SECTIONS: { section_type: string; title: string }[] = [
+  { section_type: 'achievements', title: 'Achievements' },
+  { section_type: 'sponsorships', title: 'Sponsorships' },
+  { section_type: 'media', title: 'Media Highlights' },
+  { section_type: 'availability', title: 'Availability' },
+];
