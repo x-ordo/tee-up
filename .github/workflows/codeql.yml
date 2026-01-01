@@ -1,0 +1,51 @@
+# ═══════════════════════════════════════════════════════════════
+# TEE:UP CodeQL 보안 스캔
+# 목적: JavaScript/TypeScript 코드 보안 취약점 분석
+# Schedule: PR/push + 매주 월요일 9AM(KST)
+# ═══════════════════════════════════════════════════════════════
+
+name: CodeQL Security Scan
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/**/*.ts'
+      - 'web/**/*.tsx'
+      - 'web/**/*.js'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'web/**/*.ts'
+      - 'web/**/*.tsx'
+      - 'web/**/*.js'
+  schedule:
+    # 매주 월요일 00:00 UTC (09:00 KST)
+    - cron: '0 0 * * 1'
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          queries: +security-extended
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript-typescript"

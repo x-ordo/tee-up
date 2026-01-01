@@ -1,9 +1,10 @@
 # Dependabot configuration for automated dependency updates
 # Documentation: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+# Schedule: 매주 월요일 9AM(KST) 의존성 보안 업데이트
 
 version: 2
 updates:
-  # Frontend (Next.js)
+  # Frontend (Next.js + Server Actions)
   - package-ecosystem: "npm"
     directory: "/web"
     schedule:
@@ -13,8 +14,8 @@ updates:
       timezone: "Asia/Seoul"
     open-pull-requests-limit: 5
     labels:
-      - "type: frontend"
-      - "priority: low"
+      - "dependencies"
+      - "javascript"
     groups:
       react:
         patterns:
@@ -23,35 +24,20 @@ updates:
       next:
         patterns:
           - "next*"
-      testing:
-        patterns:
-          - "jest*"
-          - "@testing-library/*"
-          - "playwright*"
-
-  # Backend (Express.js)
-  - package-ecosystem: "npm"
-    directory: "/api"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-      timezone: "Asia/Seoul"
-    open-pull-requests-limit: 5
-    labels:
-      - "type: backend"
-      - "priority: low"
-    groups:
-      express:
-        patterns:
-          - "express*"
+          - "@next/*"
       supabase:
         patterns:
           - "@supabase/*"
       testing:
         patterns:
           - "jest*"
-          - "@types/jest"
+          - "@testing-library/*"
+          - "playwright*"
+      ui:
+        patterns:
+          - "@radix-ui/*"
+          - "tailwindcss*"
+          - "lucide-react"
 
   # GitHub Actions
   - package-ecosystem: "github-actions"
@@ -63,5 +49,5 @@ updates:
       timezone: "Asia/Seoul"
     open-pull-requests-limit: 3
     labels:
-      - "type: infra"
-      - "priority: low"
+      - "dependencies"
+      - "github-actions"
