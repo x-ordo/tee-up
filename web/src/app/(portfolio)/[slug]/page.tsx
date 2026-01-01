@@ -352,7 +352,7 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
     .map((item) => ({
       name: readString(item.name) || readString(item.title) || '',
       price: readString(item.price) || '',
-      duration: readString(item.duration),
+      duration: readString(item.duration) || '',
       features: (() => {
         const parsed = parseFeatureList(item.features);
         return parsed.length > 0 ? parsed : undefined;
