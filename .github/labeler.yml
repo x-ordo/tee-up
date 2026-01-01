@@ -1,0 +1,91 @@
+# Auto-labeling configuration for PRs
+# Based on file paths changed
+
+# Frontend changes
+frontend:
+  - changed-files:
+      - any-glob-to-any-file: 'web/**/*'
+
+# Component changes
+components:
+  - changed-files:
+      - any-glob-to-any-file: 'web/src/components/**/*'
+
+# Server Actions
+server-actions:
+  - changed-files:
+      - any-glob-to-any-file: 'web/src/actions/**/*'
+
+# Database/Schema changes
+database:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'supabase/**/*'
+          - '**/*.sql'
+
+# Documentation
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.md'
+          - 'docs/**/*'
+          - 'specs/**/*'
+
+# Tests
+tests:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.test.ts'
+          - '**/*.test.tsx'
+          - '**/*.spec.ts'
+          - '**/e2e/**/*'
+          - '**/__tests__/**/*'
+
+# CI/CD
+ci:
+  - changed-files:
+      - any-glob-to-any-file: '.github/**/*'
+
+# Configuration
+config:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.config.*'
+          - '**/tsconfig.json'
+          - '**/package.json'
+          - '**/.env*'
+
+# Portfolio feature
+portfolio:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'web/src/components/portfolio/**/*'
+          - 'web/src/app/(portfolio)/**/*'
+
+# Dashboard
+dashboard:
+  - changed-files:
+      - any-glob-to-any-file: 'web/src/app/(dashboard)/**/*'
+
+# Authentication
+auth:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'web/src/app/auth/**/*'
+          - 'web/src/middleware.ts'
+          - 'web/src/hooks/useAuth*'
+
+# Onboarding
+onboarding:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'web/src/app/onboarding/**/*'
+          - 'web/src/components/onboarding/**/*'
+
+# Styling
+styling:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.css'
+          - '**/tailwind.config.*'
+          - '**/design-tokens*'

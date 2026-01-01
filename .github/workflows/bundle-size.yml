@@ -1,0 +1,53 @@
+# ═══════════════════════════════════════════════════════════════
+# TEE:UP Bundle Size Check
+# PR에서 번들 사이즈 변경 추적
+# ═══════════════════════════════════════════════════════════════
+
+name: Bundle Size
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - '!web/**/*.md'
+      - '!web/**/*.test.*'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  size:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install Dependencies
+        working-directory: ./web
+        run: npm ci
+
+      - name: Build
+        working-directory: ./web
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: placeholder
+          NEXT_PUBLIC_SITE_URL: https://teeup.kr
+
+      - name: Analyze Bundle
+        uses: hashicorp/nextjs-bundle-analysis@v1.0.2
+        with:
+          workflow-id: bundle-size.yml
+          working-directory: ./web
