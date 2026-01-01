@@ -10,7 +10,7 @@
  * - incrementProfileViews
  */
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createPublicClient } from '@/lib/supabase/server';
 import {
   getCurrentUserProfile,
   getPublicProfile,
@@ -42,6 +42,7 @@ import {
 // Mock Supabase server client
 jest.mock('@/lib/supabase/server');
 const mockCreateClient = createClient as jest.MockedFunction<typeof createClient>;
+const mockCreatePublicClient = createPublicClient as jest.MockedFunction<typeof createPublicClient>;
 
 // Mock next/cache
 jest.mock('next/cache', () => ({
@@ -58,6 +59,7 @@ jest.mock('next/cache', () => ({
 describe('Profile Server Actions', () => {
   let mockClient: ReturnType<typeof createMockSupabaseClient>['mockClient'];
   let queryBuilder: ReturnType<typeof createMockSupabaseClient>['queryBuilder'];
+  let publicQueryBuilder: ReturnType<typeof createMockSupabaseClient>['queryBuilder'];
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -65,6 +67,11 @@ describe('Profile Server Actions', () => {
     mockClient = mocks.mockClient;
     queryBuilder = mocks.queryBuilder;
     mockCreateClient.mockResolvedValue(mockClient as unknown as Awaited<ReturnType<typeof createClient>>);
+
+    // Setup public client mock (returns synchronously)
+    const publicMocks = createMockSupabaseClient();
+    publicQueryBuilder = publicMocks.queryBuilder;
+    mockCreatePublicClient.mockReturnValue(publicMocks.mockClient as unknown as ReturnType<typeof createPublicClient>);
   });
 
   // ============================================
@@ -135,7 +142,7 @@ describe('Profile Server Actions', () => {
   describe('getPublicProfile', () => {
     it('should return approved public profile by slug', async () => {
       const approvedProfile = { ...mockProProfile, is_approved: true };
-      mockQuerySuccess(queryBuilder, approvedProfile);
+      mockQuerySuccess(publicQueryBuilder, approvedProfile);
 
       const result = await getPublicProfile('test-pro');
 
@@ -143,13 +150,13 @@ describe('Profile Server Actions', () => {
       if (result.success) {
         expect(result.data).toEqual(approvedProfile);
       }
-      expect(queryBuilder.eq).toHaveBeenCalledWith('slug', 'test-pro');
-      expect(queryBuilder.eq).toHaveBeenCalledWith('is_approved', true);
+      expect(publicQueryBuilder.eq).toHaveBeenCalledWith('slug', 'test-pro');
+      expect(publicQueryBuilder.eq).toHaveBeenCalledWith('is_approved', true);
     });
 
     it('should return null for non-existent profile', async () => {
       // PGRST116 = no rows found
-      queryBuilder.single.mockResolvedValue({
+      publicQueryBuilder.single.mockResolvedValue({
         data: null,
         error: { code: 'PGRST116', message: 'No rows found' },
       });
@@ -163,7 +170,7 @@ describe('Profile Server Actions', () => {
     });
 
     it('should return error on database failure', async () => {
-      queryBuilder.single.mockResolvedValue({
+      publicQueryBuilder.single.mockResolvedValue({
         data: null,
         error: { code: 'DB_ERROR', message: 'Database error' },
       });
@@ -185,8 +192,8 @@ describe('Profile Server Actions', () => {
       const profiles = [mockProProfile, { ...mockProProfile, id: 'profile-456' }];
       // getApprovedProfiles chains: select -> eq -> order -> order
       // The last order() returns the result
-      queryBuilder.order
-        .mockReturnValueOnce(queryBuilder) // First order (is_featured)
+      publicQueryBuilder.order
+        .mockReturnValueOnce(publicQueryBuilder) // First order (is_featured)
         .mockResolvedValueOnce({ data: profiles, error: null }); // Second order (created_at)
 
       const result = await getApprovedProfiles();
@@ -195,12 +202,12 @@ describe('Profile Server Actions', () => {
       if (result.success) {
         expect(result.data).toEqual(profiles);
       }
-      expect(queryBuilder.eq).toHaveBeenCalledWith('is_approved', true);
+      expect(publicQueryBuilder.eq).toHaveBeenCalledWith('is_approved', true);
     });
 
     it('should return empty array when no profiles exist', async () => {
-      queryBuilder.order
-        .mockReturnValueOnce(queryBuilder)
+      publicQueryBuilder.order
+        .mockReturnValueOnce(publicQueryBuilder)
         .mockResolvedValueOnce({ data: [], error: null });
 
       const result = await getApprovedProfiles();
@@ -410,38 +417,28 @@ describe('Profile Server Actions', () => {
       }
     });
 
-    it('should handle kakao contact type', async () => {
+    it('should return validation error for invalid birth date', async () => {
       mockAuthenticatedUser(mockClient);
-      queryBuilder.single
-        .mockResolvedValueOnce({ data: null, error: { code: 'PGRST116' } })
-        .mockResolvedValueOnce({ data: { slug: 'test-slug' }, error: null });
+      const invalidInput = { ...validQuickProfileInput, birthDate: '1990/01/01' };
 
-      const input = {
-        ...validQuickProfileInput,
-        contactType: 'kakao' as const,
-        contactValue: 'https://open.kakao.com/test',
-      };
+      const result = await createQuickProfile(invalidInput);
 
-      const result = await createQuickProfile(input);
-
-      expect(result.success).toBe(true);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error).toBe(VALIDATION_FAILED);
+      }
     });
 
-    it('should handle phone contact type', async () => {
+    it('should return validation error for missing verification file', async () => {
       mockAuthenticatedUser(mockClient);
-      queryBuilder.single
-        .mockResolvedValueOnce({ data: null, error: { code: 'PGRST116' } })
-        .mockResolvedValueOnce({ data: { slug: 'test-slug' }, error: null });
+      const invalidInput = { ...validQuickProfileInput, proVerificationFileUrl: '' };
 
-      const input = {
-        ...validQuickProfileInput,
-        contactType: 'phone' as const,
-        contactValue: '010-1234-5678',
-      };
+      const result = await createQuickProfile(invalidInput);
 
-      const result = await createQuickProfile(input);
-
-      expect(result.success).toBe(true);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error).toBe(VALIDATION_FAILED);
+      }
     });
 
     it('should retry with different slug on collision', async () => {
