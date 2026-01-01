@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/Card';
 import SimpleRequestForm from '@/components/booking/SimpleRequestForm';
 
 interface ContactSectionProps {
+  id?: string;
   proId?: string;
   proName: string;
   openChatUrl?: string;
@@ -18,6 +19,7 @@ interface ContactSectionProps {
 }
 
 export function ContactSection({
+  id,
   proId,
   proName,
   openChatUrl,
@@ -32,15 +34,15 @@ export function ContactSection({
   const hasExternalLinks = openChatUrl || paymentLink || bookingUrl;
 
   return (
-    <section className={cn('px-6 py-24', className)}>
+    <section id={id} className={cn('px-6 py-24', className)}>
       <div className="mx-auto max-w-4xl">
         <Card className="overflow-hidden border-2 border-tee-accent-primary/20 bg-gradient-to-br from-tee-surface to-tee-background p-12 text-center">
-          <h2 className="mb-4 font-pretendard text-4xl font-bold text-tee-ink-strong">
+          <h2 className="mb-4 font-pretendard text-4xl font-semibold tracking-[0.04em] text-tee-ink-strong">
             {proName}님과
             <br />
             레슨 시작하기
           </h2>
-          <p className="mx-auto mb-10 max-w-xl text-lg text-tee-ink-light">
+          <p className="mx-auto mb-10 max-w-xl text-lg font-medium tracking-[0.08em] text-tee-ink-light">
             지금 문의하시면 빠른 시간 내에 답변 드리겠습니다
           </p>
 

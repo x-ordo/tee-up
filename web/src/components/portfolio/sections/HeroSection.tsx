@@ -38,7 +38,12 @@ export function HeroSection({
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to top, var(--tee-overlay-strong), var(--tee-overlay-medium), transparent)',
+          }}
+        />
       </div>
 
       {/* Content */}
@@ -54,10 +59,10 @@ export function HeroSection({
           )}
 
           {/* Name & Title */}
-          <h1 className="mb-4 font-pretendard text-4xl font-bold leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="mb-4 font-pretendard text-4xl font-semibold tracking-[0.04em] leading-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
             {name}
           </h1>
-          <p className="mb-8 text-xl font-medium text-white/80 lg:text-2xl">
+          <p className="mb-8 text-xl font-medium tracking-[0.08em] text-white/80 lg:text-2xl">
             {title}
           </p>
 
@@ -100,7 +105,7 @@ export function HeroSection({
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce motion-reduce:animate-none">
         <div className="flex flex-col items-center gap-2 text-white/50">
           <span className="text-xs uppercase tracking-widest">Scroll</span>
           <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
