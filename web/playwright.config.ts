@@ -22,10 +22,19 @@ export default defineConfig({
   /* Reporter to use */
   reporter: [['list'], ['html', { open: 'never' }], ['junit', { outputFile: 'playwright-report/results.xml' }]],
 
+  /* Global timeout for each test */
+  timeout: 30000,
+
   /* Shared settings for all the projects below */
   use: {
     /* Base URL to use in actions like `await page.goto('/')` */
     baseURL: 'http://localhost:3000',
+
+    /* Navigation timeout - increased for slower browsers */
+    navigationTimeout: 30000,
+
+    /* Action timeout */
+    actionTimeout: 10000,
 
     /* Collect trace when retrying the failed test */
     trace: 'on-first-retry',
@@ -43,7 +52,14 @@ export default defineConfig({
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: {
+        ...devices['Desktop Firefox'],
+        /* Firefox is slower - increase timeouts */
+        navigationTimeout: 60000,
+        actionTimeout: 15000,
+      },
+      /* Higher test timeout for Firefox */
+      timeout: 60000,
     },
 
     {
