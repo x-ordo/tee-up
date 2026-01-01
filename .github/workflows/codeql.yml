@@ -1,6 +1,7 @@
 # ═══════════════════════════════════════════════════════════════
 # TEE:UP CodeQL 보안 스캔
 # 목적: JavaScript/TypeScript 코드 보안 취약점 분석
+# 커스텀 쿼리: Server Actions, Supabase, Next.js 특화
 # Schedule: PR/push + 매주 월요일 9AM(KST)
 # ═══════════════════════════════════════════════════════════════
 
@@ -13,24 +14,36 @@ on:
       - 'web/**/*.ts'
       - 'web/**/*.tsx'
       - 'web/**/*.js'
+      - '.github/codeql/**'
   pull_request:
     branches: [main]
     paths:
       - 'web/**/*.ts'
       - 'web/**/*.tsx'
       - 'web/**/*.js'
+      - '.github/codeql/**'
   schedule:
     # 매주 월요일 00:00 UTC (09:00 KST)
     - cron: '0 0 * * 1'
+  workflow_dispatch:
 
 permissions:
   contents: read
   security-events: write
+  actions: read
 
 jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: javascript-typescript
+            build-mode: none
 
     steps:
       - name: Checkout repository
@@ -39,8 +52,9 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: javascript-typescript
-          queries: +security-extended
+          languages: ${{ matrix.language }}
+          config-file: ./.github/codeql/codeql-config.yml
+          queries: +security-extended,+security-and-quality
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3
@@ -48,4 +62,26 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: "/language:javascript-typescript"
+          category: "/language:${{ matrix.language }}"
+          output: sarif-results
+          upload: always
+
+      - name: Upload SARIF to Security Tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: sarif-results
+
+      - name: Generate Security Report Summary
+        if: always()
+        run: |
+          echo "## CodeQL Security Scan Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Custom Queries Applied:" >> $GITHUB_STEP_SUMMARY
+          echo "- Server Action Authentication Check" >> $GITHUB_STEP_SUMMARY
+          echo "- Hardcoded Secrets Detection" >> $GITHUB_STEP_SUMMARY
+          echo "- Unsafe HTML Injection (XSS)" >> $GITHUB_STEP_SUMMARY
+          echo "- Supabase SQL Injection" >> $GITHUB_STEP_SUMMARY
+          echo "- Open Redirect Vulnerability" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "See the Security tab for detailed findings." >> $GITHUB_STEP_SUMMARY

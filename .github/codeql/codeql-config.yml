@@ -1,0 +1,46 @@
+# ═══════════════════════════════════════════════════════════════
+# TEE:UP Custom CodeQL Configuration
+# Next.js + Supabase 특화 보안 분석
+# ═══════════════════════════════════════════════════════════════
+
+name: "TEE:UP Security Analysis"
+
+# 쿼리 스위트 설정
+queries:
+  # 기본 보안 쿼리
+  - uses: security-extended
+  - uses: security-and-quality
+
+  # 커스텀 쿼리 (로컬)
+  - uses: ./.github/codeql/queries
+
+# 쿼리 필터 - 특정 규칙 조정
+query-filters:
+  # 테스트 파일 제외
+  - exclude:
+      tags contain: /test/
+
+# 경로 설정
+paths:
+  - web/src
+
+paths-ignore:
+  # 테스트 파일 제외
+  - web/src/**/*.test.ts
+  - web/src/**/*.test.tsx
+  - web/src/**/__tests__/**
+  - web/src/**/__mocks__/**
+
+  # 빌드 아티팩트 제외
+  - web/.next/**
+  - web/node_modules/**
+
+  # 타입 정의만 있는 파일 제외
+  - web/src/types/**/*.d.ts
+
+# 추출기 설정
+extractor:
+  javascript:
+    # TypeScript 지원
+    typescript:
+      enabled: true
