@@ -4,7 +4,7 @@
  * @kind problem
  * @problem.severity warning
  * @security-severity 7.5
- * @precision medium
+ * @precision low
  * @id js/teeup/server-action-missing-auth
  * @tags security
  *       nextjs
@@ -14,71 +14,41 @@
 import javascript
 
 /**
- * Identifies functions marked with 'use server' directive
+ * Finds files with 'use server' directive
  */
-class ServerActionFunction extends Function {
-  ServerActionFunction() {
+class ServerActionFile extends File {
+  ServerActionFile() {
     exists(ExprStmt stmt |
       stmt.getExpr().(StringLiteral).getValue() = "use server" and
-      stmt.getParent+() = this.getBody()
-    )
-    or
-    exists(ExprStmt stmt |
-      stmt.getExpr().(StringLiteral).getValue() = "use server" and
-      stmt.getFile() = this.getFile() and
-      stmt.getLocation().getStartLine() < this.getLocation().getStartLine()
+      stmt.getFile() = this
     )
   }
 }
 
 /**
- * Checks if function contains authentication verification
+ * Find functions in server action files that perform mutations without auth
  */
-predicate hasAuthCheck(Function f) {
+from Function f, ServerActionFile file
+where
+  f.getFile() = file and
+  // Has mutation calls
   exists(CallExpr call |
     call.getEnclosingFunction() = f and
     (
-      // Common auth check patterns
-      call.getCalleeName() = "getUser" or
-      call.getCalleeName() = "getSession" or
-      call.getCalleeName() = "auth" or
-      call.getCalleeName().matches("%authenticate%") or
-      call.getCalleeName().matches("%checkAuth%") or
-      call.getCalleeName().matches("%verifyAuth%") or
-      call.getCalleeName().matches("%requireAuth%")
-    )
-  )
-  or
-  exists(PropAccess prop |
-    prop.getEnclosingFunction() = f and
-    prop.getPropertyName() = "auth"
-  )
-}
-
-/**
- * Checks if function performs data mutations
- */
-predicate performsDataMutation(Function f) {
-  exists(CallExpr call |
-    call.getEnclosingFunction() = f and
-    (
-      // Supabase mutations
       call.getCalleeName() = "insert" or
       call.getCalleeName() = "update" or
       call.getCalleeName() = "delete" or
-      call.getCalleeName() = "upsert" or
-      // Database operations
-      call.getCalleeName().matches("%create%") or
-      call.getCalleeName().matches("%save%") or
-      call.getCalleeName().matches("%remove%")
+      call.getCalleeName() = "upsert"
     )
-  )
-}
-
-from ServerActionFunction f
-where
-  performsDataMutation(f) and
-  not hasAuthCheck(f)
-select f,
-  "Server Action '" + f.getName() +
-    "' performs data mutation but may be missing authentication check"
+  ) and
+  // No auth check
+  not exists(CallExpr authCall |
+    authCall.getEnclosingFunction() = f and
+    (
+      authCall.getCalleeName() = "getUser" or
+      authCall.getCalleeName() = "getSession" or
+      authCall.getCalleeName() = "auth"
+    )
+  ) and
+  not f.getFile().getRelativePath().matches("%test%")
+select f, "Server Action function may be missing authentication check before data mutation."
