@@ -57,6 +57,10 @@ export interface IProProfile {
   location?: string;
   tour_experience?: string;
   certifications: string[];
+  birth_date?: string;
+  verification_file_url?: string;
+  primary_region?: string;
+  primary_city?: string;
 
   // Media
   hero_image_url?: string;

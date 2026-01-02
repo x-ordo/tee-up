@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Cafe24ProSlim';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2511-1@1.0/Cafe24PROSlim-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cafe24ProSlim';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2511-1@1.0/Cafe24PROSlim-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cafe24ProSlim';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2511-1@1.0/Cafe24PROSlim-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
 @layer base {
   :root {
     /* Color Palette - Light Mode */
@@ -20,14 +41,17 @@
     --tee-success: #388E3C;
     --tee-warning: #FBC02D;
     --tee-info: #1976D2;
+    --tee-overlay-strong: rgba(0, 0, 0, 0.8);
+    --tee-overlay-medium: rgba(0, 0, 0, 0.5);
+    --tee-overlay-light: rgba(0, 0, 0, 0.2);
 
     /* Brand Colors */
     --tee-kakao: #FEE500;
     --tee-kakao-text: #3C1E1E;
 
     /* Font Families */
-    --font-pretendard: 'Pretendard', sans-serif;
-    --font-inter: 'Inter', sans-serif;
+    --font-pretendard: 'Cafe24ProSlim', sans-serif;
+    --font-inter: 'Cafe24ProSlim', sans-serif;
     /* --font-jetbrains-mono: 'JetBrains Mono', monospace; */
   }
 
@@ -49,6 +73,9 @@
     --tee-success: #66BB6A;
     --tee-warning: #FFCA28;
     --tee-info: #42A5F5;
+    --tee-overlay-strong: rgba(0, 0, 0, 0.8);
+    --tee-overlay-medium: rgba(0, 0, 0, 0.5);
+    --tee-overlay-light: rgba(0, 0, 0, 0.2);
   }
 
   /* Theme transition - smooth color changes */
@@ -64,7 +91,7 @@
 
   /* Base styles */
   html {
-    @apply text-body font-inter text-tee-ink-strong bg-tee-background;
+    @apply text-body font-pretendard text-tee-ink-strong bg-tee-background;
     scroll-behavior: smooth;
   }
 

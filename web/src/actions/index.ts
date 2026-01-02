@@ -6,12 +6,14 @@ export {
   getCurrentUserProfile,
   getPublicProfile,
   getApprovedProfiles,
+  getLandingRecommendations,
   updateProProfile,
   createProProfile,
   incrementProfileViews,
   type ProProfile,
   type ProProfileInsert,
   type ProProfileUpdate,
+  type LandingRecommendation,
 } from './profiles';
 
 // Studio actions
@@ -52,6 +54,13 @@ export {
   type Lead,
   type LeadStats,
 } from './leads';
+
+// Consultation requests
+export {
+  createConsultationRequest,
+  type ConsultationRequest,
+  type ConsultationRequestStatus,
+} from './consultation-requests';
 
 // Portfolio actions
 export {

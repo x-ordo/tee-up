@@ -101,7 +101,7 @@ export function KakaoTalkButton({
       className={`
         group relative inline-flex items-center justify-center gap-2 overflow-hidden
         rounded-full font-semibold shadow-md
-        transition-all duration-base hover:scale-105
+        transition-all duration-base hover:scale-105 motion-reduce:transform-none motion-reduce:transition-none motion-reduce:hover:scale-100
         ${sizeStyles[size]}
         ${variantStyles[variant]}
         ${className}

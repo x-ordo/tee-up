@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createPublicClient } from '@/lib/supabase/server';
 import { revalidatePath, revalidateTag } from 'next/cache';
 import type { ActionResult } from './types';
 import {
@@ -89,7 +89,7 @@ export async function getPublicStudio(
 ): Promise<ActionResult<Studio | null>> {
   // Create cached fetcher for this studio
   const fetchStudio = createCachedPublicStudio(slug, async () => {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
 
     const { data, error } = await supabase
       .from('studios')

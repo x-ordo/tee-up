@@ -8,14 +8,15 @@ import {
   Check,
   ChevronRight,
   ChevronLeft,
-  MessageCircle,
-  Phone,
   Loader2,
   Copy,
   ExternalLink,
   Sparkles,
+  UploadCloud,
+  FileText,
+  X,
 } from 'lucide-react';
-import { uploadImage, STORAGE_BUCKETS, ALLOWED_IMAGE_TYPES } from '@/lib/storage';
+import { uploadImage, STORAGE_BUCKETS, ALLOWED_IMAGE_TYPES, MAX_FILE_SIZES } from '@/lib/storage';
 
 // ============================================
 // Types
@@ -23,11 +24,12 @@ import { uploadImage, STORAGE_BUCKETS, ALLOWED_IMAGE_TYPES } from '@/lib/storage
 
 export interface OnboardingData {
   name: string;
+  birthDate: string;
+  phoneNumber: string;
   profileImageUrl?: string;
-  specialty: string;
-  priceRange: string;
-  contactType: 'kakao' | 'phone';
-  contactValue: string;
+  proVerificationFileUrl?: string;
+  primaryRegion: string;
+  primaryCity: string;
 }
 
 interface VisualOnboardingProps {
@@ -42,21 +44,37 @@ interface VisualOnboardingProps {
 // Constants
 // ============================================
 
-const SPECIALTIES = [
-  { value: 'full_swing', label: '풀스윙', icon: '🏌️', color: 'from-green-400 to-emerald-500' },
-  { value: 'short_game', label: '숏게임', icon: '⛳', color: 'from-teal-400 to-cyan-500' },
-  { value: 'putting', label: '퍼팅', icon: '🎯', color: 'from-blue-400 to-indigo-500' },
-  { value: 'course_strategy', label: '코스 전략', icon: '📋', color: 'from-amber-400 to-orange-500' },
-  { value: 'fitness', label: '피트니스', icon: '💪', color: 'from-purple-400 to-pink-500' },
-  { value: 'mental', label: '멘탈', icon: '🧠', color: 'from-rose-400 to-red-500' },
+const REGIONS = [
+  { value: 'seoul', label: '서울' },
+  { value: 'gyeonggi', label: '경기' },
+  { value: 'incheon', label: '인천' },
+  { value: 'busan', label: '부산' },
+  { value: 'daegu', label: '대구' },
+  { value: 'gwangju', label: '광주' },
+  { value: 'daejeon', label: '대전' },
+  { value: 'ulsan', label: '울산' },
+  { value: 'sejong', label: '세종' },
+  { value: 'gangwon', label: '강원' },
+  { value: 'chungbuk', label: '충북' },
+  { value: 'chungnam', label: '충남' },
+  { value: 'jeonbuk', label: '전북' },
+  { value: 'jeonnam', label: '전남' },
+  { value: 'gyeongbuk', label: '경북' },
+  { value: 'gyeongnam', label: '경남' },
+  { value: 'jeju', label: '제주' },
+  { value: 'overseas', label: '해외' },
 ];
 
-const PRICE_RANGES = [
-  { value: 'budget', label: '~5만원', subLabel: '부담없이', icon: '💚' },
-  { value: 'standard', label: '5~10만원', subLabel: '합리적인', icon: '💙' },
-  { value: 'premium', label: '10~20만원', subLabel: '프리미엄', icon: '💜' },
-  { value: 'luxury', label: '20만원~', subLabel: '최상급', icon: '🖤' },
-];
+const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+
+const normalizePhone = (value: string) => value.replace(/\D/g, '');
+
+const formatPhone = (value: string) => {
+  const numbers = normalizePhone(value);
+  if (numbers.length <= 3) return numbers;
+  if (numbers.length <= 7) return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
+  return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
+};
 
 // ============================================
 // Step Components
@@ -73,6 +91,7 @@ function ProfileStep({
 }) {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const today = new Date().toISOString().split('T')[0];
 
   const handleFileSelect = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,16 +100,16 @@ function ProfileStep({
       e.target.value = '';
 
       if (!ALLOWED_IMAGE_TYPES.includes(file.type)) return;
-      if (file.size > 5 * 1024 * 1024) return;
+      if (file.size > MAX_FILE_SIZES.IMAGE) return;
 
       setIsUploading(true);
       try {
         if (!userId) {
-          const previewUrl = URL.createObjectURL(file);
-          onChange({ profileImageUrl: previewUrl });
           const reader = new FileReader();
           reader.onloadend = () => {
-            sessionStorage.setItem('pendingProfileImage', reader.result as string);
+            const result = reader.result as string;
+            onChange({ profileImageUrl: result });
+            sessionStorage.setItem('pendingProfileImage', result);
           };
           reader.readAsDataURL(file);
         } else {
@@ -116,7 +135,6 @@ function ProfileStep({
 
   return (
     <div className="flex flex-col items-center justify-center flex-1 px-4">
-      {/* 큰 프로필 이미지 영역 */}
       <motion.button
         type="button"
         onClick={() => fileInputRef.current?.click()}
@@ -125,21 +143,21 @@ function ProfileStep({
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
       >
-        <div className={`
-          relative h-40 w-40 rounded-full overflow-hidden
-          ${data.profileImageUrl
-            ? 'ring-4 ring-tee-accent-primary/30'
-            : 'border-4 border-dashed border-tee-stone'
-          }
-          transition-all duration-300
-        `}>
+        <div className={
+          `relative h-36 w-36 rounded-full overflow-hidden transition-all duration-300 ${
+            data.profileImageUrl
+              ? 'ring-4 ring-tee-accent-primary/30'
+              : 'border-4 border-dashed border-tee-stone'
+          }`
+        }>
           {data.profileImageUrl ? (
             <Image
               src={data.profileImageUrl}
               alt="프로필"
               fill
               className="object-cover"
-              sizes="160px"
+              sizes="144px"
+              unoptimized={data.profileImageUrl.startsWith('data:image/')}
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-tee-background to-tee-stone/30">
@@ -154,13 +172,12 @@ function ProfileStep({
           )}
         </div>
 
-        {/* 카메라 버튼 */}
         <motion.div
-          className="absolute -bottom-2 -right-2 flex h-14 w-14 items-center justify-center rounded-full bg-tee-accent-primary text-white shadow-lg"
+          className="absolute -bottom-2 -right-2 flex h-12 w-12 items-center justify-center rounded-full bg-tee-accent-primary text-white shadow-lg"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
         >
-          <Camera className="h-6 w-6" />
+          <Camera className="h-5 w-5" />
         </motion.div>
       </motion.button>
 
@@ -172,8 +189,7 @@ function ProfileStep({
         className="hidden"
       />
 
-      {/* 이름 입력 - 큰 폰트, 중앙 정렬 */}
-      <div className="w-full max-w-xs">
+      <div className="w-full max-w-xs space-y-4">
         <input
           type="text"
           value={data.name}
@@ -182,222 +198,226 @@ function ProfileStep({
           className="w-full text-center text-2xl font-bold bg-transparent border-b-2 border-tee-stone py-3 text-tee-ink-strong placeholder:text-tee-ink-muted/50 focus:border-tee-accent-primary focus:outline-none transition-colors"
           autoComplete="name"
         />
+
+        <div className="space-y-3">
+          <input
+            type="date"
+            value={data.birthDate}
+            onChange={(e) => onChange({ birthDate: e.target.value })}
+            max={today}
+            className="w-full rounded-2xl border border-tee-stone bg-white px-4 py-3 text-base text-tee-ink-strong focus:border-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
+            autoComplete="bday"
+          />
+          <input
+            type="tel"
+            value={data.phoneNumber}
+            onChange={(e) => onChange({ phoneNumber: formatPhone(e.target.value) })}
+            placeholder="010-1234-5678"
+            className="w-full rounded-2xl border border-tee-stone bg-white px-4 py-3 text-base text-tee-ink-strong placeholder:text-tee-ink-muted focus:border-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
+            autoComplete="tel"
+          />
+        </div>
       </div>
 
       <p className="mt-4 text-sm text-tee-ink-muted">
-        탭하여 사진 추가
+        프로필 사진과 기본 정보를 입력하세요. 사진은 승인 후 언제든 교체할 수 있습니다.
       </p>
     </div>
   );
 }
 
-function SpecialtyStep({
+function VerificationStep({
   data,
   onChange,
+  userId,
 }: {
   data: OnboardingData;
   onChange: (updates: Partial<OnboardingData>) => void;
+  userId?: string;
 }) {
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const hasFile = Boolean(data.proVerificationFileUrl);
+
+  const handleFileSelect = useCallback(
+    async (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      e.target.value = '';
+
+      if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        setError('JPG, PNG, WebP 이미지만 업로드 가능합니다.');
+        return;
+      }
+
+      if (file.size > MAX_FILE_SIZES.IMAGE) {
+        setError('5MB 이하 이미지만 업로드 가능합니다.');
+        return;
+      }
+
+      setError(null);
+      setIsUploading(true);
+
+      try {
+        if (!userId) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const result = reader.result as string;
+            onChange({ proVerificationFileUrl: result });
+            sessionStorage.setItem('pendingProVerification', result);
+            setIsUploading(false);
+          };
+          reader.readAsDataURL(file);
+          return;
+        }
+
+        const result = await uploadImage(file, userId, {
+          bucket: STORAGE_BUCKETS.PROFILE_IMAGES,
+          folder: 'verification',
+          compress: true,
+          generateThumbnail: false,
+          maxWidth: 1600,
+          maxHeight: 1600,
+          quality: 0.85,
+        });
+
+        if (result.success && result.url) {
+          onChange({ proVerificationFileUrl: result.url });
+        } else {
+          setError(result.error || '업로드에 실패했습니다.');
+        }
+      } catch {
+        setError('업로드 중 오류가 발생했습니다.');
+      } finally {
+        setIsUploading(false);
+      }
+    },
+    [userId, onChange]
+  );
+
+  const handleRemove = useCallback(() => {
+    onChange({ proVerificationFileUrl: undefined });
+    sessionStorage.removeItem('pendingProVerification');
+  }, [onChange]);
+
   return (
-    <div className="flex flex-col flex-1 px-4">
+    <div className="flex flex-col flex-1 px-5 justify-center">
       <h2 className="text-center text-xl font-bold text-tee-ink-strong mb-2">
-        전문 분야
+        프로 인증 서류
       </h2>
-      <p className="text-center text-sm text-tee-ink-muted mb-6">
-        가장 자신있는 분야 하나를 선택하세요
+      <p className="text-center text-sm text-tee-ink-muted mb-2">
+        협회/리그 인증서 또는 자격증을 업로드하세요
+      </p>
+      <p className="text-center text-xs text-tee-ink-muted mb-6">
+        인증은 노출을 위한 필수 절차이며, 운영팀이 24시간 내 확인합니다.
       </p>
 
-      <div className="grid grid-cols-2 gap-3 flex-1 content-center">
-        {SPECIALTIES.map((spec, index) => (
+      <div className="rounded-2xl border border-tee-stone bg-white p-5">
+        <div className="flex items-start gap-3">
+          <div className="mt-1 flex h-10 w-10 items-center justify-center rounded-full bg-tee-background">
+            <FileText className="h-5 w-5 text-tee-ink-muted" />
+          </div>
+          <div className="flex-1">
+            <p className="text-sm font-medium text-tee-ink-strong">프로 인증 서류 업로드</p>
+            <p className="mt-1 text-xs text-tee-ink-muted">
+              JPG, PNG, WebP 파일만 가능합니다. (최대 5MB)
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-4 flex flex-wrap items-center gap-3">
           <motion.button
-            key={spec.value}
             type="button"
-            onClick={() => onChange({ specialty: spec.value })}
-            className={`
-              relative overflow-hidden rounded-2xl p-4 text-left
-              transition-all duration-200
-              ${data.specialty === spec.value
-                ? 'ring-2 ring-tee-accent-primary shadow-lg'
-                : 'bg-white border border-tee-stone hover:border-tee-ink-muted'
-              }
-            `}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.05 }}
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isUploading}
+            className="flex items-center gap-2 rounded-xl border border-tee-stone px-4 py-2 text-sm font-medium text-tee-ink-strong"
             whileTap={{ scale: 0.97 }}
           >
-            {/* 선택 시 그라데이션 배경 */}
-            {data.specialty === spec.value && (
-              <motion.div
-                className={`absolute inset-0 bg-gradient-to-br ${spec.color} opacity-10`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.15 }}
-              />
-            )}
-
-            <div className="relative z-10">
-              <span className="text-3xl mb-2 block">{spec.icon}</span>
-              <span className={`font-semibold ${data.specialty === spec.value ? 'text-tee-accent-primary' : 'text-tee-ink-strong'}`}>
-                {spec.label}
-              </span>
-            </div>
-
-            {/* 체크 표시 */}
-            {data.specialty === spec.value && (
-              <motion.div
-                className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-tee-accent-primary text-white"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: 'spring', stiffness: 500 }}
-              >
-                <Check className="h-4 w-4" />
-              </motion.div>
-            )}
+            <UploadCloud className="h-4 w-4" />
+            {hasFile ? '다시 업로드' : '파일 업로드'}
           </motion.button>
-        ))}
-      </div>
-    </div>
-  );
-}
 
-function PriceStep({
-  data,
-  onChange,
-}: {
-  data: OnboardingData;
-  onChange: (updates: Partial<OnboardingData>) => void;
-}) {
-  return (
-    <div className="flex flex-col flex-1 px-4">
-      <h2 className="text-center text-xl font-bold text-tee-ink-strong mb-2">
-        레슨 가격대
-      </h2>
-      <p className="text-center text-sm text-tee-ink-muted mb-6">
-        1회 레슨 기준 가격대를 선택하세요
-      </p>
-
-      <div className="flex flex-col gap-3 flex-1 justify-center">
-        {PRICE_RANGES.map((price, index) => (
-          <motion.button
-            key={price.value}
-            type="button"
-            onClick={() => onChange({ priceRange: price.value })}
-            className={`
-              relative flex items-center gap-4 rounded-2xl p-4
-              transition-all duration-200
-              ${data.priceRange === price.value
-                ? 'bg-tee-accent-primary text-white shadow-lg'
-                : 'bg-white border border-tee-stone hover:border-tee-ink-muted'
-              }
-            `}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.08 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <span className="text-2xl">{price.icon}</span>
-            <div className="flex-1 text-left">
-              <div className="font-bold text-lg">{price.label}</div>
-              <div className={`text-sm ${data.priceRange === price.value ? 'text-white/80' : 'text-tee-ink-muted'}`}>
-                {price.subLabel}
-              </div>
+          {hasFile && !isUploading && (
+            <div className="flex items-center gap-2 text-xs text-tee-success">
+              <Check className="h-4 w-4" />
+              업로드 완료
             </div>
-            {data.priceRange === price.value && (
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: 'spring', stiffness: 500 }}
-              >
-                <Check className="h-6 w-6" />
-              </motion.div>
-            )}
-          </motion.button>
-        ))}
-      </div>
-    </div>
-  );
-}
+          )}
 
-function ContactStep({
-  data,
-  onChange,
-}: {
-  data: OnboardingData;
-  onChange: (updates: Partial<OnboardingData>) => void;
-}) {
-  return (
-    <div className="flex flex-col flex-1 px-4">
-      <h2 className="text-center text-xl font-bold text-tee-ink-strong mb-2">
-        연락 방법
-      </h2>
-      <p className="text-center text-sm text-tee-ink-muted mb-6">
-        회원이 문의할 수 있는 연락처를 등록하세요
-      </p>
+          {hasFile && !isUploading && (
+            <button
+              type="button"
+              onClick={handleRemove}
+              className="text-xs text-tee-ink-muted hover:text-tee-ink-strong"
+            >
+              <X className="mr-1 inline h-3 w-3" />
+              삭제
+            </button>
+          )}
 
-      {/* 연락 방법 선택 */}
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        <motion.button
-          type="button"
-          onClick={() => onChange({ contactType: 'kakao', contactValue: '' })}
-          className={`
-            flex flex-col items-center gap-2 rounded-2xl p-5
-            transition-all duration-200
-            ${data.contactType === 'kakao'
-              ? 'bg-[#FEE500] text-[#3C1E1E] shadow-lg'
-              : 'bg-white border border-tee-stone'
-            }
-          `}
-          whileTap={{ scale: 0.97 }}
-        >
-          <MessageCircle className="h-8 w-8" />
-          <span className="font-semibold">카카오톡</span>
-        </motion.button>
+          {isUploading && (
+            <span className="text-xs text-tee-ink-muted">업로드 중...</span>
+          )}
+        </div>
 
-        <motion.button
-          type="button"
-          onClick={() => onChange({ contactType: 'phone', contactValue: '' })}
-          className={`
-            flex flex-col items-center gap-2 rounded-2xl p-5
-            transition-all duration-200
-            ${data.contactType === 'phone'
-              ? 'bg-tee-accent-primary text-white shadow-lg'
-              : 'bg-white border border-tee-stone'
-            }
-          `}
-          whileTap={{ scale: 0.97 }}
-        >
-          <Phone className="h-8 w-8" />
-          <span className="font-semibold">전화번호</span>
-        </motion.button>
-      </div>
-
-      {/* 연락처 입력 */}
-      <motion.div
-        key={data.contactType}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex-1"
-      >
-        <input
-          type={data.contactType === 'phone' ? 'tel' : 'url'}
-          inputMode={data.contactType === 'phone' ? 'tel' : 'url'}
-          value={data.contactValue}
-          onChange={(e) => onChange({ contactValue: e.target.value })}
-          placeholder={data.contactType === 'kakao' ? 'https://open.kakao.com/o/...' : '010-1234-5678'}
-          className="w-full rounded-2xl border border-tee-stone bg-white px-5 py-4 text-lg text-tee-ink-strong placeholder:text-tee-ink-muted focus:border-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
-        />
-
-        {data.contactType === 'kakao' && (
-          <motion.div
-            className="mt-4 rounded-xl bg-[#FEE500]/20 p-4 text-sm text-tee-ink-light"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <span className="font-medium">💡 오픈채팅 만들기:</span><br/>
-            카카오톡 → 채팅 → 오픈채팅 → 채팅방 만들기 → 링크 복사
-          </motion.div>
+        {error && (
+          <p className="mt-3 text-xs text-tee-error">{error}</p>
         )}
-      </motion.div>
+      </div>
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept={ALLOWED_IMAGE_TYPES.join(',')}
+        onChange={handleFileSelect}
+        className="hidden"
+        disabled={isUploading}
+      />
+    </div>
+  );
+}
+
+function LocationStep({
+  data,
+  onChange,
+}: {
+  data: OnboardingData;
+  onChange: (updates: Partial<OnboardingData>) => void;
+}) {
+  return (
+    <div className="flex flex-col flex-1 px-4">
+      <h2 className="text-center text-xl font-bold text-tee-ink-strong mb-2">
+        주요 활동 지역
+      </h2>
+      <p className="text-center text-sm text-tee-ink-muted mb-6">
+        주로 활동하는 지역을 입력하세요
+      </p>
+
+      <div className="space-y-4 flex-1 flex flex-col justify-center">
+        <select
+          value={data.primaryRegion}
+          onChange={(e) => onChange({ primaryRegion: e.target.value })}
+          className="w-full rounded-2xl border border-tee-stone bg-white px-4 py-3 text-base text-tee-ink-strong focus:border-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
+        >
+          <option value="">지역 선택</option>
+          {REGIONS.map((region) => (
+            <option key={region.value} value={region.value}>
+              {region.label}
+            </option>
+          ))}
+        </select>
+        <input
+          type="text"
+          value={data.primaryCity}
+          onChange={(e) => onChange({ primaryCity: e.target.value })}
+          placeholder="예: 강남구, 해운대구"
+          className="w-full rounded-2xl border border-tee-stone bg-white px-4 py-3 text-base text-tee-ink-strong placeholder:text-tee-ink-muted focus:border-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary/20"
+        />
+        <div className="rounded-xl bg-tee-background px-4 py-3 text-xs text-tee-ink-muted">
+          승인 후 프로필에서 언제든지 수정할 수 있습니다.
+        </div>
+      </div>
     </div>
   );
 }
@@ -424,7 +444,6 @@ function CompletionStep({ profileUrl }: { profileUrl: string }) {
 
   return (
     <div className="flex flex-col items-center justify-center flex-1 px-4 text-center">
-      {/* 축하 애니메이션 */}
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
@@ -442,7 +461,6 @@ function CompletionStep({ profileUrl }: { profileUrl: string }) {
             <Sparkles className="h-12 w-12 text-white" />
           </motion.div>
 
-          {/* Confetti */}
           {[...Array(12)].map((_, i) => (
             <motion.div
               key={i}
@@ -470,19 +488,18 @@ function CompletionStep({ profileUrl }: { profileUrl: string }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
       >
-        프로필 완성! 🎉
+        등록 완료! 🎉
       </motion.h2>
 
       <motion.p
-        className="text-tee-ink-light mb-8"
+        className="text-tee-ink-light mb-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
       >
-        이제 링크를 공유해보세요
+        보통 24시간 내 검증이 완료되며, 완료 즉시 프로필이 공개됩니다. 담당 매니저가 연락드립니다.
       </motion.p>
 
-      {/* 링크 카드 */}
       <motion.div
         className="w-full max-w-sm rounded-2xl bg-tee-background p-4 mb-6"
         initial={{ opacity: 0, y: 20 }}
@@ -506,7 +523,6 @@ function CompletionStep({ profileUrl }: { profileUrl: string }) {
         </div>
       </motion.div>
 
-      {/* 액션 버튼 */}
       <motion.div
         className="w-full max-w-sm space-y-3"
         initial={{ opacity: 0 }}
@@ -576,24 +592,25 @@ export default function VisualOnboarding({
 
   const [data, setData] = useState<OnboardingData>({
     name: initialData?.name || '',
+    birthDate: initialData?.birthDate || '',
+    phoneNumber: initialData?.phoneNumber || '',
     profileImageUrl: initialData?.profileImageUrl,
-    specialty: initialData?.specialty || '',
-    priceRange: initialData?.priceRange || '',
-    contactType: initialData?.contactType || 'kakao',
-    contactValue: initialData?.contactValue || '',
+    proVerificationFileUrl: initialData?.proVerificationFileUrl,
+    primaryRegion: initialData?.primaryRegion || '',
+    primaryCity: initialData?.primaryCity || '',
   });
 
-  // Auto-submit after login
   useEffect(() => {
     if (autoSubmit && isAuthenticated && !autoSubmitTriggered.current && initialData) {
       autoSubmitTriggered.current = true;
       const submitData: OnboardingData = {
         name: initialData.name || '',
+        birthDate: initialData.birthDate || '',
+        phoneNumber: initialData.phoneNumber || '',
         profileImageUrl: initialData.profileImageUrl,
-        specialty: initialData.specialty || '',
-        priceRange: initialData.priceRange || '',
-        contactType: initialData.contactType || 'kakao',
-        contactValue: initialData.contactValue || '',
+        proVerificationFileUrl: initialData.proVerificationFileUrl,
+        primaryRegion: initialData.primaryRegion || '',
+        primaryCity: initialData.primaryCity || '',
       };
       setData(submitData);
       handleSubmit(submitData);
@@ -606,10 +623,16 @@ export default function VisualOnboarding({
   }, []);
 
   const canProceed = useCallback(() => {
-    if (step === 0) return data.name.trim().length >= 2;
-    if (step === 1) return data.specialty !== '';
-    if (step === 2) return data.priceRange !== '';
-    if (step === 3) return data.contactValue.trim().length > 0;
+    if (step === 0) {
+      return (
+        data.name.trim().length >= 2 &&
+        DATE_PATTERN.test(data.birthDate) &&
+        normalizePhone(data.phoneNumber).length >= 10 &&
+        Boolean(data.profileImageUrl)
+      );
+    }
+    if (step === 1) return Boolean(data.proVerificationFileUrl);
+    if (step === 2) return data.primaryRegion !== '' && data.primaryCity.trim().length > 0;
     return false;
   }, [step, data]);
 
@@ -619,7 +642,7 @@ export default function VisualOnboarding({
       const result = await onComplete(submitData);
       if (result.success && result.slug) {
         setCompletedSlug(result.slug);
-        setStep(4);
+        setStep(3);
       }
     } finally {
       setIsSubmitting(false);
@@ -627,7 +650,7 @@ export default function VisualOnboarding({
   }, [onComplete]);
 
   const handleNext = async () => {
-    if (step < 3) {
+    if (step < 2) {
       setStep((s) => s + 1);
       return;
     }
@@ -638,8 +661,7 @@ export default function VisualOnboarding({
     if (step > 0) setStep((s) => s - 1);
   };
 
-  // Completion view
-  if (step === 4 && completedSlug) {
+  if (step === 3 && completedSlug) {
     const profileUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/profile/${completedSlug}`;
     return (
       <div className="flex flex-col min-h-[100dvh] bg-gradient-to-b from-tee-background to-white">
@@ -648,7 +670,6 @@ export default function VisualOnboarding({
     );
   }
 
-  // Loading state
   if (isSubmitting) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[100dvh] bg-gradient-to-b from-tee-background to-white">
@@ -657,17 +678,18 @@ export default function VisualOnboarding({
           transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
           className="h-16 w-16 rounded-full border-4 border-tee-stone border-t-tee-accent-primary"
         />
-        <p className="mt-4 text-tee-ink-light">프로필 생성 중...</p>
+        <p className="mt-4 text-tee-ink-light">등록 정보 저장 중...</p>
       </div>
     );
   }
 
   return (
     <div className="flex flex-col min-h-[100dvh] bg-gradient-to-b from-tee-background to-white">
-      {/* Progress */}
-      <StepIndicator current={step} total={4} />
+      <StepIndicator current={step} total={3} />
+      <p className="px-6 text-center text-sm text-tee-ink-muted">
+        필수 정보만 완료하면 전담 매니저가 검증을 진행해 24시간 내 공개 및 리드 연결을 시작합니다.
+      </p>
 
-      {/* Step Content */}
       <div className="flex-1 flex flex-col">
         <AnimatePresence mode="wait">
           <motion.div
@@ -679,14 +701,12 @@ export default function VisualOnboarding({
             className="flex-1 flex flex-col"
           >
             {step === 0 && <ProfileStep data={data} onChange={handleChange} userId={userId} />}
-            {step === 1 && <SpecialtyStep data={data} onChange={handleChange} />}
-            {step === 2 && <PriceStep data={data} onChange={handleChange} />}
-            {step === 3 && <ContactStep data={data} onChange={handleChange} />}
+            {step === 1 && <VerificationStep data={data} onChange={handleChange} userId={userId} />}
+            {step === 2 && <LocationStep data={data} onChange={handleChange} />}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Bottom Navigation - 고정 */}
       <div className="flex-shrink-0 p-4 pb-8 flex gap-3">
         {step > 0 && (
           <motion.button
@@ -701,18 +721,17 @@ export default function VisualOnboarding({
         <motion.button
           onClick={handleNext}
           disabled={!canProceed()}
-          className={`
-            flex-1 flex items-center justify-center gap-2 h-14 rounded-2xl font-semibold text-lg
-            transition-all duration-200
-            ${canProceed()
-              ? 'bg-tee-accent-primary text-white shadow-lg shadow-tee-accent-primary/30'
-              : 'bg-tee-stone text-tee-ink-muted'
-            }
-          `}
+          className={
+            `flex-1 flex items-center justify-center gap-2 h-14 rounded-2xl font-semibold text-lg transition-all duration-200 ${
+              canProceed()
+                ? 'bg-tee-accent-primary text-white shadow-lg shadow-tee-accent-primary/30'
+                : 'bg-tee-stone text-tee-ink-muted'
+            }`
+          }
           whileTap={canProceed() ? { scale: 0.98 } : {}}
         >
-          {step === 3 ? (
-            isAuthenticated ? '완료' : '로그인하고 저장'
+          {step === 2 ? (
+            isAuthenticated ? '등록 완료' : '로그인하고 저장'
           ) : (
             <>
               다음

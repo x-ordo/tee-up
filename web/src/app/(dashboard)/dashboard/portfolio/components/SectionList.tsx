@@ -11,7 +11,7 @@ import {
   deletePortfolioSection,
   updatePortfolioSection,
 } from '@/actions/portfolios';
-import { DEFAULT_SECTIONS } from '@/lib/portfolio-constants';
+import { DEFAULT_SECTIONS, OPTIONAL_SECTIONS } from '@/lib/portfolio-constants';
 
 interface SectionListProps {
   profileId: string;
@@ -33,6 +33,10 @@ const SECTION_TYPE_LABELS: Record<string, string> = {
   faq: '자주 묻는 질문',
   instagram_feed: '인스타그램 피드',
   youtube_embed: '유튜브 영상',
+  achievements: '투어·수상',
+  sponsorships: '스폰서',
+  media: '미디어/보도',
+  availability: '가용 일정',
   custom: '커스텀',
 };
 
@@ -47,6 +51,10 @@ const SECTION_ICONS: Record<string, string> = {
   faq: 'M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
   instagram_feed: 'M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z',
   youtube_embed: 'M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z',
+  achievements: 'M9 12l2 2 4-4M7 12a5 5 0 0110 0 5 5 0 01-10 0zm10 0h2a7 7 0 10-14 0h2',
+  sponsorships: 'M4 6h16M4 10h16M4 14h16M4 18h16',
+  media: 'M4 6h16M4 10h10M4 14h16M4 18h8',
+  availability: 'M8 7V3m8 4V3M4 11h16M5 19h14a1 1 0 001-1V7a1 1 0 00-1-1H5a1 1 0 00-1 1v11a1 1 0 001 1z',
   custom: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10',
 };
 
@@ -154,6 +162,7 @@ export default function SectionList({
 
   // Available section types not yet added
   const availableSectionTypes = DEFAULT_SECTIONS[themeType]
+    .concat(OPTIONAL_SECTIONS)
     .filter((def) => !sections.some((s) => s.section_type === def.section_type))
     .concat([{ section_type: 'custom', title: 'Custom' }]);
 

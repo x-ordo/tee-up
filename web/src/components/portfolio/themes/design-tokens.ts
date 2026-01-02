@@ -31,7 +31,7 @@ export const TYPOGRAPHY = {
     
     // 대체 조합
     displayAlt: '"Cormorant Garamond", Georgia, serif',
-    bodyAlt: '"Inter", "Pretendard", sans-serif',
+    bodyAlt: '"Cafe24ProSlim", sans-serif',
     
     // 브랜드별 특수 폰트
     futura: '"Futura", "Avenir", "Montserrat", sans-serif',

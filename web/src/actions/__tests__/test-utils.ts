@@ -32,6 +32,10 @@ export const mockProProfile = {
   location: 'Seoul',
   tour_experience: null,
   certifications: ['PGA'],
+  birth_date: '1990-01-01',
+  verification_file_url: 'https://example.com/verification.jpg',
+  primary_region: 'seoul',
+  primary_city: '강남구',
   theme_type: 'curriculum' as const,
   theme_config: null,
   payment_link: null,
@@ -177,13 +181,12 @@ export function mockNotFound(
  */
 export const validQuickProfileInput = {
   name: '김프로',
-  bio: '골프 전문가입니다',
-  specialty: '퍼팅',
-  location: '서울',
-  priceRange: '10만원~',
-  contactType: 'kakao' as const,
-  contactValue: 'https://open.kakao.com/test',
-  profileImageUrl: undefined,
+  birthDate: '1990-01-01',
+  phoneNumber: '010-1234-5678',
+  profileImageUrl: 'https://example.com/profile.jpg',
+  proVerificationFileUrl: 'https://example.com/verification.jpg',
+  primaryRegion: 'seoul',
+  primaryCity: '강남구',
 };
 
 /**
@@ -202,6 +205,7 @@ export const validLeadInput = {
 export const invalidInputs = {
   emptyName: { ...validQuickProfileInput, name: '' },
   shortName: { ...validQuickProfileInput, name: 'A' },
-  invalidContactType: { ...validQuickProfileInput, contactType: 'invalid' },
-  emptyContactValue: { ...validQuickProfileInput, contactValue: '' },
+  invalidBirthDate: { ...validQuickProfileInput, birthDate: '1990/01/01' },
+  missingVerification: { ...validQuickProfileInput, proVerificationFileUrl: '' },
+  emptyPhone: { ...validQuickProfileInput, phoneNumber: '' },
 };

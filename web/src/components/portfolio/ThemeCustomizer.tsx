@@ -15,8 +15,8 @@ interface ThemeCustomizerProps {
 }
 
 const FONT_PRESETS = [
-  { value: 'default', label: 'Pretendard (기본)', description: '깔끔하고 현대적인 한글 폰트' },
-  { value: 'modern', label: 'Inter', description: '글로벌 스탠다드 산세리프' },
+  { value: 'default', label: 'Cafe24ProSlim (기본)', description: '슬림한 산세리프 톤의 한글 폰트' },
+  { value: 'modern', label: 'Cafe24ProSlim (모던)', description: '가볍고 세련된 한글 폰트' },
   { value: 'classic', label: 'Noto Serif', description: '전통적이고 우아한 세리프' },
 ] as const
 

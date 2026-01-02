@@ -49,16 +49,15 @@ export function ProfileImageUpload({
       try {
         // If no userId, create a temporary preview (for unauthenticated users)
         if (!userId) {
-          const previewUrl = URL.createObjectURL(file);
-          setImageUrl(previewUrl);
-          onImageChange(previewUrl);
-          // Store file in sessionStorage for later upload
           const reader = new FileReader();
           reader.onloadend = () => {
-            sessionStorage.setItem('pendingProfileImage', reader.result as string);
+            const result = reader.result as string;
+            setImageUrl(result);
+            onImageChange(result);
+            sessionStorage.setItem('pendingProfileImage', result);
+            setIsUploading(false);
           };
           reader.readAsDataURL(file);
-          setIsUploading(false);
           return;
         }
 
@@ -120,6 +119,7 @@ export function ProfileImageUpload({
               fill
               className="object-cover"
               sizes="112px"
+              unoptimized={imageUrl.startsWith('data:image/')}
             />
           ) : (
             <div className="flex h-full w-full flex-col items-center justify-center bg-tee-background/50">
