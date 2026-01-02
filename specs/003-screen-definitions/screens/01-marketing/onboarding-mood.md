@@ -2,7 +2,7 @@
 
 **Route**: `/onboarding/mood`
 **Status**: Implemented
-**Last Updated**: 2025-12-18
+**Last Updated**: 2025-12-30
 **Priority**: P1
 **Dependencies**: -
 
@@ -15,7 +15,7 @@
 
 ### 사용자 흐름
 ```
-/ (홈) → /onboarding/mood → AI 분석 → 프로 추천 목록
+/ (Landing - Golfers) → /onboarding/mood → AI 분석 → 프로 추천 목록
 ```
 
 ### 접근 조건
@@ -57,5 +57,5 @@ Step 4: 위치 선택
 
 ## 4. 관련 화면
 
-- **이전 화면**: [Home](./home.md)
+- **이전 화면**: [Landing - Golfers](./home.md)
 - **다음 화면**: 프로 추천 목록

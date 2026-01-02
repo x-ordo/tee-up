@@ -2,7 +2,7 @@
 
 **Route**: `/get-started`
 **Status**: Implemented
-**Last Updated**: 2025-12-18
+**Last Updated**: 2025-12-30
 **Priority**: P1
 
 ---
@@ -14,7 +14,7 @@
 
 ### 사용자 흐름
 ```
-/ 또는 외부 링크 → /get-started → /onboarding/mood
+/ (Landing - Golfers) 또는 외부 링크 → /get-started → /onboarding/mood
 ```
 
 ---

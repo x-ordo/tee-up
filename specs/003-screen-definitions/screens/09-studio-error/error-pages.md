@@ -2,7 +2,7 @@
 
 **Route**: `/404`, `/500`, `/error`
 **Status**: Implemented
-**Last Updated**: 2025-12-18
+**Last Updated**: 2025-12-30
 **Priority**: P1
 **Dependencies**: None
 
@@ -200,5 +200,5 @@ interface ErrorPageProps {
 
 ## 8. 관련 화면
 
-- **연관 화면**: [Home](../01-marketing/home.md)
+- **연관 화면**: [Landing - Golfers](../01-marketing/home.md)
 - **연관 화면**: [Login](../02-auth/login.md)

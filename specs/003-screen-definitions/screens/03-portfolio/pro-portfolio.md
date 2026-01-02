@@ -2,16 +2,16 @@
 
 **Route**: `/[slug]`
 **Status**: Implemented
-**Last Updated**: 2025-12-18
+**Last Updated**: 2025-12-30
 **Priority**: P0
-**Dependencies**: Portfolio Templates, Server Actions
+**Dependencies**: Portfolio Templates, Concierge Customization, Server Actions
 
 ---
 
 ## 1. 화면 개요
 
 ### 목적
-프로의 공개 포트폴리오 페이지로, 잠재 수강생에게 프로를 소개하고 리드를 생성하는 핵심 화면이다.
+프로의 공개 포트폴리오 페이지로, 프로가 본인을 가장 매력적으로 어필하면서 리드를 생성하는 핵심 화면이다. 명품급 비주얼과 브랜딩 중심 구성으로 홍보/일정/문의의 허브 역할을 한다.
 
 ### 사용자 흐름
 ```
@@ -94,6 +94,25 @@
 └────────────────────────────────────────────────────────────┘
 ```
 
+### 명품급 프레젠테이션 기준
+
+- 대형 타이포그래피 + 넓은 여백으로 프리미엄 인상 강화
+- 프로필 사진/영상은 고해상도 중심, 과장된 효과 최소화
+- 색상은 딥 그린/골드 포인트 중심으로 절제된 대비 유지
+- CTA는 “상담/스케줄” 중심으로 명확하고 절제된 톤 유지
+
+### 자기 어필 모듈 (템플릿 확장/옵션)
+
+- **Brand Story**: 커리어 서사, 레슨 철학, 시그니처 키워드
+- **Achievements Timeline**: 투어 성적, 수상/기록, 연혁
+- **Sponsorship & Partners**: 후원사 로고, 협업 브랜드
+- **Media & Press**: 기사/방송/인터뷰 하이라이트
+- **Signature Program**: 대표 프로그램/레슨 패키지
+- **Availability & Schedule**: 예약 가능 슬롯, 시즌 일정 요약
+- **Media Kit**: 다운로드 가능한 프로필/사진 자료
+
+> 커스텀 제작은 운영팀/컨시어지가 진행하며, 프로는 최소 입력만 수행하도록 설계한다.
+
 ---
 
 ## 3. 컴포넌트 목록
@@ -131,6 +150,15 @@
 | 결제하기 | payment_link | Primary | 결제 페이지로 이동 |
 | 예약하기 | booking_url | Secondary | 예약 페이지로 이동 |
 
+### 3.4 Optional Modules (Concierge)
+
+- `BrandStorySection` - 자기소개/철학 스토리텔링
+- `AchievementsTimeline` - 커리어 하이라이트, 수상 이력
+- `SponsorGrid` - 스폰서/파트너 로고
+- `MediaHighlights` - 기사/방송 링크 요약
+- `ScheduleSnapshot` - 시즌 일정/가용 시간 요약
+- `MediaKitDownload` - 프로필 패키지 다운로드
+
 ---
 
 ## 4. 데이터 요구사항
@@ -143,6 +171,14 @@
 | `getPortfolioSections` | 포트폴리오 섹션 조회 |
 | `incrementViewCount` | 조회수 증가 |
 | `createLead` | 리드 생성 (CTA 클릭 시) |
+
+### Self-Branding Data (옵션)
+
+- 커리어 하이라이트/수상 이력
+- 스폰서/파트너 로고 및 링크
+- 미디어 기사/인터뷰 링크
+- 시즌 일정/예약 가능 슬롯
+- 미디어 킷 다운로드 URL
 
 ### SEO Metadata
 
