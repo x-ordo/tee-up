@@ -13,6 +13,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0-beta.5] - 2026-01-02
+
+### Added
+
+#### 보안 강화
+- **Custom CodeQL 쿼리**: Next.js + Supabase 특화 보안 분석
+  - `server-action-auth.ql`: Server Action 인증 체크 누락 탐지
+  - `hardcoded-secrets.ql`: 하드코딩된 API 키/시크릿 탐지
+  - `unsafe-html-injection.ql`: XSS 취약점 탐지
+  - `supabase-sql-injection.ql`: Supabase RPC SQL 인젝션 탐지
+  - `open-redirect.ql`: 오픈 리다이렉트 취약점 탐지
+
+#### CI/CD 자동화
+- **Auto-labeler**: PR 사이즈별 라벨 (xs/s/m/l/xl)
+- **Path-based labeler**: 파일 경로별 라벨 (frontend, components, tests 등)
+- **Stale management**: 오래된 이슈/PR 자동 관리 (30일/14일)
+- **Bundle size analysis**: PR 번들 사이즈 분석
+
+#### 투자자 시연 준비
+- 8분 시연 시나리오 준비 완료
+- P0 이슈 검증 완료 (Admin Pro, Payment API, Sentry)
+
+### Changed
+- CodeQL 워크플로우 커스텀 설정 적용
+- Dependabot 그룹핑 설정 개선
+
+### Fixed
+- Firefox E2E 타임아웃 플래키 테스트 수정 (60s 타임아웃)
+- Dependabot Major 버전 PR 7개 정리 (런칭 후 마이그레이션)
+
+---
+
 ## [1.0.0-beta.4] - 2025-12-26
 
 ### Added
