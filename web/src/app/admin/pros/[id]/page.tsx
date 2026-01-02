@@ -2,7 +2,8 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { getProProfileById, updateProfile, type ThemeConfig } from '@/lib/api/profiles'
 
 // 컬러 테마 프리셋
 const colorThemes = [
@@ -56,24 +57,124 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
     'stats', 'video', 'instagram', 'youtube', 'metrics', 'programs', 'pricing', 'testimonials', 'location'
   ])
   const [isSaving, setIsSaving] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [saveMessage, setSaveMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
+  // Layout state
+  const [layoutSettings, setLayoutSettings] = useState({
+    heroHeight: '80vh' as 'screen' | '80vh' | '60vh',
+    sectionSpacing: 'normal' as 'compact' | 'normal' | 'spacious',
+    maxWidth: '7xl' as '6xl' | '7xl' | 'full',
+  })
+
+  // Custom color state
+  const [customColors, setCustomColors] = useState({
+    bgColor: '#0a0e27',
+    accentColor: '#d4af37',
+  })
+
+  const [profileData, setProfileData] = useState({
+    name: '',
+    title: '',
+    subtitle: '',
+    city: '',
+    bio: '',
+    heroImage: '',
+    instagramHandle: '',
+    youtubeChannel: '',
+  })
+
+  // Load profile data on mount
+  useEffect(() => {
+    async function loadProfile() {
+      try {
+        setIsLoading(true)
+        setError(null)
+        const profile = await getProProfileById(params.id)
+
+        if (!profile) {
+          setError('프로필을 찾을 수 없습니다.')
+          return
+        }
+
+        // Set profile data
+        setProfileData({
+          name: profile.profiles?.full_name || profile.title || '',
+          title: profile.title || '',
+          subtitle: '',
+          city: profile.primary_city || '',
+          bio: profile.bio || '',
+          heroImage: profile.hero_image_url || '',
+          instagramHandle: profile.instagram_username || '',
+          youtubeChannel: profile.youtube_channel_id || '',
+        })
+
+        // Set theme config from saved data
+        const themeConfig = profile.theme_config as ThemeConfig | null
+        if (themeConfig) {
+          if (themeConfig.themeId) setSelectedTheme(themeConfig.themeId)
+          if (themeConfig.enabledSections) setEnabledSections(themeConfig.enabledSections)
+          if (themeConfig.customBgColor || themeConfig.customAccentColor) {
+            setCustomColors({
+              bgColor: themeConfig.customBgColor || '#0a0e27',
+              accentColor: themeConfig.customAccentColor || '#d4af37',
+            })
+          }
+          if (themeConfig.heroHeight) setLayoutSettings(prev => ({ ...prev, heroHeight: themeConfig.heroHeight! }))
+          if (themeConfig.sectionSpacing) setLayoutSettings(prev => ({ ...prev, sectionSpacing: themeConfig.sectionSpacing! }))
+          if (themeConfig.maxWidth) setLayoutSettings(prev => ({ ...prev, maxWidth: themeConfig.maxWidth! }))
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : '프로필 로드에 실패했습니다.')
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadProfile()
+  }, [params.id])
 
   const handleSave = async () => {
     setIsSaving(true)
-    // TODO: 실제 저장 로직
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    setIsSaving(false)
-  }
+    setSaveMessage(null)
 
-  const [profileData, setProfileData] = useState({
-    name: 'Hannah Park',
-    title: 'LPGA Tour Professional',
-    subtitle: 'LPGA Verified',
-    city: 'Seoul',
-    bio: '2019 KLPGA 챔피언십 우승 · US LPGA Tour 5년 · 국가대표 단체전 금메달',
-    heroImage: 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?auto=format&fit=crop&w=1600&q=80',
-    instagramHandle: '@hannahpark_golf',
-    youtubeChannel: 'Hannah Park Golf',
-  })
+    try {
+      // Build theme_config object
+      const themeConfig: ThemeConfig = {
+        themeId: selectedTheme,
+        customBgColor: customColors.bgColor,
+        customAccentColor: customColors.accentColor,
+        enabledSections: enabledSections,
+        heroHeight: layoutSettings.heroHeight,
+        sectionSpacing: layoutSettings.sectionSpacing,
+        maxWidth: layoutSettings.maxWidth,
+      }
+
+      // Update profile
+      await updateProfile(params.id, {
+        title: profileData.title || profileData.name,
+        bio: profileData.bio || null,
+        hero_image_url: profileData.heroImage || null,
+        primary_city: profileData.city || null,
+        instagram_username: profileData.instagramHandle || null,
+        youtube_channel_id: profileData.youtubeChannel || null,
+        theme_config: themeConfig,
+      })
+
+      setSaveMessage({ type: 'success', text: '변경사항이 저장되었습니다.' })
+
+      // Clear success message after 3 seconds
+      setTimeout(() => setSaveMessage(null), 3000)
+    } catch (err) {
+      setSaveMessage({
+        type: 'error',
+        text: err instanceof Error ? err.message : '저장에 실패했습니다.'
+      })
+    } finally {
+      setIsSaving(false)
+    }
+  }
 
   const toggleSection = (sectionId: string) => {
     if (enabledSections.includes(sectionId)) {
@@ -83,8 +184,50 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
     }
   }
 
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-tee-background">
+        <div className="text-center">
+          <svg className="mx-auto h-12 w-12 animate-spin text-tee-accent-primary" viewBox="0 0 24 24" aria-hidden="true">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          </svg>
+          <p className="mt-4 text-tee-ink-light">프로필 로딩 중...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-tee-background">
+        <div className="rounded-2xl bg-white p-8 text-center shadow-card">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
+            <span className="text-2xl">❌</span>
+          </div>
+          <h2 className="mb-2 text-xl font-semibold text-tee-ink-strong">오류 발생</h2>
+          <p className="mb-6 text-tee-ink-light">{error}</p>
+          <Link href="/admin/pros" className="btn-ghost">
+            ← 목록으로 돌아가기
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-tee-background">
+      {/* Save Message Toast */}
+      {saveMessage && (
+        <div className={`fixed right-4 top-4 z-50 rounded-xl px-6 py-4 shadow-lg ${
+          saveMessage.type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'
+        }`}>
+          {saveMessage.text}
+        </div>
+      )}
+
       {/* Header */}
       <header className="border-b border-tee-stone bg-white">
         <div className="mx-auto max-w-7xl px-6 py-4">
@@ -231,7 +374,8 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                     <input
                       type="color"
                       className="h-12 w-full cursor-pointer rounded-lg border border-tee-stone"
-                      defaultValue="#0a0e27"
+                      value={customColors.bgColor}
+                      onChange={(e) => setCustomColors({...customColors, bgColor: e.target.value})}
                     />
                   </div>
                   <div>
@@ -241,7 +385,8 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                     <input
                       type="color"
                       className="h-12 w-full cursor-pointer rounded-lg border border-tee-stone"
-                      defaultValue="#d4af37"
+                      value={customColors.accentColor}
+                      onChange={(e) => setCustomColors({...customColors, accentColor: e.target.value})}
                     />
                   </div>
                 </div>
@@ -466,7 +611,11 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                     <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                       히어로 섹션 높이
                     </label>
-                    <select className="input w-full">
+                    <select
+                      className="input w-full"
+                      value={layoutSettings.heroHeight}
+                      onChange={(e) => setLayoutSettings({...layoutSettings, heroHeight: e.target.value as 'screen' | '80vh' | '60vh'})}
+                    >
                       <option value="screen">전체 화면 (100vh)</option>
                       <option value="80vh">80vh</option>
                       <option value="60vh">60vh</option>
@@ -477,7 +626,11 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                     <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                       섹션 간격
                     </label>
-                    <select className="input w-full">
+                    <select
+                      className="input w-full"
+                      value={layoutSettings.sectionSpacing}
+                      onChange={(e) => setLayoutSettings({...layoutSettings, sectionSpacing: e.target.value as 'compact' | 'normal' | 'spacious'})}
+                    >
                       <option value="compact">좁게</option>
                       <option value="normal">보통</option>
                       <option value="spacious">넓게</option>
@@ -488,7 +641,11 @@ export default function ProProfileEditorPage({ params }: { params: { id: string 
                     <label className="mb-2 block text-sm font-medium text-tee-ink-light">
                       최대 너비
                     </label>
-                    <select className="input w-full">
+                    <select
+                      className="input w-full"
+                      value={layoutSettings.maxWidth}
+                      onChange={(e) => setLayoutSettings({...layoutSettings, maxWidth: e.target.value as '6xl' | '7xl' | 'full'})}
+                    >
                       <option value="6xl">1280px</option>
                       <option value="7xl">1536px (기본)</option>
                       <option value="full">전체 너비</option>

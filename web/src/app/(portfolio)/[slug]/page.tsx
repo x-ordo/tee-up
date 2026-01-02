@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getPublicProfile, incrementProfileViews } from '@/actions/profiles';
 import { getDefaultTheme, type ThemeConfig } from '@/lib/theme-config';
-import { PortfolioRenderer, PortfolioHeader } from '@/components/portfolio';
+import { PortfolioRenderer, PortfolioHeader, FloatingContactButton } from '@/components/portfolio';
 import { createPublicClient } from '@/lib/supabase/server';
 
 type PortfolioSection = {
@@ -409,6 +409,11 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
         }}
         themeConfig={themeConfig}
         sections={orderedSections && orderedSections.length > 0 ? orderedSections : undefined}
+      />
+      <FloatingContactButton
+        proId={profile.id}
+        proName={profile.title}
+        openChatUrl={profile.open_chat_url}
       />
     </>
   );
