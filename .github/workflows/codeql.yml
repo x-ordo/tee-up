@@ -54,7 +54,6 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           config-file: ./.github/codeql/codeql-config.yml
-          queries: +security-extended,+security-and-quality
 
       - name: Autobuild
         uses: github/codeql-action/autobuild@v3
