@@ -12,6 +12,7 @@
  */
 
 import javascript
+import semmle.javascript.JSX
 
 from JSXAttribute attr
 where
