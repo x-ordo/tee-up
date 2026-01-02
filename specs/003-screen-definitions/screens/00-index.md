@@ -1,9 +1,9 @@
 # TEE:UP Screen Index
 
-**Total Pages**: 35
-**Completed**: 26
-**Unimplemented**: 9
-**Last Updated**: 2025-12-18
+**Total Pages**: 37
+**Completed**: 30
+**Unimplemented**: 7
+**Last Updated**: 2025-12-30
 
 ---
 
@@ -46,14 +46,16 @@ TEE:UP 프로젝트의 전체 페이지 목차 및 구현 상태이다.
 
 ---
 
-## 01. Marketing Pages (4)
+## 01. Marketing Pages (6)
 
 | # | Screen | Route | Status | Priority | File |
 |---|--------|-------|--------|----------|------|
-| 1 | Home | `/` | Implemented | P1 | [home.md](./01-marketing/home.md) |
-| 2 | Pricing | `/pricing` | Implemented | P2 | [pricing.md](./01-marketing/pricing.md) |
-| 3 | Onboarding Mood | `/onboarding/mood` | Implemented | P1 | [onboarding-mood.md](./01-marketing/onboarding-mood.md) |
-| 4 | Get Started | `/get-started` | Implemented | P1 | [get-started.md](./01-marketing/get-started.md) |
+| 1 | Landing - Pros | `/pro` | Implemented | P1 | [landing-pro.md](./01-marketing/landing-pro.md) |
+| 2 | Landing - Golfers | `/` | Implemented | P1 | [home.md](./01-marketing/home.md) |
+| 3 | Pricing | `/pricing` | Implemented | P2 | [pricing.md](./01-marketing/pricing.md) |
+| 4 | Onboarding Mood | `/onboarding/mood` | Implemented | P1 | [onboarding-mood.md](./01-marketing/onboarding-mood.md) |
+| 5 | Onboarding Quick Setup | `/onboarding/quick-setup` | Implemented | P1 | [onboarding-quick-setup.md](./01-marketing/onboarding-quick-setup.md) |
+| 6 | Get Started | `/get-started` | Implemented | P1 | [get-started.md](./01-marketing/get-started.md) |
 
 ---
 
@@ -61,9 +63,9 @@ TEE:UP 프로젝트의 전체 페이지 목차 및 구현 상태이다.
 
 | # | Screen | Route | Status | Priority | File |
 |---|--------|-------|--------|----------|------|
-| 5 | Login | `/auth/login` | Implemented | P0 | [login.md](./02-auth/login.md) |
-| 6 | Signup | `/auth/signup` | Implemented | P0 | [signup.md](./02-auth/signup.md) |
-| 7 | Reset Password | `/auth/reset-password` | Implemented | P1 | [reset-password.md](./02-auth/reset-password.md) |
+| 7 | Login | `/auth/login` | Implemented | P0 | [login.md](./02-auth/login.md) |
+| 8 | Signup | `/auth/signup` | Implemented | P0 | [signup.md](./02-auth/signup.md) |
+| 9 | Reset Password | `/auth/reset-password` | Implemented | P1 | [reset-password.md](./02-auth/reset-password.md) |
 
 ---
 
@@ -71,10 +73,10 @@ TEE:UP 프로젝트의 전체 페이지 목차 및 구현 상태이다.
 
 | # | Screen | Route | Status | Priority | File |
 |---|--------|-------|--------|----------|------|
-| 8 | Pro Portfolio | `/[slug]` | Implemented | P0 | [pro-portfolio.md](./03-portfolio/pro-portfolio.md) |
-| 9 | Studio Portfolio | `/studio/[studioSlug]` | Implemented | P1 | [studio-portfolio.md](./03-portfolio/studio-portfolio.md) |
-| 10 | Site Portfolio | `/site/[handle]` | Implemented | P1 | [site-portfolio.md](./03-portfolio/site-portfolio.md) |
-| 11 | Site Contact | `/site/[handle]/contact` | **Unimplemented** | P2 | [site-contact.md](./03-portfolio/site-contact.md) |
+| 10 | Pro Portfolio | `/[slug]` | Implemented | P0 | [pro-portfolio.md](./03-portfolio/pro-portfolio.md) |
+| 11 | Studio Portfolio | `/studio/[studioSlug]` | Implemented | P1 | [studio-portfolio.md](./03-portfolio/studio-portfolio.md) |
+| 12 | Site Portfolio | `/site/[handle]` | Implemented | P1 | [site-portfolio.md](./03-portfolio/site-portfolio.md) |
+| 13 | Site Contact | `/site/[handle]/contact` | **Unimplemented** | P2 | [site-contact.md](./03-portfolio/site-contact.md) |
 
 ---
 
@@ -82,12 +84,12 @@ TEE:UP 프로젝트의 전체 페이지 목차 및 구현 상태이다.
 
 | # | Screen | Route | Status | Priority | File |
 |---|--------|-------|--------|----------|------|
-| 12 | Dashboard Home | `/dashboard` | Implemented | P0 | [dashboard-home.md](./04-dashboard/dashboard-home.md) |
-| 13 | Leads | `/dashboard/leads` | Implemented | P0 | [leads.md](./04-dashboard/leads.md) |
-| 14 | **Portfolio Editor** | `/dashboard/portfolio` | **Unimplemented** | **P0** | [portfolio-editor.md](./04-dashboard/portfolio-editor.md) |
-| 15 | **Settings** | `/dashboard/settings` | **Unimplemented** | P1 | [settings.md](./04-dashboard/settings.md) |
-| 16 | Concierge | `/dashboard/concierge` | Implemented | P2 | [concierge.md](./04-dashboard/concierge.md) |
-| 17 | Studio Management | `/dashboard/studio/[id]` | Implemented | P2 | [studio-management.md](./04-dashboard/studio-management.md) |
+| 14 | Dashboard Home | `/dashboard` | Implemented | P0 | [dashboard-home.md](./04-dashboard/dashboard-home.md) |
+| 15 | Leads | `/dashboard/leads` | Implemented | P0 | [leads.md](./04-dashboard/leads.md) |
+| 16 | **Portfolio Editor** | `/dashboard/portfolio` | **Unimplemented** | **P0** | [portfolio-editor.md](./04-dashboard/portfolio-editor.md) |
+| 17 | **Settings** | `/dashboard/settings` | **Unimplemented** | P1 | [settings.md](./04-dashboard/settings.md) |
+| 18 | Concierge | `/dashboard/concierge` | Implemented | P2 | [concierge.md](./04-dashboard/concierge.md) |
+| 19 | Studio Management | `/dashboard/studio/[id]` | Implemented | P2 | [studio-management.md](./04-dashboard/studio-management.md) |
 
 ---
 
@@ -95,10 +97,10 @@ TEE:UP 프로젝트의 전체 페이지 목차 및 구현 상태이다.
 
 | # | Screen | Route | Status | Priority | File |
 |---|--------|-------|--------|----------|------|
-| 18 | Booking Success | `/booking/success` | Implemented | P1 | [booking-success.md](./05-booking-payment/booking-success.md) |
-| 19 | **Booking Fail** | `/booking/fail` | **Unimplemented** | P1 | [booking-fail.md](./05-booking-payment/booking-fail.md) |
-| 20 | Payment Success | `/payment/success` | Implemented | P1 | [payment-success.md](./05-booking-payment/payment-success.md) |
-| 21 | **Payment Fail** | `/payment/fail` | **Unimplemented** | P1 | [payment-fail.md](./05-booking-payment/payment-fail.md) |
+| 20 | Booking Success | `/booking/success` | Implemented | P1 | [booking-success.md](./05-booking-payment/booking-success.md) |
+| 21 | **Booking Fail** | `/booking/fail` | **Unimplemented** | P1 | [booking-fail.md](./05-booking-payment/booking-fail.md) |
+| 22 | Payment Success | `/payment/success` | Implemented | P1 | [payment-success.md](./05-booking-payment/payment-success.md) |
+| 23 | **Payment Fail** | `/payment/fail` | **Unimplemented** | P1 | [payment-fail.md](./05-booking-payment/payment-fail.md) |
 
 ---
 
@@ -106,8 +108,8 @@ TEE:UP 프로젝트의 전체 페이지 목차 및 구현 상태이다.
 
 | # | Screen | Route | Status | Priority | File |
 |---|--------|-------|--------|----------|------|
-| 22 | Chat List | `/chat` | Implemented | P2 | [chat-list.md](./06-chat/chat-list.md) |
-| 23 | Chat Room | `/chat/[roomId]` | Implemented | P2 | [chat-room.md](./06-chat/chat-room.md) |
+| 24 | Chat List | `/chat` | Implemented | P2 | [chat-list.md](./06-chat/chat-list.md) |
+| 25 | Chat Room | `/chat/[roomId]` | Implemented | P2 | [chat-room.md](./06-chat/chat-room.md) |
 
 ---
 
@@ -115,13 +117,13 @@ TEE:UP 프로젝트의 전체 페이지 목차 및 구현 상태이다.
 
 | # | Screen | Route | Status | Priority | File |
 |---|--------|-------|--------|----------|------|
-| 24 | Admin Dashboard | `/admin` | Implemented | P1 | [admin-dashboard.md](./07-admin/admin-dashboard.md) |
-| 25 | Admin Login | `/admin/login` | Implemented | P0 | [admin-login.md](./07-admin/admin-login.md) |
-| 26 | Admin Pros | `/admin/pros` | Implemented | P0 | [admin-pros.md](./07-admin/admin-pros.md) |
-| 27 | **Admin Pro Detail** | `/admin/pros/[id]` | **Unimplemented** | P1 | [admin-pro-detail.md](./07-admin/admin-pro-detail.md) |
-| 28 | Admin Users | `/admin/users` | Implemented | P2 | [admin-users.md](./07-admin/admin-users.md) |
-| 29 | Admin Chats | `/admin/chats` | Implemented | P2 | [admin-chats.md](./07-admin/admin-chats.md) |
-| 30 | Admin Analytics | `/admin/analytics` | Implemented | P2 | [admin-analytics.md](./07-admin/admin-analytics.md) |
+| 26 | Admin Dashboard | `/admin` | Implemented | P1 | [admin-dashboard.md](./07-admin/admin-dashboard.md) |
+| 27 | Admin Login | `/admin/login` | Implemented | P0 | [admin-login.md](./07-admin/admin-login.md) |
+| 28 | Admin Pros | `/admin/pros` | Implemented | P0 | [admin-pros.md](./07-admin/admin-pros.md) |
+| 29 | **Admin Pro Detail** | `/admin/pros/[id]` | **Unimplemented** | P1 | [admin-pro-detail.md](./07-admin/admin-pro-detail.md) |
+| 30 | Admin Users | `/admin/users` | Implemented | P2 | [admin-users.md](./07-admin/admin-users.md) |
+| 31 | Admin Chats | `/admin/chats` | Implemented | P2 | [admin-chats.md](./07-admin/admin-chats.md) |
+| 32 | Admin Analytics | `/admin/analytics` | Implemented | P2 | [admin-analytics.md](./07-admin/admin-analytics.md) |
 
 ---
 
@@ -129,8 +131,8 @@ TEE:UP 프로젝트의 전체 페이지 목차 및 구현 상태이다.
 
 | # | Screen | Route | Status | Priority | File |
 |---|--------|-------|--------|----------|------|
-| 31 | Terms | `/legal/terms` | Implemented | P1 | [terms.md](./08-legal/terms.md) |
-| 32 | Privacy | `/legal/privacy` | Implemented | P1 | [privacy.md](./08-legal/privacy.md) |
+| 33 | Terms | `/legal/terms` | Implemented | P1 | [terms.md](./08-legal/terms.md) |
+| 34 | Privacy | `/legal/privacy` | Implemented | P1 | [privacy.md](./08-legal/privacy.md) |
 
 ---
 
@@ -138,15 +140,15 @@ TEE:UP 프로젝트의 전체 페이지 목차 및 구현 상태이다.
 
 | # | Screen | Route | Status | Priority | File |
 |---|--------|-------|--------|----------|------|
-| 33 | Studio Join | `/studio/join/[token]` | Implemented | P2 | [studio-join.md](./09-studio-error/studio-join.md) |
-| 34 | **Studio Join Invalid** | `/studio/join/invalid` | **Unimplemented** | P3 | [studio-join-invalid.md](./09-studio-error/studio-join-invalid.md) |
-| 35 | Error Pages | `not-found`, `error`, `global-error` | Implemented | P1 | [error-pages.md](./09-studio-error/error-pages.md) |
+| 35 | Studio Join | `/studio/join/[token]` | Implemented | P2 | [studio-join.md](./09-studio-error/studio-join.md) |
+| 36 | **Studio Join Invalid** | `/studio/join/invalid` | **Unimplemented** | P3 | [studio-join-invalid.md](./09-studio-error/studio-join-invalid.md) |
+| 37 | Error Pages | `not-found`, `error`, `global-error` | Implemented | P1 | [error-pages.md](./09-studio-error/error-pages.md) |
 
 ---
 
 ## Unimplemented Pages Summary
 
-총 **9개** 미구현 페이지:
+총 **7개** 미구현 페이지:
 
 | Priority | Page | Route | Category |
 |----------|------|-------|----------|
@@ -172,7 +174,7 @@ TEE:UP 프로젝트의 전체 페이지 목차 및 구현 상태이다.
 
 | Category | Total | Implemented | Unimplemented |
 |----------|-------|-------------|---------------|
-| Marketing | 4 | 4 | 0 |
+| Marketing | 6 | 6 | 0 |
 | Auth | 3 | 3 | 0 |
 | Portfolio | 4 | 3 | 1 |
 | Dashboard | 6 | 4 | 2 |
@@ -181,17 +183,17 @@ TEE:UP 프로젝트의 전체 페이지 목차 및 구현 상태이다.
 | Admin | 7 | 6 | 1 |
 | Legal | 2 | 2 | 0 |
 | Studio/Error | 3 | 2 | 1 |
-| **Total** | **35** | **26** | **9** |
+| **Total** | **37** | **30** | **7** |
 
 ### By Priority
 
 | Priority | Total | Implemented | Unimplemented |
 |----------|-------|-------------|---------------|
 | P0 | 8 | 7 | 1 |
-| P1 | 13 | 9 | 4 |
-| P2 | 11 | 8 | 3 |
-| P3 | 3 | 2 | 1 |
-| **Total** | **35** | **26** | **9** |
+| P1 | 18 | 14 | 4 |
+| P2 | 10 | 9 | 1 |
+| P3 | 1 | 0 | 1 |
+| **Total** | **37** | **30** | **7** |
 
 ---
 
@@ -200,9 +202,11 @@ TEE:UP 프로젝트의 전체 페이지 목차 및 구현 상태이다.
 ```
 Root
 ├── Marketing
-│   ├── / (Home)
+│   ├── /pro (Landing - Pros)
+│   ├── / (Landing - Golfers)
 │   ├── /pricing
 │   ├── /onboarding/mood
+│   ├── /onboarding/quick-setup
 │   └── /get-started
 │
 ├── Auth

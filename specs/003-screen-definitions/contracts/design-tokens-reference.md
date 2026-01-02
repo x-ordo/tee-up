@@ -60,8 +60,8 @@ TEE:UP 프로젝트의 디자인 토큰 참조 문서이다.
 
 | Token | Value | Usage |
 |-------|-------|-------|
-| `font-pretendard` | Pretendard, sans-serif | 한글 (Display/Body) |
-| `font-inter` | Inter, sans-serif | 영문 (Global) |
+| `font-pretendard` | Cafe24ProSlim, sans-serif | 한글 (Display/Body) |
+| `font-inter` | Cafe24ProSlim, sans-serif | 영문 (Global) |
 | `font-mono` | JetBrains Mono, monospace | 코드, 숫자 |
 
 ### Font Sizes
