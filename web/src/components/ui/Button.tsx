@@ -40,20 +40,20 @@ const buttonVariants = cva(
           'bg-tee-accent-primary text-tee-surface border border-tee-accent-primary shadow-sm hover:bg-tee-accent-primary-hover hover:border-tee-accent-primary-hover active:bg-tee-accent-primary-active active:border-tee-accent-primary-active disabled:bg-tee-accent-primary-disabled disabled:border-tee-accent-primary-disabled',
       },
       /**
-       * Size variants
-       * - `default`: Standard size (36px height)
-       * - `sm`: Small size (32px height)
-       * - `lg`: Large size (40px height)
-       * - `icon`: Square icon button (36x36px)
+       * Size variants (WCAG 2.2 compliant touch targets)
+       * - `default`: Standard size (44px height - WCAG minimum)
+       * - `sm`: Small size (36px height - desktop only)
+       * - `lg`: Large size (48px height)
+       * - `icon`: Square icon button (44x44px)
        * - `md`: Legacy medium with rounded-full
        */
       size: {
-        default: 'h-9 px-4 py-2',
-        sm: 'h-8 rounded-md px-3 text-xs',
-        lg: 'h-10 rounded-md px-8',
-        icon: 'h-9 w-9',
+        default: 'h-11 px-4 py-2',
+        sm: 'h-9 rounded-md px-3 text-xs',
+        lg: 'h-12 rounded-md px-8',
+        icon: 'h-11 w-11',
         // Legacy sizes
-        md: 'h-10 px-4 py-2 rounded-full',
+        md: 'h-11 px-4 py-2 rounded-full',
       },
     },
     defaultVariants: {

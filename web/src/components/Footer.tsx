@@ -65,6 +65,19 @@ export default function Footer() {
                   contact@teeup.com
                 </a>
               </li>
+              <li className="mb-space-2">
+                <a
+                  href="https://pf.kakao.com/_teeup"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-body text-tee-background/70 hover:text-tee-accent-secondary"
+                >
+                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 3C6.477 3 2 6.463 2 10.691c0 2.627 1.697 4.934 4.256 6.264-.135.464-.87 2.983-.9 3.176 0 0-.019.154.082.213.1.06.218.027.218.027.288-.04 3.338-2.177 3.862-2.548.788.117 1.608.179 2.482.179 5.523 0 10-3.463 10-7.691S17.523 3 12 3z" />
+                  </svg>
+                  카카오톡 채널
+                </a>
+              </li>
               <li className="text-body text-tee-background/70">
                 운영 시간: 09:00 - 18:00 (주말 및 공휴일 제외)
               </li>

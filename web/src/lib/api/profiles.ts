@@ -1,5 +1,15 @@
 import { createClient } from '@/lib/supabase/client'
 
+export type ThemeConfig = {
+  themeId?: string
+  customBgColor?: string
+  customAccentColor?: string
+  enabledSections?: string[]
+  heroHeight?: 'screen' | '80vh' | '60vh'
+  sectionSpacing?: 'compact' | 'normal' | 'spacious'
+  maxWidth?: '6xl' | '7xl' | 'full'
+}
+
 export type ProProfile = {
   id: string
   user_id: string
@@ -18,12 +28,17 @@ export type ProProfile = {
   total_leads: number
   matched_lessons: number
   rating: number
-  subscription_tier: 'basic' | 'pro'
+  subscription_tier: 'basic' | 'pro' | 'free'
   subscription_expires_at: string | null
   is_approved: boolean
   is_featured: boolean
   created_at: string
   updated_at: string
+  // Theme & Design fields
+  theme_type?: 'visual' | 'curriculum' | 'social' | null
+  theme_config?: ThemeConfig | null
+  instagram_username?: string | null
+  youtube_channel_id?: string | null
   profiles?: {
     full_name: string
     avatar_url: string | null

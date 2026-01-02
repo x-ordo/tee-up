@@ -16,3 +16,6 @@ export {
 // Theme Components
 export { PortfolioHeader } from './PortfolioHeader';
 export { ThemeCustomizer } from './ThemeCustomizer';
+
+// Contact Components
+export { FloatingContactButton } from './FloatingContactButton';
