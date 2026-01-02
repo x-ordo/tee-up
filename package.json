@@ -8,6 +8,7 @@
     "build": "npm run build --prefix web",
     "start": "npm run start --prefix web",
     "lint": "npm run lint --prefix web",
+    "lint:styles": "npm run lint:styles --prefix web",
     "test": "npm run test --prefix web",
     "test:watch": "npm run test:watch --prefix web",
     "test:e2e": "npm run test:e2e --prefix web",
