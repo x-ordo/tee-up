@@ -47,7 +47,7 @@ jobs:
           NEXT_PUBLIC_SITE_URL: https://teeup.kr
 
       - name: Analyze Bundle
-        uses: hashicorp/nextjs-bundle-analysis@v1.0.2
+        uses: hashicorp/nextjs-bundle-analysis@v0.5.0
         with:
           workflow-id: bundle-size.yml
-          working-directory: ./web
+          base-branch: main
