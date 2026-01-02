@@ -31,6 +31,10 @@ CREATE TABLE public.pro_profiles (
     location VARCHAR(255),
     tour_experience TEXT,
     certifications TEXT[] DEFAULT '{}',
+    birth_date DATE,
+    verification_file_url TEXT,
+    primary_region VARCHAR(50),
+    primary_city VARCHAR(50),
 
     -- Media
     hero_image_url TEXT,
