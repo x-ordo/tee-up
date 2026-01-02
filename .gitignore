@@ -301,3 +301,5 @@ agent-output/
 *.heapprofile
 *.heapsnapshot
 .playwright-mcp/
+.vercel
+.env*.local
