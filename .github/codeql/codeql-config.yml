@@ -11,8 +11,8 @@ queries:
   - uses: security-extended
   - uses: security-and-quality
 
-  # 커스텀 쿼리 (로컬)
-  - uses: ./.github/codeql/queries
+  # 커스텀 쿼리 (비활성화 - QL 문법 수정 후 재활성화)
+  # - uses: ./.github/codeql/queries
 
 # 쿼리 필터 - 특정 규칙 조정
 query-filters:
