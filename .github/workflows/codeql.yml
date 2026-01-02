@@ -62,25 +62,14 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{ matrix.language }}"
-          output: sarif-results
-          upload: always
-
-      - name: Upload SARIF to Security Tab
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: sarif-results
 
       - name: Generate Security Report Summary
         if: always()
         run: |
           echo "## CodeQL Security Scan Results" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Custom Queries Applied:" >> $GITHUB_STEP_SUMMARY
-          echo "- Server Action Authentication Check" >> $GITHUB_STEP_SUMMARY
-          echo "- Hardcoded Secrets Detection" >> $GITHUB_STEP_SUMMARY
-          echo "- Unsafe HTML Injection (XSS)" >> $GITHUB_STEP_SUMMARY
-          echo "- Supabase SQL Injection" >> $GITHUB_STEP_SUMMARY
-          echo "- Open Redirect Vulnerability" >> $GITHUB_STEP_SUMMARY
+          echo "### Query Suites:" >> $GITHUB_STEP_SUMMARY
+          echo "- security-extended" >> $GITHUB_STEP_SUMMARY
+          echo "- security-and-quality" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "See the Security tab for detailed findings." >> $GITHUB_STEP_SUMMARY
