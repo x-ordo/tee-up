@@ -44,7 +44,10 @@ tee-up/
 │   │   ├── app/                  # App Router pages
 │   │   │   ├── (portfolio)/      # Pro portfolio pages [slug]
 │   │   │   ├── (dashboard)/      # Pro dashboard (auth required)
+│   │   │   ├── (consumer)/       # Consumer dashboard (/my/*)
 │   │   │   ├── admin/            # Platform admin
+│   │   │   ├── explore/          # Pro search & filter
+│   │   │   ├── quiz/             # Pro matching quiz
 │   │   │   └── api/              # API routes (webhooks)
 │   │   ├── actions/              # Server Actions (backend logic)
 │   │   ├── components/           # Shared components
@@ -53,13 +56,17 @@ tee-up/
 │   │   │   └── scheduler/        # Scheduling components
 │   │   ├── hooks/                # Custom React hooks
 │   │   ├── lib/                  # Utilities
-│   │   │   └── supabase/         # Supabase client/server
+│   │   │   ├── supabase/         # Supabase client/server
+│   │   │   ├── analytics/        # Multi-provider analytics
+│   │   │   ├── email/            # Resend email templates
+│   │   │   ├── experiments/      # A/B testing
+│   │   │   └── seo/              # JSON-LD structured data
 │   │   └── types/                # TypeScript types
 │   └── e2e/                      # Playwright E2E tests
 ├── docs/                         # Documentation
 ├── supabase/
 │   ├── schema.sql                # Base database schema
-│   └── migrations/               # Versioned SQL migrations
+│   └── migrations/               # Versioned SQL migrations (001-025)
 └── specs/                        # SpecKit feature specs (spec.md, plan.md, tasks.md)
 ```
 
@@ -178,15 +185,37 @@ supabase db status  # Check status
 
 ## Key Routes
 
+### Public (Discovery & Engagement)
 | Route | Purpose |
 |-------|---------|
-| `/` | Marketing homepage |
+| `/` | Marketing homepage (dual persona) |
+| `/explore` | Pro search with filters |
+| `/quiz` | 5-question pro matching |
+| `/pro` | Pro landing with earnings calculator |
 | `/[slug]` | Pro portfolio page |
 | `/studio/[studioSlug]` | Studio/academy page |
-| `/dashboard` | Pro dashboard (auth) |
+
+### Consumer Dashboard (`/my/*`)
+| Route | Purpose |
+|-------|---------|
+| `/my` | Consumer overview |
+| `/my/saved` | Saved pros |
+| `/my/consultations` | Consultation history |
+| `/my/lessons` | Lesson history |
+
+### Pro Dashboard (`/dashboard/*`)
+| Route | Purpose |
+|-------|---------|
+| `/dashboard` | Pro overview |
 | `/dashboard/leads` | Lead management |
 | `/dashboard/portfolio` | Portfolio editor |
+| `/dashboard/lessons` | Lesson scheduling |
+
+### Admin (`/admin/*`)
+| Route | Purpose |
+|-------|---------|
 | `/admin/pros` | Pro verification |
+| `/admin/analytics` | Platform KPIs |
 
 ## Git Workflow
 
@@ -262,9 +291,62 @@ When working in this codebase:
 - **Prioritized** - P0/P1/P2 classification
 - **Concise** - Avoid filler phrases
 
+## Server Actions
+
+Key actions in `web/src/actions/`:
+
+| File | Purpose |
+|------|---------|
+| `profiles.ts` | Pro profile CRUD, public profile fetch |
+| `consumer.ts` | Saved pros, consultation requests |
+| `leads.ts` | Lead tracking, funnel analytics |
+| `scheduler.ts` | Booking with Toss Payments |
+| `retargeting.ts` | Email automation (Resend) |
+| `experiments.ts` | A/B test variant assignment |
+
+## Analytics System
+
+Multi-provider analytics in `lib/analytics/`:
+
+```typescript
+import { analytics } from '@/lib/analytics';
+
+// Consumer funnel
+analytics.consumer.viewLanding();
+analytics.consumer.startQuiz(quizId);
+analytics.consumer.viewPro(proSlug);
+analytics.consumer.submitConsultation(proId);
+
+// Pro funnel
+analytics.pro.useCalculator(result);
+analytics.pro.completeSignup();
+analytics.pro.receiveLead(leadId);
+```
+
+Providers: GA4, Supabase custom logs, Console (dev)
+
+## A/B Testing
+
+```typescript
+import { getVariant } from '@/lib/experiments';
+
+const variant = await getVariant('hero-cta-test');
+// Returns 'control' | 'variant_a' | 'variant_b'
+```
+
+## Email Templates
+
+Retargeting emails in `lib/email/`:
+- `quiz-abandoned.tsx` - Quiz completion reminder
+- `consultation-pending.tsx` - Consultation follow-up
+- `pro-profile-incomplete.tsx` - Profile completion nudge
+
 ## Recent Architectural Changes
 
-- **SaaS Pivot**: Migrated from Express API to Next.js Server Actions architecture
-- **Portfolio Templates**: 3 templates (Visual, Curriculum, Social)
+- **User Flow Redesign (2025-01)**: Added `/explore`, `/quiz`, `/my/*` routes
+- **Analytics Pipeline**: Multi-provider event tracking
+- **Retargeting System**: Automated email sequences
+- **A/B Testing**: Experiment framework with Supabase storage
+- **Trial Lessons**: Toss Payments integration for direct booking
 - **WCAG 2.2 Compliance**: 44px minimum button heights
 - **CI/CD**: Vercel auto-deploy + GitHub Actions
