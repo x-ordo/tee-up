@@ -22,6 +22,7 @@ export interface CreateConsultationRequestInput {
   proId: string;
   name: string;
   phone: string;
+  email?: string;
   message?: string;
   sourceUrl?: string;
   referrer?: string;
@@ -33,9 +34,28 @@ export async function createConsultationRequest(
   try {
     const supabase = await createClient();
 
-    const phoneRegex = /^01[0-9]-?[0-9]{3,4}-?[0-9]{4}$/;
-    if (!phoneRegex.test(input.phone.replace(/-/g, ''))) {
-      return { success: false, error: '올바른 휴대폰 번호를 입력해주세요.' };
+    // Validate: either phone or email must be provided
+    const hasPhone = input.phone && input.phone.trim().length > 0;
+    const hasEmail = input.email && input.email.trim().length > 0;
+
+    if (!hasPhone && !hasEmail) {
+      return { success: false, error: '연락처(전화번호 또는 이메일)를 입력해주세요.' };
+    }
+
+    // Validate phone if provided
+    if (hasPhone) {
+      const phoneRegex = /^01[0-9]-?[0-9]{3,4}-?[0-9]{4}$/;
+      if (!phoneRegex.test(input.phone.replace(/-/g, ''))) {
+        return { success: false, error: '올바른 휴대폰 번호를 입력해주세요.' };
+      }
+    }
+
+    // Validate email if provided
+    if (hasEmail) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(input.email!)) {
+        return { success: false, error: '올바른 이메일 주소를 입력해주세요.' };
+      }
     }
 
     const { data: pro, error: proError } = await supabase
@@ -48,13 +68,19 @@ export async function createConsultationRequest(
       return { success: false, error: '프로를 찾을 수 없습니다.' };
     }
 
+    // Build message with email if provided (since DB doesn't have email column yet)
+    let fullMessage = input.message || '';
+    if (hasEmail) {
+      fullMessage = `[이메일: ${input.email}]\n${fullMessage}`.trim();
+    }
+
     const { data, error } = await supabase
       .from('consultation_requests')
       .insert({
         pro_id: input.proId,
         requester_name: input.name,
-        requester_phone: input.phone.replace(/-/g, ''),
-        message: input.message || null,
+        requester_phone: hasPhone ? input.phone.replace(/-/g, '') : 'email-contact',
+        message: fullMessage || null,
         source_url: input.sourceUrl || null,
         referrer: input.referrer || null,
         status: 'new',

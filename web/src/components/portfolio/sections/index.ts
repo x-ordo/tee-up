@@ -7,3 +7,4 @@ export { AchievementsSection } from './AchievementsSection';
 export { SponsorshipsSection } from './SponsorshipsSection';
 export { MediaHighlightsSection } from './MediaHighlightsSection';
 export { AvailabilitySection } from './AvailabilitySection';
+export { BookingCalendarSection } from './BookingCalendarSection';

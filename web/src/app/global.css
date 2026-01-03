@@ -55,40 +55,6 @@
     /* --font-jetbrains-mono: 'JetBrains Mono', monospace; */
   }
 
-  /* Dark Mode - supports both .dark class and data-theme attribute */
-  .dark,
-  [data-theme="dark"] {
-    --tee-background: #1A1A17;
-    --tee-surface: #2A2A27;
-    --tee-stone: #3A3A37;
-    --tee-ink-strong: #FAFAF9;
-    --tee-ink-light: #A8A8A5;
-    --tee-ink-muted: #9A9A97; /* WCAG 4.5:1 contrast ratio */
-    --tee-accent-primary: #4ABA9A;
-    --tee-accent-primary-hover: #5FCBAB;
-    --tee-accent-primary-active: #3AA98A;
-    --tee-accent-primary-disabled: #2A4A42;
-    --tee-accent-secondary: #D4B888;
-    --tee-error: #EF5350;
-    --tee-success: #66BB6A;
-    --tee-warning: #FFCA28;
-    --tee-info: #42A5F5;
-    --tee-overlay-strong: rgba(0, 0, 0, 0.8);
-    --tee-overlay-medium: rgba(0, 0, 0, 0.5);
-    --tee-overlay-light: rgba(0, 0, 0, 0.2);
-  }
-
-  /* Theme transition - smooth color changes */
-  html {
-    transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
-  }
-
-  /* Disable transitions on theme change to prevent FOUC */
-  html.disable-transitions,
-  html.disable-transitions * {
-    transition: none !important;
-  }
-
   /* Base styles */
   html {
     @apply text-body font-pretendard text-tee-ink-strong bg-tee-background;
@@ -97,7 +63,6 @@
 
   body {
     @apply antialiased;
-    transition: background-color 300ms ease-in-out;
   }
 
   /* Headings */
@@ -167,17 +132,70 @@
       --tee-ink-muted: #555555;
     }
 
-    .dark,
-    [data-theme="dark"] {
-      --tee-stone: #888888;
-      --tee-ink-light: #CCCCCC;
-      --tee-ink-muted: #AAAAAA;
-    }
-
     /* Increase border visibility */
     *:focus-visible {
       outline: 3px solid currentColor !important;
       outline-offset: 2px !important;
     }
+  }
+}
+
+@layer components {
+  /* Section Dividers */
+  .section-divider {
+    @apply h-px bg-gradient-to-r from-transparent via-tee-accent-secondary/40 to-transparent;
+  }
+
+  .section-divider-gold {
+    @apply h-px bg-gradient-to-r from-transparent via-tee-accent-secondary/60 to-transparent;
+  }
+
+  /* Typography Utilities */
+  .text-display {
+    @apply text-4xl font-bold leading-tight md:text-5xl lg:text-6xl;
+  }
+
+  .text-section-title {
+    @apply text-2xl font-semibold md:text-3xl;
+  }
+
+  .text-body-relaxed {
+    @apply text-base leading-relaxed md:text-lg;
+  }
+
+  /* Section Spacing */
+  .section-spacing {
+    @apply py-16 md:py-20 lg:py-24;
+  }
+
+  .section-spacing-sm {
+    @apply py-12 md:py-14;
+  }
+
+  /* Card Styles */
+  .card-padding {
+    @apply p-6 md:p-8;
+  }
+
+  /* Gold Accent Utilities */
+  .gold-text {
+    @apply text-tee-accent-secondary;
+  }
+
+  .gold-bg {
+    @apply bg-tee-accent-secondary;
+  }
+
+  .gold-border {
+    @apply border-tee-accent-secondary;
+  }
+
+  /* Stats Number Style */
+  .stat-number {
+    @apply text-4xl font-bold text-tee-accent-secondary;
+  }
+
+  .stat-label {
+    @apply mt-2 text-sm text-tee-ink-light;
   }
 }

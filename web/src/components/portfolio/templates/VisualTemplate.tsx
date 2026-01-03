@@ -11,6 +11,7 @@ import {
   SponsorshipsSection,
   MediaHighlightsSection,
   AvailabilitySection,
+  BookingCalendarSection,
 } from '../sections';
 import type { ProProfile } from '@/actions/profiles';
 import type { ThemeConfig } from '@/actions/theme';
@@ -154,6 +155,13 @@ export function VisualTemplate({ profile, sections, themeConfig: _themeConfig }:
             availability={profile.availability || []}
             title={sectionTitle || undefined}
             subtitle={sectionSubtitle || undefined}
+          />
+        );
+      case 'booking':
+        return (
+          <BookingCalendarSection
+            proId={profile.id}
+            proName={profile.title.split(' ')[0] || profile.title}
           />
         );
       case 'testimonials':

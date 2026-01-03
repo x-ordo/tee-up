@@ -30,7 +30,7 @@ export type ThemeType = 'visual' | 'curriculum' | 'social';
 /**
  * Contact methods for lead tracking
  */
-export type ContactMethod = 'kakao' | 'phone' | 'email' | 'form';
+export type ContactMethod = 'kakao' | 'phone' | 'email' | 'form' | 'booking';
 
 /**
  * Subscription tiers

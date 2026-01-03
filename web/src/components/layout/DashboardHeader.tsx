@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { User, LogOut, Menu } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -44,9 +43,6 @@ export function DashboardHeader({ userEmail, onMenuClick }: DashboardHeaderProps
 
       {/* Spacer */}
       <div className="flex-1" />
-
-      {/* Theme Toggle */}
-      <ThemeToggle />
 
       {/* User Menu */}
       <DropdownMenu>

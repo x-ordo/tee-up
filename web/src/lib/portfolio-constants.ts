@@ -28,6 +28,7 @@ export const DEFAULT_SECTIONS: Record<ThemeType, { section_type: string; title: 
 };
 
 export const OPTIONAL_SECTIONS: { section_type: string; title: string }[] = [
+  { section_type: 'booking', title: 'Booking Calendar' },
   { section_type: 'achievements', title: 'Achievements' },
   { section_type: 'sponsorships', title: 'Sponsorships' },
   { section_type: 'media', title: 'Media Highlights' },

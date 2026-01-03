@@ -538,6 +538,423 @@ function formatLocation(region: string, city: string) {
  * Create a quick profile for new pros (5-minute onboarding)
  * PRD v1.2: "무료 홍보 페이지 중심" 전략
  */
+// ============================================
+// Explore Page: Filtered Profiles
+// ============================================
+
+export type ExploreFilters = {
+  region?: string;
+  specialty?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  search?: string;
+  sortBy?: 'recommended' | 'rating' | 'newest' | 'popular';
+  page?: number;
+  limit?: number;
+};
+
+export type ExploreProfile = {
+  id: string;
+  slug: string;
+  title: string;
+  bio: string | null;
+  specialties: string[];
+  location: string | null;
+  primaryRegion: string | null;
+  primaryCity: string | null;
+  profileImageUrl: string | null;
+  heroImageUrl: string | null;
+  rating: number;
+  profileViews: number;
+  totalLeads: number;
+  certifications: string[];
+  isFeatured: boolean;
+  createdAt: string;
+};
+
+export type ExploreResult = {
+  profiles: ExploreProfile[];
+  total: number;
+  page: number;
+  limit: number;
+  hasMore: boolean;
+};
+
+/**
+ * Get filtered profiles for the /explore page
+ * Supports filtering by region, specialty, price, and search
+ * Supports pagination and various sort orders
+ */
+export async function getFilteredProfiles(
+  filters: ExploreFilters = {}
+): Promise<ActionResult<ExploreResult>> {
+  addActionBreadcrumb('getFilteredProfiles', { filters });
+
+  const {
+    region,
+    specialty,
+    search,
+    sortBy = 'recommended',
+    page = 1,
+    limit = 12,
+  } = filters;
+
+  try {
+    const supabase = createPublicClient();
+
+    let query = supabase
+      .from('pro_profiles')
+      .select(
+        'id, slug, title, bio, specialties, location, primary_region, primary_city, profile_image_url, hero_image_url, rating, profile_views, total_leads, certifications, is_featured, created_at',
+        { count: 'exact' }
+      )
+      .eq('is_approved', true);
+
+    // Filter by region
+    if (region) {
+      query = query.eq('primary_region', region);
+    }
+
+    // Filter by specialty (check if specialties array contains the specialty)
+    if (specialty) {
+      query = query.contains('specialties', [specialty]);
+    }
+
+    // Search by title, bio, or specialties
+    if (search) {
+      query = query.or(
+        `title.ilike.%${search}%,bio.ilike.%${search}%,location.ilike.%${search}%`
+      );
+    }
+
+    // Apply sorting
+    switch (sortBy) {
+      case 'rating':
+        query = query.order('rating', { ascending: false });
+        break;
+      case 'newest':
+        query = query.order('created_at', { ascending: false });
+        break;
+      case 'popular':
+        query = query.order('profile_views', { ascending: false });
+        break;
+      case 'recommended':
+      default:
+        // Featured first, then by rating
+        query = query
+          .order('is_featured', { ascending: false })
+          .order('rating', { ascending: false })
+          .order('created_at', { ascending: false });
+        break;
+    }
+
+    // Apply pagination
+    const offset = (page - 1) * limit;
+    query = query.range(offset, offset + limit - 1);
+
+    const { data, error, count } = await query;
+
+    if (error) {
+      logError(error, { action: 'getFilteredProfiles', metadata: { filters } });
+      return { success: false, error: DB_QUERY_FAILED };
+    }
+
+    const profiles: ExploreProfile[] = (data || []).map((profile) => ({
+      id: profile.id,
+      slug: profile.slug,
+      title: profile.title,
+      bio: profile.bio,
+      specialties: profile.specialties ?? [],
+      location: profile.location,
+      primaryRegion: profile.primary_region,
+      primaryCity: profile.primary_city,
+      profileImageUrl: profile.profile_image_url,
+      heroImageUrl: profile.hero_image_url,
+      rating: profile.rating ?? 0,
+      profileViews: profile.profile_views ?? 0,
+      totalLeads: profile.total_leads ?? 0,
+      certifications: profile.certifications ?? [],
+      isFeatured: profile.is_featured ?? false,
+      createdAt: profile.created_at,
+    }));
+
+    const total = count ?? 0;
+    const hasMore = offset + profiles.length < total;
+
+    return {
+      success: true,
+      data: {
+        profiles,
+        total,
+        page,
+        limit,
+        hasMore,
+      },
+    };
+  } catch (err) {
+    const errorCode = logError(err, { action: 'getFilteredProfiles' });
+    return { success: false, error: errorCode };
+  }
+}
+
+/**
+ * Get available filter options for the /explore page
+ * Returns distinct regions and specialties from approved profiles
+ */
+export async function getExploreFilterOptions(): Promise<
+  ActionResult<{
+    regions: Array<{ value: string; label: string; count: number }>;
+    specialties: Array<{ value: string; label: string; count: number }>;
+  }>
+> {
+  try {
+    const supabase = createPublicClient();
+
+    // Get all approved profiles to extract unique values
+    const { data, error } = await supabase
+      .from('pro_profiles')
+      .select('primary_region, specialties')
+      .eq('is_approved', true);
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    // Count regions
+    const regionCounts = new Map<string, number>();
+    const specialtyCounts = new Map<string, number>();
+
+    (data || []).forEach((profile) => {
+      // Count regions
+      if (profile.primary_region) {
+        regionCounts.set(
+          profile.primary_region,
+          (regionCounts.get(profile.primary_region) || 0) + 1
+        );
+      }
+
+      // Count specialties
+      const specialties = profile.specialties ?? [];
+      specialties.forEach((specialty: string) => {
+        specialtyCounts.set(specialty, (specialtyCounts.get(specialty) || 0) + 1);
+      });
+    });
+
+    // Convert to arrays with labels
+    const REGION_LABELS: Record<string, string> = {
+      seoul: '서울',
+      gyeonggi: '경기',
+      incheon: '인천',
+      busan: '부산',
+      daegu: '대구',
+      gwangju: '광주',
+      daejeon: '대전',
+      ulsan: '울산',
+      sejong: '세종',
+      gangwon: '강원',
+      chungbuk: '충북',
+      chungnam: '충남',
+      jeonbuk: '전북',
+      jeonnam: '전남',
+      gyeongbuk: '경북',
+      gyeongnam: '경남',
+      jeju: '제주',
+      overseas: '해외',
+    };
+
+    const regions = Array.from(regionCounts.entries())
+      .map(([value, count]) => ({
+        value,
+        label: REGION_LABELS[value] || value,
+        count,
+      }))
+      .sort((a, b) => b.count - a.count);
+
+    const specialties = Array.from(specialtyCounts.entries())
+      .map(([value, count]) => ({
+        value,
+        label: value,
+        count,
+      }))
+      .sort((a, b) => b.count - a.count);
+
+    return { success: true, data: { regions, specialties } };
+  } catch (_err) {
+    return { success: false, error: 'Failed to fetch filter options' };
+  }
+}
+
+/**
+ * Quiz answer types for pro matching
+ */
+export type QuizAnswers = {
+  skillLevel: string;
+  focusArea: string;
+  lessonStyle: string;
+  region: string;
+  budget: string;
+};
+
+/**
+ * Matched profile with match score
+ */
+export type MatchedProfile = ExploreProfile & {
+  matchScore: number;
+};
+
+/**
+ * Get matched profiles based on quiz answers
+ * Returns up to 3 best-matching profiles with match scores
+ */
+export async function getMatchedProfiles(
+  answers: QuizAnswers
+): Promise<ActionResult<MatchedProfile[]>> {
+  try {
+    addActionBreadcrumb('getMatchedProfiles', { answers });
+    const supabase = createPublicClient();
+
+    // Build base query for approved profiles
+    let query = supabase
+      .from('pro_profiles')
+      .select(
+        `
+        id,
+        slug,
+        title,
+        bio,
+        specialties,
+        location,
+        primary_region,
+        primary_city,
+        profile_image_url,
+        hero_image_url,
+        rating,
+        profile_views,
+        total_leads,
+        certifications,
+        is_featured,
+        created_at
+      `
+      )
+      .eq('is_approved', true);
+
+    // Apply region filter for exact match
+    const regionMap: Record<string, string[]> = {
+      seoul: ['seoul'],
+      gyeonggi: ['gyeonggi'],
+      incheon: ['incheon'],
+      busan: ['busan', 'gyeongnam'],
+      other: ['daegu', 'gwangju', 'daejeon', 'ulsan', 'sejong', 'gangwon', 'chungbuk', 'chungnam', 'jeonbuk', 'jeonnam', 'gyeongbuk', 'jeju', 'overseas'],
+    };
+
+    const targetRegions = regionMap[answers.region] || [];
+    if (targetRegions.length > 0) {
+      query = query.in('primary_region', targetRegions);
+    }
+
+    // Order by rating and featured status
+    query = query
+      .order('is_featured', { ascending: false })
+      .order('rating', { ascending: false })
+      .limit(20);
+
+    const { data, error } = await query;
+
+    if (error) {
+      logError(error, { action: 'getMatchedProfiles', metadata: { answers } });
+      return { success: false, error: error.message };
+    }
+
+    if (!data || data.length === 0) {
+      return { success: true, data: [] };
+    }
+
+    // Calculate match scores based on quiz answers
+    const focusAreaKeywords: Record<string, string[]> = {
+      swing: ['스윙', '기본', '풀스윙', '자세', '폼'],
+      driver: ['드라이버', '비거리', '장타', '티샷'],
+      shortgame: ['숏게임', '어프로치', '웨지', '칩샷', '벙커'],
+      putting: ['퍼팅', '그린', '퍼터'],
+      course: ['코스', '매니지먼트', '전략', '라운딩', '멘탈'],
+    };
+
+    const lessonStyleKeywords: Record<string, string[]> = {
+      systematic: ['커리큘럼', '체계', '단계별', '레벨'],
+      practical: ['실전', '필드', '라운딩', '코스'],
+      video: ['영상', '분석', '촬영', '스윙분석'],
+      intensive: ['교정', '집중', '문제해결', '피팅'],
+    };
+
+    const scoredProfiles = data.map((profile) => {
+      let score = 50; // Base score
+
+      // Specialty matching (up to +30)
+      const specialties = profile.specialties || [];
+      const focusKeywords = focusAreaKeywords[answers.focusArea] || [];
+      const styleKeywords = lessonStyleKeywords[answers.lessonStyle] || [];
+
+      const allKeywords = [...focusKeywords, ...styleKeywords];
+      const matchingSpecialties = specialties.filter((s: string) =>
+        allKeywords.some((keyword) => s.toLowerCase().includes(keyword.toLowerCase()))
+      );
+      score += Math.min(30, matchingSpecialties.length * 10);
+
+      // Region exact match (+10)
+      if (profile.primary_region && targetRegions.includes(profile.primary_region)) {
+        score += 10;
+      }
+
+      // Rating bonus (up to +10)
+      if (profile.rating) {
+        score += Math.min(10, Math.floor((profile.rating - 4) * 10));
+      }
+
+      // Featured bonus (+5)
+      if (profile.is_featured) {
+        score += 5;
+      }
+
+      // Experience/certification bonus (+5)
+      if (profile.certifications && profile.certifications.length > 0) {
+        score += 5;
+      }
+
+      // Cap score at 100
+      score = Math.min(100, Math.max(0, score));
+
+      return {
+        id: profile.id,
+        slug: profile.slug,
+        title: profile.title,
+        bio: profile.bio,
+        specialties: profile.specialties || [],
+        location: profile.location,
+        primaryRegion: profile.primary_region,
+        primaryCity: profile.primary_city,
+        profileImageUrl: profile.profile_image_url,
+        heroImageUrl: profile.hero_image_url,
+        rating: profile.rating || 0,
+        profileViews: profile.profile_views || 0,
+        totalLeads: profile.total_leads || 0,
+        certifications: profile.certifications || [],
+        isFeatured: profile.is_featured || false,
+        createdAt: profile.created_at,
+        matchScore: score,
+      };
+    });
+
+    // Sort by match score and take top 3
+    const topMatches = scoredProfiles
+      .sort((a, b) => b.matchScore - a.matchScore)
+      .slice(0, 3);
+
+    return { success: true, data: topMatches };
+  } catch (err) {
+    const errorCode = logError(err, { action: 'getMatchedProfiles' });
+    return { success: false, error: `Failed to match profiles [${errorCode}]` };
+  }
+}
+
 export async function createQuickProfile(
   input: QuickProfileInput
 ): Promise<ActionResult<{ slug: string }>> {

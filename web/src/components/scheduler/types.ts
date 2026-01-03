@@ -6,6 +6,7 @@
 // Database ENUM types
 export type BookingStatus = 'pending' | 'confirmed' | 'cancelled' | 'completed';
 export type PaymentStatus = 'unpaid' | 'paid' | 'deposit_paid' | 'refunded';
+export type BookingPaymentType = 'none' | 'deposit' | 'full';
 
 /**
  * Booking settings from sites table
@@ -13,6 +14,8 @@ export type PaymentStatus = 'unpaid' | 'paid' | 'deposit_paid' | 'refunded';
 export interface BookingSettings {
   deposit_enabled: boolean;
   deposit_amount: number; // in KRW
+  trial_lesson_enabled?: boolean; // 체험 레슨 결제 활성화
+  trial_lesson_price?: number; // 체험 레슨 가격 (KRW)
 }
 
 /**
@@ -56,6 +59,9 @@ export interface Booking {
   end_at: string;
   status: BookingStatus;
   payment_status: PaymentStatus;
+  payment_type: BookingPaymentType; // none | deposit | full
+  payment_key: string | null; // Toss payment key
+  order_id: string | null; // Payment order ID
   price_amount: number | null;
   price_currency: string;
   deposit_amount: number; // 예약금 금액 (0이면 예약금 없음)
@@ -98,10 +104,11 @@ export interface BookingRequest {
   guest_phone?: string;
   guest_email?: string;
   customer_notes?: string;
-  // Payment fields (for deposit booking)
+  // Payment fields
   paymentKey?: string;
   orderId?: string;
   amount?: number;
+  paymentType?: BookingPaymentType; // 'deposit' | 'full' | 'none'
 }
 
 /**

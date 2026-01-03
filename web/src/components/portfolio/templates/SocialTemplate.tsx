@@ -11,6 +11,7 @@ import {
   SponsorshipsSection,
   MediaHighlightsSection,
   AvailabilitySection,
+  BookingCalendarSection,
 } from '../sections';
 import { Card } from '@/components/ui/Card';
 import type { ProProfile } from '@/actions/profiles';
@@ -316,6 +317,13 @@ export function SocialTemplate({ profile, sections, themeConfig: _themeConfig }:
             availability={profile.availability || []}
             title={sectionTitle || undefined}
             subtitle={sectionSubtitle || undefined}
+          />
+        );
+      case 'booking':
+        return (
+          <BookingCalendarSection
+            proId={profile.id}
+            proName={profile.title.split(' ')[0] || profile.title}
           />
         );
       case 'testimonials':

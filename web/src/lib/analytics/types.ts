@@ -133,6 +133,25 @@ export type EngagementEvent =
   | 'video_complete'
   | 'share';
 
+// ============================================================
+// A/B Testing Events
+// ============================================================
+
+export type ExperimentEvent =
+  | 'experiment_assigned'
+  | 'experiment_conversion';
+
+export interface ExperimentEventProperties {
+  experiment_name: string;
+  experiment_id?: string;
+  variant_name: string;
+  variant_id?: string;
+  metric_name?: string;
+  value?: number;
+
+  [key: string]: unknown;
+}
+
 export interface EngagementEventProperties {
   element_id?: string;
   element_text?: string;
@@ -155,6 +174,7 @@ export type AnalyticsEventName =
   | ConsumerFunnelEvent
   | ProFunnelEvent
   | EngagementEvent
+  | ExperimentEvent
   | 'page_view'
   | 'error';
 
@@ -162,7 +182,8 @@ export type AnalyticsEventProperties =
   | PageViewEvent
   | ConsumerEventProperties
   | ProEventProperties
-  | EngagementEventProperties;
+  | EngagementEventProperties
+  | ExperimentEventProperties;
 
 export interface AnalyticsEvent {
   name: AnalyticsEventName;

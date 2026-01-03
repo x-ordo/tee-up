@@ -9,6 +9,7 @@ import {
   SponsorshipsSection,
   MediaHighlightsSection,
   AvailabilitySection,
+  BookingCalendarSection,
 } from '../sections';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -333,6 +334,13 @@ export function CurriculumTemplate({ profile, sections, themeConfig: _themeConfi
             availability={profile.availability || []}
             title={sectionTitle || undefined}
             subtitle={sectionSubtitle || undefined}
+          />
+        );
+      case 'booking':
+        return (
+          <BookingCalendarSection
+            proId={profile.id}
+            proName={profile.title.split(' ')[0] || profile.title}
           />
         );
       case 'curriculum':

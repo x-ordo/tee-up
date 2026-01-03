@@ -31,7 +31,7 @@ const PRESET_COLORS = [
 
 /**
  * Theme customizer component for portfolio white-labeling
- * Allows pros to customize accent color, logo, font, and dark mode settings
+ * Allows pros to customize accent color, logo, and font settings
  */
 export function ThemeCustomizer({ profileId, initialConfig }: ThemeCustomizerProps) {
   const [isPending, startTransition] = useTransition()
@@ -56,10 +56,6 @@ export function ThemeCustomizer({ profileId, initialConfig }: ThemeCustomizerPro
 
   const handleFontChange = (fontPreset: ThemeConfig['fontPreset']) => {
     setConfig((prev) => ({ ...prev, fontPreset }))
-  }
-
-  const handleDarkModeToggle = () => {
-    setConfig((prev) => ({ ...prev, darkModeEnabled: !prev.darkModeEnabled }))
   }
 
   const handleSave = () => {
@@ -93,8 +89,7 @@ export function ThemeCustomizer({ profileId, initialConfig }: ThemeCustomizerPro
 
   const hasChanges =
     config.accentColor !== initialConfig.accentColor ||
-    config.fontPreset !== initialConfig.fontPreset ||
-    config.darkModeEnabled !== initialConfig.darkModeEnabled
+    config.fontPreset !== initialConfig.fontPreset
 
   return (
     <Card>
@@ -162,33 +157,6 @@ export function ThemeCustomizer({ profileId, initialConfig }: ThemeCustomizerPro
               </button>
             ))}
           </div>
-        </FormField>
-
-        {/* Dark Mode Toggle */}
-        <FormField label="다크 모드" htmlFor="dark-mode">
-          <button
-            type="button"
-            onClick={handleDarkModeToggle}
-            className={`
-              relative h-6 w-11 rounded-full transition-colors
-              ${config.darkModeEnabled ? 'bg-tee-accent-primary' : 'bg-tee-stone'}
-            `}
-            role="switch"
-            aria-checked={config.darkModeEnabled}
-            aria-label="다크 모드 토글"
-          >
-            <span
-              className={`
-                absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white transition-transform
-                ${config.darkModeEnabled ? 'translate-x-5' : 'translate-x-0'}
-              `}
-            />
-          </button>
-          <p className="mt-space-1 text-sm text-tee-ink-muted">
-            {config.darkModeEnabled
-              ? '방문자가 다크 모드를 선택할 수 있습니다'
-              : '항상 라이트 모드로 표시됩니다'}
-          </p>
         </FormField>
 
         {/* Preview */}

@@ -68,6 +68,40 @@ export async function signInWithGoogle(redirectTo?: string) {
 }
 
 /**
+ * Sign in with Kakao
+ * Use this for Korean users who prefer Kakao login
+ *
+ * @param redirectTo - URL to redirect after authentication
+ * @returns OAuth sign-in result
+ *
+ * @example
+ * ```tsx
+ * 'use client';
+ * import { signInWithKakao } from '@/lib/supabase/auth';
+ *
+ * function KakaoLoginButton() {
+ *   const handleLogin = async () => {
+ *     const { error } = await signInWithKakao();
+ *     if (error) console.error(error);
+ *   };
+ *   return <button onClick={handleLogin}>카카오로 로그인</button>;
+ * }
+ * ```
+ */
+export async function signInWithKakao(redirectTo?: string) {
+  const supabase = createClient();
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'kakao',
+    options: {
+      redirectTo: redirectTo || `${getBaseUrl()}/auth/callback`,
+    },
+  });
+
+  return { data, error };
+}
+
+/**
  * Sign out current user
  */
 export async function signOut() {

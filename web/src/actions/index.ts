@@ -156,3 +156,66 @@ export {
   type BookingRequestStatus,
   type CreateBookingRequestInput,
 } from './booking-requests';
+
+// Consumer dashboard actions
+export {
+  getConsumerBookings,
+  getConsumerProfile,
+  getConsumerStats,
+  getSavedPros,
+  savePro,
+  unsavePro,
+  isProSaved,
+  getConsumerConsultations,
+  getCompletedLessons,
+  type ConsumerBooking,
+  type SavedPro,
+  type ConsumerConsultation,
+} from './consumer';
+
+// Retargeting actions
+export {
+  trackActivityEvent,
+  markEventCompleted,
+  getNotificationPreferences,
+  updateNotificationPreferences,
+  unsubscribeFromRetargeting,
+  getPendingRetargets,
+  markEventRetargeted,
+  logRetargetingNotification,
+  updateNotificationStatus,
+  type ActivityEventType,
+  type ActivityEvent,
+  type NotificationPreferences,
+  type PendingRetarget,
+} from './retargeting';
+
+// A/B Testing actions
+export {
+  createExperiment,
+  getExperiment,
+  getExperimentByName,
+  listExperiments,
+  updateExperiment,
+  startExperiment,
+  pauseExperiment,
+  completeExperiment,
+  getVariantAssignment,
+  getUserAssignments,
+  trackConversion,
+  getExperimentStats,
+  type ExperimentStatus,
+  type Experiment,
+  type ExperimentVariant,
+  type ExperimentAssignment,
+  type ExperimentStats,
+  type CreateExperimentInput,
+  type UpdateExperimentInput,
+} from './experiments';
+
+// A/B Testing statistics (pure functions, not server actions)
+export {
+  calculateSignificance,
+  calculateMinSampleSize,
+  calculateProbabilityOfImprovement,
+} from '@/lib/experiments/statistics';

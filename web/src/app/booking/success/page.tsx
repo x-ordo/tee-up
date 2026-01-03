@@ -9,6 +9,7 @@ import { format, parseISO } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
 type PageState = 'processing' | 'success' | 'error';
+type PaymentType = 'none' | 'deposit' | 'full';
 
 interface BookingData {
   proId: string;
@@ -18,6 +19,7 @@ interface BookingData {
   guestPhone?: string;
   guestEmail?: string;
   customerNotes?: string;
+  paymentType?: PaymentType;
 }
 
 export default function BookingSuccessPage() {
@@ -64,6 +66,7 @@ export default function BookingSuccessPage() {
         paymentKey,
         orderId,
         amount: parseInt(amount, 10),
+        paymentType: parsedData.paymentType,
       });
 
       if (!result.success) {
@@ -120,6 +123,9 @@ export default function BookingSuccessPage() {
     );
   }
 
+  // Determine success message based on payment type
+  const isFullPayment = bookingData?.paymentType === 'full';
+
   // Success state
   return (
     <div className="min-h-screen bg-tee-background flex items-center justify-center p-4">
@@ -129,13 +135,23 @@ export default function BookingSuccessPage() {
         </div>
 
         <h1 className="text-xl font-semibold text-tee-ink-strong mb-2">
-          VIP 예약이 확정되었습니다!
+          {isFullPayment ? '체험 레슨 예약 완료!' : 'VIP 예약이 확정되었습니다!'}
         </h1>
 
         <p className="text-tee-ink-light mb-6">
-          예약금 결제가 완료되었습니다.
-          <br />
-          레슨 일정이 확정되었습니다.
+          {isFullPayment ? (
+            <>
+              결제가 완료되었습니다.
+              <br />
+              체험 레슨 일정이 확정되었습니다.
+            </>
+          ) : (
+            <>
+              예약금 결제가 완료되었습니다.
+              <br />
+              레슨 일정이 확정되었습니다.
+            </>
+          )}
         </p>
 
         {/* Booking details */}
