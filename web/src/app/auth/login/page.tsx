@@ -8,6 +8,7 @@ import { getCurrentUserProfile } from '@/actions/profiles';
 import { AuthLayout } from '../components/AuthLayout';
 import { AuthInput } from '../components/AuthInput';
 import { AuthButton } from '../components/AuthButton';
+import { KakaoLoginButton } from '../components/KakaoLoginButton';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -145,6 +146,10 @@ export default function LoginPage() {
             <span className="bg-tee-surface px-4 text-tee-ink-muted">또는</span>
           </div>
         </div>
+
+        <KakaoLoginButton
+          redirectTo={searchParams.get('redirect') || undefined}
+        />
 
         <div className="text-center text-caption text-tee-ink-light">
           계정이 없으신가요?{' '}

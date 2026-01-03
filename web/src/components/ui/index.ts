@@ -75,7 +75,6 @@ export { Alert, AlertTitle, AlertDescription, alertVariants } from './Alert';
 export { StatusBadge, statusBadgeVariants, type StatusBadgeProps } from './StatusBadge';
 export { EmptyState, type EmptyStateProps } from './EmptyState';
 export { AdminNav, defaultAdminNavItems, type AdminNavItem, type AdminNavProps } from './AdminNav';
-export { ThemeToggle } from './ThemeToggle';
 
 // Card variants (CVA)
 export { cardVariants, type CardProps } from './Card';

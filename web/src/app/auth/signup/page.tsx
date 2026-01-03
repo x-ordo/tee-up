@@ -4,15 +4,18 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
+import { useProAnalytics } from '@/hooks/useAnalytics';
 import { validateEmail, validatePassword, validatePhone } from '@/lib/auth';
 import { AuthLayout } from '../components/AuthLayout';
 import { AuthInput } from '../components/AuthInput';
 import { AuthButton } from '../components/AuthButton';
+import { KakaoLoginButton } from '../components/KakaoLoginButton';
 import type { UserRole } from '@/types';
 
 export default function SignUpPage() {
   const router = useRouter();
   const { signUp, isLoading, error, clearError } = useAuth();
+  const proAnalytics = useProAnalytics();
 
   const [formData, setFormData] = useState({
     full_name: '',
@@ -96,6 +99,8 @@ export default function SignUpPage() {
     });
 
     if (result.success) {
+      // Track successful signup
+      proAnalytics.completeSignup();
       router.push('/auth/verify-email');
     }
   };
@@ -262,6 +267,17 @@ export default function SignUpPage() {
         <AuthButton type="submit" isLoading={isLoading}>
           회원가입
         </AuthButton>
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-tee-stone" />
+          </div>
+          <div className="relative flex justify-center text-caption">
+            <span className="bg-tee-surface px-4 text-tee-ink-muted">또는</span>
+          </div>
+        </div>
+
+        <KakaoLoginButton />
 
         <div className="text-center text-caption text-tee-ink-light">
           이미 계정이 있으신가요?{' '}

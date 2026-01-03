@@ -5,15 +5,15 @@ import type { ThemeProviderProps } from 'next-themes'
 
 /**
  * Theme Provider wrapper for TEE:UP design system
- * Uses data-theme attribute to support CSS custom property theming
+ * Light mode only - dark mode disabled for design consistency
  */
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return (
     <NextThemesProvider
       attribute="data-theme"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange={false}
+      defaultTheme="light"
+      forcedTheme="light"
+      disableTransitionOnChange
       {...props}
     >
       {children}

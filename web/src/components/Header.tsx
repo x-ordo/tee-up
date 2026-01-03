@@ -2,14 +2,14 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ThemeToggle } from '../app/components/ThemeToggle'
 import { Button } from './ui/Button'
 
 const navLinks = [
-  { href: '/profile', label: '전체 프로' },
+  { href: '/explore', label: '프로 찾기' },
+  { href: '/pro', label: '프로이신가요?', highlight: true },
   { href: '/pricing', label: '요금제' },
   { href: '/auth/login', label: '로그인' },
-]
+] as const
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -35,7 +35,11 @@ export default function Header() {
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-lg px-2 py-1 text-body text-tee-ink-strong transition-colors hover:text-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary"
+              className={
+                'highlight' in link && link.highlight
+                  ? 'rounded-full bg-tee-accent-secondary px-4 py-2 text-body font-semibold text-white transition-colors hover:bg-tee-accent-secondary/90 focus:outline-none focus:ring-2 focus:ring-tee-accent-secondary'
+                  : 'rounded-lg px-2 py-1 text-body text-tee-ink-strong transition-colors hover:text-tee-accent-primary focus:outline-none focus:ring-2 focus:ring-tee-accent-primary'
+              }
             >
               {link.label}
             </Link>
@@ -43,13 +47,11 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-4">
-          <ThemeToggle />
-
           {/* Primary CTA - Hidden on mobile */}
           <div className="hidden sm:block">
             <Button asChild variant="primary" size="md">
-              <Link href="/auth/signup">
-                바로 시작하기
+              <Link href="/quiz">
+                무료 매칭받기
               </Link>
             </Button>
           </div>
@@ -105,7 +107,11 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="block rounded-lg px-3 py-3 text-body font-medium text-tee-ink-strong transition-colors hover:bg-tee-surface hover:text-tee-accent-primary"
+                className={
+                  'highlight' in link && link.highlight
+                    ? 'block rounded-lg bg-tee-accent-secondary/10 px-3 py-3 text-body font-semibold text-tee-accent-secondary transition-colors hover:bg-tee-accent-secondary/20'
+                    : 'block rounded-lg px-3 py-3 text-body font-medium text-tee-ink-strong transition-colors hover:bg-tee-surface hover:text-tee-accent-primary'
+                }
                 onClick={closeMobileMenu}
               >
                 {link.label}
@@ -113,8 +119,8 @@ export default function Header() {
             ))}
             <div className="pt-4">
               <Button asChild variant="primary" size="md" className="w-full">
-                <Link href="/auth/signup" onClick={closeMobileMenu}>
-                  바로 시작하기
+                <Link href="/quiz" onClick={closeMobileMenu}>
+                  무료 매칭받기
                 </Link>
               </Button>
             </div>

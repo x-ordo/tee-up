@@ -14,7 +14,6 @@ export {
 } from './sections';
 
 // Theme Components
-export { PortfolioHeader } from './PortfolioHeader';
 export { ThemeCustomizer } from './ThemeCustomizer';
 
 // Contact Components

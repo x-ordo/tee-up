@@ -290,6 +290,20 @@ export interface DepositPaymentRequest {
   customerNotes?: string;
 }
 
+export interface TrialLessonPaymentRequest {
+  proId: string;
+  proName: string;
+  amount: number; // Full lesson price
+  slotStart: string;
+  slotEnd: string;
+  guestName: string;
+  guestPhone?: string;
+  guestEmail?: string;
+  customerNotes?: string;
+}
+
+export type PaymentType = 'deposit' | 'full';
+
 // ============================================
 // Payment Functions
 // ============================================
@@ -594,6 +608,7 @@ export async function requestDepositPayment(
       guestPhone: request.guestPhone,
       guestEmail: request.guestEmail,
       customerNotes: request.customerNotes,
+      paymentType: 'deposit',
     })
   );
 
@@ -601,6 +616,46 @@ export async function requestDepositPayment(
     amount: request.amount,
     orderId,
     orderName: `${request.proName} 프로 레슨 예약금`,
+    customerName: request.guestName,
+    customerEmail: request.guestEmail,
+    successUrl: `${baseUrl}/booking/success?orderId=${orderId}&data=${bookingData}`,
+    failUrl: `${baseUrl}/booking/fail`,
+  });
+
+  return { orderId };
+}
+
+/**
+ * 체험 레슨 전액 결제 요청
+ * Trial lesson full payment request
+ */
+export async function requestTrialLessonPayment(
+  request: TrialLessonPaymentRequest
+): Promise<{ orderId: string }> {
+  const toss = await initTossPayments();
+  if (!toss) throw new Error('Toss Payments not initialized');
+
+  // 'trial_' prefix for trial lesson payments
+  const orderId = `trial_${request.proId.slice(0, 8)}_${Date.now()}`;
+  const baseUrl = window.location.origin;
+
+  const bookingData = encodeURIComponent(
+    JSON.stringify({
+      proId: request.proId,
+      slotStart: request.slotStart,
+      slotEnd: request.slotEnd,
+      guestName: request.guestName,
+      guestPhone: request.guestPhone,
+      guestEmail: request.guestEmail,
+      customerNotes: request.customerNotes,
+      paymentType: 'full', // Full payment indicator
+    })
+  );
+
+  await toss.requestPayment('카드', {
+    amount: request.amount,
+    orderId,
+    orderName: `${request.proName} 프로 체험 레슨`,
     customerName: request.guestName,
     customerEmail: request.guestEmail,
     successUrl: `${baseUrl}/booking/success?orderId=${orderId}&data=${bookingData}`,

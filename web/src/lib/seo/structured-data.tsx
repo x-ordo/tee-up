@@ -3,8 +3,6 @@
  * @description 검색 엔진을 위한 구조화된 데이터
  */
 
-import type { IProProfile } from '@/types';
-
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://teeup.golf';
 
 // ============================================
@@ -112,15 +110,26 @@ export function getLocalBusinessSchema() {
 // Person Schema (Pro Profile)
 // ============================================
 
-export function getProProfileSchema(pro: IProProfile) {
+interface ProProfileSchemaInput {
+  slug: string;
+  title: string;
+  bio?: string | null;
+  profile_image_url?: string | null;
+  specialties?: string[];
+  certifications?: string[];
+  rating?: number;
+  matched_lessons?: number;
+}
+
+export function getProProfileSchema(pro: ProProfileSchemaInput) {
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    '@id': `${BASE_URL}/profile/${pro.slug}#person`,
+    '@id': `${BASE_URL}/${pro.slug}#person`,
     name: pro.title,
-    description: pro.bio,
-    url: `${BASE_URL}/profile/${pro.slug}`,
-    image: pro.profile_image_url,
+    description: pro.bio || undefined,
+    url: `${BASE_URL}/${pro.slug}`,
+    image: pro.profile_image_url || undefined,
     jobTitle: '골프 프로',
     worksFor: {
       '@type': 'Organization',
@@ -128,12 +137,12 @@ export function getProProfileSchema(pro: IProProfile) {
     },
     knowsAbout: pro.specialties,
     award: pro.certifications,
-    aggregateRating: pro.rating > 0 ? {
+    aggregateRating: (pro.rating && pro.rating > 0) ? {
       '@type': 'AggregateRating',
       ratingValue: pro.rating.toString(),
       bestRating: '5',
       worstRating: '1',
-      ratingCount: pro.matched_lessons.toString(),
+      ratingCount: (pro.matched_lessons || 0).toString(),
     } : undefined,
   };
 }

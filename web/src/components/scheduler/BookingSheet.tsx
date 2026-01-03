@@ -16,8 +16,8 @@ import {
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { cn } from '@/lib/utils';
-import { requestDepositPayment, formatKRW } from '@/lib/payments';
-import type { TimeSlot, BookingRequest, BookingSettings } from './types';
+import { requestDepositPayment, requestTrialLessonPayment, formatKRW } from '@/lib/payments';
+import type { TimeSlot, BookingRequest, BookingSettings, BookingPaymentType } from './types';
 
 interface BookingSheetProps {
   open: boolean;
@@ -53,9 +53,29 @@ export function BookingSheet({
   });
   const [error, setError] = React.useState<string | null>(null);
 
-  // Check if deposit payment is required
-  const isDepositRequired = bookingSettings?.deposit_enabled ?? false;
-  const depositAmount = bookingSettings?.deposit_amount ?? 30000;
+  // Determine payment type based on booking settings
+  // Priority: trial_lesson (full) > deposit > free
+  const paymentType: BookingPaymentType = React.useMemo(() => {
+    if (bookingSettings?.trial_lesson_enabled && bookingSettings.trial_lesson_price) {
+      return 'full';
+    }
+    if (bookingSettings?.deposit_enabled && bookingSettings.deposit_amount) {
+      return 'deposit';
+    }
+    return 'none';
+  }, [bookingSettings]);
+
+  const paymentAmount = React.useMemo(() => {
+    if (paymentType === 'full') {
+      return bookingSettings?.trial_lesson_price ?? 0;
+    }
+    if (paymentType === 'deposit') {
+      return bookingSettings?.deposit_amount ?? 30000;
+    }
+    return 0;
+  }, [paymentType, bookingSettings]);
+
+  const isPaymentRequired = paymentType !== 'none';
 
   // Reset state when drawer opens
   React.useEffect(() => {
@@ -87,23 +107,29 @@ export function BookingSheet({
 
     setError(null);
 
-    // If deposit is required, initiate payment flow
-    if (isDepositRequired) {
+    // If payment is required (deposit or full), initiate payment flow
+    if (isPaymentRequired) {
       setStep('processing_payment');
 
       try {
-        // This will redirect to Toss payment page
-        await requestDepositPayment({
+        const paymentRequest = {
           proId,
           proName,
-          amount: depositAmount,
+          amount: paymentAmount,
           slotStart: selectedSlot.start.toISOString(),
           slotEnd: selectedSlot.end.toISOString(),
           guestName: formData.name.trim(),
           guestPhone: formData.phone.trim() || undefined,
           guestEmail: formData.email.trim() || undefined,
           customerNotes: formData.notes.trim() || undefined,
-        });
+        };
+
+        // Use appropriate payment function based on type
+        if (paymentType === 'full') {
+          await requestTrialLessonPayment(paymentRequest);
+        } else {
+          await requestDepositPayment(paymentRequest);
+        }
         // Note: After payment, user will be redirected to /booking/success
         // which will call createBooking with paymentKey
       } catch (err) {
@@ -147,20 +173,25 @@ export function BookingSheet({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent className={cn('max-h-[90vh]', className)}>
         {step === 'success' ? (
-          <SuccessContent onClose={handleClose} proName={proName} isDeposit={isDepositRequired} />
+          <SuccessContent onClose={handleClose} proName={proName} paymentType={paymentType} />
         ) : step === 'processing_payment' ? (
-          <PaymentProcessingContent proName={proName} amount={depositAmount} />
+          <PaymentProcessingContent proName={proName} amount={paymentAmount} paymentType={paymentType} />
         ) : (
           <>
             <DrawerHeader className="text-left">
               <DrawerTitle>
-                {isDepositRequired ? 'VIP 레슨 예약' : '레슨 예약'}
+                {paymentType === 'full' ? '체험 레슨 예약' : paymentType === 'deposit' ? 'VIP 레슨 예약' : '레슨 예약'}
               </DrawerTitle>
               <DrawerDescription>
                 {proName} 프로님과의 레슨을 예약합니다
-                {isDepositRequired && (
+                {paymentType === 'full' && (
                   <span className="block mt-1 text-tee-accent-primary font-medium">
-                    예약금 {formatKRW(depositAmount)}원으로 일정을 확보하세요
+                    체험 레슨료 {formatKRW(paymentAmount)}원을 결제합니다
+                  </span>
+                )}
+                {paymentType === 'deposit' && (
+                  <span className="block mt-1 text-tee-accent-primary font-medium">
+                    예약금 {formatKRW(paymentAmount)}원으로 일정을 확보하세요
                   </span>
                 )}
               </DrawerDescription>
@@ -259,8 +290,16 @@ export function BookingSheet({
             </form>
 
             <DrawerFooter>
-              {/* Deposit info banner */}
-              {isDepositRequired && (
+              {/* Payment info banner */}
+              {paymentType === 'full' && (
+                <div className="flex items-center gap-2 p-3 bg-tee-accent-primary/5 border border-tee-accent-primary/20 rounded-xl mb-2">
+                  <Shield className="h-5 w-5 text-tee-accent-primary flex-shrink-0" />
+                  <p className="text-xs text-tee-ink-light">
+                    체험 레슨료 전액을 결제합니다. 레슨 당일 추가 비용이 없습니다.
+                  </p>
+                </div>
+              )}
+              {paymentType === 'deposit' && (
                 <div className="flex items-center gap-2 p-3 bg-tee-accent-primary/5 border border-tee-accent-primary/20 rounded-xl mb-2">
                   <Shield className="h-5 w-5 text-tee-accent-primary flex-shrink-0" />
                   <p className="text-xs text-tee-ink-light">
@@ -275,7 +314,7 @@ export function BookingSheet({
                 disabled={step === 'submitting' || !selectedSlot}
                 className={cn(
                   'w-full h-12 text-base font-semibold',
-                  isDepositRequired && 'bg-gradient-to-r from-tee-accent-primary to-tee-accent-primary/80 hover:from-tee-accent-primary/90 hover:to-tee-accent-primary/70'
+                  isPaymentRequired && 'bg-gradient-to-r from-tee-accent-primary to-tee-accent-primary/80 hover:from-tee-accent-primary/90 hover:to-tee-accent-primary/70'
                 )}
               >
                 {step === 'submitting' ? (
@@ -283,10 +322,15 @@ export function BookingSheet({
                     <Loader2 className="h-5 w-5 mr-2 animate-spin" />
                     예약 요청 중...
                   </>
-                ) : isDepositRequired ? (
+                ) : paymentType === 'full' ? (
                   <>
                     <CreditCard className="h-5 w-5 mr-2" />
-                    VIP 예약 확정하기 ({formatKRW(depositAmount)}원)
+                    체험 레슨 결제하기 ({formatKRW(paymentAmount)}원)
+                  </>
+                ) : paymentType === 'deposit' ? (
+                  <>
+                    <CreditCard className="h-5 w-5 mr-2" />
+                    VIP 예약 확정하기 ({formatKRW(paymentAmount)}원)
                   </>
                 ) : (
                   '예약 요청하기'
@@ -332,38 +376,62 @@ function FormField({ icon, label, required, children }: FormFieldProps) {
 interface SuccessContentProps {
   onClose: () => void;
   proName: string;
-  isDeposit?: boolean;
+  paymentType: BookingPaymentType;
 }
 
-function SuccessContent({ onClose, proName, isDeposit }: SuccessContentProps) {
+function SuccessContent({ onClose, proName, paymentType }: SuccessContentProps) {
+  const isPaid = paymentType !== 'none';
+
+  const getTitle = () => {
+    if (paymentType === 'full') return '체험 레슨 예약 완료!';
+    if (paymentType === 'deposit') return 'VIP 예약 확정!';
+    return '예약 요청 완료!';
+  };
+
+  const getMessage = () => {
+    if (paymentType === 'full') {
+      return (
+        <>
+          결제가 완료되었습니다.
+          <br />
+          {proName} 프로님과의 체험 레슨이 확정되었습니다.
+        </>
+      );
+    }
+    if (paymentType === 'deposit') {
+      return (
+        <>
+          예약금 결제가 완료되었습니다.
+          <br />
+          {proName} 프로님과의 레슨이 확정되었습니다.
+        </>
+      );
+    }
+    return (
+      <>
+        {proName} 프로님이 예약을 확인하면
+        <br />
+        연락드릴 예정입니다.
+      </>
+    );
+  };
+
   return (
     <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
       <div className={cn(
         'w-16 h-16 rounded-full flex items-center justify-center mb-4',
-        isDeposit ? 'bg-tee-accent-primary/10' : 'bg-tee-success/10'
+        isPaid ? 'bg-tee-accent-primary/10' : 'bg-tee-success/10'
       )}>
         <CheckCircle className={cn(
           'h-8 w-8',
-          isDeposit ? 'text-tee-accent-primary' : 'text-tee-success'
+          isPaid ? 'text-tee-accent-primary' : 'text-tee-success'
         )} />
       </div>
       <h3 className="text-xl font-semibold text-tee-ink-strong mb-2">
-        {isDeposit ? 'VIP 예약 확정!' : '예약 요청 완료!'}
+        {getTitle()}
       </h3>
       <p className="text-tee-ink-light mb-6">
-        {isDeposit ? (
-          <>
-            예약금 결제가 완료되었습니다.
-            <br />
-            {proName} 프로님과의 레슨이 확정되었습니다.
-          </>
-        ) : (
-          <>
-            {proName} 프로님이 예약을 확인하면
-            <br />
-            연락드릴 예정입니다.
-          </>
-        )}
+        {getMessage()}
       </p>
       <Button onClick={onClose} className="w-full max-w-xs">
         확인
@@ -375,9 +443,15 @@ function SuccessContent({ onClose, proName, isDeposit }: SuccessContentProps) {
 interface PaymentProcessingContentProps {
   proName: string;
   amount: number;
+  paymentType: BookingPaymentType;
 }
 
-function PaymentProcessingContent({ proName, amount }: PaymentProcessingContentProps) {
+function PaymentProcessingContent({ proName, amount, paymentType }: PaymentProcessingContentProps) {
+  const getLabel = () => {
+    if (paymentType === 'full') return '체험 레슨료';
+    return '예약금';
+  };
+
   return (
     <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
       {/* Premium loading animation */}
@@ -400,7 +474,7 @@ function PaymentProcessingContent({ proName, amount }: PaymentProcessingContentP
       <div className="flex items-center gap-2 px-4 py-2 bg-tee-accent-primary/5 rounded-lg">
         <Shield className="h-4 w-4 text-tee-accent-primary" />
         <span className="text-sm text-tee-ink-light">
-          예약금 <span className="font-semibold text-tee-accent-primary">{formatKRW(amount)}원</span>
+          {getLabel()} <span className="font-semibold text-tee-accent-primary">{formatKRW(amount)}원</span>
         </span>
       </div>
 

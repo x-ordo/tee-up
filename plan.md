@@ -4,7 +4,7 @@ version: 2.0.0
 status: Active
 owner: "@tech-lead"
 created: 2025-11-24
-updated: 2025-11-25
+updated: 2025-12-30
 reviewers: ["@product-manager", "@backend-lead"]
 language: Korean (한국어)
 ---
@@ -22,6 +22,7 @@ language: Korean (한국어)
 
 | 버전 | 날짜 | 작성자 | 변경 내용 |
 |------|------|--------|----------|
+| 2.1.1 | 2025-12-30 | @codex | 문서 기반 UX 방향성 반영 및 경로 정리 |
 | 2.1.0 | 2025-12-01 | @claude | UI/UX 검증 전략 및 빅테크 UX 이식 기획 추가 |
 | 2.0.0 | 2025-11-25 | @tech-lead | Master Prompt 표준 적용, TDD 구조 강화 |
 | 1.0.0 | 2025-11-24 | @tech-lead | 최초 작성 |
@@ -29,10 +30,12 @@ language: Korean (한국어)
 ## 관련 문서 (Related Documents)
 
 - [CONTEXT.md](CONTEXT.md) — 시스템 컨텍스트
-- [TDD_GUIDE.md](docs/guides/TDD_GUIDE.md) — TDD 가이드
-- [PRD.md](docs/specs/PRD.md) — 제품 요구사항
+- [TDD_GUIDE.md](web/lib/docs/guides/TDD_GUIDE.md) — TDD 가이드
+- [PRD.md](web/lib/docs/business/PRD.md) — 제품 요구사항
+- [UI_UX_PRINCIPLES.md](web/lib/docs/UI_UX_PRINCIPLES.md) — UI/UX 원칙
 - [UI_UX_VALIDATION_STRATEGY.md](guides/UI_UX_VALIDATION_STRATEGY.md) — UI/UX 검증 전략
-- [BIGTECH_UX_STRATEGY.md](docs/specs/BIGTECH_UX_STRATEGY.md) — 빅테크 UX 이식 기획
+- [SCREEN_DEFINITIONS.md](specs/003-screen-definitions/spec.md) — 화면 정의서
+- [BIGTECH_UX_STRATEGY.md](docs/specs/BIGTECH_UX_STRATEGY.md) — 빅테크 UX 이식 기획 (문서 경로 확인 필요)
 
 ---
 
@@ -455,6 +458,15 @@ describe('User Authentication', () => {
 
 > **목표:** 빅테크 UX 전략 이식을 통한 체류시간 증대 및 리드 전환율 향상
 
+### 🧭 문서 기반 방향성 (2025-12-30 반영)
+
+- **Show, Don't Tell**: 텍스트보다 시각적 스토리텔링과 히어로 임팩트 중심 (CONTEXT, PRD)
+- **Korean Luxury Minimalism / Calm Control**: 90/10 컬러 비율, 토큰 기반 스타일, 과한 장식 금지 (UI_UX_PRINCIPLES)
+- **White Labeling**: 플랫폼 브랜딩 최소화, 프로 개인 브랜딩 극대화 (Screen Definitions)
+- **VIP 페르소나 우선**: 신뢰 지표와 빠른 CTA 노출, 결제/문의 흐름 단순화 (CONTEXT, PRD)
+- **가드레일 준수**: 모바일 우선, WCAG AA, 다크 패턴 금지 (CONTEXT)
+- **색상 방향성 결정**: PRD의 Deep Green/Matte Gold 채택 (PRD, UI_UX_PRINCIPLES, UI_UX_VALIDATION_STRATEGY)
+
 ### 📋 완료된 작업 (2025-12-01)
 
 #### DOC-001: UI/UX 검증 전략 수립 ✅ COMPLETED
@@ -559,6 +571,17 @@ describe('GolfLevelQuiz', () => {
 | 성능 최적화 (LCP < 2.5s) | ⬜ PENDING | ⬜ | ⬜ |
 | 모바일 UX 검증 | ⬜ PENDING | ⬜ | ⬜ |
 | KPI 대시보드 구축 | ⬜ PENDING | ⬜ | ⬜ |
+
+#### Backlog: 프로필 전환 최적화 (UX-005)
+
+| 항목 | 상태 | 테스트 | 구현 |
+|------|------|--------|------|
+| 히어로 상단 CTA 노출 (문의/예약) | ⬜ PENDING | ⬜ | ⬜ |
+| 포트폴리오 템플릿 간 레이아웃/타이포 차별화 | ⬜ PENDING | ⬜ | ⬜ |
+| CTA 데드링크 제거 및 폼/상담 플로우 연결 | ⬜ PENDING | ⬜ | ⬜ |
+| `--portfolio-accent` 토큰 적용 범위 확장 | ⬜ PENDING | ⬜ | ⬜ |
+| 모션 최소화/설정 (prefers-reduced-motion) | ⬜ PENDING | ⬜ | ⬜ |
+| 신뢰 지표(검증/경력/통계) Above-the-fold 강화 | ⬜ PENDING | ⬜ | ⬜ |
 
 ---
 
@@ -670,7 +693,7 @@ describe('GolfLevelQuiz', () => {
 
 ## 🎨 UI/UX 원칙 준수 리팩토링 (신규 추가)
 
-> **Reference:** `/docs/UI_UX_PRINCIPLES.md`
+> **Reference:** `web/lib/docs/UI_UX_PRINCIPLES.md`
 > **Design System:** Calm Control (Korean Luxury Minimalism)
 > **Added:** 2025-12-01
 
@@ -827,7 +850,7 @@ className="text-calm-accent border-calm-accent"
 
 **이 문서는 매일 업데이트됩니다. 최신 상태를 확인하세요.**
 
-**Last Updated:** 2025-12-01 (UI/UX 검증 전략 및 빅테크 UX 이식 기획 추가)
+**Last Updated:** 2025-12-30 (문서 기반 UX 방향성 및 프로필 전환 최적화 백로그 추가)
 **Next Review:** 2025-12-08
 
 ═══════════════════════════════════════════════════════════════

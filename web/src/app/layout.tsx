@@ -1,6 +1,7 @@
 import './global.css'
 import type { Metadata, Viewport } from 'next'
 import { ThemeProvider } from '@/lib/theme-provider'
+import { AnalyticsProvider } from '@/components/AnalyticsProvider'
 import {
   JsonLd,
   getOrganizationSchema,
@@ -9,6 +10,8 @@ import {
 } from '@/lib/seo/structured-data'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+
+const GA4_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://teeup.golf'
 
@@ -156,11 +159,13 @@ export default function RootLayout({
       </head>
       <body className="antialiased min-h-screen flex flex-col">
         <ThemeProvider>
-          <Header />
-          <main className="flex-grow pt-20">
-            {children}
-          </main>
-          <Footer />
+          <AnalyticsProvider ga4MeasurementId={GA4_MEASUREMENT_ID}>
+            <Header />
+            <main className="flex-grow pt-20">
+              {children}
+            </main>
+            <Footer />
+          </AnalyticsProvider>
         </ThemeProvider>
       </body>
     </html>

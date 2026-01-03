@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { getLandingRecommendations } from '@/actions/profiles';
-import ConsumerConsultationCard from './components/ConsumerConsultationCard';
+import ConsultationWizard from './components/ConsultationWizard';
 import RotatingTestimonials from './components/RotatingTestimonials';
+import { TrackedLink, PageViewTracker } from '@/components/analytics';
 
 type RecommendationCard = {
   name: string;
@@ -90,6 +91,9 @@ export default async function ConsumerLandingPage() {
 
   return (
     <div className="bg-tee-background text-tee-ink-strong">
+      {/* Analytics Tracking */}
+      <PageViewTracker pageType="consumer_landing" />
+
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-tee-background via-white to-tee-background" aria-hidden="true" />
         <div className="absolute -top-28 left-0 h-72 w-72 rounded-full bg-tee-accent-secondary/20 blur-3xl" aria-hidden="true" />
@@ -109,18 +113,32 @@ export default async function ConsumerLandingPage() {
               AI 추천 + 운영팀 검수로 신뢰도를 높였습니다. 불필요한 절차 없이 상담만 시작하세요.
             </p>
             <div className="flex flex-wrap gap-3">
-              <a
-                href="#chat"
-                className="inline-flex h-12 items-center justify-center rounded-full bg-tee-accent-primary px-6 text-sm font-semibold text-white shadow-lg"
+              <TrackedLink
+                href="/quiz"
+                trackId="hero_cta_quiz"
+                ctaType="quiz"
+                className="inline-flex h-12 items-center justify-center rounded-full bg-tee-accent-primary px-6 text-sm font-semibold text-white shadow-lg transition-transform hover:scale-105"
               >
-                프로 추천 받기
-              </a>
-              <Link
+                무료 매칭받기
+              </TrackedLink>
+              <TrackedLink
+                href="/explore"
+                trackId="hero_cta_explore"
+                ctaType="explore"
+                className="inline-flex h-12 items-center justify-center rounded-full border-2 border-tee-accent-primary px-6 text-sm font-semibold text-tee-accent-primary transition-colors hover:bg-tee-accent-primary hover:text-white"
+              >
+                프로 둘러보기
+              </TrackedLink>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <TrackedLink
                 href="/pro"
-                className="inline-flex h-12 items-center justify-center rounded-full border border-tee-stone px-6 text-sm font-semibold text-tee-ink-strong"
+                trackId="hero_cta_pro_signup"
+                ctaType="pro_signup"
+                className="text-sm font-medium text-tee-ink-light underline-offset-4 hover:text-tee-accent-secondary hover:underline"
               >
-                프로 전용 서비스 보기
-              </Link>
+                프로이신가요? 등록하기 →
+              </TrackedLink>
             </div>
             <div className="flex flex-wrap gap-3 text-xs text-tee-ink-muted">
               <span className="rounded-full border border-tee-stone/60 bg-white/70 px-3 py-1">프로 인증 서류 확인</span>
@@ -130,10 +148,37 @@ export default async function ConsumerLandingPage() {
           </div>
 
           <div id="chat">
-            <ConsumerConsultationCard />
+            <ConsultationWizard />
           </div>
         </div>
       </section>
+
+      {/* Stats Section */}
+      <section className="border-y border-tee-stone/40 bg-white py-16">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+            <div className="text-center">
+              <span className="text-4xl font-bold text-tee-accent-secondary">150+</span>
+              <p className="mt-2 text-sm text-tee-ink-light">인증된 프로</p>
+            </div>
+            <div className="text-center">
+              <span className="text-4xl font-bold text-tee-accent-secondary">2,000+</span>
+              <p className="mt-2 text-sm text-tee-ink-light">성사된 레슨</p>
+            </div>
+            <div className="text-center">
+              <span className="text-4xl font-bold text-tee-accent-secondary">98%</span>
+              <p className="mt-2 text-sm text-tee-ink-light">수강생 만족도</p>
+            </div>
+            <div className="text-center">
+              <span className="text-4xl font-bold text-tee-accent-secondary">24h</span>
+              <p className="mt-2 text-sm text-tee-ink-light">평균 응답 시간</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Gold Gradient Divider */}
+      <div className="h-px bg-gradient-to-r from-transparent via-tee-accent-secondary/40 to-transparent" />
 
       <section className="mx-auto max-w-6xl px-6 py-14">
         <div className="grid gap-6 md:grid-cols-2">
@@ -163,7 +208,12 @@ export default async function ConsumerLandingPage() {
               온톨로지 기반 추천으로 적합한 프로를 선별합니다.
             </p>
           </div>
-          <span className="text-xs text-tee-ink-muted">맞춤 추천은 상담 후 제공</span>
+          <Link
+            href="/explore"
+            className="text-sm font-semibold text-tee-accent-primary hover:underline"
+          >
+            전체 보기 →
+          </Link>
         </div>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           {recommendations.map((pro) => {
@@ -240,10 +290,10 @@ export default async function ConsumerLandingPage() {
               {pro.slug && (
                 <div className="mt-5">
                   <Link
-                    href={`/profile/${pro.slug}`}
+                    href={`/${pro.slug}`}
                     className="text-xs font-semibold text-tee-accent-primary hover:underline"
                   >
-                    프로필 보기
+                    프로필 보기 →
                   </Link>
                 </div>
               )}

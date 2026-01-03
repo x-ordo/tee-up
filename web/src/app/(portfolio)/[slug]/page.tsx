@@ -2,8 +2,9 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { getPublicProfile, incrementProfileViews } from '@/actions/profiles';
 import { getDefaultTheme, type ThemeConfig } from '@/lib/theme-config';
-import { PortfolioRenderer, PortfolioHeader, FloatingContactButton } from '@/components/portfolio';
+import { PortfolioRenderer, FloatingContactButton } from '@/components/portfolio';
 import { createPublicClient } from '@/lib/supabase/server';
+import { JsonLd, getProProfileSchema, getBreadcrumbSchema } from '@/lib/seo/structured-data';
 
 type PortfolioSection = {
   section_type: string;
@@ -17,6 +18,8 @@ interface PortfolioPageProps {
   params: Promise<{ slug: string }>;
 }
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://teeup.golf';
+
 export async function generateMetadata({ params }: PortfolioPageProps): Promise<Metadata> {
   const { slug } = await params;
   const result = await getPublicProfile(slug);
@@ -28,14 +31,44 @@ export async function generateMetadata({ params }: PortfolioPageProps): Promise<
   }
 
   const profile = result.data;
+  const title = `${profile.title} | 골프 프로 | TEE:UP`;
+  const description = profile.bio || `${profile.title} - 프리미엄 골프 레슨. TEE:UP에서 검증된 프로 골퍼와 함께하세요.`;
+  const imageUrl = profile.hero_image_url || profile.profile_image_url;
+  const profileUrl = `${BASE_URL}/${slug}`;
 
   return {
-    title: `${profile.title} | Golf Pro`,
-    description: profile.bio || `${profile.title} - Professional Golf Instructor`,
+    title,
+    description,
+    keywords: [
+      profile.title,
+      '골프 레슨',
+      '골프 프로',
+      ...(profile.specialties || []),
+      profile.primary_region,
+      profile.primary_city,
+    ].filter((k): k is string => Boolean(k)),
+    alternates: {
+      canonical: profileUrl,
+    },
     openGraph: {
+      type: 'profile',
       title: profile.title,
-      description: profile.bio || undefined,
-      images: profile.hero_image_url ? [profile.hero_image_url] : undefined,
+      description,
+      url: profileUrl,
+      images: imageUrl ? [{
+        url: imageUrl,
+        width: 1200,
+        height: 630,
+        alt: `${profile.title} - 골프 프로`,
+      }] : undefined,
+      siteName: 'TEE:UP',
+      locale: 'ko_KR',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: profile.title,
+      description,
+      images: imageUrl ? [imageUrl] : undefined,
     },
   };
 }
@@ -380,11 +413,19 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
   const youtubeContent = sectionMap.get('youtube_embed');
   const youtubeVideos = parseYoutubeVideos(youtubeContent);
 
-  // For now, render with minimal extended data
-  // In production, this would fetch additional data from portfolio_sections, etc.
+  // JSON-LD structured data for SEO
+  const breadcrumbData = getBreadcrumbSchema([
+    { name: '홈', url: BASE_URL },
+    { name: '프로 찾기', url: `${BASE_URL}/explore` },
+    { name: profile.title, url: `${BASE_URL}/${slug}` },
+  ]);
+
   return (
     <>
-      <PortfolioHeader themeConfig={themeConfig} proName={profile.title} />
+      {/* JSON-LD Structured Data for Pro Profile */}
+      <JsonLd data={getProProfileSchema(profile)} />
+      <JsonLd data={breadcrumbData} />
+
       <PortfolioRenderer
         profile={{
           ...profile,

@@ -1,9 +1,14 @@
 import Link from 'next/link';
 import ConsultationChannels from './ConsultationChannels';
+import EarningsCalculator from './components/EarningsCalculator';
+import { TrackedLink, PageViewTracker } from '@/components/analytics';
 
 export default function ProLandingPage() {
   return (
     <div className="bg-tee-background text-tee-ink-strong">
+      {/* Analytics Tracking */}
+      <PageViewTracker pageType="pro_landing" />
+
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-tee-background via-white to-tee-background" aria-hidden="true" />
         <div className="absolute -top-24 right-0 h-64 w-64 rounded-full bg-tee-accent-primary/10 blur-3xl" aria-hidden="true" />
@@ -19,17 +24,22 @@ export default function ProLandingPage() {
               명품급 프로필, 홍보/PR, 일정/문의 관리를 한 번에. 더 높은 가치의 계약과 스폰서십을 만들 수 있도록 팀이 함께합니다.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link
+              <TrackedLink
                 href="/onboarding/quick-setup"
-                className="inline-flex h-12 items-center justify-center rounded-full bg-tee-accent-primary px-6 text-sm font-semibold text-white shadow-lg"
+                trackId="pro_hero_signup"
+                ctaType="signup"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-tee-accent-secondary px-8 text-sm font-semibold text-white shadow-lg transition-transform hover:scale-105"
               >
-                프로 등록
-              </Link>
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+                지금 등록하기
+              </TrackedLink>
               <a
                 href="#consultation"
-                className="inline-flex h-12 items-center justify-center rounded-full border border-tee-stone px-6 text-sm font-semibold text-tee-ink-strong"
+                className="inline-flex h-12 items-center justify-center rounded-full border-2 border-tee-accent-secondary px-6 text-sm font-semibold text-tee-accent-secondary transition-colors hover:bg-tee-accent-secondary/10"
               >
-                상담 요청
+                상담 먼저 받기
               </a>
             </div>
             <p className="text-sm text-tee-ink-muted">
@@ -43,6 +53,80 @@ export default function ProLandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Pro Stats Section */}
+      <section className="border-y border-tee-accent-secondary/20 bg-gradient-to-r from-tee-accent-secondary/5 via-white to-tee-accent-secondary/5 py-16">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+            <div className="text-center">
+              <span className="text-4xl font-bold text-tee-accent-secondary">150+</span>
+              <p className="mt-2 text-sm text-tee-ink-light">등록된 프로</p>
+            </div>
+            <div className="text-center">
+              <span className="text-4xl font-bold text-tee-accent-secondary">89%</span>
+              <p className="mt-2 text-sm text-tee-ink-light">리드 전환율</p>
+            </div>
+            <div className="text-center">
+              <span className="text-4xl font-bold text-tee-accent-secondary">3.2x</span>
+              <p className="mt-2 text-sm text-tee-ink-light">평균 문의 증가</p>
+            </div>
+            <div className="text-center">
+              <span className="text-4xl font-bold text-tee-accent-secondary">24h</span>
+              <p className="mt-2 text-sm text-tee-ink-light">프로필 공개</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Gold Gradient Divider */}
+      <div className="h-px bg-gradient-to-r from-transparent via-tee-accent-secondary/40 to-transparent" />
+
+      {/* Earnings Calculator Section */}
+      <section className="mx-auto max-w-6xl px-6 py-14">
+        <div className="grid gap-8 lg:grid-cols-[1fr,1.2fr]">
+          <div className="flex flex-col justify-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-tee-ink-muted">
+              ROI Calculator
+            </p>
+            <h2 className="mt-2 text-3xl font-semibold text-tee-ink-strong">
+              나의 예상 수익은?
+            </h2>
+            <p className="mt-4 text-tee-ink-light">
+              주당 레슨 수와 희망 단가를 입력하면 월 예상 수익을 계산해드립니다.
+              TEE:UP과 함께 효율적인 리드 관리로 수익을 극대화하세요.
+            </p>
+            <div className="mt-6 space-y-3">
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-tee-accent-secondary/10">
+                  <svg className="h-4 w-4 text-tee-accent-secondary" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <span className="text-sm text-tee-ink-light">프로필 공개 후 평균 3.2배 문의 증가</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-tee-accent-secondary/10">
+                  <svg className="h-4 w-4 text-tee-accent-secondary" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <span className="text-sm text-tee-ink-light">리드 전환율 89% 달성</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-tee-accent-secondary/10">
+                  <svg className="h-4 w-4 text-tee-accent-secondary" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <span className="text-sm text-tee-ink-light">Pro 요금제 시 수수료 0%</span>
+              </div>
+            </div>
+          </div>
+          <EarningsCalculator />
+        </div>
+      </section>
+
+      <div className="h-px bg-gradient-to-r from-transparent via-tee-stone/40 to-transparent" />
 
       <section className="mx-auto max-w-6xl px-6 py-14">
         <div className="grid gap-6 md:grid-cols-3">
@@ -127,7 +211,7 @@ export default function ProLandingPage() {
             </div>
             <Link
               href="/pricing"
-              className="inline-flex h-12 items-center justify-center rounded-full bg-tee-accent-primary px-6 text-sm font-semibold text-white shadow-lg"
+              className="inline-flex h-12 items-center justify-center rounded-full bg-tee-accent-secondary px-6 text-sm font-semibold text-white shadow-lg transition-transform hover:scale-105"
             >
               요금제 확인
             </Link>

@@ -1,8 +1,9 @@
 import type { MetadataRoute } from 'next';
+import { createPublicClient } from '@/lib/supabase/server';
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://teeup.golf';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // 정적 페이지
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -18,40 +19,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/profile`,
+      url: `${BASE_URL}/explore`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/about`,
+      url: `${BASE_URL}/quiz`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${BASE_URL}/how-it-works`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
+      priority: 0.8,
     },
     {
       url: `${BASE_URL}/pricing`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/faq`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
     },
     {
       url: `${BASE_URL}/terms`,
@@ -67,22 +50,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // 프로 프로필 페이지들 (실제로는 DB에서 가져와야 함)
-  // TODO: Supabase에서 승인된 프로 목록 가져오기
-  const proSlugs = [
-    'kim-jiyoung',
-    'park-soojin',
-    'lee-minho',
-    'choi-eunji',
-    'jung-haerin',
-  ];
+  // Supabase에서 승인된 프로 목록 가져오기
+  const supabase = createPublicClient();
+  const { data: proProfiles } = await supabase
+    .from('pro_profiles')
+    .select('slug, updated_at')
+    .eq('is_approved', true)
+    .not('slug', 'is', null);
 
-  const proPages: MetadataRoute.Sitemap = proSlugs.map((slug) => ({
-    url: `${BASE_URL}/profile/${slug}`,
-    lastModified: new Date(),
+  const proPages: MetadataRoute.Sitemap = (proProfiles || []).map((pro) => ({
+    url: `${BASE_URL}/${pro.slug}`,
+    lastModified: pro.updated_at ? new Date(pro.updated_at) : new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
 
-  return [...staticPages, ...proPages];
+  // 스튜디오 페이지들 가져오기
+  const { data: studios } = await supabase
+    .from('studios')
+    .select('slug, updated_at')
+    .eq('is_active', true)
+    .not('slug', 'is', null);
+
+  const studioPages: MetadataRoute.Sitemap = (studios || []).map((studio) => ({
+    url: `${BASE_URL}/studio/${studio.slug}`,
+    lastModified: studio.updated_at ? new Date(studio.updated_at) : new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }));
+
+  return [...staticPages, ...proPages, ...studioPages];
 }

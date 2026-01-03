@@ -110,7 +110,9 @@ export async function createBooking(
 
     // If payment info is provided, verify with Toss first
     let paymentVerified = false;
-    let depositAmount = 0;
+    let paymentAmount = 0;
+    // Determine payment type from request: 'deposit' | 'full' | 'none'
+    const paymentType = request.paymentType || 'none';
 
     if (request.paymentKey && request.orderId && request.amount) {
       // Verify payment with Toss Payments API
@@ -141,8 +143,15 @@ export async function createBooking(
       }
 
       paymentVerified = true;
-      depositAmount = request.amount;
+      paymentAmount = request.amount;
     }
+
+    // Determine payment_status based on payment type
+    const getPaymentStatus = () => {
+      if (!paymentVerified) return 'unpaid';
+      if (paymentType === 'full') return 'paid';
+      return 'deposit_paid';
+    };
 
     // Create booking with appropriate status
     const { data, error } = await supabase
@@ -158,8 +167,12 @@ export async function createBooking(
         customer_notes: request.customer_notes || null,
         // 결제 완료 시 바로 confirmed, 아니면 pending
         status: paymentVerified ? 'confirmed' : 'pending',
-        payment_status: paymentVerified ? 'deposit_paid' : 'unpaid',
-        deposit_amount: depositAmount,
+        payment_status: getPaymentStatus(),
+        payment_type: paymentType,
+        payment_key: request.paymentKey || null,
+        order_id: request.orderId || null,
+        price_amount: paymentType === 'full' ? paymentAmount : null,
+        deposit_amount: paymentType === 'deposit' ? paymentAmount : 0,
       })
       .select()
       .single();
@@ -376,10 +389,18 @@ export async function cancelBooking(
 
 /**
  * Get booking settings for a pro (via their site)
+ * Returns deposit and trial lesson settings
  */
 export async function getBookingSettingsByProId(
   proId: string
 ): Promise<ActionResult<BookingSettings>> {
+  const defaultSettings: BookingSettings = {
+    deposit_enabled: false,
+    deposit_amount: 30000,
+    trial_lesson_enabled: false,
+    trial_lesson_price: undefined,
+  };
+
   try {
     const supabase = await createClient();
 
@@ -392,10 +413,7 @@ export async function getBookingSettingsByProId(
 
     if (proError || !proProfile) {
       // Return default settings if pro not found
-      return {
-        success: true,
-        data: { deposit_enabled: false, deposit_amount: 30000 },
-      };
+      return { success: true, data: defaultSettings };
     }
 
     // 2. Get the site's booking_settings by owner_id
@@ -407,10 +425,7 @@ export async function getBookingSettingsByProId(
 
     if (siteError || !site) {
       // Return default settings if site not found
-      return {
-        success: true,
-        data: { deposit_enabled: false, deposit_amount: 30000 },
-      };
+      return { success: true, data: defaultSettings };
     }
 
     // Parse booking_settings JSONB (with defaults)
@@ -420,13 +435,12 @@ export async function getBookingSettingsByProId(
       data: {
         deposit_enabled: settings?.deposit_enabled ?? false,
         deposit_amount: settings?.deposit_amount ?? 30000,
+        trial_lesson_enabled: settings?.trial_lesson_enabled ?? false,
+        trial_lesson_price: settings?.trial_lesson_price,
       },
     };
   } catch (_err) {
     console.error('getBookingSettingsByProId error:', _err);
-    return {
-      success: true,
-      data: { deposit_enabled: false, deposit_amount: 30000 },
-    };
+    return { success: true, data: defaultSettings };
   }
 }
