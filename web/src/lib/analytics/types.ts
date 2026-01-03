@@ -151,6 +151,7 @@ export interface ExperimentEventProperties {
 
   [key: string]: unknown;
 }
+
 export interface EngagementEventProperties {
   element_id?: string;
   element_text?: string;
